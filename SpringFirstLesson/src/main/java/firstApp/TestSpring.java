@@ -1,4 +1,5 @@
 package firstApp;
+
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class TestSpring {
@@ -6,7 +7,9 @@ public class TestSpring {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 "appContext.xml"
         );
-       TestBean testBean= context.getBean("testBean", TestBean.class);
-        System.out.println(testBean.getName());
+        Music music = context.getBean("musicBean", Music.class);
+        MusicPlayer musicPlayer = new MusicPlayer(music);
+        musicPlayer.playMusic();
+        context.close();
     }
 }
