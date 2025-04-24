@@ -2,7 +2,7 @@ package firstApp;
 
 import org.springframework.stereotype.Component;
 
-@Component("someRockMusic")
+//@Component("someRockMusic")
 
 public class RockMusic implements Music{
     private RockMusic(){}
