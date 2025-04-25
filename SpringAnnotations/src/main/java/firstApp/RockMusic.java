@@ -11,7 +11,7 @@ public class RockMusic implements Music{
         return new RockMusic();
     }
 
-    public void doMyInit(){
+   /*public void doMyInit(){
         System.out.println("Doing my initialization RockMusic");
     }
 
@@ -19,6 +19,7 @@ public class RockMusic implements Music{
         System.out.println("Doing my destruction RockMusic");
     }
 
+    */
     @Override
     public String getSong() {
         return "Sonne";
