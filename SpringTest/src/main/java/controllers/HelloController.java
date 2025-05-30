@@ -1,7 +1,10 @@
 package controllers;
 
+import jakarta.validation.Valid;
 import model.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +22,16 @@ public class HelloController {
     }
 
     @PostMapping("/hello")
-    public ModelAndView sum(@ModelAttribute("user") User user) {
+    public ModelAndView sum(@ModelAttribute("user")
+                            @Valid
+                            User user, BindingResult result
+    ) {
         ModelAndView mv = new ModelAndView();
+
+        if (result.hasErrors()) {
+            mv.setViewName("hello");
+            return mv;
+        }
 
         mv.addObject("userName", user.getUserName());
         mv.addObject("date_of_birth", user.getDate_of_birth());

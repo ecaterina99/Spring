@@ -12,17 +12,17 @@
     <div>
         <form:label path="userName">Name</form:label>
         <form:input path="userName"/>
-        <form:errors path="userName"/>
+        <form:errors path="userName"></form:errors>
     </div>
     <div>
         <form:label path="date_of_birth">Date of Birth</form:label>
         <form:input path="date_of_birth" type="date"/>
-        <form:errors path="date_of_birth"/>
+        <form:errors path="date_of_birth"></form:errors>
     </div>
     <div>
         <form:label path="email">Email</form:label>
         <form:input path="email"/>
-        <form:errors path="email"/>
+        <form:errors path="email"></form:errors>
     </div>
     <input type="submit" value="Submit"/>
 </form:form>
