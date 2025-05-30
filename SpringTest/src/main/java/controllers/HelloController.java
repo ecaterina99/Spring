@@ -1,10 +1,7 @@
 package controllers;
 
-import jakarta.validation.Valid;
-import model.User;
-import org.springframework.beans.factory.annotation.Value;
+import model.Impression;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +10,25 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HelloController {
 
+    @GetMapping("/helloimpressions")
+    public ModelAndView createForm() throws ClassNotFoundException {
+        ModelAndView mv = new ModelAndView();
+
+        mv.addObject("impression", new Impression());
+        mv.addObject("impressions", Impression.allImpressions());
+        mv.setViewName("helloimpressions");
+
+        return mv;
+    }
+
+    @PostMapping("/helloimpressions")
+    public ModelAndView addImpression(@ModelAttribute("impression") Impression impression) throws ClassNotFoundException {
+        impression.insertImpression();
+        return createForm();
+    }
+
+
+/*User Form
     @GetMapping("/hello")
     public ModelAndView newForm() {
         ModelAndView mv = new ModelAndView();
@@ -41,6 +57,7 @@ public class HelloController {
         return mv;
     }
 
+ */
        /* @GetMapping("/hello")
     public ModelAndView printHello(
             @RequestParam(value = "name", required = false, defaultValue = "User")
