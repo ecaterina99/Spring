@@ -13,12 +13,13 @@ import java.util.List;
 
 public class HelloController {
 
-    @GetMapping("/hi")
+    @GetMapping("/hi")//endpoint specific calea
     public ResponseEntity<String> hello() {
         HttpHeaders headers = new HttpHeaders();
         List<String> cookies = new ArrayList<>();
         cookies.add("nr_inmatriculare=B-123-ABC");
         cookies.add("sofer=Vasilica; Path=/");
+        cookies.add("tara=Romania; Path=/");
         headers.put("Set-Cookie", cookies);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<>("Hello!", headers, HttpStatus.CREATED);
