@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -33,13 +34,12 @@ public class AuthController {
     public ResponseEntity<String> logout() {
         HttpHeaders headers = new HttpHeaders();
         List<String> authCookies = new ArrayList<>();
-        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
         String yesterdayStr = "Tue, 29 Oct 1970 16:56:32 GMT";
         authCookies.add("autentificat=da; Path=/; Expires=" + yesterdayStr);
         headers.put("Set-Cookie", authCookies);
 
         List<String> locations = new ArrayList<>();
-       locations.add("/account/dashboard");
+        locations.add("/account/dashboard");
         headers.put("Location", locations);
         ResponseEntity<String> responseEntity = new ResponseEntity<>("", headers, HttpStatus.SEE_OTHER);
 
