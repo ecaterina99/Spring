@@ -1,14 +1,13 @@
 package com.link.hello.controller;
 
+import com.link.hello.dto.EmployeeDTO;
 import com.link.hello.service.EmployeeService;
-import com.link.hello.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -18,17 +17,62 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    // Return all employees: GET /employee/
     @GetMapping("/")
-    public List<Employee> getEmployees() throws SQLException {
-        return employeeService.getAllEmployees();
+    public List<EmployeeDTO> getEmployees() {
+        return employeeService.findAll();
     }
 
+    // Add new employee: POST /employee/
+    @PostMapping("/")
+    public ResponseEntity<Object> addEmployee(
+            @RequestBody EmployeeDTO employeeDTO
+    ) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        if (employeeDTO.getAge() < 18 || employeeDTO.getAge() > 60) {
+            return ResponseEntity.ok(new HashMap<>());
+        }
+        // TODO: add other conditions to validate input
+        EmployeeDTO employeeDTOResponse = employeeService.addEmployee(employeeDTO);
+        return ResponseEntity.ok(employeeDTOResponse != null ? employeeDTOResponse : new HashMap<>());
+    }
+
+    // Retrieve employee: GET /employee/{id}
     @GetMapping("/{id}")
-    public Employee getEmployees(
+    public EmployeeDTO getEmployees(
             @PathVariable int id
     ) {
         return employeeService.find(id);
     }
 
+    // Update employee: PUT /employee/{id}
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeDTO> updateEmployee(
+            @RequestBody EmployeeDTO employeeDTO,
+            @PathVariable int id
+    ) {
+        if (employeeDTO.getId() != 0) {
+            employeeDTO.setId(0);
+        }
+        // TODO: Check with debugger why it doesn't provide OK
+        EmployeeDTO employeeDTOResponse = employeeService.update(employeeDTO, id);
+        if (employeeDTOResponse == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(employeeDTOResponse);
+    }
+
+    // Delete employee: DELETE /employee/{id}
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteEmployee(
+            @PathVariable int id
+    ) {
+        boolean wasDeleted = employeeService.delete(id);
+        if (wasDeleted) {
+            return ResponseEntity.ok(new HashMap<>()); // empty JSON object confirms deletion
+        }
+        return ResponseEntity.badRequest().build();
+    }
 
 }

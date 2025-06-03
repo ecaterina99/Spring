@@ -1,0 +1,20 @@
+package com.link.hello.dto;
+
+//DTO- data transfer object
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Date;
+
+@Setter
+@Getter
+public class EmployeeDTO {
+    private int id;
+    private String fullName;
+    private Date birthDate;
+    private int age;
+    private float salary;
+    private float salaryInEur;
+    private int idJob;
+}
