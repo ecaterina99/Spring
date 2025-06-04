@@ -75,22 +75,6 @@ public class EmployeeRepository {
         }
     }
 
-    private static Employee employeeFromRs(ResultSet rs) throws SQLException {
-        Employee employee = new Employee();
-
-        employee.setId(rs.getInt("id"));
-        String firstName = rs.getString("firstName");
-        employee.setFirstName(firstName);
-        employee.setLastName(rs.getString("lastName"));
-        employee.setCnp(rs.getString("cnp"));
-        employee.setBirthDate(rs.getDate("birthDate"));
-        employee.setIdJob(rs.getInt("job_id"));
-        employee.setSalary(rs.getFloat("salary"));
-        employee.setAge(rs.getInt("age"));
-
-        return employee;
-    }
-
     public Employee update(Employee employee, int id) {
         StringBuilder sb = new StringBuilder("UPDATE employees SET ");
         Map<Integer, String> parameterIndex = new HashMap<>();
@@ -140,6 +124,22 @@ public class EmployeeRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static Employee employeeFromRs(ResultSet rs) throws SQLException {
+//        if (!rs.isBeforeFirst()) return null;
+        Employee employee = new Employee();
+
+        employee.setId(rs.getInt("id"));
+        employee.setBirthDate(rs.getDate("birth_date"));
+        employee.setCnp(rs.getString("cnp"));
+        String firstName = rs.getString("first_name");
+        employee.setFirstName(firstName);
+        employee.setIdJob(rs.getInt("id_job"));
+        employee.setLastName(rs.getString("last_name"));
+        employee.setSalary(rs.getFloat("salary"));
+        employee.setAge(rs.getInt("age"));
+        return employee;
     }
 
 }

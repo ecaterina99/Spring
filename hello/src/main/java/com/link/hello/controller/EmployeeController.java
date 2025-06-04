@@ -1,6 +1,7 @@
 package com.link.hello.controller;
 
 import com.link.hello.dto.EmployeeDTO;
+import com.link.hello.dto.ResponseDTO;
 import com.link.hello.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +24,21 @@ public class EmployeeController {
         return employeeService.findAll();
     }
 
+    // Retrieve employee: GET /employee/{id}
+    @GetMapping("/{id}")
+    public ResponseDTO showEmployee(
+            @PathVariable int id
+    ) {
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        EmployeeDTO employeeDTO = employeeService.find(id);
+        responseDTO.setData(employeeDTO);
+
+        responseDTO.setSuccess(employeeDTO != null);
+
+        return responseDTO;
+    }
+
     // Add new employee: POST /employee/
     @PostMapping("/")
     public ResponseEntity<Object> addEmployee(
@@ -36,14 +52,6 @@ public class EmployeeController {
         // TODO: add other conditions to validate input
         EmployeeDTO employeeDTOResponse = employeeService.addEmployee(employeeDTO);
         return ResponseEntity.ok(employeeDTOResponse != null ? employeeDTOResponse : new HashMap<>());
-    }
-
-    // Retrieve employee: GET /employee/{id}
-    @GetMapping("/{id}")
-    public EmployeeDTO getEmployees(
-            @PathVariable int id
-    ) {
-        return employeeService.find(id);
     }
 
     // Update employee: PUT /employee/{id}
