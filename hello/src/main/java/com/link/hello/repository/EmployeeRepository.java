@@ -127,16 +127,15 @@ public class EmployeeRepository {
     }
 
     private static Employee employeeFromRs(ResultSet rs) throws SQLException {
-//        if (!rs.isBeforeFirst()) return null;
         Employee employee = new Employee();
 
         employee.setId(rs.getInt("id"));
-        employee.setBirthDate(rs.getDate("birth_date"));
+        employee.setBirthDate(rs.getDate("birthDate"));
         employee.setCnp(rs.getString("cnp"));
-        String firstName = rs.getString("first_name");
+        String firstName = rs.getString("firstName");
         employee.setFirstName(firstName);
-        employee.setIdJob(rs.getInt("id_job"));
-        employee.setLastName(rs.getString("last_name"));
+     //   employee.setIdJob(rs.getInt("job_id"));
+        employee.setLastName(rs.getString("lastName"));
         employee.setSalary(rs.getFloat("salary"));
         employee.setAge(rs.getInt("age"));
         return employee;

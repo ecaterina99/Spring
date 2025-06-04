@@ -1,5 +1,6 @@
 package com.link.hello.controller;
 
+import com.link.hello.dto.AllEmployeesDTO;
 import com.link.hello.dto.EmployeeDTO;
 import com.link.hello.dto.ResponseDTO;
 import com.link.hello.service.EmployeeService;
@@ -18,11 +19,25 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    // Return all employees: GET /employee/
+   /* // Return all employees: GET /employee/
     @GetMapping("/")
     public List<EmployeeDTO> getEmployees() {
         return employeeService.findAll();
     }
+
+    */
+
+    // Return all employees: GET /employee/
+    @GetMapping("/")
+    public AllEmployeesDTO showEmployees() {
+        AllEmployeesDTO allEmployeesDTO = new AllEmployeesDTO();
+       List<EmployeeDTO> employeeDTOs = employeeService.findAll();
+  //      List<EmployeeDTO> employeeDTOs = employeeService.findAllAndMainJob();
+        allEmployeesDTO.setEmployees(employeeDTOs);
+    allEmployeesDTO.setCount(employeeService.count());
+        return allEmployeesDTO;
+    }
+
 
     // Retrieve employee: GET /employee/{id}
     @GetMapping("/{id}")
@@ -56,7 +71,7 @@ public class EmployeeController {
 
     // Update employee: PUT /employee/{id}
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> updateEmployee(
+    public ResponseEntity<Object> updateEmployee(
             @RequestBody EmployeeDTO employeeDTO,
             @PathVariable int id
     ) {
@@ -66,7 +81,8 @@ public class EmployeeController {
         // TODO: Check with debugger why it doesn't provide OK
         EmployeeDTO employeeDTOResponse = employeeService.update(employeeDTO, id);
         if (employeeDTOResponse == null) {
-            return ResponseEntity.badRequest().build();
+//            return ResponseEntity.badRequest().build(); // 400 BadRequest
+            return ResponseEntity.ok(new HashMap<>()); // 200 OK cu {}
         }
         return ResponseEntity.ok(employeeDTOResponse);
     }
@@ -76,6 +92,7 @@ public class EmployeeController {
     public ResponseEntity<Object> deleteEmployee(
             @PathVariable int id
     ) {
+        if (id < 0) return ResponseEntity.badRequest().build();
         boolean wasDeleted = employeeService.delete(id);
         if (wasDeleted) {
             return ResponseEntity.ok(new HashMap<>()); // empty JSON object confirms deletion

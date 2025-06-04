@@ -1,9 +1,6 @@
 package com.link.hello.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,35 +8,32 @@ import java.util.Date;
 
 @Getter
 @Setter
-@Entity
+@Entity(name="employees")
 public class Employee {
 
     @Id  //primary key
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(nullable = false)
+    @Column(name = "firstName", nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(name = "lastName", nullable = false)
     private String lastName;
 
-    @Column
+    @Column(name = "birthDate")
     private Date birthDate;
 
-    @Column(nullable = false)
+    @Column(name = "cnp")
     private String cnp;
 
+
+ //   @Column(name = "job_id", nullable = false)
+ //   private int idJob;
+
     @Column
-    private String email;
-
-    @Column(name="job_id",nullable = false)
-    private int idJob;
-
-    @Column(nullable = false)
     private float salary;
 
-    @Column(nullable = false)
+    @Column
     private int age;
 
 }
