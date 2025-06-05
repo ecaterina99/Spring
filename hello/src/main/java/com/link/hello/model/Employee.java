@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-@Entity(name="employees")
+@Entity(name = "employees")
 public class Employee {
 
     @Id  //primary key
@@ -26,14 +26,17 @@ public class Employee {
     @Column(name = "cnp")
     private String cnp;
 
-
- //   @Column(name = "job_id", nullable = false)
- //   private int idJob;
+   // @Column(name = "job_id", nullable = false)
+   // private int idJob;
 
     @Column
     private float salary;
 
-    @Column
-    private int age;
+    private Integer age;
+
+    @ManyToOne
+    @JoinColumn(name = "job_id")
+    private Job mainJob;
+
 
 }

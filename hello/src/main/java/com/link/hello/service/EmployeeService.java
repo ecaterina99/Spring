@@ -4,14 +4,12 @@ import com.link.hello.model.Employee;
 import com.link.hello.dto.EmployeeDTO;
 import com.link.hello.repository.EmployeeRepositoryCrud;
 import com.link.hello.repository.EmployeeRepositoryJdbc;
+import com.link.hello.repository.EmployeeRepositoryJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.link.hello.repository.EmployeeRepository;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EmployeeService {
@@ -21,23 +19,28 @@ public class EmployeeService {
     private EmployeeRepositoryCrud employeeRepositoryCrud;
     @Autowired
     private EmployeeRepositoryJdbc employeeRepositoryJdbc;
+    @Autowired
+    private EmployeeRepositoryJpa employeeRepositoryJpa;
 
-   public EmployeeDTO find(int id) {
-       Optional<Employee> employeeOptional = employeeRepositoryCrud.findById(id);
-       Employee employee;
-       if (employeeOptional.isPresent()) {
-           employee = employeeOptional.get();
-       } else {
-           employee = null;
-       }
-       return employeeToDto(employee);
-   }
+    final float richBase = 10 * 1000; // EUR
+
+
+    public EmployeeDTO find(int id) {
+        Optional<Employee> employeeOptional = employeeRepositoryCrud.findById(id);
+        Employee employee;
+        if (employeeOptional.isPresent()) {
+            employee = employeeOptional.get();
+        } else {
+            employee = null;
+        }
+        return employeeToDto(employee);
+    }
 
     public List<EmployeeDTO> findAll() {
         List<EmployeeDTO> employeeDTOList = new ArrayList<>();
         Iterable<Employee> iterableEmployees = employeeRepositoryCrud.findAll();
         Iterator<Employee> iteratorEmployee = iterableEmployees.iterator();
-        while(iteratorEmployee.hasNext()) {
+        while (iteratorEmployee.hasNext()) {
             Employee employee = iteratorEmployee.next();
             EmployeeDTO employeeDTO = employeeToDto(employee);
             employeeDTOList.add(employeeDTO);
@@ -69,7 +72,7 @@ public class EmployeeService {
     }
 
 
-    public long count(){
+    public long count() {
         return employeeRepositoryCrud.count();
     }
 
@@ -102,11 +105,63 @@ public class EmployeeService {
         return employeeDTO;
     }
 
+    private List<EmployeeDTO> employeesToDTOs(List<Employee> employees) {
+        List<EmployeeDTO> employeeDTOs = new ArrayList<>();
+        for (Employee employee : employees) {
+            EmployeeDTO employeeDTO = employeeToDto(employee);
+            employeeDTOs.add(employeeDTO);
+        }
+        return employeeDTOs;
+    }
+
     private float salaryToEur(float salary) {
         return salary / 5;
     }
 
+    //http://localhost:9000/employee/search?lastName=Bujor
+    public List<EmployeeDTO> search(String lastName) {
+        List<Employee> employees = employeeRepositoryJpa.findFirstNameDistinctByLastNameContains(lastName);
+        return employeesToDTOs(employees);
+    }
+
+    //http://localhost:9000/employee/search?firstName=Dorin&lastName=Bujor
+    public List<EmployeeDTO> search(String lastName, String firstName) {
+        List<Employee> employees = employeeRepositoryJpa.findByLastNameContainsAndFirstNameContains(lastName, firstName);
+        return employeesToDTOs(employees);
+    }
+
+    //http://localhost:9000/employee/search?startAge=20&endAge=50
+    public List<EmployeeDTO> search(int age1, int age2) {
+        Set<Employee> employees = employeeRepositoryJpa.findByAgeIsBetween(age1, age2);
+        List<Employee> employeeList = new ArrayList<>();
+        employeeList.addAll(employees);
+        return employeesToDTOs(employeeList);
+    }
+    public int countByLastName(String lastName) {
+        return employeeRepositoryJpa.countByLastNameContains(lastName);
+    }
+
+    public int deleteByAge(int age) {
+        return employeeRepositoryJpa.deleteByAge(age);
+    }
+    public List<EmployeeDTO> findOldEmployees(int age) {
+      List<Employee> oldEmployees = employeeRepositoryJpa.findOldRichEmployeesNative(age, richBase);
+      //  List<Employee> oldEmployees = employeeRepositoryJpa.findByAgeIsGreaterThanEqual(age);
+      //  List<Employee> oldEmployees = employeeRepositoryJpa.findOldEmployees(age);
+        return employeesToDTOs(oldEmployees);
+    }
+
+    public List<EmployeeDTO> findAllAndMainJob() {
+        List<Employee> employees = employeeRepositoryJpa.findAllEmployeesAndTheirJobs();
+        return employeesToDTOs(employees);
+    }
+    /*
+
+
+    */
+
 }
+
 
 
    /* JDBC repository

@@ -19,22 +19,14 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-   /* // Return all employees: GET /employee/
-    @GetMapping("/")
-    public List<EmployeeDTO> getEmployees() {
-        return employeeService.findAll();
-    }
-
-    */
-
     // Return all employees: GET /employee/
     @GetMapping("/")
     public AllEmployeesDTO showEmployees() {
         AllEmployeesDTO allEmployeesDTO = new AllEmployeesDTO();
-       List<EmployeeDTO> employeeDTOs = employeeService.findAll();
-  //      List<EmployeeDTO> employeeDTOs = employeeService.findAllAndMainJob();
+        List<EmployeeDTO> employeeDTOs = employeeService.findAll();
+        //      List<EmployeeDTO> employeeDTOs = employeeService.findAllAndMainJob();
         allEmployeesDTO.setEmployees(employeeDTOs);
-    allEmployeesDTO.setCount(employeeService.count());
+        allEmployeesDTO.setCount(employeeService.count());
         return allEmployeesDTO;
     }
 
@@ -45,12 +37,9 @@ public class EmployeeController {
             @PathVariable int id
     ) {
         ResponseDTO responseDTO = new ResponseDTO();
-
         EmployeeDTO employeeDTO = employeeService.find(id);
         responseDTO.setData(employeeDTO);
-
         responseDTO.setSuccess(employeeDTO != null);
-
         return responseDTO;
     }
 
@@ -100,4 +89,68 @@ public class EmployeeController {
         return ResponseEntity.badRequest().build();
     }
 
+    // Delete employees with specific age: DELETE /employee/age/{age}
+    @DeleteMapping("/age/{age}")
+    public Integer deleteEmployeesByAge(
+            @PathVariable int age
+    ) {
+        return employeeService.deleteByAge(age);
+    }
+
+    // Return employees with a specific last name: GET /employee/search
+    @GetMapping("/search")
+    public ResponseEntity search(
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) Integer startAge,
+            @RequestParam(required = false) Integer endAge
+    ) {
+        // startAge should be provided with endAge (pair)
+        if ((startAge != null && endAge == null) || (endAge != null && startAge == null)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        // first name cannot come without last name
+        if (startAge == null && lastName == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        // query with age between
+        if (startAge != null) { // && endAge != null
+            return ResponseEntity.ok(employeeService.search(startAge, endAge));
+       }
+
+        // query with last name
+        if (firstName == null) {
+            // i have only last name
+            return ResponseEntity.ok(employeeService.search(lastName));
+        }
+        // query with last name and first name
+       return ResponseEntity.ok(employeeService.search(lastName, firstName));
+    }
+
+    @GetMapping("/count")
+    public Integer countByLastName(
+            @RequestParam String lastName
+    ) {
+        return employeeService.countByLastName(lastName);
+    }
+
+    @GetMapping("/old")
+    public List<EmployeeDTO> oldEmployees(
+            @RequestParam int age
+    ) {
+        return employeeService.findOldEmployees(age);
+    }
+
+
+
+  /*  @GetMapping("/find-one")
+    public EmployeeDTO findOne(
+            @RequestParam String lastName
+    ) {
+        return employeeService.find(lastName);
+    }
+
+
+   */
 }
