@@ -47,28 +47,15 @@ public interface EmployeeRepositoryJpa extends JpaRepository<Employee, Integer> 
     @Query("SELECT e FROM employees e WHERE e.age >= :age")
     List<Employee> findOldEmployees(@Param("age") int age);
 
+    @Query("SELECT e FROM employees e WHERE e.age >= :age AND e.salary >= :minSalary AND e.mainJob != null") // JPL (Java Persistence Language)
+    List<Employee> findOldRichEmployees(@Param("age") int age, float minSalary);
 
-    // native query (SQL)
-    @Query(value = "SELECT * FROM employees e WHERE e.age >= :age AND e.salary >= :minSalary AND e.job_id != 0", nativeQuery = true)
+    // TODO: native query (SQL)
+    @Query(value = "SELECT * FROM employees e WHERE e.age >= :age AND e.salary >= :minSalary AND e.id_job != 0", nativeQuery = true)
     List<Employee> findOldRichEmployeesNative(@Param("age") int age, float minSalary);
 
-
-    /*
-SELECT *
-FROM work.employees e, work.jobs j, work.employees_jobs ej
-WHERE e.id = ej.id_employee AND ej.id_job = j.id
- */
-    @Query("SELECT e FROM employees e, jobs j, employees_jobs ej WHERE e.id = ej.id_employee AND ej.id_job = j.id")
-    List<Employee> findAllEmployeesAndTheirJobs();
-
-        /*
-    SELECT * FROM work.employees e, work.jobs j
-    WHERE e.id_job = j.id
-     */
-
- /*
-    // TODO: native query (SQL)
     @Query("SELECT e FROM employees e JOIN e.mainJob")
     List<Employee> findAllEmployeesAndMainJob();
-     */
+
+
 }

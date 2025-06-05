@@ -13,8 +13,10 @@ public class EmployeeDTO {
     private int id;
     private String fullName;
     private Date birthDate;
-    private int age;
+    private Integer age;
     private float salary;
     private float salaryInEur;
     private int idJob;
+    private JobDTO job;
+
 }

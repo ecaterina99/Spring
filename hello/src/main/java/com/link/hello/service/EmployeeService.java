@@ -1,7 +1,9 @@
 package com.link.hello.service;
 
+import com.link.hello.dto.JobDTO;
 import com.link.hello.model.Employee;
 import com.link.hello.dto.EmployeeDTO;
+import com.link.hello.model.Job;
 import com.link.hello.repository.EmployeeRepositoryCrud;
 import com.link.hello.repository.EmployeeRepositoryJdbc;
 import com.link.hello.repository.EmployeeRepositoryJpa;
@@ -23,6 +25,8 @@ public class EmployeeService {
     private EmployeeRepositoryJpa employeeRepositoryJpa;
 
     final float richBase = 10 * 1000; // EUR
+    @Autowired
+    private JobService jobService;
 
 
     public EmployeeDTO find(int id) {
@@ -92,7 +96,7 @@ public class EmployeeService {
         return employee;
     }
 
-    private EmployeeDTO employeeToDto(Employee employee) {
+    EmployeeDTO employeeToDto(Employee employee) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(employee.getId());
         employeeDTO.setFullName(
@@ -102,6 +106,13 @@ public class EmployeeService {
         employeeDTO.setSalary(employee.getSalary());
         employeeDTO.setAge(employee.getAge());
         employeeDTO.setSalaryInEur(salaryToEur(employee.getSalary()));
+
+        if (employee.getMainJob() != null) {
+            Job job = employee.getMainJob();
+            JobDTO jobDTO = jobService.jobToDTO(job);
+            employeeDTO.setJob(jobDTO);
+        }
+
         return employeeDTO;
     }
 
@@ -152,7 +163,7 @@ public class EmployeeService {
     }
 
     public List<EmployeeDTO> findAllAndMainJob() {
-        List<Employee> employees = employeeRepositoryJpa.findAllEmployeesAndTheirJobs();
+        List<Employee> employees = employeeRepositoryJpa.findAllEmployeesAndMainJob();
         return employeesToDTOs(employees);
     }
     /*

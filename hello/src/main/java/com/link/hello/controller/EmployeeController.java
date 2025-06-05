@@ -23,8 +23,9 @@ public class EmployeeController {
     @GetMapping("/")
     public AllEmployeesDTO showEmployees() {
         AllEmployeesDTO allEmployeesDTO = new AllEmployeesDTO();
-        List<EmployeeDTO> employeeDTOs = employeeService.findAll();
-        //      List<EmployeeDTO> employeeDTOs = employeeService.findAllAndMainJob();
+        // List<EmployeeDTO> employeeDTOs = employeeService.findAll();
+        // List<EmployeeDTO> employeeDTOs = employeeService.findAllAndMainJob();
+        List<EmployeeDTO> employeeDTOs = employeeService.findAllAndMainJob();
         allEmployeesDTO.setEmployees(employeeDTOs);
         allEmployeesDTO.setCount(employeeService.count());
         return allEmployeesDTO;
