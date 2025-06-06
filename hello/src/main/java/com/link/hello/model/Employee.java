@@ -37,6 +37,11 @@ public class Employee {
     @JoinColumn(name = "job_id")
     private Job mainJob;
 
+    @OneToOne
+    @JoinColumn(name = "id_park")
+    @JsonManagedReference
+    private ParkingLot parkingLot;
+
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JsonManagedReference
     @JoinTable(
