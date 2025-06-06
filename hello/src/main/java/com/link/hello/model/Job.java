@@ -23,10 +23,11 @@ public class Job {
     @Column(name = "maxSalary")
     private Float maxSalary;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) //lazy loading
     @JoinTable(
             name = "employees",
-            joinColumns = @JoinColumn(name="job_id")
+            joinColumns = @JoinColumn(name = "id"),           // Job's primary key
+            inverseJoinColumns = @JoinColumn(name = "job_id") // Employee's foreign key
     )
     private List<Employee> employees;
 

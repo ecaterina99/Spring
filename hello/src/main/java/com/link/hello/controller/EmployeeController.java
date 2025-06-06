@@ -3,6 +3,7 @@ package com.link.hello.controller;
 import com.link.hello.dto.AllEmployeesDTO;
 import com.link.hello.dto.EmployeeDTO;
 import com.link.hello.dto.ResponseDTO;
+import com.link.hello.model.Employee;
 import com.link.hello.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -31,6 +32,10 @@ public class EmployeeController {
         return allEmployeesDTO;
     }
 
+    @GetMapping("/main")
+    public List<EmployeeDTO> employeesWithMainJob() {
+        return employeeService.findAllAndMainJob();
+    }
 
     // Retrieve employee: GET /employee/{id}
     @GetMapping("/{id}")
@@ -144,14 +149,25 @@ public class EmployeeController {
     }
 
 
-
-  /*  @GetMapping("/find-one")
+   @GetMapping("/find-one")
     public EmployeeDTO findOne(
             @RequestParam String lastName
     ) {
         return employeeService.find(lastName);
     }
 
+    @GetMapping("/model")
+    public List<Employee> showEmployeesModel() {
+        return employeeService.findModelAllAndMainJob();
+    }
 
-   */
+    // Select employees with age between: GET /employee/age-between/{start}/{end}
+    @GetMapping("/age-between/{start}/{end}")
+    public List<EmployeeDTO> allBetweenAges(
+            @PathVariable(name = "start") int startAge,
+            @PathVariable(name = "end") int endAge
+    ) {
+        return employeeService.search(startAge, endAge);
+    }
+
 }

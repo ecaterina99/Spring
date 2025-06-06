@@ -51,11 +51,10 @@ public interface EmployeeRepositoryJpa extends JpaRepository<Employee, Integer> 
     List<Employee> findOldRichEmployees(@Param("age") int age, float minSalary);
 
     // TODO: native query (SQL)
-    @Query(value = "SELECT * FROM employees e WHERE e.age >= :age AND e.salary >= :minSalary AND e.id_job != 0", nativeQuery = true)
+    @Query(value = "SELECT * FROM employees e WHERE e.age >= :age AND e.salary >= :minSalary AND e.job_id != 0", nativeQuery = true)
     List<Employee> findOldRichEmployeesNative(@Param("age") int age, float minSalary);
 
     @Query("SELECT e FROM employees e JOIN e.mainJob")
     List<Employee> findAllEmployeesAndMainJob();
-
 
 }

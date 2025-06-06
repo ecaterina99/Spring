@@ -1,6 +1,7 @@
 package com.link.hello.controller;
 
 import com.link.hello.dto.JobDTO;
+import com.link.hello.model.Job;
 import com.link.hello.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,5 +20,11 @@ public class JobController {
     public List<JobDTO> allJobs() {
         return jobService.findAll();
     }
+
+    @GetMapping("/model")
+    public List<Job> allModelJobs() {
+        return jobService.findModelAll();
+    }
+
 
 }

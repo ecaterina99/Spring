@@ -16,7 +16,7 @@ public class EmployeeDTO {
     private Integer age;
     private float salary;
     private float salaryInEur;
-    private int idJob;
+    private int jobId;
     private JobDTO job;
 
 }

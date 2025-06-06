@@ -134,7 +134,7 @@ public class EmployeeRepository {
         employee.setCnp(rs.getString("cnp"));
         String firstName = rs.getString("firstName");
         employee.setFirstName(firstName);
-     //   employee.setIdJob(rs.getInt("job_id"));
+     // employee.setIdJob(rs.getInt("job_id"));
         employee.setLastName(rs.getString("lastName"));
         employee.setSalary(rs.getFloat("salary"));
         employee.setAge(rs.getInt("age"));

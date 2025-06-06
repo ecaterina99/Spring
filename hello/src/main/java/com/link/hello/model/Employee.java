@@ -1,10 +1,12 @@
 package com.link.hello.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,9 +28,6 @@ public class Employee {
     @Column(name = "cnp")
     private String cnp;
 
-   // @Column(name = "job_id", nullable = false)
-   // private int idJob;
-
     @Column
     private float salary;
 
@@ -38,5 +37,13 @@ public class Employee {
     @JoinColumn(name = "job_id")
     private Job mainJob;
 
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JsonManagedReference
+    @JoinTable(
+            name = "employees_jobs",
+            joinColumns = @JoinColumn(name = "id_employee"),
+            inverseJoinColumns = @JoinColumn(name = "job_id")
+    )
+    private List<Job> allJobs;
 
 }
