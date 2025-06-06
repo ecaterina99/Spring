@@ -8,9 +8,6 @@ import java.util.List;
 @Getter
 @Setter
 public class AllEmployeesDTO {
-
     List<EmployeeDTO> employees;
-
     long count;
-
 }

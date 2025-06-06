@@ -2,11 +2,15 @@ package com.link.hello.service;
 
 import com.link.hello.dto.JobDTO;
 import com.link.hello.helpers.DTOManager;
+import com.link.hello.helpers.EmployeePager;
+import com.link.hello.helpers.EmployeeSorter;
 import com.link.hello.model.Employee;
 import com.link.hello.dto.EmployeeDTO;
 import com.link.hello.model.Job;
 import com.link.hello.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,17 +26,17 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepositoryJpa employeeRepositoryJpa;
     @Autowired
-    private static JobRepository jobRepository;
+    private JobRepository jobRepository;
     @Autowired
     private DTOManager dtoManager;
 
     final float richBase = 10 * 1000; // EUR
 
     private EmployeeDTO employeeToDto(Employee employee) {
-        return dtoManager.employeeToDto(employee, false);
+        return dtoManager.employeeToDto(employee, true);
     }
 
-    public static Employee employeeDtoToModel(EmployeeDTO employeeDTO) {
+    public Employee employeeDtoToModel(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         employee.setSalary(employeeDTO.getSalary());
         String[] nameParts = employeeDTO.getFullName().split(" ");
@@ -117,7 +121,25 @@ public class EmployeeService {
         return optionalEmployee.isEmpty();
     }
 
-   //with JPA repository
+    //with JPA repository
+
+    public List<EmployeeDTO> findAllAndMainJob() {
+        List<Sort.Order> employeesSort = new ArrayList<>();
+        Sort.Order lastNameOrder = new Sort.Order(Sort.Direction.DESC, "lastName");
+        Sort.Order firstNameOrder = new Sort.Order(Sort.Direction.ASC, "firstName");
+        employeesSort.add(lastNameOrder); //  DESC
+        employeesSort.add(firstNameOrder); //  "firstName" ASC
+        Sort sort = new EmployeeSorter(employeesSort);
+//        List<Employee> employees = employeeRepositoryJpa.findAll(sort);
+
+        EmployeePager employeePager = new EmployeePager(0, 20, sort);
+        Page<Employee> employeesPage = employeeRepositoryJpa.findAll(employeePager);
+        List<Employee> employees = employeesPage.getContent();
+
+        return employeesToDTOs(employees);
+    }
+
+
     public EmployeeDTO find(String lastName) {
         Employee employee = employeeRepositoryJpa.findFirstByLastNameContainsOrderByAgeDescFirstNameDesc(lastName);
         return employeeToDto(employee);
@@ -158,23 +180,20 @@ public class EmployeeService {
         return employeesToDTOs(oldEmployees);
     }
 
+    /*
     public List<EmployeeDTO> findAllAndMainJob() {
         List<Employee> employees = employeeRepositoryJpa.findAllEmployeesAndMainJob();
         return employeesToDTOs(employees);
     }
+     */
 
     public List<Employee> findModelAllAndMainJob() {
         return employeeRepositoryJpa.findAll();
     }
 
 
-
-}
-
-
-
-   /* JDBC repository
-   public List<EmployeeDTO> findAll() {
+    //JDBC
+    public List<EmployeeDTO> findAllJdbc() {
         List<EmployeeDTO> employeeDTOList = new ArrayList<>();
         List<Employee> employees = employeeRepositoryJdbc.findAll();
         for (Employee employee : employees) {
@@ -183,21 +202,27 @@ public class EmployeeService {
         }
         return employeeDTOList;
     }
-    public EmployeeDTO find(int id) {
+
+    public EmployeeDTO findJdbc(int id) {
         Employee employee = employeeRepositoryJdbc.find(id);
         return employeeToDto(employee);
     }
-    public EmployeeDTO addEmployee(EmployeeDTO employeeDTO) {
+
+    public EmployeeDTO addEmployeeJdbc(EmployeeDTO employeeDTO) {
         Employee employee = employeeDtoToModel(employeeDTO);
         employee = employeeRepositoryJdbc.add(employee);
         return employeeToDto(employee);
     }
-    public EmployeeDTO update(EmployeeDTO employeeDTO, int id) {
+
+    public EmployeeDTO updateJdbc(EmployeeDTO employeeDTO, int id) {
         Employee employee = employeeDtoToModel(employeeDTO);
         employee = employeeRepositoryJdbc.update(employee, id);
         return employeeToDto(employee);
     }
-    public boolean delete(int id) {
+
+    public boolean deleteJdbc(int id) {
         return employeeRepositoryJdbc.delete(id);
     }
-    */
+
+}
+

@@ -1,5 +1,6 @@
 package com.link.hello.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,12 +24,10 @@ public class Job {
     @Column(name = "maxSalary")
     private Float maxSalary;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) //lazy loading
-    @JoinTable(
-            name = "employees",
-            joinColumns = @JoinColumn(name = "id"),           // Job's primary key
-            inverseJoinColumns = @JoinColumn(name = "job_id") // Employee's foreign key
-    )
-    private List<Employee> employees;
+    @Column
+    private boolean remote;
 
+    @OneToMany(mappedBy="mainJob", cascade=CascadeType.ALL)
+    @JsonBackReference
+    private List<Employee> employees;
 }

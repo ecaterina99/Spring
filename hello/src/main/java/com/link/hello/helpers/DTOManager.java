@@ -48,15 +48,16 @@ public class DTOManager {
         JobDTO jobDTO = new JobDTO();
         jobDTO.setId(job.getId());
         jobDTO.setTitle(job.getTitle());
-        List<EmployeeDTO> employeeDTOs = new ArrayList<>();
+       /* List<EmployeeDTO> employeeDTOs = new ArrayList<>();
         if (deep) {
-//            List<Employee> employees = job.getEmployees();
-//            for (Employee employee : employees) {
-//                EmployeeDTO employeeDTO = employeeToDto(employee);
-//                employeeDTOs.add(employeeDTO);
-//            }
-//            jobDTO.setEmployees(employeeDTOs);
+            List<Employee> employees = job.getEmployees();
+            for (Employee employee : employees) {
+                EmployeeDTO employeeDTO = employeeToDto(employee);
+                employeeDTOs.add(employeeDTO);
+            }
+            jobDTO.setEmployees(employeeDTOs);
         }
+        */
         return jobDTO;
     }
 }

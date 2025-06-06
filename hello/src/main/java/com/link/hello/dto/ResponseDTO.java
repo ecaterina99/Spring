@@ -6,11 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ResponseDTO {
-
     boolean success;
-
     String message;
-
     Object data;
-
 }

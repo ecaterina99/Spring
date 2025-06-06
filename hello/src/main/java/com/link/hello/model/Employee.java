@@ -4,13 +4,18 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity(name = "employees")
+@EntityListeners(AuditingEntityListener.class)
 public class Employee {
 
     @Id  //primary key
@@ -50,5 +55,14 @@ public class Employee {
             inverseJoinColumns = @JoinColumn(name = "job_id")
     )
     private List<Job> allJobs;
+
+
+    @CreatedDate
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
 }

@@ -32,11 +32,6 @@ public class EmployeeController {
         return allEmployeesDTO;
     }
 
-    @GetMapping("/main")
-    public List<EmployeeDTO> employeesWithMainJob() {
-        return employeeService.findAllAndMainJob();
-    }
-
     // Retrieve employee: GET /employee/{id}
     @GetMapping("/{id}")
     public ResponseDTO showEmployee(
@@ -48,6 +43,20 @@ public class EmployeeController {
         responseDTO.setSuccess(employeeDTO != null);
         return responseDTO;
     }
+
+
+
+    @GetMapping("/main")
+    public List<EmployeeDTO> employeesWithMainJob() {
+        return employeeService.findAllAndMainJob();
+    }
+
+    @GetMapping("/model")
+    public List<Employee> showEmployeesModel() {
+        return employeeService.findModelAllAndMainJob();
+    }
+
+
 
     // Add new employee: POST /employee/
     @PostMapping("/")
@@ -82,6 +91,8 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeDTOResponse);
     }
 
+
+
     // Delete employee: DELETE /employee/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteEmployee(
@@ -102,6 +113,9 @@ public class EmployeeController {
     ) {
         return employeeService.deleteByAge(age);
     }
+
+
+
 
     // Return employees with a specific last name: GET /employee/search
     @GetMapping("/search")
@@ -141,14 +155,6 @@ public class EmployeeController {
         return employeeService.countByLastName(lastName);
     }
 
-    @GetMapping("/old")
-    public List<EmployeeDTO> oldEmployees(
-            @RequestParam int age
-    ) {
-        return employeeService.findOldEmployees(age);
-    }
-
-
    @GetMapping("/find-one")
     public EmployeeDTO findOne(
             @RequestParam String lastName
@@ -156,9 +162,11 @@ public class EmployeeController {
         return employeeService.find(lastName);
     }
 
-    @GetMapping("/model")
-    public List<Employee> showEmployeesModel() {
-        return employeeService.findModelAllAndMainJob();
+    @GetMapping("/old")
+    public List<EmployeeDTO> oldEmployees(
+            @RequestParam int age
+    ) {
+        return employeeService.findOldEmployees(age);
     }
 
     // Select employees with age between: GET /employee/age-between/{start}/{end}
