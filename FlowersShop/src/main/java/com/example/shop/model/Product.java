@@ -10,11 +10,13 @@ import lombok.Setter;
 @Entity(name = "products")
 public class Product {
 
-    public enum Category {
+  /*  public enum Category {
         BOUQUET,
         PLANT,
         GIFT
     }
+
+   */
 
     @Id  //primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +25,12 @@ public class Product {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Enumerated(EnumType.STRING)
+  /*  @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
     private Category category;
 
+
+   */
     @Column(name = "description")
     private String description;
     @Column(name = "price", nullable = false)
