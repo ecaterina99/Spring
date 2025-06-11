@@ -17,8 +17,11 @@ public class DTOManager {
         productDTO.setId(product.getId());
         productDTO.setName(product.getName());
         productDTO.setDescription(product.getDescription());
+        productDTO.setCategory(String.valueOf(product.getCategory()));
         productDTO.setPrice(product.getPrice());
+        productDTO.setBarcode(product.getBarcode());
         productDTO.setImage(product.getImage());
+        productDTO.setQuantity(product.getQuantity());
         productDTO.setAvailability(isAvailable(product.getQuantity()));
 
         return productDTO;
@@ -31,5 +34,4 @@ public class DTOManager {
             return true;
         }
     }
-
 }

@@ -7,12 +7,11 @@ import com.example.shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/product")
@@ -54,7 +53,7 @@ public class ProductController {
         return ResponseEntity.ok(productDtoResponse != null ? productDtoResponse : new HashMap<>());
     }
 
-    // Update product: PUT /product/{id}
+   // Update product: PUT /product/{id}
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateProduct(
             @RequestBody ProductDTO productDTO,
@@ -64,11 +63,9 @@ public class ProductController {
             productDTO.setId(0);
         }
         ProductDTO productDTOResponse = productService.update(productDTO, id);
-        if (productDTOResponse == null) {
-            return ResponseEntity.ok(new HashMap<>());
-        }
-        return ResponseEntity.ok(productDTOResponse);
+        return ResponseEntity.ok(Objects.requireNonNullElseGet(productDTOResponse, HashMap::new));
     }
+
 
     // Delete product: DELETE /product/{id}
     @DeleteMapping("/{id}")

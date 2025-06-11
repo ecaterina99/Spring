@@ -3,7 +3,6 @@ package com.example.shop.service;
 import com.example.shop.dto.ProductDTO;
 import com.example.shop.helpers.DTOManager;
 import com.example.shop.model.Product;
-import com.example.shop.repository.ProductRepository;
 import com.example.shop.repository.ProductRepositoryCrud;
 import com.example.shop.repository.ProductRepositoryJpa;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,6 @@ public class ProductService {
     @Autowired
     private ProductRepositoryCrud productRepositoryCrud;
     @Autowired
-    private ProductRepository productRepository;
-    @Autowired
     private ProductRepositoryJpa productRepositoryJpa;
     @Autowired
     private DTOManager dtoManager;
@@ -35,11 +32,13 @@ public class ProductService {
         product.setName(productDTO.getName());
         product.setPrice(productDTO.getPrice());
         product.setDescription(productDTO.getDescription());
+        product.setCategory(productDTO.getCategory());
         product.setImage(productDTO.getImage());
-        product.setQuantity(product.getQuantity());
+        product.setBarcode(productDTO.getBarcode());
+        product.setQuantity(productDTO.getQuantity());
         return product;
     }
-    
+
     private List<ProductDTO> productsToDTOs(List<Product> products) {
         List<ProductDTO> productDTOs = new ArrayList<>();
         for (Product product : products) {
@@ -68,31 +67,55 @@ public class ProductService {
         return productToDto(product);
     }
 
+
     public ProductDTO save(ProductDTO productDTO) {
-        Product product = productDtoToProduct(productDTO);
-        Product savedProduct = productRepositoryCrud.save(product);
-        return productToDto(savedProduct);
+        try {
+            Product product = productDtoToProduct(productDTO);
+            Product savedProduct = productRepositoryCrud.save(product);
+            return productToDto(savedProduct);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Error saving product: " + e.getMessage(), e);
+        }
     }
 
+
     public ProductDTO update(ProductDTO productDTO, int id) {
-        Product product = productDtoToProduct(productDTO);
-        product.setId(id);
-        Product savedProduct = productRepositoryCrud.findById(id).orElse(null);
-        if (savedProduct == null) {
-            return null;
+        try {
+            Optional<Product> existingProductOpt = productRepositoryCrud.findById(id);
+            if (existingProductOpt.isEmpty()) {
+                return null;
+            }
+
+            Product existingProduct = existingProductOpt.get();
+
+            if (productDTO.getName() != null && !productDTO.getName().trim().isEmpty()) {
+                existingProduct.setName(productDTO.getName());
+            }
+            if (productDTO.getDescription() != null && !productDTO.getDescription().trim().isEmpty()) {
+                existingProduct.setDescription(productDTO.getDescription());
+            }
+            if (productDTO.getCategory() != null) {
+                existingProduct.setCategory(productDTO.getCategory());
+            }
+            if (productDTO.getImage() != null) {
+                existingProduct.setImage(productDTO.getImage());
+            }
+            if (productDTO.getBarcode() != null && !productDTO.getBarcode().trim().isEmpty()) {
+                existingProduct.setBarcode(productDTO.getBarcode());
+            }
+            if (productDTO.getQuantity() >= 0) {
+                existingProduct.setQuantity(productDTO.getQuantity());
+            }
+            if (productDTO.getPrice() > 0) {
+                existingProduct.setPrice(productDTO.getPrice());
+            }
+
+            Product savedProduct = productRepositoryCrud.save(existingProduct);
+            return productToDto(savedProduct);
+
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Error updating product: " + e.getMessage(), e);
         }
-        if (product.getName() != null) {
-            savedProduct.setName(savedProduct.getName());
-        }
-        if (product.getDescription() != null) {
-            savedProduct.setDescription(savedProduct.getDescription());
-        }
-        if (product.getImage() != null) {
-            savedProduct.setImage(savedProduct.getImage());
-        }
-        savedProduct.setQuantity(savedProduct.getQuantity());
-        savedProduct.setPrice(savedProduct.getPrice());
-        return productToDto(productRepositoryCrud.save(product));
     }
 
     public boolean delete(int id) {
@@ -100,5 +123,4 @@ public class ProductService {
         Optional<Product> productOptional = productRepositoryCrud.findById(id);
         return productOptional.isEmpty();
     }
-
 }
