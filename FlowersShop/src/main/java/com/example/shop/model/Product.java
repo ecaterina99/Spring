@@ -10,35 +10,31 @@ import lombok.Setter;
 @Entity(name = "products")
 public class Product {
 
+    @Id  //primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+    @Column(name = "price")
+    private double price;
+    @Column(name = "stock_quantity")
+    private int quantity=0;
+    @Column(name = "barcode")
+    private String barcode;
+    @Column(name = "image")
+    private String image;
+}
+
   /*  public enum Category {
         BOUQUET,
         PLANT,
         GIFT
     }
-
-   */
-
-    @Id  //primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(name = "name", nullable = false)
-    private String name;
-
-  /*  @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
     private Category category;
-
-
    */
-    @Column(name = "description")
-    private String description;
-    @Column(name = "price", nullable = false)
-    private double price;
-    @Column(name = "stock_quantity", nullable = false)
-    private int quantity=0;
-    @Column(name = "barcode", nullable = false)
-    private String barcode;
-    @Column(name = "image")
-    private String image;
-}

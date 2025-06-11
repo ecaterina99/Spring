@@ -6,13 +6,13 @@ import com.example.shop.model.Product;
 import com.example.shop.repository.ProductRepository;
 import com.example.shop.repository.ProductRepositoryCrud;
 import com.example.shop.repository.ProductRepositoryJpa;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -23,8 +23,6 @@ public class ProductService {
     private ProductRepository productRepository;
     @Autowired
     private ProductRepositoryJpa productRepositoryJpa;
-
-
     @Autowired
     private DTOManager dtoManager;
 
@@ -41,8 +39,7 @@ public class ProductService {
         product.setQuantity(product.getQuantity());
         return product;
     }
-
-
+    
     private List<ProductDTO> productsToDTOs(List<Product> products) {
         List<ProductDTO> productDTOs = new ArrayList<>();
         for (Product product : products) {
@@ -51,7 +48,6 @@ public class ProductService {
         }
         return productDTOs;
     }
-
 
     public List<ProductDTO> findAll() {
         List<ProductDTO> productDTOList = new ArrayList<>();
@@ -65,5 +61,44 @@ public class ProductService {
         return productDTOList;
     }
 
+    public ProductDTO findById(int id) {
+        Optional<Product> productOptional = productRepositoryCrud.findById(id);
+        Product product;
+        product = productOptional.orElse(null);
+        return productToDto(product);
+    }
+
+    public ProductDTO save(ProductDTO productDTO) {
+        Product product = productDtoToProduct(productDTO);
+        Product savedProduct = productRepositoryCrud.save(product);
+        return productToDto(savedProduct);
+    }
+
+    public ProductDTO update(ProductDTO productDTO, int id) {
+        Product product = productDtoToProduct(productDTO);
+        product.setId(id);
+        Product savedProduct = productRepositoryCrud.findById(id).orElse(null);
+        if (savedProduct == null) {
+            return null;
+        }
+        if (product.getName() != null) {
+            savedProduct.setName(savedProduct.getName());
+        }
+        if (product.getDescription() != null) {
+            savedProduct.setDescription(savedProduct.getDescription());
+        }
+        if (product.getImage() != null) {
+            savedProduct.setImage(savedProduct.getImage());
+        }
+        savedProduct.setQuantity(savedProduct.getQuantity());
+        savedProduct.setPrice(savedProduct.getPrice());
+        return productToDto(productRepositoryCrud.save(product));
+    }
+
+    public boolean delete(int id) {
+        productRepositoryCrud.deleteById(id);
+        Optional<Product> productOptional = productRepositoryCrud.findById(id);
+        return productOptional.isEmpty();
+    }
 
 }
