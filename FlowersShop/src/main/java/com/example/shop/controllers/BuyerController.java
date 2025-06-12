@@ -69,4 +69,10 @@ public class BuyerController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @GetMapping("/sales")
+    public List<BuyerDTO> showBuyerAndSales() {
+        return buyerService.findAllBuyerAndSales();
+    }
+
 }

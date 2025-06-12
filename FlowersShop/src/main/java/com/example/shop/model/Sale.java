@@ -1,5 +1,6 @@
 package com.example.shop.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,12 +15,16 @@ public class Sale {
 
     @ManyToOne
     @JoinColumn(name = "buyer_id", nullable = false)
+    @JsonBackReference
     private Buyer buyer;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
+    @JsonBackReference
     private Product product;
 
     @Column(nullable = false)
     private int quantity;
+
+
 }

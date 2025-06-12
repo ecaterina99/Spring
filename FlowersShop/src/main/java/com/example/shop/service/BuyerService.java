@@ -3,7 +3,10 @@ package com.example.shop.service;
 import com.example.shop.dto.BuyerDTO;
 import com.example.shop.helpers.DTOManager;
 import com.example.shop.model.Buyer;
+import com.example.shop.model.Sale;
 import com.example.shop.repository.BuyersRepositoryCrud;
+import com.example.shop.repository.BuyersRepositoryJpa;
+import com.example.shop.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +20,17 @@ public class  BuyerService {
     @Autowired
     BuyersRepositoryCrud buyersRepositoryCrud;
     @Autowired
+    BuyersRepositoryJpa buyersRepositoryJpa;
+    @Autowired
     private DTOManager dtoManager;
+    @Autowired
+    private SaleRepository saleRepository;
 
     private BuyerDTO buyerToDto(Buyer buyer) {
         return dtoManager.buyerToDto(buyer);
     }
 
-    private Buyer buyerDtoToBuyer(BuyerDTO buyerDto) {
+    private Buyer buyerDtoToModel(BuyerDTO buyerDto) {
    Buyer buyer = new Buyer();
         String[] nameParts = buyerDto.getFullName().split(" ");
         buyer.setFirstName(nameParts[0]);
@@ -33,6 +40,13 @@ public class  BuyerService {
         buyer.setAddress(buyerDto.getAddress());
         buyer.setCity(buyerDto.getCity());
         buyer.setPostalCode(buyerDto.getPostalCode());
+
+        List<Sale> sales = buyerDto.getSales();
+        if (sales != null && !sales.isEmpty()) {
+            List<Sale>salesList = saleRepository.findAll();
+            buyer.setSales(salesList);
+        }
+
         return buyer;
     }
 
@@ -54,13 +68,13 @@ public class  BuyerService {
 
 
     public BuyerDTO save(BuyerDTO buyerDTO) {
-        Buyer buyer = buyerDtoToBuyer(buyerDTO);
+        Buyer buyer = buyerDtoToModel(buyerDTO);
         buyersRepositoryCrud.save(buyer);
         return buyerToDto(buyer);
     }
 
     public BuyerDTO update(BuyerDTO buyerDTO, int id) {
-        Buyer buyer = buyerDtoToBuyer(buyerDTO);
+        Buyer buyer = buyerDtoToModel(buyerDTO);
         buyer.setId(id);
         Buyer bayerDB = buyersRepositoryCrud.findById(id).orElse(null);
         if (bayerDB == null) {
@@ -97,6 +111,15 @@ public class  BuyerService {
         return buyerOptional.isEmpty();
     }
 
+    public List<BuyerDTO> findAllBuyerAndSales() {
+        List<BuyerDTO> buyerDTOList = new ArrayList<>();
+        List<Buyer> buyers = buyersRepositoryJpa.findAllBuyersAndSales();
+        for (Buyer buyer : buyers) {
+            BuyerDTO buyerDTO = buyerToDto(buyer);
+            buyerDTOList.add(buyerDTO);
+        }
+        return buyerDTOList;
+    }
 }
 
 

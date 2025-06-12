@@ -4,7 +4,10 @@ import com.example.shop.dto.BuyerDTO;
 import com.example.shop.dto.ProductDTO;
 import com.example.shop.model.Buyer;
 import com.example.shop.model.Product;
+import com.example.shop.model.Sale;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class DTOManager {
@@ -51,7 +54,10 @@ public class DTOManager {
         buyerDTO.setAddress(buyer.getAddress());
         buyerDTO.setCity(buyer.getCity());
         buyerDTO.setPostalCode(buyer.getPostalCode());
+        if(deep){
+            List<Sale>sales = buyer.getSales();
+            buyerDTO.setSales(sales);
+        }
         return buyerDTO;
     }
-
 }

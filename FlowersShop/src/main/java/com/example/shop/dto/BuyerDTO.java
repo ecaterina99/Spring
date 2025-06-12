@@ -1,7 +1,10 @@
 package com.example.shop.dto;
 
+import com.example.shop.model.Sale;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,4 +16,5 @@ public class BuyerDTO {
     private String phone;
     private String email;
     private String postalCode;
+    private List<Sale> sales;
 }

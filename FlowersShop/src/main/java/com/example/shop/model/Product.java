@@ -3,6 +3,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity(name = "products")
@@ -49,6 +52,10 @@ public class Product {
     private String barcode;
     @Column(name = "image_url")
     private String image;
+
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Sale> sales = new ArrayList<>();
 
 }
 

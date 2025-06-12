@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -40,13 +41,7 @@ public class Buyer {
     @Column(name = "postal_сode", nullable = false)
     private String postalCode;
 
-
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "buyer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    @JoinTable(
-            name = "sales",
-            joinColumns = @JoinColumn(name = "buyer_id"),
-            inverseJoinColumns = @JoinColumn(name = "prouct_id")
-    )
-    private List<Product> allProducts;
+    private List<Sale> sales;
 }
