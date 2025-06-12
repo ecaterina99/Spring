@@ -1,10 +1,8 @@
 package com.example.shop.service;
 
 import com.example.shop.dto.BuyerDTO;
-import com.example.shop.dto.ProductDTO;
 import com.example.shop.helpers.DTOManager;
 import com.example.shop.model.Buyer;
-import com.example.shop.model.Product;
 import com.example.shop.repository.BuyersRepositoryCrud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,5 +98,6 @@ public class  BuyerService {
     }
 
 }
+
 
 

@@ -49,5 +49,6 @@ public class Product {
     private String barcode;
     @Column(name = "image_url")
     private String image;
+
 }
 

@@ -1,8 +1,11 @@
 package com.example.shop.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,4 +39,14 @@ public class Buyer {
 
     @Column(name = "postal_сode", nullable = false)
     private String postalCode;
+
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JsonManagedReference
+    @JoinTable(
+            name = "sales",
+            joinColumns = @JoinColumn(name = "buyer_id"),
+            inverseJoinColumns = @JoinColumn(name = "prouct_id")
+    )
+    private List<Product> allProducts;
 }
