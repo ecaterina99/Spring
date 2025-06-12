@@ -25,8 +25,8 @@ public class Buyer {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Column(name = "country", nullable = false)
-    private String country;
+    @Column(name = "country")
+    private String country = "Romania";
 
     @Column(name = "city", nullable = false)
     private String city;

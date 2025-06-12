@@ -50,6 +50,7 @@ public class DTOManager {
         buyerDTO.setPhone(buyer.getPhone());
         buyerDTO.setAddress(buyer.getAddress());
         buyerDTO.setCity(buyer.getCity());
+        buyerDTO.setPostalCode(buyer.getPostalCode());
         return buyerDTO;
     }
 

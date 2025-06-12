@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BuyerService {
+public class  BuyerService {
 
     @Autowired
     BuyersRepositoryCrud buyersRepositoryCrud;
@@ -34,6 +34,7 @@ public class BuyerService {
         buyer.setPhone(buyerDto.getPhone());
         buyer.setAddress(buyerDto.getAddress());
         buyer.setCity(buyerDto.getCity());
+        buyer.setPostalCode(buyerDto.getPostalCode());
         return buyer;
     }
 
@@ -51,6 +52,51 @@ public class BuyerService {
         Optional<Buyer> buyerOptional = buyersRepositoryCrud.findById(id);
         Buyer buyer = buyerOptional.orElse(null);
         return buyerToDto(buyer);
+    }
+
+
+    public BuyerDTO save(BuyerDTO buyerDTO) {
+        Buyer buyer = buyerDtoToBuyer(buyerDTO);
+        buyersRepositoryCrud.save(buyer);
+        return buyerToDto(buyer);
+    }
+
+    public BuyerDTO update(BuyerDTO buyerDTO, int id) {
+        Buyer buyer = buyerDtoToBuyer(buyerDTO);
+        buyer.setId(id);
+        Buyer bayerDB = buyersRepositoryCrud.findById(id).orElse(null);
+        if (bayerDB == null) {
+            return null;
+        }
+        if(buyer.getFirstName()!=null) {
+            bayerDB.setFirstName(buyer.getFirstName());
+        }
+        if(buyer.getLastName()!=null) {
+            bayerDB.setLastName(buyer.getLastName());
+        }
+        if(buyer.getEmail()!=null) {
+            bayerDB.setEmail(buyer.getEmail());
+        }
+        if(buyer.getPhone()!=null) {
+            bayerDB.setPhone(buyer.getPhone());
+        }
+        if(buyer.getAddress()!=null) {
+            bayerDB.setAddress(buyer.getAddress());
+        }
+        if(buyer.getCity()!=null) {
+            bayerDB.setCity(buyer.getCity());
+        }
+        if(buyer.getPostalCode()!=null) {
+            bayerDB.setPostalCode(buyer.getPostalCode());
+        }
+       buyer=buyersRepositoryCrud.save(bayerDB);
+        return buyerToDto(buyer);
+        }
+
+    public boolean delete(int id) {
+        buyersRepositoryCrud.deleteById(id);
+        Optional<Buyer> buyerOptional = buyersRepositoryCrud.findById(id);
+        return buyerOptional.isEmpty();
     }
 
 }
