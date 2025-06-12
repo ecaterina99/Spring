@@ -1,6 +1,8 @@
 package com.example.shop.helpers;
 
+import com.example.shop.dto.BuyerDTO;
 import com.example.shop.dto.ProductDTO;
+import com.example.shop.model.Buyer;
 import com.example.shop.model.Product;
 import org.springframework.stereotype.Component;
 
@@ -34,4 +36,21 @@ public class DTOManager {
             return true;
         }
     }
+
+    public BuyerDTO buyerToDto(Buyer buyer) {
+        return buyerToDto(buyer, true);
+    }
+
+    public BuyerDTO buyerToDto(Buyer buyer,boolean deep) {
+        if (buyer == null) return null;
+        BuyerDTO buyerDTO = new BuyerDTO();
+        buyerDTO.setId(buyer.getId());
+        buyerDTO.setFullName(buyer.getFirstName()+" "+buyer.getLastName());
+        buyerDTO.setEmail(buyer.getEmail());
+        buyerDTO.setPhone(buyer.getPhone());
+        buyerDTO.setAddress(buyer.getAddress());
+        buyerDTO.setCity(buyer.getCity());
+        return buyerDTO;
+    }
+
 }

@@ -39,15 +39,6 @@ public class ProductService {
         return product;
     }
 
-    private List<ProductDTO> productsToDTOs(List<Product> products) {
-        List<ProductDTO> productDTOs = new ArrayList<>();
-        for (Product product : products) {
-            ProductDTO productDTO = productToDto(product);
-            productDTOs.add(productDTO);
-        }
-        return productDTOs;
-    }
-
     public List<ProductDTO> findAll() {
         List<ProductDTO> productDTOList = new ArrayList<>();
         Iterable<Product> iterableProducts = productRepositoryCrud.findAll();
@@ -67,7 +58,6 @@ public class ProductService {
         return productToDto(product);
     }
 
-
     public ProductDTO save(ProductDTO productDTO) {
         try {
             Product product = productDtoToProduct(productDTO);
@@ -77,7 +67,6 @@ public class ProductService {
             throw new RuntimeException("Error saving product: " + e.getMessage(), e);
         }
     }
-
 
     public ProductDTO update(ProductDTO productDTO, int id) {
         try {
@@ -123,4 +112,14 @@ public class ProductService {
         Optional<Product> productOptional = productRepositoryCrud.findById(id);
         return productOptional.isEmpty();
     }
+
+    private List<ProductDTO> productsToDTOs(List<Product> products) {
+        List<ProductDTO> productDTOs = new ArrayList<>();
+        for (Product product : products) {
+            ProductDTO productDTO = productToDto(product);
+            productDTOs.add(productDTO);
+        }
+        return productDTOs;
+    }
+
 }
