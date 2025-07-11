@@ -13,7 +13,7 @@
         <model>Spark</model>
         <production-year>2013</production-year>
         <horsepower>68</horsepower>
-        <consumption>6.6</consumption>
+        <consumption type="fuel">6.6</consumption>
         <price>9995</price>
     </car>
     <car id="3">

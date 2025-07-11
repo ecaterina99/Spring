@@ -97,17 +97,4 @@ public class Car {
         this.consumption = consumption;
     }
 
-    @JsonIgnore
-    public void display() {
-        System.out.println("=== Car ===");
-        System.out.println("ID: " + id);
-        System.out.println("  Manufacturer: " + (manufacturer != null ? manufacturer : "Not available"));
-        System.out.println("  Model: " + (model != null ? model : "Not available"));
-        System.out.println("  Production Year: " + (productionYear != 0 ? productionYear : "Not available"));
-        System.out.println("  Horsepower: " + (horsepower != 0 ? horsepower : "Not available"));
-        System.out.println("  Consumption Type: " + (consumption != null ? consumption : "Not available"));
-        System.out.println("  Consumption Value: " + (consumptionValue != 0 ? consumptionValue : "-"));
-        System.out.println("  Price: " + (price != 0 ? price : "Not available"));
-        System.out.println();
-    }
 }

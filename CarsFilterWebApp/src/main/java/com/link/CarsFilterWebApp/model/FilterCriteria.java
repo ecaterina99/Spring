@@ -130,31 +130,4 @@ public class FilterCriteria {
         return desc.toString().trim();
     }
 
-  /*  public void reset() {
-        this.manufacturer = null;
-        this.minYear = 0;
-        this.maxYear = 0;
-        this.consumption = null;
-        this.minConsumption = 0.0;
-        this.maxConsumption = 0.0;
-        this.checkConsumptionRange = false;
-        this.filterType = "all";
-    }
-
-    @Override
-    public String toString() {
-        return "FilterCriteria{" +
-                "manufacturer='" + manufacturer + '\'' +
-                ", minYear=" + minYear +
-                ", maxYear=" + maxYear +
-                ", consumption=" + consumption +
-                ", minConsumption=" + minConsumption +
-                ", maxConsumption=" + maxConsumption +
-                ", checkConsumptionRange=" + checkConsumptionRange +
-                ", filterType='" + filterType + '\'' +
-                '}';
-    }
-
-   */
-
 }

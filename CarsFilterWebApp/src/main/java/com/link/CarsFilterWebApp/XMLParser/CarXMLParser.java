@@ -7,10 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +23,7 @@ public class CarXMLParser {
 
 
         try (InputStream inputStream = resource.getInputStream();
-             Reader reader = new FileReader(XML_FILE)) {
+             Reader reader =  new InputStreamReader(inputStream)) {
 
             XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(reader);
 

@@ -99,6 +99,8 @@ public class CarService {
         cachedCars = null;
     }
 
+
+    /*
     public List<Car> filterByManufacturer(String manufacturer) throws Exception {
         FilterCriteria criteria = new FilterCriteria();
         criteria.setManufacturer(manufacturer);
@@ -128,5 +130,7 @@ public class CarService {
         criteria.setCheckConsumptionRange(true);
         return filterCars(criteria);
     }
+
+     */
 
 }
