@@ -1,6 +1,7 @@
 package com.link.CarsFilterWebApp.XMLParser;
 
 import com.link.CarsFilterWebApp.model.Car;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import javax.xml.stream.XMLInputFactory;
@@ -8,6 +9,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,12 @@ public class CarXMLParser {
         List<Car> cars = new ArrayList<>();
         XMLInputFactory xmlInputFactory = XMLInputFactory.newFactory();
 
-        try (Reader reader = new FileReader(XML_FILE)) {
+        ClassPathResource resource = new ClassPathResource(XML_FILE);
+
+
+        try (InputStream inputStream = resource.getInputStream();
+             Reader reader = new FileReader(XML_FILE)) {
+
             XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(reader);
 
             Car currentCar = new Car();

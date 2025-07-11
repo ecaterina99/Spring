@@ -1,5 +1,7 @@
 package com.link.CarsFilterWebApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Car {
     private String id;
     private String manufacturer;
@@ -95,6 +97,7 @@ public class Car {
         this.consumption = consumption;
     }
 
+    @JsonIgnore
     public void display() {
         System.out.println("=== Car ===");
         System.out.println("ID: " + id);

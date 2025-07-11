@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - Car Filter Application</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<!-- Header -->
+<div class="header">
+    <div class="container">
+        <div class="header-content">
+            <h1 class="header-title">
+                <i class="fas fa-car"></i>Car Filter Application
+            </h1>
+            <a href="/cars/" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>Back to Search
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Error Message -->
+    <div th:if="${error}" class="alert alert-error">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span th:text="${error}">Error message</span>
+        <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">×</button>
+    </div>
+
+    <!-- Filter Summary -->
+    <div th:if="${criteria != null and criteria.active}" class="filter-summary">
+        <h3 class="summary-title">
+            <i class="fas fa-filter"></i>Applied Filters
+        </h3>
+        <div class="summary-content">
+            <p th:text="${criteria.filterDescription}">Filter description</p>
+            <div class="filter-tags">
+                    <span class="filter-tag" th:if="${criteria.hasManufacturerFilter()}">
+                        <i class="fas fa-industry"></i>
+                        <span th:text="${criteria.manufacturer}">Manufacturer</span>
+                    </span>
+                <span class="filter-tag" th:if="${criteria.hasYearFilter()}">
+                        <i class="fas fa-calendar"></i>
+                        <span th:text="${criteria.minYear > 0 and criteria.maxYear > 0 ? criteria.minYear + '-' + criteria.maxYear :
+                                       criteria.minYear > 0 ? 'From ' + criteria.minYear : 'Up to ' + criteria.maxYear}">Year Range</span>
+                    </span>
+                <span class="filter-tag" th:if="${criteria.hasConsumptionFilter()}">
+                        <i class="fas fa-gas-pump"></i>
+                        <span th:text="${criteria.consumption.displayName}">Consumption Type</span>
+                    </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section">
+        <div class="results-header">
+            <h3 class="results-title">
+                <i class="fas fa-list"></i>Search Results
+            </h3>
+            <div class="results-count" th:text="${totalCount + ' cars found'}">0 cars found</div>
+        </div>
+
+        <!-- Cars Grid -->
+        <div class="cars-grid" th:if="${totalCount > 0}">
+            <div class="car-card" th:each="car : ${cars}">
+                <div class="car-image">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="car-info">
+                    <h5 class="car-name" th:text="${car.manufacturer + ' ' + car.model}">Car Name</h5>
+                    <p class="car-year" th:text="'Year: ' + ${car.productionYear}">Year</p>
+
+                    <div class="car-consumption">
+                            <span class="consumption-badge"
+                                  th:classappend="${car.consumption?.name() == 'ELECTRIC' ? 'badge-electric' :
+                                                 car.consumption?.name() == 'FUEL' ? 'badge-fuel' : 'badge-hybrid'}"
+                                  th:text="${car.formattedConsumption}">Consumption</span>
+                    </div>
+
+                    <div class="car-details">
+                        <div class="car-detail" th:if="${car.horsepower > 0}">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span th:text="${car.horsepower + ' HP'}">HP</span>
+                        </div>
+                        <div class="car-detail" th:if="${car.price > 0}">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span th:text="'$' + ${car.formattedPrice}">Price</span>
+                        </div>
+                        <div class="car-detail" th:if="${car.consumptionValue > 0 and car.consumption?.name() != 'ELECTRIC'}">
+                            <i class="fas fa-gas-pump"></i>
+                            <span th:text="${car.consumptionValue + ' L/100km'}">Consumption</span>
+                        </div>
+                    </div>
+
+                    <div class="car-id" th:if="${car.id}">
+                        <small class="text-muted">ID: <span th:text="${car.id}">Car ID</span></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Results -->
+        <div th:if="${totalCount == 0}" class="no-results">
+            <i class="fas fa-search"></i>
+            <h4>No cars found</h4>
+            <p>No cars match your current filter criteria.</p>
+            <div class="no-results-actions">
+                <a href="/cars/" class="btn btn-primary">
+                    <i class="fas fa-search"></i>New Search
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Options -->
+    <div th:if="${totalCount > 0}" class="export-section">
+        <h4 class="export-title">
+            <i class="fas fa-download"></i>Export Results
+        </h4>
+        <div class="export-buttons">
+            <button class="btn btn-outline" onclick="exportToCSV()">
+                <i class="fas fa-file-csv"></i>Export to CSV
+            </button>
+            <button class="btn btn-outline" onclick="printResults()">
+                <i class="fas fa-print"></i>Print Results
+            </button>
+        </div>
+    </div>
+
+    <!-- Back to Search -->
+    <div class="back-to-search">
+        <a href="/cars/" class="btn btn-primary">
+            <i class="fas fa-arrow-left"></i>Back to Search
+        </a>
+    </div>
+</div>
+
+<script>
+    // Export functionality
+    function exportToCSV() {
+        const cars = /*[[${cars}]]*/ [];
+
+        if (cars.length === 0) {
+            alert('No data to export');
+            return;
+        }
+
+        let csvContent = "ID,Manufacturer,Model,Year,Horsepower,Price,Consumption Type,Consumption Value\n";
+
+        cars.forEach(car => {
+            const row = [
+                car.id || '',
+                car.manufacturer || '',
+                car.model || '',
+                car.productionYear || '',
+                car.horsepower || '',
+                car.price || '',
+                car.consumption || '',
+                car.consumptionValue || ''
+            ].map(field => `"${field}"`).join(',');
+            csvContent += row + '\n';
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'car_search_results.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function printResults() {
+        window.print();
+    }
+
+    // Print styles
+    const style = document.createElement('style');
+    style.innerHTML = `
+            @media print {
+                .header, .back-to-search, .export-section { display: none; }
+                .car-card { break-inside: avoid; page-break-inside: avoid; }
+                .cars-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+                body { font-size: 12px; }
+            }
+        `;
+    document.head.appendChild(style);
+</script>
+</body>
+</html>

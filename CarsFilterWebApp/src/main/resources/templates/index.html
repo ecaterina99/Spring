@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Car Filter Application</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="fas fa-car me-3"></i>Car Filter Application
+                </h1>
+                <p class="lead">Find your perfect car with our advanced filtering system</p>
+            </div>
+            <div class="col-lg-4">
+                <div class="stats-card">
+                    <div class="stats-number" th:text="${totalCount ?: 0}">0</div>
+                    <div class="text-muted">Cars Found</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Error Message -->
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <span th:text="${error}">Error message</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <!-- Filter Form -->
+    <div class="filter-card">
+        <h3 class="mb-4">
+            <i class="fas fa-filter me-2"></i>Filter Cars
+        </h3>
+
+        <form th:action="@{/cars/filter}" method="post" th:object="${filterCriteria}">
+            <div class="row">
+                <!-- Manufacturer Filter -->
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-industry me-2"></i>Manufacturer
+                    </label>
+                    <select class="form-select" th:field="*{manufacturer}">
+                        <option value="">All Manufacturers</option>
+                        <option th:each="manufacturer : ${manufacturers}"
+                                th:value="${manufacturer}"
+                                th:text="${manufacturer}">Manufacturer</option>
+                    </select>
+                </div>
+
+                <!-- Year Filter -->
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-calendar me-2"></i>Year Range
+                    </label>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="number" class="form-control"
+                                   th:field="*{minYear}"
+                                   th:min="${minYear}"
+                                   th:max="${maxYear}"
+                                   placeholder="From">
+                        </div>
+                        <div class="col-6">
+                            <input type="number" class="form-control"
+                                   th:field="*{maxYear}"
+                                   th:min="${minYear}"
+                                   th:max="${maxYear}"
+                                   placeholder="To">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Consumption Type Filter -->
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-gas-pump me-2"></i>Consumption Type
+                    </label>
+                    <select class="form-select" th:field="*{consumption}" id="consumptionType">
+                        <option value="">All Types</option>
+                        <option value="ELECTRIC">Electric</option>
+                        <option value="FUEL">Fuel</option>
+                        <option value="HYBRID">Hybrid</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Consumption Range (Hidden by default) -->
+            <div class="consumption-range" id="consumptionRange">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Min Consumption</label>
+                        <input type="number" class="form-control"
+                               th:field="*{minConsumption}"
+                               step="0.1"
+                               placeholder="0.0">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Max Consumption</label>
+                        <input type="number" class="form-control"
+                               th:field="*{maxConsumption}"
+                               step="0.1"
+                               placeholder="0.0">
+                    </div>
+                </div>
+                <input type="hidden" th:field="*{checkConsumptionRange}" value="true">
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-search me-2"></i>Filter Cars
+                </button>
+                <a href="/cars/" class="btn btn-outline-secondary btn-lg ms-2">
+                    <i class="fas fa-refresh me-2"></i>Reset
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Filter Description -->
+    <div th:if="${criteria != null and criteria.active}" class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Applied Filters:</strong> <span th:text="${criteria.filterDescription}">Filter description</span>
+    </div>
+
+    <!-- Results Section -->
+    <div th:if="${cars}" class="results-section">
+        <div class="results-header">
+            <h3 class="results-title">
+                <i class="fas fa-list"></i>Results
+            </h3>
+            <div class="results-count" th:text="${totalCount + ' cars found'}">0 cars found</div>
+        </div>
+
+        <div class="cars-grid" th:if="${totalCount > 0}">
+            <div class="car-card" th:each="car : ${cars}">
+                <div class="car-image">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="car-info">
+                    <h5 class="car-name" th:text="${car.manufacturer + ' ' + car.model}">Car Name</h5>
+                    <p class="car-year" th:text="${car.productionYear}">Year</p>
+
+                    <div class="car-consumption">
+                            <span class="consumption-badge"
+                                  th:classappend="${car.consumption?.name() == 'ELECTRIC' ? 'badge-electric' :
+                                                 car.consumption?.name() == 'FUEL' ? 'badge-fuel' : 'badge-hybrid'}"
+                                  th:text="${car.formattedConsumption}">Consumption</span>
+                    </div>
+
+                    <div class="car-details">
+                        <div class="car-detail" th:if="${car.horsepower > 0}">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span th:text="${car.horsepower + ' HP'}">HP</span>
+                        </div>
+                        <div class="car-detail" th:if="${car.price > 0}">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span th:text="${car.formattedPrice}">Price</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${totalCount == 0}" class="no-results">
+            <i class="fas fa-search"></i>
+            <h4>No cars found</h4>
+            <p>Try adjusting your filter criteria</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Show/hide consumption range based on consumption type
+    document.getElementById('consumptionType').addEventListener('change', function() {
+        const consumptionRange = document.getElementById('consumptionRange');
+        const selectedValue = this.value;
+
+        if (selectedValue === 'FUEL' || selectedValue === 'HYBRID') {
+            consumptionRange.style.display = 'block';
+        } else {
+            consumptionRange.style.display = 'none';
+        }
+    });
+
+    // Initialize consumption range visibility on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const consumptionType = document.getElementById('consumptionType');
+        const consumptionRange = document.getElementById('consumptionRange');
+
+        if (consumptionType.value === 'FUEL' || consumptionType.value === 'HYBRID') {
+            consumptionRange.style.display = 'block';
+        }
+    });
+</script>
+</body>
+</html>
