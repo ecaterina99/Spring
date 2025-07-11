@@ -8,29 +8,25 @@
 </head>
 <body>
 <!-- Header -->
-<div class="header">
+<header class="header">
     <div class="container">
         <div class="header-content">
-            <h1 class="header-title">
-               Car Filter Application
-            </h1>
+            <h1 class="header-title">Car Filter Application</h1>
             <a href="/cars/" class="btn btn-secondary">Back to Search</a>
         </div>
     </div>
-</div>
+</header>
 
-<div class="container">
+<main class="container">
     <!-- Error Message -->
     <div th:if="${error}" class="alert alert-error">
         <span th:text="${error}">Error message</span>
-        <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">×</button>
+        <button type="button" class="alert-close" onclick="this.parentElement.remove()">×</button>
     </div>
 
     <!-- Filter Summary -->
-    <div th:if="${criteria != null and criteria.active}" class="filter-summary">
-        <h3 class="summary-title">
-          Applied Filters
-        </h3>
+    <section th:if="${criteria?.active}" class="filter-summary">
+        <h2 class="summary-title">Applied Filters</h2>
         <div class="summary-content">
             <p th:text="${criteria.filterDescription}">Filter description</p>
             <div class="filter-tags">
@@ -46,24 +42,21 @@
                     </span>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- Results Section -->
-    <div class="results-section">
+    <section class="results-section">
         <div class="results-header">
-            <h3 class="results-title">
-              Search Results
-            </h3>
+            <h2 class="results-title">Search Results</h2>
             <div class="results-count" th:text="${totalCount + ' cars found'}">0 cars found</div>
         </div>
 
         <!-- Cars Grid -->
         <div class="cars-grid" th:if="${totalCount > 0}">
-            <div class="car-card" th:each="car : ${cars}">
-                <div class="car-image">
-                </div>
+            <article class="car-card" th:each="car : ${cars}">
+                <div class="car-image" th:attr="aria-label='Car image for ' + ${car.manufacturer} + ' ' + ${car.model}"></div>
                 <div class="car-info">
-                    <h5 class="car-name" th:text="${car.manufacturer + ' ' + car.model}">Car Name</h5>
+                    <h3 class="car-name" th:text="${car.manufacturer + ' ' + car.model}">Car Name</h3>
                     <p class="car-year" th:text="'Year: ' + ${car.productionYear}">Year</p>
 
                     <div class="car-consumption">
@@ -89,85 +82,177 @@
                         <small class="text-muted">ID: <span th:text="${car.id}">Car ID</span></small>
                     </div>
                 </div>
-            </div>
+            </article>
         </div>
 
         <!-- No Results -->
         <div th:if="${totalCount == 0}" class="no-results">
-            <h4>No cars found</h4>
+            <h3>No cars found</h3>
             <p>No cars match your current filter criteria.</p>
             <div class="no-results-actions">
-                <a href="/cars/" class="btn btn-primary">
-                    New Search
-                </a>
+                <a href="/cars/" class="btn btn-primary">New Search</a>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- Export Options -->
-    <div th:if="${totalCount > 0}" class="export-section">
-        <h4 class="export-title">
-           Export Results
-        </h4>
+    <section th:if="${totalCount > 0}" class="export-section">
+        <h3 class="export-title">Export Results</h3>
         <div class="export-buttons">
-            <button class="btn btn-outline" onclick="exportToCSV()">
-             Export to CSV
+            <button class="btn btn-outline" onclick="exportController.exportToCSV()" aria-label="Export results to CSV">
+                Export to CSV
             </button>
-            <button class="btn btn-outline" onclick="printResults()">
+            <button class="btn btn-outline" onclick="exportController.printResults()" aria-label="Print results">
                 Print Results
             </button>
         </div>
-    </div>
-
-    <!-- Back to Search -->
-    <div class="back-to-search">
-        <a href="/cars/" class="btn btn-primary">
-          Back to Search
-        </a>
-    </div>
-</div>
+    </section>
+</main>
 
 <script>
-    // Export functionality
-    function exportToCSV() {
-        const cars = [];
-
-        if (cars.length === 0) {
-            alert('No data to export');
-            return;
+    class ExportController {
+        constructor() {
+            this.cars = this.extractCarsData();
         }
 
-        let csvContent = "ID,Manufacturer,Model,Year,Horsepower,Price,Consumption Type,Consumption Value\n";
+        extractCarsData() {
+            const carCards = document.querySelectorAll('.car-card');
+            const cars = [];
 
-        cars.forEach(car => {
-            const row = [
-                car.id || '',
-                car.manufacturer || '',
-                car.model || '',
-                car.productionYear || '',
-                car.horsepower || '',
-                car.price || '',
-                car.consumption || '',
-                car.consumptionValue || ''
-            ].map(field => `"${field}"`).join(',');
-            csvContent += row + '\n';
-        });
+            carCards.forEach(card => {
+                const car = {
+                    id: this.extractText(card, '.car-id span'),
+                    manufacturer: this.extractManufacturer(card),
+                    model: this.extractModel(card),
+                    productionYear: this.extractYear(card),
+                    horsepower: this.extractHorsepower(card),
+                    price: this.extractPrice(card),
+                    consumption: this.extractText(card, '.consumption-badge'),
+                    consumptionValue: this.extractConsumptionValue(card)
+                };
+                cars.push(car);
+            });
 
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', 'car_search_results.csv');
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+            return cars;
+        }
+
+        extractText(element, selector) {
+            const target = element.querySelector(selector);
+            return target ? target.textContent.trim() : '';
+        }
+
+        extractManufacturer(card) {
+            const name = this.extractText(card, '.car-name');
+            return name.split(' ')[0] || '';
+        }
+
+        extractModel(card) {
+            const name = this.extractText(card, '.car-name');
+            return name.split(' ').slice(1).join(' ') || '';
+        }
+
+        extractYear(card) {
+            const yearText = this.extractText(card, '.car-year');
+            return yearText.replace('Year: ', '');
+        }
+
+        extractHorsepower(card) {
+            const details = card.querySelectorAll('.car-detail');
+            for (const detail of details) {
+                const text = detail.textContent.trim();
+                if (text.includes('HP')) {
+                    return text.replace(' HP', '');
+                }
+            }
+            return '';
+        }
+
+        extractPrice(card) {
+            const details = card.querySelectorAll('.car-detail');
+            for (const detail of details) {
+                const text = detail.textContent.trim();
+                if (text.includes('$')) {
+                    return text.replace('$', '');
+                }
+            }
+            return '';
+        }
+
+        extractConsumptionValue(card) {
+            const details = card.querySelectorAll('.car-detail');
+            for (const detail of details) {
+                const text = detail.textContent.trim();
+                if (text.includes('L/100km')) {
+                    return text.replace(' L/100km', '');
+                }
+            }
+            return '';
+        }
+
+        exportToCSV() {
+            if (this.cars.length === 0) {
+                alert('No data to export');
+                return;
+            }
+
+            const headers = ['ID', 'Manufacturer', 'Model', 'Year', 'Horsepower', 'Price', 'Consumption Type', 'Consumption Value'];
+            let csvContent = headers.join(',') + '\n';
+
+            this.cars.forEach(car => {
+                const row = [
+                    car.id,
+                    car.manufacturer,
+                    car.model,
+                    car.productionYear,
+                    car.horsepower,
+                    car.price,
+                    car.consumption,
+                    car.consumptionValue
+                ].map(field => `"${field}"`).join(',');
+                csvContent += row + '\n';
+            });
+
+            this.downloadFile(csvContent, 'car_search_results.csv', 'text/csv');
+        }
+
+        downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+
+            link.href = url;
+            link.download = filename;
+            link.style.display = 'none';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            URL.revokeObjectURL(url);
+        }
+
+        printResults() {
+            const printStyle = document.createElement('style');
+            printStyle.textContent = `
+                    @media print {
+                        .header, .export-section { display: none; }
+                        .car-card { break-inside: avoid; margin-bottom: 1rem; }
+                        .cars-grid { grid-template-columns: 1fr; }
+                    }
+                `;
+            document.head.appendChild(printStyle);
+
+            window.print();
+
+            setTimeout(() => {
+                document.head.removeChild(printStyle);
+            }, 1000);
+        }
     }
 
-    function printResults() {
-        window.print();
-    }
-
+    document.addEventListener('DOMContentLoaded', () => {
+        window.exportController = new ExportController();
+    });
 </script>
 </body>
 </html>

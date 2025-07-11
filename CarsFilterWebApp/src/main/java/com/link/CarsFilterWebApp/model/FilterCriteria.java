@@ -1,18 +1,20 @@
 package com.link.CarsFilterWebApp.model;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+
 public class FilterCriteria {
     private String manufacturer;
-
+    @Min(value = 1900, message = "Year must be after 1900")
     private int minYear;
+    @Max(value = 2030, message = "Year must be before 2025")
     private int maxYear;
 
     private Car.Consumption consumption;
 
-    private double  minConsumption;
-    private double  maxConsumption;
+    private double minConsumption;
+    private double maxConsumption;
     private boolean checkConsumptionRange;
-
-    private String filterType;
 
     public FilterCriteria() {
         this.manufacturer = null;
@@ -22,9 +24,52 @@ public class FilterCriteria {
         this.minConsumption = 0.0;
         this.maxConsumption = 0.0;
         this.checkConsumptionRange = false;
-        this.filterType = "all";
     }
 
+    // Helper methods
+    public boolean hasManufacturerFilter() {
+        return manufacturer != null && !manufacturer.trim().isEmpty();
+    }
+
+    public boolean hasYearFilter() {
+        return minYear > 0 || maxYear > 0;
+    }
+
+    public boolean hasConsumptionFilter() {
+        return consumption != null;
+    }
+
+    public boolean isActive() {
+        return hasManufacturerFilter() || hasYearFilter() || hasConsumptionFilter();
+    }
+
+    public String getFilterDescription() {
+        if (!isActive()) return "No filters applied";
+        StringBuilder filterDescription = new StringBuilder();
+        if (hasManufacturerFilter()) {
+            filterDescription.append("Manufacturer: ").append(manufacturer).append(" ");
+        }
+        if (hasYearFilter()) {
+            filterDescription.append("Year: ");
+            if (minYear > 0 && maxYear > 0) {
+                filterDescription.append(minYear).append("-").append(maxYear);
+            } else if (minYear > 0) {
+                filterDescription.append("from ").append(minYear);
+            } else if (maxYear > 0) {
+                filterDescription.append("up to ").append(maxYear);
+            }
+            filterDescription.append(" ");
+        }
+        if (hasConsumptionFilter()) {
+            filterDescription.append("Consumption: ").append(consumption);
+            if (checkConsumptionRange) {
+                filterDescription.append(" (").append(minConsumption).append("-").append(maxConsumption).append(")");
+            }
+        }
+        return filterDescription.toString().trim();
+    }
+
+    //getters
     public String getManufacturer() {
         return manufacturer;
     }
@@ -53,6 +98,7 @@ public class FilterCriteria {
         return checkConsumptionRange;
     }
 
+    //setters
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
@@ -80,54 +126,4 @@ public class FilterCriteria {
     public void setCheckConsumptionRange(boolean checkConsumptionRange) {
         this.checkConsumptionRange = checkConsumptionRange;
     }
-
-// Helper methods
-    public boolean hasManufacturerFilter() {
-        return manufacturer != null && !manufacturer.trim().isEmpty();
-    }
-
-    public boolean hasYearFilter() {
-        return minYear > 0 || maxYear > 0;
-    }
-
-    public boolean hasConsumptionFilter() {
-        return consumption != null;
-    }
-
-
-    public boolean isActive() {
-        return hasManufacturerFilter() || hasYearFilter() || hasConsumptionFilter();
-    }
-
-    public String getFilterDescription() {
-        if (!isActive()) return "No filters applied";
-
-        StringBuilder desc = new StringBuilder();
-
-        if (hasManufacturerFilter()) {
-            desc.append("Manufacturer: ").append(manufacturer).append(" ");
-        }
-
-        if (hasYearFilter()) {
-            desc.append("Year: ");
-            if (minYear > 0 && maxYear > 0) {
-                desc.append(minYear).append("-").append(maxYear);
-            } else if (minYear > 0) {
-                desc.append("from ").append(minYear);
-            } else if (maxYear > 0) {
-                desc.append("up to ").append(maxYear);
-            }
-            desc.append(" ");
-        }
-
-        if (hasConsumptionFilter()) {
-            desc.append("Consumption: ").append(consumption);
-            if (checkConsumptionRange) {
-                desc.append(" (").append(minConsumption).append("-").append(maxConsumption).append(")");
-            }
-        }
-
-        return desc.toString().trim();
-    }
-
 }

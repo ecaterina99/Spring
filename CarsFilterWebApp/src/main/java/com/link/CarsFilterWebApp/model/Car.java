@@ -1,7 +1,5 @@
 package com.link.CarsFilterWebApp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class Car {
     private String id;
     private String manufacturer;
@@ -96,5 +94,4 @@ public class Car {
     public void setConsumption(Consumption consumption) {
         this.consumption = consumption;
     }
-
 }

@@ -18,13 +18,10 @@ public class CarXMLParser {
     public List<Car> parseXMLFile() throws IOException, XMLStreamException {
         List<Car> cars = new ArrayList<>();
         XMLInputFactory xmlInputFactory = XMLInputFactory.newFactory();
-
         ClassPathResource resource = new ClassPathResource(XML_FILE);
 
-
         try (InputStream inputStream = resource.getInputStream();
-             Reader reader =  new InputStreamReader(inputStream)) {
-
+             Reader reader = new InputStreamReader(inputStream)) {
             XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(reader);
 
             Car currentCar = new Car();
@@ -64,9 +61,9 @@ public class CarXMLParser {
                     case XMLStreamReader.END_ELEMENT:
                         String endElementName = xmlStreamReader.getLocalName();
                         if ("car".equals(endElementName)) {
-                            cars.add(new Car());
-                            Car newCar = cars.get(cars.size() - 1);
-                            copyCarData(currentCar, newCar);
+                            Car carToAdd = new Car();
+                            copyCarData(currentCar, carToAdd);
+                            cars.add(carToAdd);
                         }
                         currentElement = null;
                         break;
