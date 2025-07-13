@@ -1,4 +1,3 @@
-/* Reset and base styles */
 * {
     margin: 0;
     padding: 0;
@@ -33,17 +32,10 @@ body {
     gap: 2rem;
 }
 
-.hero-text {
-    flex: 1;
-}
-
 .hero-title {
     font-size: 3rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
 }
 
 .hero-subtitle {
@@ -51,9 +43,6 @@ body {
     opacity: 0.9;
 }
 
-.hero-stats {
-    flex: 0 0 auto;
-}
 
 .stats-card {
     background: rgba(255, 255, 255, 0.1);
@@ -67,35 +56,11 @@ body {
 .stats-number {
     font-size: 3rem;
     font-weight: bold;
-    color: white;
     margin-bottom: 0.5rem;
 }
 
 .stats-label {
-    font-size: 1rem;
     opacity: 0.8;
-}
-
-/* Header (for result page) */
-.header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 2rem 0;
-    margin-bottom: 2rem;
-}
-
-.header-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.header-title {
-    font-size: 2rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
 }
 
 /* Alerts */
@@ -107,18 +72,9 @@ body {
     align-items: center;
     gap: 0.5rem;
     position: relative;
-}
-
-.alert-error {
     background: #f8d7da;
     border: 1px solid #f5c6cb;
     color: #721c24;
-}
-
-.alert-info {
-    background: #d1ecf1;
-    border: 1px solid #bee5eb;
-    color: #0c5460;
 }
 
 .alert-close {
@@ -133,6 +89,7 @@ body {
     color: inherit;
 }
 
+
 /* Filter Card */
 .filter-card {
     background: white;
@@ -146,9 +103,6 @@ body {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
     color: #333;
 }
 
@@ -231,9 +185,6 @@ body {
     text-decoration: none;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
 .btn-primary {
@@ -256,57 +207,6 @@ body {
     transform: translateY(-2px);
 }
 
-.btn-outline {
-    background: transparent;
-    color: #667eea;
-    border: 2px solid #667eea;
-}
-
-.btn-outline:hover {
-    background: #667eea;
-    color: white;
-}
-
-/* Filter Summary */
-.filter-summary {
-    background: white;
-    border-radius: 15px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.summary-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.summary-content p {
-    margin-bottom: 1rem;
-    color: #666;
-}
-
-.filter-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.filter-tag {
-    background: #e9ecef;
-    color: #495057;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.875rem;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-}
-
 /* Results Section */
 .results-section {
     margin-bottom: 2rem;
@@ -322,9 +222,6 @@ body {
 .results-title {
     font-size: 1.5rem;
     font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
 .results-count {
@@ -357,18 +254,10 @@ body {
     box-shadow: 0 15px 30px rgba(0,0,0,0.15);
 }
 
-.car-image {
-    flex: 0 0 80px;
+img{
     height: 80px;
-    background: linear-gradient(45deg, #667eea, #764ba2);
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5rem;
 }
-
 .car-info {
     flex: 1;
 }
@@ -426,27 +315,11 @@ body {
     font-size: 0.9rem;
 }
 
-.car-id {
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid #e9ecef;
-}
-
-.text-muted {
-    color: #6c757d;
-}
-
 /* No Results */
 .no-results {
     text-align: center;
     padding: 4rem 2rem;
     color: #666;
-}
-
-.no-results i {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    color: #ccc;
 }
 
 .no-results h4 {
@@ -459,15 +332,4 @@ body {
     margin-bottom: 1.5rem;
 }
 
-.no-results-actions {
-    margin-top: 2rem;
-}
 
-/* Export Section */
-.export-section {
-    background: white;
-    border-radius: 15px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0);
-}

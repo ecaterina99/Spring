@@ -126,7 +126,9 @@
 
         <div class="cars-grid" th:if="${totalCount > 0}">
             <div class="car-card" th:each="car : ${cars}">
-                <div class="car-image"></div>
+                <div class="car-image">
+                    <img th:src="@{/car.jpg}" alt="car">
+                </div>
                 <div class="car-info">
                     <h5 class="car-name" th:text="${car.manufacturer + ' ' + car.model}">Car Name</h5>
                     <p class="car-year" th:text="${car.productionYear}">Year</p>
@@ -143,7 +145,7 @@
                             <span th:text="${car.horsepower + ' HP'}">HP</span>
                         </div>
                         <div class="car-detail" th:if="${car.price > 0}">
-                            <span th:text="${car.price}">Price</span>
+                            <span th:text="${'Price: '+car.price}">Price</span>
                         </div>
                     </div>
                 </div>

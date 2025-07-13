@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,7 +66,7 @@ public class CarService {
     public List<String> getAllManufacturers() throws Exception {
         return getAllCars().stream()
                 .map(Car::getManufacturer)   // extract manufacturer from each car
-                .filter(manufacturer -> manufacturer != null)  // exclude null manufacturers
+                .filter(Objects::nonNull)  // exclude null manufacturers
                 .distinct() // remove duplicates
                 .sorted() // sort alphabetically
                 .collect(Collectors.toList()); // collect the result into a list
@@ -79,7 +80,7 @@ public class CarService {
                 .mapToInt(Car::getProductionYear)// extract year from each car
                 .filter(year -> year > 0)  // exclude negative numbers
                 .min()
-                .orElse(1900); //min year
+                .orElse(2000); //min year
 
         int maxYear = cars.stream()
                 .mapToInt(Car::getProductionYear)// extract year from each car

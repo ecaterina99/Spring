@@ -1,13 +1,13 @@
 package com.link.CarsFilterWebApp.model;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class FilterCriteria {
     private String manufacturer;
-    @Min(value = 1900, message = "Year must be after 1900")
     private int minYear;
-    @Max(value = 2030, message = "Year must be before 2025")
     private int maxYear;
 
     private Car.Consumption consumption;
@@ -32,7 +32,7 @@ public class FilterCriteria {
     }
 
     public boolean hasYearFilter() {
-        return minYear > 0 || maxYear > 0;
+        return true;
     }
 
     public boolean hasConsumptionFilter() {
@@ -51,12 +51,10 @@ public class FilterCriteria {
         }
         if (hasYearFilter()) {
             filterDescription.append("Year: ");
-            if (minYear > 0 && maxYear > 0) {
+            if (maxYear > 0) {
                 filterDescription.append(minYear).append("-").append(maxYear);
-            } else if (minYear > 0) {
+            } else {
                 filterDescription.append("from ").append(minYear);
-            } else if (maxYear > 0) {
-                filterDescription.append("up to ").append(maxYear);
             }
             filterDescription.append(" ");
         }
@@ -67,63 +65,5 @@ public class FilterCriteria {
             }
         }
         return filterDescription.toString().trim();
-    }
-
-    //getters
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public int getMinYear() {
-        return minYear;
-    }
-
-    public int getMaxYear() {
-        return maxYear;
-    }
-
-    public Car.Consumption getConsumption() {
-        return consumption;
-    }
-
-    public double getMinConsumption() {
-        return minConsumption;
-    }
-
-    public double getMaxConsumption() {
-        return maxConsumption;
-    }
-
-    public boolean isCheckConsumptionRange() {
-        return checkConsumptionRange;
-    }
-
-    //setters
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public void setMinYear(int minYear) {
-        this.minYear = minYear;
-    }
-
-    public void setMaxYear(int maxYear) {
-        this.maxYear = maxYear;
-    }
-
-    public void setConsumption(Car.Consumption consumption) {
-        this.consumption = consumption;
-    }
-
-    public void setMinConsumption(double minConsumption) {
-        this.minConsumption = minConsumption;
-    }
-
-    public void setMaxConsumption(double maxConsumption) {
-        this.maxConsumption = maxConsumption;
-    }
-
-    public void setCheckConsumptionRange(boolean checkConsumptionRange) {
-        this.checkConsumptionRange = checkConsumptionRange;
     }
 }
