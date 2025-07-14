@@ -118,6 +118,25 @@ body {
     flex-direction: column;
 }
 
+.consumption-inputs-centered {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputs-inline {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.inputs-inline input {
+    width: 200px;
+}
+
+.consumption-separator {
+    font-weight: 500;
+}
+
 .form-label {
     font-weight: 600;
     margin-bottom: 0.5rem;
@@ -152,9 +171,12 @@ body {
     color: #666;
     font-weight: 500;
 }
+.consumption-separator {
+    color: #666;
+    font-weight: 500;
+}
 
 .consumption-range {
-    display: none;
     margin-top: 1.5rem;
     padding: 1.5rem;
     background: #f8f9fa;
@@ -167,6 +189,7 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
 }
+
 
 .form-actions {
     display: flex;
@@ -301,11 +324,6 @@ img{
     color: white;
 }
 
-.car-details {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
 
 .car-detail {
     display: flex;

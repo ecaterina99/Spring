@@ -13,6 +13,7 @@ import java.util.List;
 
 @Component
 public class CarXMLParser {
+
     private static final String XML_FILE = "cars.xml";
 
     public List<Car> parseXMLFile() throws IOException, XMLStreamException {

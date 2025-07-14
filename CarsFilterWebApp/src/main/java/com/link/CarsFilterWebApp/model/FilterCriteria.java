@@ -12,8 +12,8 @@ public class FilterCriteria {
 
     private Car.Consumption consumption;
 
-    private double minConsumption;
-    private double maxConsumption;
+    private Double minConsumption;
+    private Double maxConsumption;
     private boolean checkConsumptionRange;
 
     public FilterCriteria() {
@@ -21,12 +21,12 @@ public class FilterCriteria {
         this.minYear = 0;
         this.maxYear = 0;
         this.consumption = null;
-        this.minConsumption = 0.0;
-        this.maxConsumption = 0.0;
+        this.minConsumption = null;
+        this.maxConsumption = null;
         this.checkConsumptionRange = false;
     }
 
-    // Helper methods
+    // Helpers
     public boolean hasManufacturerFilter() {
         return manufacturer != null && !manufacturer.trim().isEmpty();
     }
@@ -43,15 +43,24 @@ public class FilterCriteria {
         return hasManufacturerFilter() || hasYearFilter() || hasConsumptionFilter();
     }
 
+    public double getMinConsumptionValue() {
+        return minConsumption != null ? minConsumption : 0.0;
+    }
+
+    public double getMaxConsumptionValue() {
+        return maxConsumption != null ? maxConsumption : 0.0;
+    }
+
     public String getFilterDescription() {
         if (!isActive()) return "No filters applied";
         StringBuilder filterDescription = new StringBuilder();
         if (hasManufacturerFilter()) {
             filterDescription.append("Manufacturer: ").append(manufacturer).append(" ");
         }
+
         if (hasYearFilter()) {
             filterDescription.append("Year: ");
-            if (maxYear > 0) {
+            if (minYear > 0 && maxYear > 0) {
                 filterDescription.append(minYear).append("-").append(maxYear);
             } else {
                 filterDescription.append("from ").append(minYear);
@@ -60,8 +69,19 @@ public class FilterCriteria {
         }
         if (hasConsumptionFilter()) {
             filterDescription.append("Consumption: ").append(consumption);
-            if (checkConsumptionRange) {
-                filterDescription.append(" (").append(minConsumption).append("-").append(maxConsumption).append(")");
+
+            // show consumption range for FUEL и HYBRID
+            if (checkConsumptionRange &&
+                    (consumption == Car.Consumption.FUEL || consumption == Car.Consumption.HYBRID)) {
+                filterDescription.append(" (");
+                if (getMinConsumptionValue() > 0 && getMaxConsumptionValue() > 0) {
+                    filterDescription.append(getMinConsumptionValue()).append("-").append(getMaxConsumptionValue());
+                } else if (getMinConsumptionValue() > 0) {
+                    filterDescription.append("from ").append(getMinConsumptionValue());
+                } else if (getMaxConsumptionValue() > 0) {
+                    filterDescription.append("to ").append(getMaxConsumptionValue());
+                }
+                filterDescription.append(")");
             }
         }
         return filterDescription.toString().trim();

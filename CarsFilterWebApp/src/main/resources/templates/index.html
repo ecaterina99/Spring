@@ -76,7 +76,6 @@
                 <div class="form-group">
                     <label class="form-label" for="consumptionType">Consumption Type</label>
                     <select class="form-select" th:field="*{consumption}" id="consumptionType">
-                        <option value="">All Types</option>
                         <option value="ELECTRIC">Electric</option>
                         <option value="FUEL">Fuel</option>
                         <option value="HYBRID">Hybrid</option>
@@ -85,21 +84,26 @@
             </div>
 
             <!-- Consumption Range (Hidden by default) -->
-            <div class="consumption-range" id="consumptionRange">
-                <div class="consumption-inputs">
-                    <div class="form-group">
-                        <label class="form-label">Min Consumption</label>
+            <div class="consumption-range" id="consumptionRange" style="display: none;">
+                <div class="consumption-inputs-centered">
+                    <label class="form-label">Consumption Range</label>
+
+                    <div class="inputs-inline">
                         <input type="number" class="form-control"
                                th:field="*{minConsumption}"
-                               step="0.1"
-                               placeholder="0.0">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Max Consumption</label>
+                               th:min="${minConsumption}"
+                               th:max="${maxConsumption}"
+                               placeholder="From"
+                               aria-label="Min Consumption">
+
+                        <span class="consumption-separator">to</span>
+
                         <input type="number" class="form-control"
                                th:field="*{maxConsumption}"
-                               step="0.1"
-                               placeholder="0.0">
+                               th:min="${minConsumption}"
+                               th:max="${maxConsumption}"
+                               placeholder="To"
+                               aria-label="Max Consumption">
                     </div>
                 </div>
                 <input type="hidden" th:field="*{checkConsumptionRange}" value="true">
@@ -113,8 +117,8 @@
     </div>
 
     <!-- Filter Description -->
-    <div th:if="${criteria != null and criteria != null and criteria.active}">
-        <strong>Applied Filters:</strong> <span th:text="${criteria.filterDescription}">Filter description</span>
+    <div th:if="${filterCriteria != null and filterCriteria != null and filterCriteria.active}">
+        <strong>Applied Filters:</strong> <span th:text="${filterCriteria.getFilterDescription}">Filter description</span>
     </div>
 
     <!-- Results Section -->
@@ -147,6 +151,9 @@
                         <div class="car-detail" th:if="${car.price > 0}">
                             <span th:text="${'Price: '+car.price}">Price</span>
                         </div>
+                        <div class="car-detail" th:if="${car.consumption?.name()=='FUEL'|| car.consumption?.name()=='HYBRID'}">
+                            <span th:text="${'Consumption: '+car.consumptionValue}">Consumption Value</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -163,12 +170,21 @@
     // Show/hide consumption range based on consumption type
     document.getElementById('consumptionType').addEventListener('change', function () {
         const consumptionRange = document.getElementById('consumptionRange');
+        const checkConsumptionRange = document.querySelector('input[name="checkConsumptionRange"]');
+        const minConsumptionInput = document.querySelector('input[name="minConsumption"]');
+        const maxConsumptionInput = document.querySelector('input[name="maxConsumption"]');
         const selectedValue = this.value;
 
         if (selectedValue === 'FUEL' || selectedValue === 'HYBRID') {
             consumptionRange.style.display = 'block';
+            checkConsumptionRange.value = 'true';
         } else {
             consumptionRange.style.display = 'none';
+            checkConsumptionRange.value = 'false';
+
+            // Clear consumption range values when not applicable
+            minConsumptionInput.value = '';
+            maxConsumptionInput.value = '';
         }
     });
 
@@ -176,9 +192,15 @@
     document.addEventListener('DOMContentLoaded', function () {
         const consumptionType = document.getElementById('consumptionType');
         const consumptionRange = document.getElementById('consumptionRange');
+        const checkConsumptionRange = document.querySelector('input[name="checkConsumptionRange"]');
+        const selectedValue = consumptionType.value;
 
-        if (consumptionType.value === 'FUEL' || consumptionType.value === 'HYBRID') {
+        if (selectedValue === 'FUEL' || selectedValue === 'HYBRID') {
             consumptionRange.style.display = 'block';
+            checkConsumptionRange.value = 'true';
+        } else {
+            consumptionRange.style.display = 'none';
+            checkConsumptionRange.value = 'false';
         }
     });
 </script>
