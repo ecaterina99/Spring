@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Employee #${employee.id}</title>
+    <th:block th:insert="fragments/head :: styles"></th:block>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<div class="container">
+    <div th:insert="fragments/header :: menu"></div>
+    <h1>Edit employee [[${employee.fullName}]] #[[${employee.id}]]</h1>
+    <p><i>Hint:</i> Edit employee details below.</p>
+
+    <form action=""method="post">
+        <p>
+            <label for="edit-name">Full name:</label>
+            <input name="fullName" id="edit-name" class="form-control" type="text"
+                   th:value="${employee.fullName}" readonly/>
+        </p>
+        <p>
+            <label for="edit-birth">Birth Date:</label>
+            <input name="birthDate" id="edit-birth" class="form-control" type="date"
+                   th:value="${employee.birthDate}" readonly/>
+        </p>
+        <div>
+            <label for="edit-salary">Salary RON:</label>
+            <p class="input-group">
+                <span class="input-group-text">RON</span>
+
+                <input name="salary" id="edit-salary" class="form-control" type="number" min="4000" max="32000"
+                       th:value="${employee.salary}"/>
+            </p>
+        </div>
+        <div>
+            <label for="edit-salary-eur">Salary EUR:</label>
+            <p class="input-group">
+                <span class="input-group-text">&euro;</span>
+                <input name="salaryInEur" id="edit-salary-eur" class="form-control" type="number" min="800" max="8000"
+                       th:value="${employee.salaryInEur}"/>
+            </p>
+        </div>
+        <p>
+            <label for="edit-age">Age:</label>
+            <input name="age" id="edit-age" class="form-control" type="text"
+                   th:value="${employee.age}" readonly/>
+        </p>
+
+        <button name="update" value="clicked" class="btn btn-primary btn-lg" >Update data</button>
+
+    </form>
+
+    <ul>
+        <li>Full Name:[[${employee.fullName}]]</li>
+        <li>Birth Date:[[${employee.birthDate}]]</li>
+        <li>Salary:[[${employee.salary}]]</li>
+        <li>Salary EUR:[[${employee.salaryInEur}]]</li>
+        <li>Age:[[${employee.age}]]</li>
+    </ul>
+
+</div>
+</body>
+</html>

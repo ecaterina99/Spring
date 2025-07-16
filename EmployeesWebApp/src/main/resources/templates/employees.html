@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employees</title>
+    <th:block th:insert="fragments/head :: styles"></th:block>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<div class="container">
+    <div th:insert="fragments/header :: menu"></div>
+    <a href="/employee/">Employees</a> | <a href="/job/">Jobs</a>
+    <h1>Employees</h1>
+    <p>There are [[${allEmployees.size()}]] employees! </p>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Full Name</th>
+            <th>Age</th>
+            <th>Salary(EUR)</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${allEmployees}" th:class='${employee.age<30?"under-30":"over-30"}'>
+            <td>[[${employee.id}]]</td>
+            <td th:text="${employee.fullName}"/>
+            <td th:text="${employee.age}"/>
+            <td>[[${employee.salaryInEur}]] EUR</td>
+            <td>
+                <a th:href='${"/employee/"+employee.id}'>View</a>
+                <a th:href='${"/employee/edit/"+employee.id}'>Edit</a>
+                <a th:href='${"/employee/del/"+employee.id}'>Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

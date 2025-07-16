@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <th:block th:insert="fragments/head :: styles"></th:block>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<div class="container">
+
+<div th:insert="fragments/header :: menu"></div>
+
+<p>HOOORAY! Continut disponibil doar utilizatorilor autentificati!</p>
+
+<a href="/employee/">Angajati</a>
+<a href="/auth/logout">Delogheaza-te,
+    [[${name}]].</a>
+</div>
+</body>
+</html>

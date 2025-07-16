@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Employee #${employee.id}</title>
+    <th:block th:insert="fragments/head :: styles"></th:block>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<div class="container">
+    <div th:insert="fragments/header :: menu"></div>
+    <h1>Employee [[${employee.fullName}]] #[[${employee.id}]]</h1>
+    <ul>
+        <li>Birth Date:[[${employee.birthDate}]]</li>
+        <li>Salary:[[${employee.salary}]]</li>
+        <li>Age:[[${employee.age}]]</li>
+    </ul>
+
+</div>
+</body>
+</html>
