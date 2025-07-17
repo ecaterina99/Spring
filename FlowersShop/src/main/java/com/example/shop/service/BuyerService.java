@@ -40,6 +40,7 @@ public class  BuyerService {
         buyer.setAddress(buyerDto.getAddress());
         buyer.setCity(buyerDto.getCity());
         buyer.setPostalCode(buyerDto.getPostalCode());
+        buyer.setPasswordHash(buyerDto.getPasswordHash());
 
         List<Sale> sales = buyerDto.getSales();
         if (sales != null && !sales.isEmpty()) {
@@ -66,12 +67,23 @@ public class  BuyerService {
         return buyerToDto(buyer);
     }
 
+    public BuyerDTO findByEmail(String email) {
+        Optional<Buyer> buyerOptional = buyersRepositoryCrud.findByEmail(email);
+        Buyer buyer = buyerOptional.orElse(null);
+        return buyerToDto(buyer);
+    }
+
 
     public BuyerDTO save(BuyerDTO buyerDTO) {
         Buyer buyer = buyerDtoToModel(buyerDTO);
         buyersRepositoryCrud.save(buyer);
         return buyerToDto(buyer);
     }
+
+    public Buyer register(Buyer buyer) {
+        return  buyersRepositoryCrud.save(buyer);
+    }
+
 
     public BuyerDTO update(BuyerDTO buyerDTO, int id) {
         Buyer buyer = buyerDtoToModel(buyerDTO);

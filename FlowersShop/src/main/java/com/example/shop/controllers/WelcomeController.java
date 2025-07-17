@@ -11,12 +11,11 @@ public class WelcomeController {
     @GetMapping("/welcome")
     public ModelAndView dashboard(
             @CookieValue(name = "authenticated", defaultValue = "no") String auth,
-            @CookieValue(name = "username", defaultValue = "guest") String username
-    ) {
+            @CookieValue(name = "email", defaultValue = "guest") String email) {
+
         if (!auth.equals("yes")) {
             return new ModelAndView("redirect:/auth/login");
         }
-
-        return new ModelAndView("welcome", "name", username);
+        return new ModelAndView("welcome", "email", email);
     }
 }

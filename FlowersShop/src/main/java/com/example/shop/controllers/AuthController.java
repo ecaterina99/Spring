@@ -1,5 +1,7 @@
 package com.example.shop.controllers;
 
+import com.example.shop.dto.BuyerDTO;
+import com.example.shop.model.Buyer;
 import com.example.shop.service.AuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,48 +23,73 @@ public class AuthController {
 
     @GetMapping("/login")
     public ModelAndView login() {
-        ModelAndView mav = new ModelAndView("login");
-        return mav;
+        return new ModelAndView("login");
+
+    }
+
+    @GetMapping("/register")
+    public ModelAndView register() {
+        return new ModelAndView("register");
     }
 
     @GetMapping("/logout")
     public ResponseEntity<String> logout() {
         HttpHeaders headers = new HttpHeaders();
-        List<String> authCookies = new ArrayList<>();
         String yesterdayStr = "Tue, 29 Oct 1970 16:56:32 GMT";
-        authCookies.add("authenticated=yes; Path=/; Expires=" + yesterdayStr);
-        authCookies.add("username=; Path=/; Expires=" + yesterdayStr);
-        headers.put("Set-Cookie", authCookies);
 
-        List<String> locations = new ArrayList<>();
-        locations.add("/auth/login");
-        headers.put("Location", locations);
+        headers.add("Set-Cookie", "authenticated=; Path=/; Expires=" + yesterdayStr);
+        headers.add("Set-Cookie", "email=; Path=/; Expires=" + yesterdayStr);
+        headers.add("Location", "/auth/login");
 
         return new ResponseEntity<>("", headers, HttpStatus.SEE_OTHER);
     }
 
     @PostMapping("/process-login")
     public ResponseEntity<String> processLogin(
-            @RequestParam String username,
+            @RequestParam String email,
             @RequestParam String password
     ) {
-        boolean valid = authService.validCredentials(username, password);
-        System.out.println("Received " + username + " and " + password + (valid ? " (valid)" : " (invalid)"));
+        boolean valid = authService.validCredentials(email, password);
+        System.out.println("Received " + email + " and " + password + (valid ? " (valid)" : " (invalid)"));
         HttpHeaders headers = new HttpHeaders();
-        List<String> locations = new ArrayList<>();
-        if (valid) {
-            List<String> cookies = new ArrayList<>();
-            cookies.add("authenticated=yes; Path=/");
-            cookies.add("username=" + username + "; Path=/");
-            headers.put("Set-Cookie", cookies);
-            // redirect la welcome.html
-            locations.add("/account/welcome");
-        } else {
-            // redirect la login
-            locations.add("/auth/login");
-        }
-        headers.put("Location", locations);
 
+        if (valid) {
+            headers.add("Set-Cookie", "authenticated=yes; Path=/");
+            headers.add("Set-Cookie", "email=" + email + "; Path=/");
+            headers.add("Location", "/account/welcome");
+        } else {
+            headers.add("Location", "/auth/login");
+        }
+        return new ResponseEntity<>("", headers, HttpStatus.SEE_OTHER);
+    }
+
+
+    @PostMapping("/process-register")
+    public ResponseEntity<String> processRegister(
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String phone,
+            @RequestParam String country,
+            @RequestParam String city,
+            @RequestParam String address,
+            @RequestParam String postalCode,
+            @RequestParam String email,
+            @RequestParam String password
+    ) {
+        HttpHeaders headers = new HttpHeaders();
+
+
+        try {
+            Buyer user = authService.registerUser(name,surname,phone,country,city,address,postalCode, email, password);
+            System.out.println("User registered successfully: " + user.getEmail());
+
+            headers.add("Set-Cookie", "authenticated=yes; Path=/");
+            headers.add("Set-Cookie", "email=" + email + "; Path=/");
+            headers.add("Location", "/account/welcome");
+        } catch (RuntimeException e) {
+            System.err.println("Registration error: " + e.getMessage());
+            headers.add("Location", "/auth/register?error=" + e.getMessage());
+        }
         return new ResponseEntity<>("", headers, HttpStatus.SEE_OTHER);
     }
 }

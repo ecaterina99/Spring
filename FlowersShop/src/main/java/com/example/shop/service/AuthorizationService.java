@@ -1,32 +1,64 @@
 package com.example.shop.service;
 
+import com.example.shop.dto.BuyerDTO;
+import com.example.shop.model.Buyer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class AuthorizationService {
 
-    Map<String, String> accounts = new HashMap<>();
+    @Autowired
+    private PasswordService passwordService;
+    @Autowired
+    private BuyerService buyerService;
 
-    AuthorizationService() {
-        generateDummyAccount();
+    public boolean validCredentials(String email, String password) {
+        BuyerDTO userDB = buyerService.findByEmail(email);
+
+        if (userDB == null || !userDB.getEmail().equals(email)) {
+            return false;
+        }
+        return passwordService.verifyPassword(password, userDB.getPasswordHash());
     }
 
-    void generateDummyAccount() {
-        accounts.put("ecaterina", "123123");
-        accounts.put("dorin", "pass");
-        accounts.put("maria", "qwerty");
-    }
 
-    String retrievePassword(String username) {
-        return accounts.get(username);
-    }
+    public Buyer registerUser(
+            String firstName,
+            String lastName,
+            String phone,
+            String country,
+            String city,
+            String address,
+            String postalCode,
+            String email,
+            String password
+    ) {
+        BuyerDTO existingUser = buyerService.findByEmail(email);
+        if (existingUser != null) {
+            throw new RuntimeException("User with this email already exists.");
+        }
 
-    public boolean validCredentials(String username, String password) {
-        String storedPassword = retrievePassword(username);
-        return storedPassword != null && storedPassword.equals(password);
+        if (!passwordService.isPasswordStrong(password)) {
+            throw new RuntimeException("Password must be at least 6 characters");
+        }
+
+        String hashedPassword = passwordService.hashPassword(password);
+
+        Buyer newUser = new Buyer();
+        newUser.setFirstName(firstName);
+        newUser.setLastName(lastName);
+        newUser.setPhone(phone);
+        newUser.setCountry(country);
+        newUser.setCity(city);
+        newUser.setAddress(address);
+        newUser.setPostalCode(postalCode);
+        newUser.setEmail(email);
+        newUser.setPasswordHash(hashedPassword);
+
+         return buyerService.register(newUser);
+
     }
 
 }

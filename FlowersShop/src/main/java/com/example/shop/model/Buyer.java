@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -40,6 +38,9 @@ public class Buyer {
 
     @Column(name = "postal_сode", nullable = false)
     private String postalCode;
+
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
 
     @OneToMany(mappedBy = "buyer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference

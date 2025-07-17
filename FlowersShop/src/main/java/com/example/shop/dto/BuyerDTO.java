@@ -17,4 +17,6 @@ public class BuyerDTO {
     private String email;
     private String postalCode;
     private List<Sale> sales;
+    private String passwordHash;
+
 }

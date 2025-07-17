@@ -54,6 +54,8 @@ public class DTOManager {
         buyerDTO.setAddress(buyer.getAddress());
         buyerDTO.setCity(buyer.getCity());
         buyerDTO.setPostalCode(buyer.getPostalCode());
+        buyerDTO.setPasswordHash(buyer.getPasswordHash());
+
         if(deep){
             List<Sale>sales = buyer.getSales();
             buyerDTO.setSales(sales);

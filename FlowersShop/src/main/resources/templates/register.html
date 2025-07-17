@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registration form</title>
+    <link rel="stylesheet" th:href="@{/css/style-login-registration.css}">
+</head>
+
+<body>
+<main>
+    <form th:action="@{/auth/process-register}" method="post">
+        <h1 class="title-form">Create an Account</h1>
+        <fieldset>
+            <legend>Personal info</legend>
+
+            <label for="firstName">First name:</label><br>
+            <input class="input-field" type="text" name="name" id="firstName"><br>
+
+            <label for="lastName">Last name:</label><br>
+            <input class="input-field" type="text" name="surname" id="lastName"><br>
+
+            <label for="phone">Phone:</label><br>
+            <input class="input-field" type="text" name="phone" id="phone"><br>
+
+            <label for="country">Country:</label><br>
+            <input class="input-field" type="text" name="country" id="country"><br>
+
+            <label for="city">City:</label><br>
+            <input class="input-field" type="text" name="city" id="city"><br>
+
+            <label for="address">Address:</label><br>
+            <input class="input-field" type="text" name="address" id="address"><br>
+
+            <label for="postalCode">Postal code:</label><br>
+            <input class="input-field" type="text" name="postalCode" id="postalCode"><br>
+
+            <label for="email">Email:</label><br>
+            <input class="input-field" type="email" name="email" id="email"><br>
+
+            <label for="password">Password (at least 6 characters):</label><br>
+            <input class="input-field" type="password" name="password" id="password"><br>
+
+        </fieldset>
+
+        <div class="button-container">
+            <button class="btn" type="submit">SUBMIT</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

@@ -41,5 +41,4 @@ public class SaleService {
         product.setQuantity(product.getQuantity() - quantity);
         productRepositoryCrud.save(product);
     }
-
 }
