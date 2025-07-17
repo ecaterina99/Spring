@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Authentication form</title>
+    <link rel="stylesheet" th:href="@{/css/style-login-registration.css}">
+    <style type="text/css">
+        form {
+            margin-top: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+        fieldset {
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <form th:action="@{/auth/process-login}" method="post">
+        <fieldset>
+            <legend>Log in</legend>
+
+            <label for="username">Username:</label><br>
+            <input class="input-field" type="text" name="username" id="name_user"><br>
+
+            <label for="password">Password:</label><br>
+            <input class="input-field" type="password" name="password" id="pass"><br><br>
+
+            <div class="button-container">
+                <button class="btn" type="submit">LOGIN</button>
+            </div>
+        </fieldset>
+    </form>
+
+    <div class="register">
+        <h2>Don't have an account yet?</h2>
+        <a th:href="@{/registration}">Sign up</a>
+    </div>
+</main>
+</body>
+</html>

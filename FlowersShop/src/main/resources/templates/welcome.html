@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/response.css}">
+</head>
+<body>
+<main>
+    <div class="welcome">
+        <h1>Welcome to Peony Bloom,</h1>
+        <h1>dear [[${name}]]!</h1>
+    </div>
+    <div class="button-container">
+        <a href="/product">
+            <button class="btn" type="btn">SHOP NOW</button>
+        </a>
+    </div>
+    <div class="button-container">
+            <a href="/auth/logout">
+            <button class="btn" type="btn">LOGOUT</button>
+            </a>
+    </div>
+</main>
+</body>
+</html>
+
+
