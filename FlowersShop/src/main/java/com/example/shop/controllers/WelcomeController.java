@@ -1,5 +1,6 @@
 package com.example.shop.controllers;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -9,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class WelcomeController {
 
     @GetMapping("/welcome")
-    public ModelAndView dashboard(
+    public ModelAndView welcome(
             @CookieValue(name = "authenticated", defaultValue = "no") String auth,
             @CookieValue(name = "email", defaultValue = "guest") String email) {
 
@@ -17,5 +18,6 @@ public class WelcomeController {
             return new ModelAndView("redirect:/auth/login");
         }
         return new ModelAndView("welcome", "email", email);
+
     }
 }

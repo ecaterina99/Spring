@@ -21,22 +21,22 @@
     <form th:action="@{/auth/process-login}" method="post">
         <fieldset>
             <legend>Log in</legend>
-            <label for="email">Email:</label><br>
-            <input class="input-field" type="email" name="email" id="email"><br>
-
-            <label for="password">Password:</label><br>
-            <input class="input-field" type="password" name="password" id="password"><br><br>
+            <label for="email">Email:</label>
+            <input class="input-field" type="email" name="email" id="email">
+            <label for="password">Password:</label>
+            <input class="input-field" type="password" name="password" id="password">
 
             <div class="button-container">
                 <button class="btn" type="submit">LOGIN</button>
             </div>
         </fieldset>
+        <div class="register">
+            <h3>Don't have an account yet?</h3>
+            <a th:href="@{/auth/register}">Sign up</a>
+        </div>
     </form>
 
-    <div class="register">
-        <h2>Don't have an account yet?</h2>
-        <a th:href="@{/auth/register}">Sign up</a>
-    </div>
+
 </main>
 </body>
 </html>
