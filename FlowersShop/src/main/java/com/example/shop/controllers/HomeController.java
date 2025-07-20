@@ -14,6 +14,7 @@ public class HomeController {
     @Autowired
     private AuthorizationService authorizationService;
     @Autowired
+
     private BuyerService buyerService;
     private void addUserDataToModel(ModelAndView modelAndView, String auth, String email) {
         modelAndView.addObject("email", email);
@@ -49,4 +50,25 @@ public class HomeController {
         addUserDataToModel(modelAndView, auth, email);
         return modelAndView;
     }
+    @GetMapping("/contact")
+    public ModelAndView contactPage(
+            @CookieValue(name = "authenticated", defaultValue = "no") String auth,
+            @CookieValue(name = "email", defaultValue = "guest") String email) {
+
+        ModelAndView modelAndView = new ModelAndView("contact");
+        addUserDataToModel(modelAndView, auth, email);
+        return modelAndView;
+    }
+
+    @GetMapping("/response")
+    public ModelAndView responsePage(
+            @CookieValue(name = "authenticated", defaultValue = "no") String auth,
+            @CookieValue(name = "email", defaultValue = "guest") String email) {
+        ModelAndView modelAndView = new ModelAndView("response");
+        addUserDataToModel(modelAndView, auth, email);
+        return modelAndView;
+    }
+    
+
+
 }

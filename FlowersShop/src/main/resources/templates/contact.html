@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact</title>
+    <link rel="stylesheet" th:href="@{/css/contactPage.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+<header>
+    <div class="top-bar">
+        <div class="delivery">Home delivery available in Romania | Free returns</div>
+        <div class="user">
+               <span th:if="${isAuthenticated == true and fullName != null}">
+                Welcome, <span th:text="${fullName}"></span>!
+                <a th:href="@{/auth/logout}" class="logout-link">Logout</a>
+            </span>
+            <span th:if="${isAuthenticated == false or isAuthenticated == null}">
+                <a th:href="@{/auth/login}">Log in</a> |
+                <a th:href="@{/auth/register}">Register</a>
+            </span>
+        </div>
+    </div>
+    <div class="logo">Peony Bloom</div>
+</header>
+
+<main>
+    <nav>
+        <div class="category">
+            <a th:href="@{/home}">About us</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/bouquets}">Bouquets</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/main/plants}">Plants</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/main/gifts}">Gifts</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/contact}">Contact</a>
+        </div>
+    </nav>
+
+    <div class="intro">
+        <h1 class="titlePage">LEAVE US A MESSAGE</h1>
+        <div class="intro-text">
+            Do you have questions about our products or want to place a personalized order?<br>
+            Don’t hesitate to contact us! Our passionate team is always available to offer advice and support.
+        </div>
+    </div>
+
+    <section class="contact">
+        <div class="mailForm">
+
+            <div class="info">
+                <h2>Monday - Sunday:<br>
+                    08:00 AM – 10:00 PM<br>
+                    office@peonybloom.ro</h2>
+            </div>
+
+            <form action="response.html" method="get">
+                <fieldset>
+                    <label for="name">Name:</label><br>
+                    <input class="input-field" type="text" name="name" id="name"><br>
+
+                    <label for="email">Email:</label><br>
+                    <input class="input-field" type="text" name="email" id="email">
+
+                    <label for="phone">Phone:</label><br>
+                    <input class="input-field" type="text" name="phone" id="phone">
+
+                    <label for="message">Message:</label><br>
+                    <textarea class="input-field" name="message" id="message" rows="4"></textarea>
+
+                    <div class="button-container">
+                        <a th:href="@{/response}">SEND</a>
+                    </div>
+                </fieldset>
+            </form>
+
+        </div>
+
+        <div class="signboard">
+            <img th:src="@{/innerFolder/main/0.jpg}" alt="signboard">
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    Copyright © PEONY GROUP
+</footer>
+
+</body>
+</html>
