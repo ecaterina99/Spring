@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Flower Shop</title>
+    <link rel="stylesheet" th:href="@{/css/mainPage.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+<header>
+    <div class="top-bar">
+        <div class="delivery">Home delivery available in Romania | Free returns</div>
+        <div class="user">
+               <span th:if="${isAuthenticated == true and fullName != null}">
+                Welcome, <span th:text="${fullName}"></span>!
+                <a th:href="@{/auth/logout}" class="logout-link">Logout</a>
+            </span>
+            <span th:if="${isAuthenticated == false or isAuthenticated == null}">
+                <a th:href="@{/auth/login}">Log in</a> |
+                <a th:href="@{/auth/register}">Register</a>
+            </span>
+        </div>
+    </div>
+    <div class="logo">Peony Bloom</div>
+</header>
+
+<main>
+    <nav>
+        <div class="category">
+            <a th:href="@{/home}">About us</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/bouquets}">Bouquets</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/main/plants}">Plants</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/main/gifts}">Gifts</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/main/contact}">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="hero-left">
+            <div class="hero-box">
+                <img th:src="@{/innerFolder/main/00.png}" alt="Bouquets">
+                <a th:href="@{/bouquets}">
+                    <button class="btn">Bouquets</button>
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="hero-box">
+                <img th:src="@{/innerFolder/main/02.jpg}" alt="Plants">
+                <a th:href="@{/main/plants}">
+                    <button class="btn">Plants</button>
+                </a>
+            </div>
+            <div class="hero-box">
+                <img th:src="@{/innerFolder/main/04.jpg}" alt="Gifts">
+                <a th:href="@{/main/gifts}">
+                    <button class="btn">Gifts</button>
+                </a>
+            </div>
+        </div>
+
+        <div class="bloom-text">Let it bloom</div>
+    </section>
+
+    <section class="about-us" id="about-us">
+        <div class="about-header">
+            <h1>About us</h1>
+        </div>
+        <div class="about-text">
+            <p>Whether you're treating someone special or bringing extra cheer to your home, browse the M&S flowers and
+                plants collection for inspiration. You'll find bouquets of seasonal blooms to mark milestone occasions,
+                alongside top-quality indoor plants that make a thoughtful present for green-fingered recipients. Create
+                your own gift bundle
+                Select your bouquet or plant then choose chocolates, wine, fizz or a candle to add to your gift.
+            </p>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer">
+    Copyright © PEONY GROUP
+</footer>
+
+</body>
+</html>

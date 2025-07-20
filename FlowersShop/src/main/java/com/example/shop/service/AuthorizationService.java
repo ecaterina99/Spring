@@ -23,6 +23,19 @@ public class AuthorizationService {
         return passwordService.verifyPassword(password, userDB.getPasswordHash());
     }
 
+    public boolean isAuthenticated(String auth, String email) {
+        if ("no".equals(auth) || "guest".equals(email) ||
+                email == null || email.trim().isEmpty()) {
+            return false;
+        }
+        try {
+            BuyerDTO buyer = buyerService.findByEmail(email);
+            return buyer != null;
+        } catch (Exception e) {
+            System.err.println("Error checking authentication for email: " + email + ", error: " + e.getMessage());
+            return false;
+        }
+    }
 
     public Buyer registerUser(
             String firstName,
