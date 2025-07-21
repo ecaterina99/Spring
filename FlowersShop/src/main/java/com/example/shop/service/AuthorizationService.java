@@ -1,7 +1,7 @@
 package com.example.shop.service;
 
-import com.example.shop.dto.BuyerDTO;
-import com.example.shop.model.Buyer;
+import com.example.shop.dto.UserDTO;
+import com.example.shop.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +12,10 @@ public class AuthorizationService {
     @Autowired
     private PasswordService passwordService;
     @Autowired
-    private BuyerService buyerService;
+    private UserService userService;
 
     public boolean validCredentials(String email, String password) {
-        BuyerDTO userDB = buyerService.findByEmail(email);
+        UserDTO userDB = userService.findByEmail(email);
 
         if (userDB == null || !userDB.getEmail().equals(email)) {
             return false;
@@ -29,7 +29,7 @@ public class AuthorizationService {
             return false;
         }
         try {
-            BuyerDTO buyer = buyerService.findByEmail(email);
+            UserDTO buyer = userService.findByEmail(email);
             return buyer != null;
         } catch (Exception e) {
             System.err.println("Error checking authentication for email: " + email + ", error: " + e.getMessage());
@@ -37,7 +37,7 @@ public class AuthorizationService {
         }
     }
 
-    public Buyer registerUser(
+    public User registerUser(
             String firstName,
             String lastName,
             String phone,
@@ -48,7 +48,7 @@ public class AuthorizationService {
             String email,
             String password
     ) {
-        BuyerDTO existingUser = buyerService.findByEmail(email);
+        UserDTO existingUser = userService.findByEmail(email);
         if (existingUser != null) {
             throw new RuntimeException("User with this email already exists.");
         }
@@ -59,7 +59,7 @@ public class AuthorizationService {
 
         String hashedPassword = passwordService.hashPassword(password);
 
-        Buyer newUser = new Buyer();
+        User newUser = new User();
         newUser.setFirstName(firstName);
         newUser.setLastName(lastName);
         newUser.setPhone(phone);
@@ -70,7 +70,7 @@ public class AuthorizationService {
         newUser.setEmail(email);
         newUser.setPasswordHash(hashedPassword);
 
-         return buyerService.register(newUser);
+         return userService.register(newUser);
 
     }
 

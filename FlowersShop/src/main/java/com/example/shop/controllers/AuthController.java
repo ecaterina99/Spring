@@ -1,8 +1,9 @@
 package com.example.shop.controllers;
 
-import com.example.shop.dto.BuyerDTO;
-import com.example.shop.model.Buyer;
+import com.example.shop.dto.UserDTO;
+import com.example.shop.model.User;
 import com.example.shop.service.AuthorizationService;
+import com.example.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,20 +12,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
     AuthorizationService authService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/login")
     public ModelAndView login() {
         return new ModelAndView("login");
-
     }
 
     @GetMapping("/register")
@@ -39,6 +38,7 @@ public class AuthController {
 
         headers.add("Set-Cookie", "authenticated=; Path=/; Expires=" + yesterdayStr);
         headers.add("Set-Cookie", "email=; Path=/; Expires=" + yesterdayStr);
+        headers.add("Set-Cookie", "role=; Path=/; Expires=" + yesterdayStr);
         headers.add("Location", "/auth/login");
 
         return new ResponseEntity<>("", headers, HttpStatus.SEE_OTHER);
@@ -53,10 +53,17 @@ public class AuthController {
         System.out.println("Received " + email + " and " + password + (valid ? " (valid)" : " (invalid)"));
         HttpHeaders headers = new HttpHeaders();
 
-        if (valid) {
+        if (valid ) {
+            UserDTO userDTO = userService.findByEmail(email);
             headers.add("Set-Cookie", "authenticated=yes; Path=/");
             headers.add("Set-Cookie", "email=" + email + "; Path=/");
-            headers.add("Location", "/account/welcome");
+            headers.add("Set-Cookie", "role=" + userDTO.getRole().name() + "; Path=/");
+
+            if(userDTO.getRole()==User.Role.admin){
+                headers.add("Location", "/admin/dashboard");
+            }else {
+                headers.add("Location", "/home");
+            }
         } else {
             headers.add("Location", "/auth/login");
         }
@@ -80,12 +87,13 @@ public class AuthController {
 
 
         try {
-            Buyer user = authService.registerUser(name,surname,phone,country,city,address,postalCode, email, password);
+            User user = authService.registerUser(name,surname,phone,country,city,address,postalCode, email, password);
             System.out.println("User registered successfully: " + user.getEmail());
 
             headers.add("Set-Cookie", "authenticated=yes; Path=/");
             headers.add("Set-Cookie", "email=" + email + "; Path=/");
-            headers.add("Location", "/account/welcome");
+            headers.add("Set-Cookie", "role=" + user.getRole().name() + "; Path=/");
+            headers.add("Location", "/home");
         } catch (RuntimeException e) {
             System.err.println("Registration error: " + e.getMessage());
             headers.add("Location", "/auth/register?error=" + e.getMessage());

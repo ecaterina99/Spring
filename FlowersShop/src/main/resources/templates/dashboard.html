@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Flower Shop</title>
-    <link rel="stylesheet" th:href="@{/css/mainPage.css}">
+    <title>Cart</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/cart.css}">
 </head>
 
 <body>
@@ -48,54 +48,15 @@
             <a th:href="@{/main/gifts}">Gifts</a>
         </div>
         <div class="category">
-            <a th:href="@{/contact}">Contact</a>
+            <a th:href="@{contact}">Contact</a>
         </div>
     </nav>
 
-    <section class="hero-section">
-        <div class="hero-left">
-            <div class="hero-box">
-                <img th:src="@{/innerFolder/main/00.png}" alt="Bouquets">
-                <a th:href="@{/bouquets}">
-                    <button class="btn">Bouquets</button>
-                </a>
-            </div>
-        </div>
-
-        <div class="hero-right">
-            <div class="hero-box">
-                <img th:src="@{/innerFolder/main/02.jpg}" alt="Plants">
-                <a th:href="@{/main/plants}">
-                    <button class="btn">Plants</button>
-                </a>
-            </div>
-            <div class="hero-box">
-                <img th:src="@{/innerFolder/main/04.jpg}" alt="Gifts">
-                <a th:href="@{/main/gifts}">
-                    <button class="btn">Gifts</button>
-                </a>
-            </div>
-        </div>
-
-        <div class="bloom-text">Let it bloom</div>
-    </section>
-
-    <section class="about-us" id="about-us">
-        <div class="about-header">
-            <h1>About us</h1>
-        </div>
-        <div class="about-text">
-            <p>Whether you're treating someone special or bringing extra cheer to your home, browse the M&S flowers and
-                plants collection for inspiration. You'll find bouquets of seasonal blooms to mark milestone occasions,
-                alongside top-quality indoor plants that make a thoughtful present for green-fingered recipients. Create
-                your own gift bundle
-                Select your bouquet or plant then choose chocolates, wine, fizz or a candle to add to your gift.
-            </p>
-        </div>
-    </section>
+    <div class="dashboard-container">
+        <h1>Your dashboard</h1>
+    </div>
 
 </main>
-
 <footer class="footer">
     Copyright © PEONY GROUP
 </footer>

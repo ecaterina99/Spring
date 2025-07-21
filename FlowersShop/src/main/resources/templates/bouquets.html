@@ -13,13 +13,20 @@
     <div class="top-bar">
         <div class="delivery">Home delivery available in Romania | Free returns</div>
         <div class="user">
-               <span th:if="${isAuthenticated == true and fullName != null}">
+               <span th:if="${isAuthenticated == true and fullName != null and role != 'admin'}">
                 Welcome, <span th:text="${fullName}"></span>!
-                <a th:href="@{/auth/logout}" class="logout-link">Logout</a>
+                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
+                <a th:href="@{/cart}" class="cart-link">Cart</a>
+            </span>
+            <span th:if="${isAuthenticated == true and fullName != null and role == 'admin'}">
+                Welcome, <span th:text="${fullName}"></span>!
+                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
+                <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
             </span>
             <span th:if="${isAuthenticated == false or isAuthenticated == null}">
                 <a th:href="@{/auth/login}">Log in</a> |
-                <a th:href="@{/auth/register}">Register</a>
+                <a th:href="@{/auth/register}">Register</a> |
+                <a th:href="@{/cart}" class="cart-link">Cart</a>
             </span>
         </div>
     </div>
@@ -59,6 +66,7 @@
 
     <section class="products-section">
         <div class="product-form">
+            
             <div class="img">
                 <img th:src="@{/innerFolder/bouquets/3.jpg}" alt="Bouquets">
             </div>
@@ -67,7 +75,7 @@
                 <h3>28$</h3>
             </div>
             <div>
-                <button class="btn" onclick="openPopup()">ORDER</button>
+                <button class="btn" onclick="openPopup()">ADD TO CART</button>
             </div>
         </div>
 

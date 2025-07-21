@@ -14,9 +14,9 @@ public class Sale {
     public int id;
 
     @ManyToOne
-    @JoinColumn(name = "buyer_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
-    private Buyer buyer;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)

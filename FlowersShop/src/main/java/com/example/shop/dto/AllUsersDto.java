@@ -7,7 +7,7 @@ import java.util.List;
 
 @Setter
 @Getter
-public class AllBuyersDto {
-    List<BuyerDTO> buyers;
+public class AllUsersDto {
+    List<UserDTO> users;
     long count;
 }

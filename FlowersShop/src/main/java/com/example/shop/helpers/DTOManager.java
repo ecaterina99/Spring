@@ -1,8 +1,8 @@
 package com.example.shop.helpers;
 
-import com.example.shop.dto.BuyerDTO;
+import com.example.shop.dto.UserDTO;
 import com.example.shop.dto.ProductDTO;
-import com.example.shop.model.Buyer;
+import com.example.shop.model.User;
 import com.example.shop.model.Product;
 import com.example.shop.model.Sale;
 import org.springframework.stereotype.Component;
@@ -40,26 +40,27 @@ public class DTOManager {
         }
     }
 
-    public BuyerDTO buyerToDto(Buyer buyer) {
-        return buyerToDto(buyer, true);
+    public UserDTO userToDto(User user) {
+        return userToDto(user, true);
     }
 
-    public BuyerDTO buyerToDto(Buyer buyer,boolean deep) {
-        if (buyer == null) return null;
-        BuyerDTO buyerDTO = new BuyerDTO();
-        buyerDTO.setId(buyer.getId());
-        buyerDTO.setFullName(buyer.getFirstName()+" "+buyer.getLastName());
-        buyerDTO.setEmail(buyer.getEmail());
-        buyerDTO.setPhone(buyer.getPhone());
-        buyerDTO.setAddress(buyer.getAddress());
-        buyerDTO.setCity(buyer.getCity());
-        buyerDTO.setPostalCode(buyer.getPostalCode());
-        buyerDTO.setPasswordHash(buyer.getPasswordHash());
+    public UserDTO userToDto(User user, boolean deep) {
+        if (user == null) return null;
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setFullName(user.getFirstName()+" "+ user.getLastName());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setPhone(user.getPhone());
+        userDTO.setAddress(user.getAddress());
+        userDTO.setCity(user.getCity());
+        userDTO.setPostalCode(user.getPostalCode());
+        userDTO.setPasswordHash(user.getPasswordHash());
+        userDTO.setRole(user.getRole());
 
         if(deep){
-            List<Sale>sales = buyer.getSales();
-            buyerDTO.setSales(sales);
+            List<Sale>sales = user.getSales();
+            userDTO.setSales(sales);
         }
-        return buyerDTO;
+        return userDTO;
     }
 }

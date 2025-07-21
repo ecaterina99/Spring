@@ -1,9 +1,9 @@
 package com.example.shop.service;
 
-import com.example.shop.model.Buyer;
+import com.example.shop.model.User;
 import com.example.shop.model.Product;
 import com.example.shop.model.Sale;
-import com.example.shop.repository.BuyersRepositoryCrud;
+import com.example.shop.repository.UsersRepositoryCrud;
 import com.example.shop.repository.ProductRepositoryCrud;
 import com.example.shop.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class SaleService {
     @Autowired
     SaleRepository saleRepository;
     @Autowired
-    private BuyersRepositoryCrud buyersRepositoryCrud;
+    private UsersRepositoryCrud usersRepositoryCrud;
     @Autowired
     private ProductRepositoryCrud productRepositoryCrud;
 
@@ -26,14 +26,14 @@ public class SaleService {
     }
 
     public void makePurchase(int buyerId, int productId, int quantity) {
-        Buyer buyer = buyersRepositoryCrud.findById(buyerId).orElseThrow();
+        User user = usersRepositoryCrud.findById(buyerId).orElseThrow();
         Product product = productRepositoryCrud.findById(productId).orElseThrow();
 
         if (product.getQuantity() < quantity) {
             throw new RuntimeException("Out of stock");
         }
         Sale sale = new Sale();
-        sale.setBuyer(buyer);
+        sale.setUser(user);
         sale.setProduct(product);
         sale.setQuantity(quantity);
         saleRepository.save(sale);

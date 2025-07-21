@@ -8,8 +8,12 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity(name = "buyers")
-public class Buyer {
+@Entity(name = "users")
+public class User {
+
+    public enum Role {
+        admin,buyer;
+    }
 
     @Id  //primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +46,11 @@ public class Buyer {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @OneToMany(mappedBy = "buyer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role= Role.buyer;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Sale> sales;
 }

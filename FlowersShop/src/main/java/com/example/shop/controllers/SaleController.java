@@ -2,7 +2,7 @@ package com.example.shop.controllers;
 
 import com.example.shop.dto.SalesDTO;
 import com.example.shop.model.Sale;
-import com.example.shop.repository.BuyersRepositoryCrud;
+import com.example.shop.repository.UsersRepositoryCrud;
 import com.example.shop.repository.ProductRepositoryCrud;
 import com.example.shop.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class SaleController {
     @Autowired
     private SaleService saleService;
     @Autowired
-    private BuyersRepositoryCrud buyersRepositoryCrud;
+    private UsersRepositoryCrud usersRepositoryCrud;
     @Autowired
     private ProductRepositoryCrud productRepositoryCrud;
 
@@ -32,7 +32,7 @@ public class SaleController {
     @PostMapping("/request")
     public ResponseEntity<String> makePurchase(@RequestBody SalesDTO request) {
         try {
-            saleService.makePurchase(request.getBuyerId(), request.getProductId(), request.getQuantity()
+            saleService.makePurchase(request.getUserId(), request.getProductId(), request.getQuantity()
             );
             return ResponseEntity.ok("Success");
         }catch (RuntimeException e) {
