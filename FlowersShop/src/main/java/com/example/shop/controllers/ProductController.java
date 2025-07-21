@@ -1,85 +1,101 @@
 package com.example.shop.controllers;
 
-import com.example.shop.dto.AllProductsDto;
+
 import com.example.shop.dto.ProductDTO;
 import com.example.shop.dto.ResponseDTO;
+import com.example.shop.model.Product;
 import com.example.shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-@RestController
+@Controller
 @RequestMapping("/product")
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    ProductService productService;
 
-    // Show all products: GET /product/all
-    @GetMapping("/all")
-    public AllProductsDto showAllProducts() {
-
-        AllProductsDto allProductsDto = new AllProductsDto();
-        List<ProductDTO> productsDTOs = productService.findAll();
-        allProductsDto.setProducts(productsDTOs);
-        return allProductsDto;
+    @GetMapping("/")
+    public ModelAndView listProducts() {
+    List<ProductDTO> productsDTO = productService.findAll();
+    return new ModelAndView("products/products","allProducts",productsDTO);
     }
 
-    // Retrieve product: GET /product/{id}
     @GetMapping("/{id}")
-    public ResponseDTO showProduct(
+    public ModelAndView showProduct(
             @PathVariable("id") int id
     ) {
-        ResponseDTO responseDTO = new ResponseDTO();
         ProductDTO productDTO = productService.findById(id);
-        responseDTO.setData(productDTO);
-        responseDTO.setSuccess(productDTO != null);
-        return responseDTO;
+        return new ModelAndView("products/view", "product", productDTO);
     }
 
-    // Add new product: POST /product/
-    @PostMapping("/")
-    public ResponseEntity<Object> addProduct(
-            @RequestBody ProductDTO productDTO
-    ) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        ProductDTO productDtoResponse = productService.save(productDTO);
-        return ResponseEntity.ok(productDtoResponse != null ? productDtoResponse : new HashMap<>());
+    @RequestMapping("/edit/{id}")
+    public ModelAndView updateProduct(@PathVariable("id") int id,
+                                      @RequestParam(value="name",required = false)String name,
+                                      @RequestParam(value="description",required = false)String description,
+                                      @RequestParam(value="category",required = false) Product.Category category,
+                                      @RequestParam(value="price",required = false)Double price,
+                                      @RequestParam(value="barcode",required = false)String barcode,
+                                      @RequestParam(value="quantity",required = false)Integer quantity,
+                                      @RequestParam(value="availability",required = false)Boolean availability,
+                                      @RequestParam(required = false) String update
+
+    )
+
+     {
+        if (update==null) {
+            ProductDTO productDTO = productService.findById(id);
+            return new ModelAndView("products/edit", "product", productDTO);
+        }
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setId(id);
+        productDTO.setName(name);
+        productDTO.setDescription(description);
+        productDTO.setCategory(String.valueOf(category));
+        productDTO.setPrice(price);
+        productDTO.setBarcode(barcode);
+        productDTO.setQuantity(quantity);
+        productDTO.setAvailability(availability);
+        productDTO=productService.update(productDTO,id);
+        return new ModelAndView("products/view", "product", productDTO);
     }
 
-   // Update product: PUT /product/{id}
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateProduct(
-            @RequestBody ProductDTO productDTO,
-            @PathVariable int id
-    ) {
-        if (productDTO.getId() != id) {
-            productDTO.setId(0);
-        }
-        ProductDTO productDTOResponse = productService.update(productDTO, id);
-        return ResponseEntity.ok(Objects.requireNonNullElseGet(productDTOResponse, HashMap::new));
+    @GetMapping("/add")
+    public ModelAndView showAddForm() {
+        return new ModelAndView("products/add", "product", new ProductDTO());
     }
 
-
-    // Delete product: DELETE /product/{id}
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteProduct(
-            @PathVariable int id
+    @PostMapping("/add")
+    public ModelAndView addProduct(
+            @RequestParam(value="name") String name,
+            @RequestParam(value="description") String description,
+            @RequestParam(value="category") Product.Category category,
+            @RequestParam(value="price") Double price,
+            @RequestParam(value="barcode") String barcode,
+            @RequestParam(value="quantity") Integer quantity,
+            @RequestParam(value="availability") Boolean availability,
+            @RequestParam("image") MultipartFile image
     ) {
-        if (id < 0) {
-            return ResponseEntity.badRequest().build();
-        }
-        boolean wasDeleted = productService.delete(id);
-        if (wasDeleted) {
-            return ResponseEntity.ok(new HashMap<>());
-        }
-        return ResponseEntity.badRequest().build();
+        String imagePath = productService.saveImage(image);
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setName(name);
+        productDTO.setDescription(description);
+        productDTO.setCategory(String.valueOf(category));
+        productDTO.setPrice(price);
+        productDTO.setBarcode(barcode);
+        productDTO.setQuantity(quantity);
+        productDTO.setAvailability(availability);
+        productDTO.setImage(imagePath);
+
+        productDTO = productService.save(productDTO);
+        return new ModelAndView("products/view", "product", productDTO);
     }
 }
-

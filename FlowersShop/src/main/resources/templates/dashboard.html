@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cart</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/cart.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
 </head>
 
 <body>
@@ -52,14 +52,64 @@
         </div>
     </nav>
 
-    <div class="dashboard-container">
-        <h1>Your dashboard</h1>
+
+    <div class="admin-container">
+
+        <div class="admin-panel">
+            <h1 class="titlePage">Dashboard</h1>
+            <div class="intro-text">
+            Welcome to admin-panel!
+        </div>
+        </div>
+
+        <div class="dashboard-cards">
+            <div class="dashboard-card">
+                <h4>TOTAL PRODUCTS</h4>
+                <div class="number" id="totalProducts">-</div>
+            </div>
+            <div class="dashboard-card">
+                <h4>TODAY SALES</h4>
+                <div class="number" id="todaySales">-</div>
+            </div>
+            <div class="dashboard-card">
+                <h4>TOTAL CUSTOMERS</h4>
+                <div class="number" id="totalCustomers">-</div>
+            </div>
+            <div class="dashboard-card">
+                <h4>TOTAL REVENUE</h4>
+                <div class="number" id="totalRevenue">-</div>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <h3> Quick actions</h3>
+            <div class="action-buttons">
+                <a th:href="@{/product/}" class="action-btn">all products</a>
+                <a th:href="@{/product/add}" class="action-btn">add product</a>
+                <a th:href="@{/admin/products/update}" class="action-btn">update product </a>
+                <a th:href="@{/admin/products/delete}" class="action-btn">delete product</a>
+                <a th:href="@{/admin/sales}" class="action-btn">list of sales</a>
+                <a th:href="@{/admin/customers}" class="action-btn">list of customers</a>
+            </div>
+        </div>
+
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('totalProducts').textContent = '12';
+            document.getElementById('todaySales').textContent = '5';
+            document.getElementById('totalCustomers').textContent = '23';
+            document.getElementById('totalRevenue').textContent = '₽2,450';
+
+            console.log('Admin dashboard loaded successfully');
+        });
+    </script>
+
 
 </main>
 <footer class="footer">
     Copyright © PEONY GROUP
 </footer>
-
 </body>
 </html>

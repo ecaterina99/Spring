@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/products.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-scope.css}">
+
+
+</head>
+
+<body>
+<header>
+    <div class="top-bar">
+        <div class="delivery">Home delivery available in Romania | Free returns</div>
+        <div class="user">
+            Welcome, <span th:text="${fullName}"></span>!
+            <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
+            <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
+        </div>
+    </div>
+    <div class="logo">Peony Bloom</div>
+</header>
+
+<main>
+    <nav>
+        <div class="category">
+            <a th:href="@{/home}">About us</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/bouquets}">Bouquets</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/main/plants}">Plants</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/main/gifts}">Gifts</a>
+        </div>
+        <div class="category">
+            <a th:href="@{contact}">Contact</a>
+        </div>
+    </nav>
+
+
+    <form action="" method="post">
+        <div class="bootstrap-scope">
+            <div class="form-group">
+        <p>
+            <label for="edit-name">Name:</label>
+            <input name="name" id="edit-name" class="form-control" type="text"
+                   th:value="${product.name}" readonly/>
+        </p>
+        <p>
+            <label for="edit-description">Description:</label>
+            <input name="description" id="edit-description" class="form-control" type="text"
+                   th:value="${product.description}"/>
+        </p>
+        <p>
+            <label for="edit-category">Category:</label>
+            <input name="category" id="edit-category" class="form-control" type="text"
+                   th:value="${product.category}"/>
+        </p>
+        <p>
+            <label for="edit-price">Price:</label>
+                <input name="price" id="edit-price" class="form-control" type="number" min="0"
+                       th:value="${product.price}"/>
+            </p>
+        <p>
+            <label for="edit-barcode">Barcode:</label>
+            <input name="barcode" id="edit-barcode" class="form-control" type="text"
+                   th:value="${product.barcode}"/>
+        </p>
+        <p>
+            <label for="edit-quantity">Quantity:</label>
+            <input name="quantity" id="edit-quantity" class="form-control" type="number" min="0"
+                   th:value="${product.quantity}"/>
+        </p>
+        <p>
+            <label for="edit-availability">Availability:</label>
+            <input name="availability" id="edit-availability" class="form-control" type="text"
+                   th:value="${product.availability}"/>
+        </p>
+        </div>
+        </div>
+    </form>
+
+    <button class="update" name="update" value="clicked"  >Update data</button>
+
+    <div class="info">
+    <ul>
+        <li>Id: [[${product.id}]]</li>
+        <li>Name: [[${product.name}]]</li>
+        <li>Description: [[${product.description}]]</li>
+        <li>Category: [[${product.category}]]</li>
+        <li>Price: [[${product.price}]]</li>
+        <li>Quantity: [[${product.quantity}]]</li>
+        <li>Barcode: [[${product.barcode}]]</li>
+    </ul>
+</div>
+
+</main>
+<footer class="footer">
+    Copyright © PEONY GROUP
+</footer>
+</body>
+</html>

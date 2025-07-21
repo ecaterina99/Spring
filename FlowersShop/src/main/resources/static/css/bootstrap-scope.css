@@ -1,0 +1,47 @@
+.bootstrap-scope .table {
+    all: initial;
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #dee2e6;
+    font-family: sans-serif;
+}
+
+.bootstrap-scope .table th,
+.bootstrap-scope .table td {
+    border: 1px solid #dee2e6;
+    padding: 1rem;
+    vertical-align: top;
+    font-family:  sans-serif;
+}
+.bootstrap-scope .table th {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.bootstrap-scope .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0,0,0,.05);
+}
+.bootstrap-scope .actions {
+    display: flex;
+    flex-direction: column;
+    color: black;
+}
+.bootstrap-scope .actions:hover {
+    color: coral;
+}
+.update{
+    background-color: darkslategray;
+    color: white;
+    margin: 10px;
+}
+
+.update:hover {
+    background-color: #a020f0;
+    transform: scale(1.1);
+}
+
+.bootstrap-scope .form-group{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}

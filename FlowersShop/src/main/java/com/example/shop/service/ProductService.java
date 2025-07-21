@@ -7,11 +7,14 @@ import com.example.shop.repository.ProductRepositoryCrud;
 import com.example.shop.repository.ProductRepositoryJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -57,6 +60,7 @@ public class ProductService {
         product = productOptional.orElse(null);
         return productToDto(product);
     }
+
 
     public ProductDTO save(ProductDTO productDTO) {
         try {
@@ -120,6 +124,23 @@ public class ProductService {
             productDTOs.add(productDTO);
         }
         return productDTOs;
+    }
+
+    public String saveImage(MultipartFile imageFile) {
+        if (imageFile.isEmpty()) return null;
+
+        try {
+            String uploadDir = "src/main/resources/static/innerFolder/bouquets/";
+            String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+            Path filepath = Paths.get(uploadDir + filename);
+
+            Files.createDirectories(filepath.getParent());
+            Files.copy(imageFile.getInputStream(), filepath, StandardCopyOption.REPLACE_EXISTING);
+
+            return "/innerFolder/bouquets/" + filename;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save image", e);
+        }
     }
 
 }

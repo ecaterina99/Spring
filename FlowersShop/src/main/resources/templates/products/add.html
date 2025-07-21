@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/products.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-scope.css}">
+
+
+</head>
+
+<body>
+<header>
+    <div class="top-bar">
+        <div class="delivery">Home delivery available in Romania | Free returns</div>
+        <div class="user">
+            Welcome, <span th:text="${fullName}"></span>!
+            <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
+            <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
+        </div>
+    </div>
+    <div class="logo">Peony Bloom</div>
+</header>
+
+<main>
+    <nav>
+        <div class="category">
+            <a th:href="@{/home}">About us</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/bouquets}">Bouquets</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/main/plants}">Plants</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/main/gifts}">Gifts</a>
+        </div>
+        <div class="category">
+            <a th:href="@{contact}">Contact</a>
+        </div>
+    </nav>
+
+
+    <form action="" th:action="@{/product/add}" method="post" enctype="multipart/form-data">>
+        <div class="bootstrap-scope">
+            <div class="form-group">
+                <p>
+                    <label for="add-name">Name:</label>
+                    <input name="name" id="add-name" class="form-control" type="text"
+                           th:value="${product.name}" />
+                </p>
+                <p>
+                    <label for="add-description">Description:</label>
+                    <input name="description" id="add-description" class="form-control" type="text"
+                           th:value="${product.description}"/>
+                </p>
+                <p>
+                    <label for="add-category">Category:</label>
+                    <select name="category" id="add-category" class="form-control">
+                        <option value="bouquet">bouquet</option>
+                        <option value="plant">plant</option>
+                        <option value="gift">gift</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="add-price">Price:</label>
+                    <input name="price" id="add-price" class="form-control" type="number" min="0"
+                           th:value="${product.price}"/>
+                </p>
+                <p>
+                    <label for="add-barcode">Barcode:</label>
+                    <input name="barcode" id="add-barcode" class="form-control" type="text"
+                           th:value="${product.barcode}"/>
+                </p>
+                <p>
+                    <label for="add-quantity">Quantity:</label>
+                    <input name="quantity" id="add-quantity" class="form-control" type="number" min="0"
+                           th:value="${product.quantity}"/>
+                </p>
+                <p>
+                    <label for="add-availability">Availability:</label>
+                    <input name="availability" id="add-availability" type="checkbox" value="true" />
+                    <input type="hidden" name="availability" value="false" />
+                </p>
+                <p>
+                    <label for="edit-image">Image:</label>
+                    <input name="image" id="edit-image" class="form-control" type="file" />
+                </p>
+            </div>
+        </div>
+        <button type="submit" class="save">Add product</button>
+    </form>
+
+
+</main>
+<footer class="footer">
+    Copyright © PEONY GROUP
+</footer>
+</body>
+</html>

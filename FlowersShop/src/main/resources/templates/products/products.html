@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cart</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-scope.css}">
+
+</head>
+
+<body>
+<header>
+    <div class="top-bar">
+        <div class="delivery">Home delivery available in Romania | Free returns</div>
+        <div class="user">
+                Welcome, <span th:text="${fullName}"></span>!
+                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
+                <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
+        </div>
+    </div>
+    <div class="logo">Peony Bloom</div>
+</header>
+
+<main>
+    <nav>
+        <div class="category">
+            <a th:href="@{/home}">About us</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/bouquets}">Bouquets</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/main/plants}">Plants</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/main/gifts}">Gifts</a>
+        </div>
+        <div class="category">
+            <a th:href="@{contact}">Contact</a>
+        </div>
+    </nav>
+
+
+    <div class="admin-panel">
+        <h1 class="titlePage">All products</h1>
+        <div class="intro-text">
+          Found [[${allProducts.size()}]] products.
+        </div>
+    </div>
+
+    <section class="products-section">
+        <div class="bootstrap-scope">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Barcode</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="product : ${allProducts}">
+                <td>[[${product.id}]]</td>
+                <td th:text="${product.name}"/>
+                <td th:text="${product.description}"/>
+                <td th:text="${product.category}"/>
+                <td th:text="${product.price}"/>
+                <td th:text="${product.quantity}"/>
+                <td th:text="${product.barcode}"/>
+                <td>
+                    <img th:src="@{${product.image}}" alt="image" width="60">
+                </td>
+                <td class="actions">
+                    <a th:href='${"/product/"+product.id}'>View</a>
+                    <a th:href='${"/product/edit/"+product.id}'>Edit</a>
+                    <a th:href='${"/product/delele/"+product.id}'>Delete</a>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+
+        </div>
+    </section>
+</main>
+<footer class="footer">
+    Copyright © PEONY GROUP
+</footer>
+</body>
+</html>
