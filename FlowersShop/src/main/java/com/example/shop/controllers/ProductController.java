@@ -68,6 +68,7 @@ public class ProductController {
         return new ModelAndView("products/view", "product", productDTO);
     }
 
+
     @GetMapping("/add")
     public ModelAndView showAddForm() {
         return new ModelAndView("products/add", "product", new ProductDTO());
@@ -98,4 +99,11 @@ public class ProductController {
         productDTO = productService.save(productDTO);
         return new ModelAndView("products/view", "product", productDTO);
     }
+
+    @RequestMapping("/delete/{id}")
+    public ModelAndView  deleteProduct(@PathVariable("id") int id) {
+        productService.delete(id);
+        return new ModelAndView("redirect:/product");
+    }
+
 }

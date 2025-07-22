@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/products.css}">
+
+</head>
+
+<body>
+<header>
+    <div class="top-bar">
+        <div class="delivery">Home delivery available in Romania | Free returns</div>
+        <div class="user">
+            Welcome, <span th:text="${fullName}"></span>!
+            <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
+            <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
+        </div>
+    </div>
+    <div class="logo">Peony Bloom</div>
+</header>
+
+<main>
+    <nav>
+        <div class="category">
+            <a th:href="@{/home}">About us</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/bouquets}">Bouquets</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/main/plants}">Plants</a>
+        </div>
+        <div class="category">
+            <a th:href="@{/main/gifts}">Gifts</a>
+        </div>
+        <div class="category">
+            <a th:href="@{contact}">Contact</a>
+        </div>
+    </nav>
+
+    <div class="user-container">
+        <div class="user-info">
+            <h1>[[${user.fullName}]] #[[${user.id}]]</h1>
+            <ul>
+                <li>Id: [[${user.id}]]</li>
+                <li>Name: [[${user.fullName}]]</li>
+                <li>Email: [[${user.email}]]</li>
+                <li>Phone: [[${user.phone}]]</li>
+                <li>City: [[${user.city}]]</li>
+                <li>Address: [[${user.address}]]</li>
+                <li>Postal code: [[${user.postalCode}]]</li>
+                <li>Role: [[${user.role}]]</li>
+                <li>Sales:
+                    <span th:if="${user.sales == null or #lists.isEmpty(user.sales)}">
+        No sales yet
+    </span>
+                    <ul th:if="${user.sales != null and !#lists.isEmpty(user.sales)}">
+                        <li th:each="sale : ${user.sales}">
+                            Product Id: [[${salesDTO.productId}]], quantity: [[${sale.quantity}]]
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</main>
+<footer class="footer">
+    Copyright © PEONY GROUP
+</footer>
+</body>
+</html>

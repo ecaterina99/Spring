@@ -69,11 +69,11 @@
     border: none;
     cursor: pointer;
 }
-.products-section .actions a {
+.products-section .actions a, .users-section .actions a{
     color: black;
     text-decoration: none;
     margin-right: 8px;
 }
-.products-section .actions a:hover {
+.products-section .actions a:hover, .users-section .actions a:hover{
     color: coral;
 }
