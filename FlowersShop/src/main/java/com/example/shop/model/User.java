@@ -14,8 +14,7 @@ public class User {
     public enum Role {
         admin,buyer;
     }
-
-    @Id  //primary key
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 

@@ -41,7 +41,7 @@
 }
 
 .item-price {
-    color: #666;
+    color: darkslategray;
     font-size: 16px;
 }
 
@@ -52,7 +52,7 @@
 }
 
 .quantity-btn {
-    background: #007bff;
+    background: gray;
     color: white;
     border: none;
     width: 30px;
@@ -63,7 +63,7 @@
 }
 
 .quantity-btn:hover {
-    background: #0056b3;
+    background:dimgrey;
 }
 
 .quantity-display {
@@ -103,7 +103,7 @@
 
 .checkout-btn {
     width: 100%;
-    background: #28a745;
+    background: darkslategray;
     color: white;
     border: none;
     padding: 15px;
@@ -113,7 +113,7 @@
 }
 
 .checkout-btn:hover {
-    background: #218838;
+    background: purple;
 }
 
 .checkout-btn:disabled {
@@ -128,7 +128,7 @@
 }
 
 .back-btn {
-    background: #6c757d;
+    background: gray;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -138,7 +138,7 @@
 }
 
 .back-btn:hover {
-    background: #5a6268;
+    background:dimgrey;
 }
 
 .loading {
@@ -148,7 +148,7 @@
 
 .success-message {
     background: #d4edda;
-    color: #155724;
+    color: darkslategray;
     padding: 15px;
     border-radius: 5px;
     margin-bottom: 20px;

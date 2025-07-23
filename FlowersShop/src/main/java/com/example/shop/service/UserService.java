@@ -4,6 +4,7 @@ import com.example.shop.dto.UserDTO;
 import com.example.shop.helpers.DTOManager;
 import com.example.shop.model.User;
 import com.example.shop.model.Sale;
+import com.example.shop.repository.ProductRepositoryCrud;
 import com.example.shop.repository.UsersRepositoryCrud;
 import com.example.shop.repository.UsersRepositoryJpa;
 import com.example.shop.repository.SaleRepository;
@@ -17,14 +18,17 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
-    UsersRepositoryCrud usersRepositoryCrud;
-    @Autowired
-    UsersRepositoryJpa usersRepositoryJpa;
-    @Autowired
-    private DTOManager dtoManager;
-    @Autowired
-    private SaleRepository saleRepository;
+        private final SaleRepository saleRepository;
+        private final UsersRepositoryCrud usersRepositoryCrud;
+        private final UsersRepositoryJpa usersRepositoryJpa;
+        private final DTOManager dtoManager;
+
+        public UserService(SaleRepository saleRepository, UsersRepositoryCrud usersRepositoryCrud, UsersRepositoryJpa usersRepositoryJpa, DTOManager dtoManager ) {
+            this.saleRepository = saleRepository;
+            this.usersRepositoryCrud = usersRepositoryCrud;
+            this.usersRepositoryJpa = usersRepositoryJpa;
+            this.dtoManager = dtoManager;
+        }
 
     private UserDTO userToDto(User user) {
         return dtoManager.userToDto(user);
@@ -71,13 +75,6 @@ public class UserService {
     public UserDTO findByEmail(String email) {
         Optional<User> userOptional = usersRepositoryCrud.findByEmail(email);
         User user = userOptional.orElse(null);
-        return userToDto(user);
-    }
-
-
-    public UserDTO save(UserDTO userDTO) {
-        User user = userDtoToModel(userDTO);
-        usersRepositoryCrud.save(user);
         return userToDto(user);
     }
 
@@ -132,6 +129,12 @@ public class UserService {
             userDTOList.add(userDTO);
         }
         return userDTOList;
+    }
+
+    public UserDTO save(UserDTO userDTO) {
+        User user = userDtoToModel(userDTO);
+        usersRepositoryCrud.save(user);
+        return userToDto(user);
     }
 
 }

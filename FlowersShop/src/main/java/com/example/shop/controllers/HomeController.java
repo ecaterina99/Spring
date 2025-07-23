@@ -3,7 +3,6 @@ package com.example.shop.controllers;
 import com.example.shop.dto.UserDTO;
 import com.example.shop.service.AuthorizationService;
 import com.example.shop.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,10 +10,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
-    @Autowired
-    private AuthorizationService authorizationService;
-    @Autowired
-    private UserService userService;
+
+    private final AuthorizationService authorizationService;
+    private final UserService userService;
+
+    public HomeController(AuthorizationService authService, UserService userService) {
+        this.authorizationService = authService;
+        this.userService = userService;
+    }
 
     private void addUserDataToModel(ModelAndView modelAndView, String auth, String email) {
         modelAndView.addObject("email", email);

@@ -2,17 +2,20 @@ package com.example.shop.service;
 
 import com.example.shop.dto.UserDTO;
 import com.example.shop.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class AuthorizationService {
+    private final PasswordService passwordService;
+    private final UserService userService;
 
-    @Autowired
-    private PasswordService passwordService;
-    @Autowired
-    private UserService userService;
+    public AuthorizationService(PasswordService passwordService, UserService userService) {
+       this.passwordService = passwordService;
+        this.userService = userService;
+    }
+
+
 
     public boolean validCredentials(String email, String password) {
         UserDTO userDB = userService.findByEmail(email);
@@ -56,7 +59,6 @@ public class AuthorizationService {
         if (!passwordService.isPasswordStrong(password)) {
             throw new RuntimeException("Password must be at least 6 characters");
         }
-
         String hashedPassword = passwordService.hashPassword(password);
 
         User newUser = new User();

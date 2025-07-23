@@ -6,11 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepositoryJpa extends JpaRepository<Product, Long> {
-
-   /*
-    List<Product> findByCategory(String category);
-    List<Product> findByCategoryIgnoreCase(String category);
-    List<Product> findByNameContainingIgnoreCase(String name);
-    long countByCategory(String category);
-    */
 }

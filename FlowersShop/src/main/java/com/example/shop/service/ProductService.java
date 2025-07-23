@@ -4,8 +4,6 @@ import com.example.shop.dto.ProductDTO;
 import com.example.shop.helpers.DTOManager;
 import com.example.shop.model.Product;
 import com.example.shop.repository.ProductRepositoryCrud;
-import com.example.shop.repository.ProductRepositoryJpa;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,13 +16,13 @@ import java.util.*;
 
 @Service
 public class ProductService {
+    private final ProductRepositoryCrud productRepositoryCrud;
+    private final DTOManager dtoManager;
 
-    @Autowired
-    private ProductRepositoryCrud productRepositoryCrud;
-    @Autowired
-    private ProductRepositoryJpa productRepositoryJpa;
-    @Autowired
-    private DTOManager dtoManager;
+    public ProductService(ProductRepositoryCrud productRepositoryCrud, DTOManager dtoManager) {
+        this.productRepositoryCrud = productRepositoryCrud;
+        this.dtoManager = dtoManager;
+    }
 
     private ProductDTO productToDto(Product product) {
         return dtoManager.productToDto(product);
@@ -45,9 +43,7 @@ public class ProductService {
     public List<ProductDTO> findAll() {
         List<ProductDTO> productDTOList = new ArrayList<>();
         Iterable<Product> iterableProducts = productRepositoryCrud.findAll();
-        Iterator<Product> iteratorProducts = iterableProducts.iterator();
-        while (iteratorProducts.hasNext()) {
-            Product product = iteratorProducts.next();
+        for (Product product : iterableProducts) {
             ProductDTO productDTO = productToDto(product);
             productDTOList.add(productDTO);
         }

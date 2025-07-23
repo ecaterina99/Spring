@@ -29,8 +29,7 @@ public class Product {
             }
         }
     }
-
-    @Id  //primary key
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -52,8 +51,6 @@ public class Product {
     private String barcode;
     @Column(name = "image_url")
     private String image;
-
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Sale> sales = new ArrayList<>();
 

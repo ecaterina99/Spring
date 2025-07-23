@@ -5,8 +5,9 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public  class Cart {
+public class Cart {
     private Integer productId;
     private Integer quantity;
     private String name;
+    private Double price;
 }

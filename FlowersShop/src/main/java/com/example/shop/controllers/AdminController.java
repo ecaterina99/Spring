@@ -6,7 +6,6 @@ import com.example.shop.model.Sale;
 import com.example.shop.service.ProductService;
 import com.example.shop.service.SaleService;
 import com.example.shop.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,17 +18,23 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private SaleService saleService;
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
+    private final SaleService saleService;
+    private final UserService userService;
+
+    public AdminController(ProductService productService, SaleService saleService, UserService userService) {
+        this.productService = productService;
+        this.saleService = saleService;
+        this.userService = userService;
+    }
 
     private boolean isAdmin(String auth, String role) {
         return "yes".equals(auth) && "admin".equals(role);
     }
 
+    /**
+     * Displays admin dashboard with statistics and data overview
+     */
     @GetMapping("/dashboard")
     public ModelAndView dashboard(
             @CookieValue(name = "authenticated", defaultValue = "no") String auth,

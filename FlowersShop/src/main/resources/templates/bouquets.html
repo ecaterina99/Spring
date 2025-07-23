@@ -54,7 +54,7 @@
             <a th:href="@{/main/gifts}">Gifts</a>
         </div>
         <div class="category">
-            <a th:href="@{contact}">Contact</a>
+            <a th:href="@{/home/contact}">Contact</a>
         </div>
     </nav>
 
@@ -94,84 +94,8 @@
             </div>
         </div>
     </section>
+    <script src="/js/cart.js"></script>
 </main>
-
-    <script>
-        // Функции для работы с корзиной
-        function getCart() {
-            return JSON.parse(localStorage.getItem('cart') || '[]');
-        }
-
-        function saveCart(cart) {
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCounter();
-        }
-
-        function addToCart(productId, productName, productPrice) {
-            let cart = getCart();
-
-            // Проверяем, есть ли уже такой товар в корзине
-            const existingItem = cart.find(item => item.productId === productId);
-
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({
-                    productId: productId,
-                    name: productName,
-                    price: productPrice,
-                    quantity: 1
-                });
-            }
-
-            saveCart(cart);
-            showNotification('Product added to cart!');
-        }
-
-        function updateCartCounter() {
-            const cart = getCart();
-            const counter = document.getElementById('cartCounter');
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-
-            if (totalItems > 0) {
-                counter.textContent = totalItems;
-                counter.style.display = 'inline';
-            } else {
-                counter.style.display = 'none';
-            }
-        }
-
-        function showNotification(message) {
-            const notification = document.getElementById('cartNotification');
-            notification.textContent = message;
-            notification.style.display = 'block';
-
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
-
-        function goToCart() {
-            window.location.href = '/cart/';
-        }
-
-        // Инициализация при загрузке страницы
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCartCounter();
-
-            // Добавляем обработчики событий для всех кнопок "ADD TO CART"
-            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const productId = parseInt(this.getAttribute('data-product-id'));
-                    const productName = this.getAttribute('data-product-name');
-                    const productPrice = parseFloat(this.getAttribute('data-product-price'));
-
-                    addToCart(productId, productName, productPrice);
-                });
-            });
-        });
-    </script>
 
 <footer class="footer">
     Copyright © PEONY GROUP
@@ -179,45 +103,3 @@
 
 </body>
 </html>
-
-
-
-<!--  <div class="modal fade" id="purchaseModal" tabindex="-1" aria-hidden="true">
-                      <div class="modal-dialog">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <h5 class="modal-title">Great choice!</h5>
-                                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                              </div>
-                              <div class="modal-body">
-                                  The item was purchased successfully!
-                              </div>
-                              <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-<script>
-                      document.getElementById('purchaseForm').addEventListener('submit', function(e) {
-                          const quantity = document.getElementById('quantityInput').value;
-                          if (quantity <= 0) {
-                              e.preventDefault();
-                              alert('Quantity must be greater than 0');
-                              return false;
-                          }
-
-                      });
-                  </script>
--->
-
-
-<!--   <form action="/sale/purchase" method="post" class="purchaseForm">
-       <input type="hidden" name="productId" th:value="${product.id}">
-       <input type="hidden" name="quantity" value="1">
-       <button type="submit" class="btn btn-primary">ADD TO CART</button>
-   </form>
-   <div th:if="${sale != null}">
-       <p>Purchase successful! Sale ID: <span th:text="${sale.id}"></span></p>
-   </div>
-   -->

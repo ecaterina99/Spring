@@ -4,7 +4,6 @@ import com.example.shop.dto.UserDTO;
 import com.example.shop.model.User;
 import com.example.shop.service.AuthorizationService;
 import com.example.shop.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,24 +11,40 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * Authentication controller handling login, registration, and logout
+ */
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    AuthorizationService authService;
-    @Autowired
-    private UserService userService;
+ private final AuthorizationService authService;
+    private final UserService userService;
+
+    public AuthController(AuthorizationService authService, UserService userService) {
+         this.authService = authService;
+        this.userService = userService;
+    }
 
     @GetMapping("/login")
-    public ModelAndView login() {
-        return new ModelAndView("login");
+    public ModelAndView login(@RequestParam(required = false) String error) {
+        ModelAndView modelAndView = new ModelAndView("login");
+        if (error != null) {
+            modelAndView.addObject("error", error);
+        }
+        return modelAndView;
     }
 
     @GetMapping("/register")
-    public ModelAndView register() {
-        return new ModelAndView("register");
+    public ModelAndView register(@RequestParam(required = false) String error) {
+        ModelAndView modelAndView = new ModelAndView("register");
+        if (error != null) {
+            modelAndView.addObject("error", error);
+        }
+        return modelAndView;
     }
+
+
 
     @GetMapping("/logout")
     public ResponseEntity<String> logout() {
@@ -83,8 +98,6 @@ public class AuthController {
             @RequestParam String password
     ) {
         HttpHeaders headers = new HttpHeaders();
-
-
         try {
             User user = authService.registerUser(name,surname,phone,country,city,address,postalCode, email, password);
             System.out.println("User registered successfully: " + user.getEmail());

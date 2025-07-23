@@ -11,16 +11,33 @@
 
 <body>
 <header>
+    <div id="cartNotification" class="cart-notification">
+        Product added to cart!
+    </div>
+
     <div class="top-bar">
         <div class="delivery">Home delivery available in Romania | Free returns</div>
         <div class="user">
-            Welcome, <span th:text="${fullName}"></span>!
-            <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
-            <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
+               <span th:if="${isAuthenticated == true and fullName != null and role != 'admin'}">
+                Welcome, <span th:text="${fullName}"></span>!
+                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
+<a th:href="@{/cart/}" class="cart-link">Cart <span id="cartCounter" class="cart-counter">0</span></a>
+            </span>
+            <span th:if="${isAuthenticated == true and fullName != null and role == 'admin'}">
+                Welcome, <span th:text="${fullName}"></span>!
+                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
+                <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
+            </span>
+            <span th:if="${isAuthenticated == false or isAuthenticated == null}">
+                <a th:href="@{/auth/login}">Log in</a> |
+                <a th:href="@{/auth/register}">Register</a> |
+                <a th:href="@{/cart}" class="cart-link">Cart</a>
+            </span>
         </div>
     </div>
     <div class="logo">Peony Bloom</div>
 </header>
+
 
 <main>
     <nav>
@@ -57,14 +74,20 @@
                 <br>
                 <li><a class="all" th:href='${"/product/bouquets"}'>View all products</a></li>
             </ul>
-            <div class="add-to-cart">
-                <button type="submit" class="btn btn-primary">ADD TO CART</button>
-            </div>
+
+            <button type="button" class="btn btn-primary add-to-cart-btn"
+                    th:data-product-id="${product.id}"
+                    th:data-product-name="${product.name}"
+                    th:data-product-price="${product.price}">
+                ADD TO CART
+            </button>
+
         </div>
     </div>
-
+    <script src="/js/cart.js"></script>
 
 </main>
+
 <footer class="footer">
     Copyright © PEONY GROUP
 </footer>

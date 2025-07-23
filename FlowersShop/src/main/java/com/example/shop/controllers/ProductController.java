@@ -4,9 +4,9 @@ package com.example.shop.controllers;
 import com.example.shop.dto.ProductDTO;
 import com.example.shop.dto.UserDTO;
 import com.example.shop.model.Product;
+import com.example.shop.service.AuthorizationService;
 import com.example.shop.service.ProductService;
 import com.example.shop.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,11 +17,13 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
 
-    @Autowired
-    ProductService productService;
+    private final  ProductService productService;
+    private final UserService userService;
 
-    @Autowired
-    UserService userService;
+    public ProductController(ProductService productService, UserService userService) {
+        this.productService = productService;
+        this.userService = userService;
+    }
 
     @GetMapping("/")
     public ModelAndView listProducts() {
@@ -36,8 +38,13 @@ public class ProductController {
         ProductDTO productDTO = productService.findById(id);
         return new ModelAndView("products/view", "product", productDTO);
     }
+    @GetMapping("/edit/{id}")
+    public ModelAndView showEditForm(@PathVariable int id) {
+        ProductDTO productDTO = productService.findById(id);
+        return new ModelAndView("products/edit", "product", productDTO);
+    }
 
-    @RequestMapping("/edit/{id}")
+    @PostMapping("/edit/{id}")
     public ModelAndView updateProduct(@PathVariable("id") int id,
                                       @RequestParam(value="name",required = false)String name,
                                       @RequestParam(value="description",required = false)String description,
@@ -48,12 +55,7 @@ public class ProductController {
                                       @RequestParam(value="availability",required = false)Boolean availability,
                                       @RequestParam(required = false) String update
     )
-
      {
-        if (update==null) {
-            ProductDTO productDTO = productService.findById(id);
-            return new ModelAndView("products/edit", "product", productDTO);
-        }
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(id);
         productDTO.setName(name);
@@ -66,7 +68,6 @@ public class ProductController {
         productDTO=productService.update(productDTO,id);
         return new ModelAndView("products/view", "product", productDTO);
     }
-
 
     @GetMapping("/add")
     public ModelAndView showAddForm() {
@@ -106,7 +107,7 @@ public class ProductController {
     }
 
     @GetMapping("/bouquets")
-    public ModelAndView listBouquetsWithUser(
+    public ModelAndView listBouquets(
             @CookieValue(name = "authenticated", defaultValue = "no") String auth,
             @CookieValue(name = "email", defaultValue = "guest") String email,
             @CookieValue(name = "role", defaultValue = "buyer") String role
@@ -134,5 +135,12 @@ public class ProductController {
         }
 
         return modelAndView;
+    }
+    @GetMapping("/info/{id}")
+    public ModelAndView showProductInfo(
+            @PathVariable("id") int id
+    ) {
+        ProductDTO productDTO = productService.findById(id);
+        return new ModelAndView("info", "product", productDTO);
     }
 }

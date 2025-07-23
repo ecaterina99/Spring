@@ -3,11 +3,10 @@ package com.example.shop.controllers;
 import com.example.shop.dto.ProductDTO;
 import com.example.shop.dto.UserDTO;
 import com.example.shop.model.Cart;
-import com.example.shop.model.Sale;
 import com.example.shop.service.ProductService;
 import com.example.shop.service.SaleService;
 import com.example.shop.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,83 +16,172 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/cart")
 public class CartController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
+    private final SaleService saleService;
+    private final UserService userService;
 
-    @Autowired
-    private SaleService saleService;
+    public CartController(ProductService productService, SaleService saleService, UserService userService) {
+        this.productService = productService;
+        this.saleService = saleService;
+        this.userService = userService;
+    }
 
-    @Autowired
-    private UserService userService;
 
     @GetMapping("/")
     public ModelAndView showCart(
             @CookieValue(name = "authenticated", defaultValue = "no") String auth,
             @CookieValue(name = "email", defaultValue = "guest") String email,
-            @CookieValue(name = "role", defaultValue = "buyer") String role) {
+            @CookieValue(name = "role", defaultValue = "buyer") String role,
+            HttpSession session) {
 
         ModelAndView modelAndView = new ModelAndView("cart");
+        boolean isAuthenticated = "yes".equals(auth);
 
-        modelAndView.addObject("isAuthenticated", "yes".equals(auth));
-        if ("yes".equals(auth) && !"guest".equals(email)) {
+        modelAndView.addObject("isAuthenticated", isAuthenticated);
+        modelAndView.addObject("role", role);
+
+        List<Cart> cartItems = (List<Cart>) session.getAttribute("cartItems");
+        if (cartItems == null) {
+            cartItems = new ArrayList<>();
+        }
+
+        modelAndView.addObject("cartItems", cartItems);
+        modelAndView.addObject("totalPrice", calculateTotal(cartItems));
+
+        if (isAuthenticated && !"guest".equals(email)) {
             UserDTO user = userService.findByEmail(email);
             if (user != null) {
                 modelAndView.addObject("fullName", user.getFullName());
             }
         }
-        modelAndView.addObject("role", role);
-
         return modelAndView;
     }
 
-    @GetMapping("/product/{id}")
-    @ResponseBody
-    public ResponseEntity<?> getProduct(@PathVariable Integer id) {
-        try {
-            ProductDTO product = productService.findById(id);
-            if (product == null) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(product);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-        }
-    }
     @PostMapping("/add")
     @ResponseBody
-    public ResponseEntity<?> addToCart(
-            @CookieValue(name = "authenticated", defaultValue = "no") String authenticated,
-            @CookieValue(name = "email", defaultValue = "guest") String email,
+    public ResponseEntity<Map<String, Object>> addToCart(
             @RequestParam Integer productId,
-            @RequestParam Integer quantity) {
+            @RequestParam Integer quantity,
+            HttpSession session) {
 
         try {
             ProductDTO product = productService.findById(productId);
             if (product == null) {
-                return ResponseEntity.badRequest().body(Map.of("success", false, "message", "Product not found"));
+                return createErrorResponse("Product not found");
             }
 
             if (product.getQuantity() < quantity) {
-                return ResponseEntity.badRequest().body(Map.of("success", false, "message", "Not enough stock"));
+                return createErrorResponse("Not enough stock");
             }
+
+            List<Cart> cartItems = (List<Cart>) session.getAttribute("cartItems");
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+
+            Optional<Cart> existingItem = cartItems.stream()
+                    .filter(item -> item.getProductId().equals(productId))
+                    .findFirst();
+
+            if (existingItem.isPresent()) {
+                existingItem.get().setQuantity(existingItem.get().getQuantity() + quantity);
+            } else {
+                Cart newItem = new Cart();
+                newItem.setProductId(productId);
+                newItem.setName(product.getName());
+                newItem.setPrice(product.getPrice());
+                newItem.setQuantity(quantity);
+                cartItems.add(newItem);
+            }
+
+            session.setAttribute("cartItems", cartItems);
+
             return ResponseEntity.ok(Map.of(
                     "success", true,
                     "message", "Product added to cart",
-                    "product", Map.of(
-                            "id", product.getId(),
-                            "name", product.getName(),
-                            "price", product.getPrice()
-                    )
+                    "cartCount", cartItems.stream().mapToInt(Cart::getQuantity).sum()
             ));
-
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("success", false, "message", e.getMessage()));
+            return createErrorResponse("Failed to add product to cart");
         }
+    }
+
+    @PostMapping("/update")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> updateQuantity(
+            @RequestParam Integer productId,
+            @RequestParam Integer quantity,
+            HttpSession session) {
+
+        List<Cart> cartItems = (List<Cart>) session.getAttribute("cartItems");
+        if (cartItems == null) {
+            return createErrorResponse("Cart is empty");
+        }
+
+        if (quantity <= 0) {
+            cartItems.removeIf(item -> item.getProductId().equals(productId));
+            session.setAttribute("cartItems", cartItems);
+
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "cartCount", cartItems.stream().mapToInt(Cart::getQuantity).sum(),
+                    "totalPrice", calculateTotal(cartItems),
+                    "productId", productId,
+                    "quantity", 0
+            ));
+        } else {
+            ProductDTO product = productService.findById(productId);
+            if (product == null) {
+                return createErrorResponse("Product not found");
+            }
+
+            if (quantity > product.getQuantity()) {
+                return createErrorResponse("Not enough stock. Available: " + product.getQuantity());
+            }
+            Optional<Cart> cartItem = cartItems.stream()
+                    .filter(item -> item.getProductId().equals(productId))
+                    .findFirst();
+
+            if (cartItem.isPresent()) {
+                cartItem.get().setQuantity(quantity);
+                session.setAttribute("cartItems", cartItems);
+
+                return ResponseEntity.ok(Map.of(
+                        "success", true,
+                        "cartCount", cartItems.stream().mapToInt(Cart::getQuantity).sum(),
+                        "totalPrice", calculateTotal(cartItems),
+                        "productId", productId,
+                        "quantity", quantity
+                ));
+            } else {
+                return createErrorResponse("Product not found in cart");
+            }
+        }
+    }
+
+
+    @PostMapping("/remove")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> removeFromCart(
+            @RequestParam Integer productId,
+            HttpSession session) {
+
+        List<Cart> cartItems = (List<Cart>) session.getAttribute("cartItems");
+        if (cartItems != null) {
+            cartItems.removeIf(item -> item.getProductId().equals(productId));
+            session.setAttribute("cartItems", cartItems);
+        }
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "cartCount", cartItems != null ? cartItems.stream().mapToInt(Cart::getQuantity).sum() : 0
+        ));
     }
 
     @PostMapping("/checkout")
@@ -101,11 +189,17 @@ public class CartController {
     public ResponseEntity<?> checkout(
             @CookieValue(name = "authenticated", defaultValue = "no") String authenticated,
             @CookieValue(name = "email", defaultValue = "guest") String email,
-            @RequestBody List<Cart> cartItems
+            HttpSession session
     ) {
         if (!"yes".equals(authenticated) || "guest".equals(email)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Authentication required", "redirect", "/auth/login"));
+        }
+
+        List<Cart> cartItems = (List<Cart>) session.getAttribute("cartItems");
+        if (cartItems == null || cartItems.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Cart is empty"));
         }
 
         try {
@@ -115,34 +209,33 @@ public class CartController {
                         .body(Map.of("error", "User not found", "redirect", "/auth/login"));
             }
 
-            List<Integer> saleIds = new ArrayList<>();
+            List<Integer> sales = saleService.processPurchase(user.getId(), cartItems);
 
-            for (Cart item : cartItems) {
-                ProductDTO product = productService.findById(item.getProductId());
-                if (product == null) {
-                    return ResponseEntity.badRequest()
-                            .body(Map.of("error", "Product not found: " + item.getName()));
-                }
-                if (product.getQuantity() < item.getQuantity()) {
-                    return ResponseEntity.badRequest()
-                            .body(Map.of("error", "Not enough stock for: " + item.getName()));
-                }
-            }
-
-            for (Cart item : cartItems) {
-                Sale sale = saleService.makePurchase(user.getId(), item.getProductId(), item.getQuantity());
-                saleIds.add(sale.getId());
-            }
+            session.removeAttribute("cartItems");
 
             return ResponseEntity.ok(Map.of(
                     "success", true,
                     "message", "Purchase successful!",
-                    "saleIds", saleIds
+                    "saleIds", sales
             ));
 
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("error", "Purchase failed: " + e.getMessage()));
+                    .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Purchase failed. Please try again."));
         }
+    }
+
+    private double calculateTotal(List<Cart> cartItems) {
+        return cartItems.stream()
+                .mapToDouble(item -> item.getPrice() * item.getQuantity())
+                .sum();
+    }
+
+    private ResponseEntity<Map<String, Object>> createErrorResponse(String message) {
+        return ResponseEntity.badRequest()
+                .body(Map.of("success", false, "message", message));
     }
 }
