@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SalesDTO {
+    private int id;
     private int userId;
     private int productId;
     private int quantity;

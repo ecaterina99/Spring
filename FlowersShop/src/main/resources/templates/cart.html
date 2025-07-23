@@ -23,6 +23,11 @@
                 <a th:href="@{/auth/register}">Register</a> |
                 <a th:href="@{/cart}" class="cart-link">Cart</a>
             </span>
+            <span th:if="${isAuthenticated == true and fullName != null and role == 'admin'}">
+                Welcome, <span th:text="${fullName}"></span>!
+                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
+                <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
+            </span>
         </div>
     </div>
     <div class="logo">Peony Bloom</div>
@@ -34,7 +39,7 @@
             <a th:href="@{/home}">About us</a>
         </div>
         <div class="category">
-            <a th:href="@{/bouquets}">Bouquets</a>
+            <a th:href="@{/products/bouquets}">Bouquets</a>
         </div>
         <div class="category">
             <a th:href="@{/main/plants}">Plants</a>
@@ -48,8 +53,285 @@
     </nav>
 
     <div class="cart-container">
-        <h1>Your Cart</h1>
+        <button class="back-btn" onclick="goBack()"> Back to Shop</button>
+
+        <div class="cart-header">
+            <h1>Shopping Cart</h1>
+        </div>
+
+        <div id="successMessage" class="success-message"></div>
+        <div id="errorMessage" class="error-message"></div>
+
+        <div id="cartContent">
+            <div id="cartItems"></div>
+
+            <div id="cartSummary" class="cart-summary" style="display: none;">
+                <div class="total-price">
+                    Total: $<span id="totalPrice">0.00</span>
+                </div>
+                <button id="checkoutBtn" class="checkout-btn" onclick="checkout()">
+                    🛒 Checkout
+                </button>
+            </div>
+
+            <div id="emptyCart" class="empty-cart" style="display: none;">
+                <h2>Your cart is empty</h2>
+                <p>Add some products to your cart to see them here!</p>
+            </div>
+        </div>
     </div>
+
+    <script>
+        function getCart() {
+            return JSON.parse(localStorage.getItem('cart') || '[]');
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCounter();
+        }
+        async function addToCart(productId, productName, productPrice) {
+            try {
+                const response = await fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `productId=${productId}&quantity=1`
+                });
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    showNotification(result.message, 'error');
+                    return;
+                }
+
+                let cart = getCart();
+                const existingItem = cart.find(item => item.productId === productId);
+
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        productId: productId,
+                        name: productName,
+                        price: productPrice,
+                        quantity: 1
+                    });
+                }
+
+                saveCart(cart);
+                showNotification('Product added to cart!', 'success');
+
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                showNotification('Failed to add product to cart', 'error');
+            }
+        }
+        function updateCartCounter() {
+            const cart = getCart();
+            const counter = document.getElementById('cartCounter');
+            if (!counter) return;
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            if (totalItems > 0) {
+                counter.textContent = totalItems;
+                counter.style.display = 'inline';
+            } else {
+                counter.style.display = 'none';
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('cartNotification');
+            if (!notification) return;
+
+            notification.textContent = message;
+            notification.className = `cart-notification ${type}`;
+            notification.style.display = 'block';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        function goToCart() {
+            window.location.href = '/cart/';
+        }
+
+        async function checkout() {
+            const cart = getCart();
+
+            if (cart.length === 0) {
+                showError('Your cart is empty!');
+                return;
+            }
+
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            if (checkoutBtn) {
+                checkoutBtn.disabled = true;
+                checkoutBtn.textContent = '🔄 Processing...';
+            }
+
+            try {
+                const response = await fetch('/cart/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(cart)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    showSuccess('Purchase successful! Thank you for your order!');
+                    clearCart();
+                    setTimeout(() => {
+                        window.location.href = '/product/bouquets';
+                    }, 2000);
+                } else {
+                    if (result.redirect) {
+                        window.location.href = result.redirect;
+                        return;
+                    }
+                    showError(result.error || 'Checkout failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Checkout error:', error);
+                showError('Network error. Please check your connection and try again.');
+            } finally {
+                if (checkoutBtn) {
+                    checkoutBtn.disabled = false;
+                    checkoutBtn.textContent = '🛒 Checkout';
+                }
+            }
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            const errorDiv = document.getElementById('errorMessage');
+            if (successDiv) {
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+            }
+            if (errorDiv) {
+                errorDiv.style.display = 'none';
+            }
+        }
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
+            if (successDiv) {
+                successDiv.style.display = 'none';
+            }
+        }
+
+        function updateQuantity(productId, change) {
+            let cart = getCart();
+            const item = cart.find(item => item.productId === productId);
+
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                    return;
+                }
+                saveCart(cart);
+                renderCart();
+            }
+        }
+
+        function removeFromCart(productId) {
+            let cart = getCart();
+            cart = cart.filter(item => item.productId !== productId);
+            saveCart(cart);
+            renderCart();
+        }
+
+        function clearCart() {
+            localStorage.removeItem('cart');
+            renderCart();
+            updateCartCounter();
+        }
+
+        function calculateTotal(cart) {
+            return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+        }
+
+        function renderCart() {
+            const cart = getCart();
+            const cartItemsDiv = document.getElementById('cartItems');
+            const cartSummaryDiv = document.getElementById('cartSummary');
+            const emptyCartDiv = document.getElementById('emptyCart');
+            const totalPriceSpan = document.getElementById('totalPrice');
+
+            if (!cartItemsDiv) return;
+
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '';
+                if (cartSummaryDiv) cartSummaryDiv.style.display = 'none';
+                if (emptyCartDiv) emptyCartDiv.style.display = 'block';
+                return;
+            }
+
+            if (emptyCartDiv) emptyCartDiv.style.display = 'none';
+            if (cartSummaryDiv) cartSummaryDiv.style.display = 'block';
+
+            cartItemsDiv.innerHTML = cart.map(item => `
+        <div class="cart-item">
+            <div class="item-info">
+                <div class="item-name">${item.name}</div>
+                <div class="item-price">$${item.price.toFixed(2)} each</div>
+                <div class="quantity-controls">
+                    <button class="quantity-btn" onclick="updateQuantity(${item.productId}, -1)">-</button>
+                    <span class="quantity-display">${item.quantity}</span>
+                    <button class="quantity-btn" onclick="updateQuantity(${item.productId}, 1)">+</button>
+                </div>
+                <div style="font-weight: bold; color: #28a745;">
+                    Subtotal: $${(item.price * item.quantity).toFixed(2)}
+                </div>
+            </div>
+            <button class="remove-btn" onclick="removeFromCart(${item.productId})">
+                🗑️ Remove
+            </button>
+        </div>
+    `).join('');
+
+            if (totalPriceSpan) {
+                totalPriceSpan.textContent = calculateTotal(cart);
+            }
+        }
+
+        function goBack() {
+            window.location.href = '/product/bouquets';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCounter();
+
+            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = parseInt(this.getAttribute('data-product-id'));
+                    const productName = this.getAttribute('data-product-name');
+                    const productPrice = parseFloat(this.getAttribute('data-product-price'));
+
+                    addToCart(productId, productName, productPrice);
+                });
+            });
+
+            if (document.getElementById('cartItems')) {
+                renderCart();
+            }
+        });
+    </script>
 
 </main>
 <footer class="footer">

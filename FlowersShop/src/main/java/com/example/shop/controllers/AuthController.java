@@ -70,7 +70,6 @@ public class AuthController {
         return new ResponseEntity<>("", headers, HttpStatus.SEE_OTHER);
     }
 
-
     @PostMapping("/process-register")
     public ResponseEntity<String> processRegister(
             @RequestParam String name,

@@ -1,5 +1,6 @@
 package com.example.shop.service;
 
+import com.example.shop.dto.SalesDTO;
 import com.example.shop.model.User;
 import com.example.shop.model.Product;
 import com.example.shop.model.Sale;
@@ -25,8 +26,8 @@ public class SaleService {
         return saleRepository.findAll();
     }
 
-    public void makePurchase(int buyerId, int productId, int quantity) {
-        User user = usersRepositoryCrud.findById(buyerId).orElseThrow();
+    public Sale makePurchase(int userId, int productId, int quantity) {
+        User user = usersRepositoryCrud.findById(userId).orElseThrow();
         Product product = productRepositoryCrud.findById(productId).orElseThrow();
 
         if (product.getQuantity() < quantity) {
@@ -36,9 +37,12 @@ public class SaleService {
         sale.setUser(user);
         sale.setProduct(product);
         sale.setQuantity(quantity);
-        saleRepository.save(sale);
+        Sale savedSale = saleRepository.save(sale);
 
         product.setQuantity(product.getQuantity() - quantity);
         productRepositoryCrud.save(product);
+
+        return savedSale;
     }
+
 }

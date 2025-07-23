@@ -39,7 +39,7 @@
             <a th:href="@{/home}">About us</a>
         </div>
         <div class="category">
-            <a th:href="@{/bouquets}">Bouquets</a>
+            <a th:href="@{product/bouquets}">Bouquets</a>
         </div>
         <div class="category">
             <a th:href="@{/main/plants}">Plants</a>
@@ -65,21 +65,23 @@
         <div class="dashboard-cards">
             <div class="dashboard-card">
                 <h4>TOTAL PRODUCTS</h4>
-                <div class="number" id="totalProducts">-</div>
+                <div class="number" id="totalProducts">[[${allProducts.size()}]]</div>
             </div>
             <div class="dashboard-card">
                 <h4>TODAY SALES</h4>
-                <div class="number" id="todaySales">-</div>
+                <div class="number" id="todaySales">[[${allSales.size()}]]</div>
             </div>
             <div class="dashboard-card">
-                <h4>TOTAL CUSTOMERS</h4>
-                <div class="number" id="totalCustomers">-</div>
-            </div>
-            <div class="dashboard-card">
-                <h4>TOTAL REVENUE</h4>
-                <div class="number" id="totalRevenue">-</div>
+                <h4>TOTAL USERS</h4>
+                <div class="number" id="totalUsers">[[${allUsers.size()}]]</div>
             </div>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('Admin dashboard loaded successfully');
+            });
+        </script>
 
         <div class="quick-actions">
             <h3> Quick actions</h3>
@@ -88,23 +90,14 @@
                 <a th:href="@{/product/add}" class="action-btn">add product</a>
                 <a th:href="@{/product/}" class="action-btn">update product </a>
                 <a th:href="@{/product/}" class="action-btn">delete product</a>
-                <a th:href="@{/admin/sales}" class="action-btn">list of sales</a>
+                <a th:href="@{/sale/}" class="action-btn">list of sales</a>
                 <a th:href="@{/user/}" class="action-btn">list of customers</a>
             </div>
         </div>
 
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('totalProducts').textContent = '12';
-            document.getElementById('todaySales').textContent = '5';
-            document.getElementById('totalCustomers').textContent = '23';
-            document.getElementById('totalRevenue').textContent = '₽2,450';
 
-            console.log('Admin dashboard loaded successfully');
-        });
-    </script>
 
 
 </main>

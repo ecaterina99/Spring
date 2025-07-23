@@ -28,7 +28,7 @@
             <a th:href="@{/home}">About us</a>
         </div>
         <div class="category">
-            <a th:href="@{/bouquets}">Bouquets</a>
+            <a th:href="@{/product/bouquets}">Bouquets</a>
         </div>
         <div class="category">
             <a th:href="@{/main/plants}">Plants</a>
@@ -37,35 +37,32 @@
             <a th:href="@{/main/gifts}">Gifts</a>
         </div>
         <div class="category">
-            <a th:href="@{contact}">Contact</a>
+            <a th:href="@{/home/contact}">Contact</a>
         </div>
     </nav>
 
-    <div class="user-container">
-        <div class="user-info">
-            <h1>[[${user.fullName}]] #[[${user.id}]]</h1>
+    <div class="product-container">
+        <div class="product">
+            <img th:src="@{${product.image}}" alt="image" width="600">
+
+        </div>
+
+        <div class="product-info">
+            <h1>[[${product.name}]]</h1>
             <ul>
-                <li>Id: [[${user.id}]]</li>
-                <li>Name: [[${user.fullName}]]</li>
-                <li>Email: [[${user.email}]]</li>
-                <li>Phone: [[${user.phone}]]</li>
-                <li>City: [[${user.city}]]</li>
-                <li>Address: [[${user.address}]]</li>
-                <li>Postal code: [[${user.postalCode}]]</li>
-                <li>Role: [[${user.role}]]</li>
-                <li>Sales:
-                    <span th:if="${user.sales == null or #lists.isEmpty(user.sales)}">
-        No sales yet
-    </span>
-                    <ul th:if="${user.sales != null and !#lists.isEmpty(user.sales)}">
-                        <li th:each="sale : ${user.sales}">
-                            Product: [[${sale.product.name}]], Quantity: [[${sale.quantity}]]
-                        </li>
-                    </ul>
-                </li>
+                <li>Description:<br>
+                    [[${product.description}]]</li>
+                <li>Price: [[${product.price}]]</li>
+                <li>Quantity: [[${product.quantity}]]</li>
+                <br>
+                <li><a class="all" th:href='${"/product/bouquets"}'>View all products</a></li>
             </ul>
+            <div class="add-to-cart">
+                <button type="submit" class="btn btn-primary">ADD TO CART</button>
+            </div>
         </div>
     </div>
+
 
 </main>
 <footer class="footer">

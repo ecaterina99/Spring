@@ -3,9 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>View</title>
+    <title>Sales</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/products.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-scope.css}">
 
 </head>
 
@@ -41,32 +42,22 @@
         </div>
     </nav>
 
-    <div class="user-container">
-        <div class="user-info">
-            <h1>[[${user.fullName}]] #[[${user.id}]]</h1>
-            <ul>
-                <li>Id: [[${user.id}]]</li>
-                <li>Name: [[${user.fullName}]]</li>
-                <li>Email: [[${user.email}]]</li>
-                <li>Phone: [[${user.phone}]]</li>
-                <li>City: [[${user.city}]]</li>
-                <li>Address: [[${user.address}]]</li>
-                <li>Postal code: [[${user.postalCode}]]</li>
-                <li>Role: [[${user.role}]]</li>
-                <li>Sales:
-                    <span th:if="${user.sales == null or #lists.isEmpty(user.sales)}">
-        No sales yet
-    </span>
-                    <ul th:if="${user.sales != null and !#lists.isEmpty(user.sales)}">
-                        <li th:each="sale : ${user.sales}">
-                            Product: [[${sale.product.name}]], Quantity: [[${sale.quantity}]]
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+
+    <div class="admin-panel">
+        <h1 class="titlePage">All users</h1>
+        <div class="intro-text">
+            Found [[${allSales.size()}]] sales.
         </div>
     </div>
-
+    <section class="sales-section">
+        <h1>List of sales: </h1>
+        <ul th:if="${allSales != null and !#lists.isEmpty(allSales)}">
+            <li th:each="sale : ${allSales}">
+                Customer: [[${sale.user.firstName}]] [[${sale.user.lastName}]] -  Purchase: [[${sale.product.name}]], Quantity: [[${sale.quantity}]]
+            </li>
+        </ul>
+        <p th:if="${allSales == null or #lists.isEmpty(allSales)}">No sales yet.</p>
+    </section>
 </main>
 <footer class="footer">
     Copyright © PEONY GROUP

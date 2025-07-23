@@ -6,9 +6,15 @@
     <title>Bouquets</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/products.css}">
+
 </head>
 
 <body>
+
+<div id="cartNotification" class="cart-notification">
+    Product added to cart!
+</div>
+
 <header>
     <div class="top-bar">
         <div class="delivery">Home delivery available in Romania | Free returns</div>
@@ -16,7 +22,7 @@
                <span th:if="${isAuthenticated == true and fullName != null and role != 'admin'}">
                 Welcome, <span th:text="${fullName}"></span>!
                 <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
-                <a th:href="@{/cart}" class="cart-link">Cart</a>
+<a th:href="@{/cart/}" class="cart-link">Cart <span id="cartCounter" class="cart-counter">0</span></a>
             </span>
             <span th:if="${isAuthenticated == true and fullName != null and role == 'admin'}">
                 Welcome, <span th:text="${fullName}"></span>!
@@ -39,7 +45,7 @@
             <a th:href="@{/home}">About us</a>
         </div>
         <div class="category">
-            <a th:href="@{/bouquets}">Bouquets</a>
+            <a th:href="@{/product/bouquets}">Bouquets</a>
         </div>
         <div class="category">
             <a th:href="@{/main/plants}">Plants</a>
@@ -64,134 +70,108 @@
         </div>
     </div>
 
-    <section class="products-section">
-        <div class="product-form">
-            
-            <div class="img">
-                <img th:src="@{/innerFolder/bouquets/3.jpg}" alt="Bouquets">
-            </div>
-            <div class="price">
-                <h3>White Avalanche</h3>
-                <h3>28$</h3>
-            </div>
-            <div>
-                <button class="btn" onclick="openPopup()">ADD TO CART</button>
-            </div>
-        </div>
 
+    <section class="bouquets-section">
         <div class="product-form">
-            <div class="img">
-                <img th:src="@{/innerFolder/bouquets/1.jpg}" alt="Bouquets">
+            <div class="product-card"  th:each="product : ${allProducts}"
+                 th:if="${product.category != null and product.category.toString().equalsIgnoreCase('bouquet')}">
+                <a th:href="@{'/product/info/' + ${product.id}}" style="text-decoration: none; color: inherit;">
+                <div class="img">
+                <img th:src="@{${product.image}}" alt="image">
             </div>
             <div class="price">
-                <h3>Lily Bouquet</h3>
-                <h3>35$</h3>
+                <div th:text="${product.name}"></div>
+                <div th:text="${product.price+' $'}"></div>
             </div>
-            <div>
-                <button class="btn" onclick="openPopup()">ORDER</button>
-            </div>
-        </div>
+                </a>
 
-        <div class="product-form">
-            <div class="img">
-                <img th:src="@{/innerFolder/bouquets/2.jpg}" alt="Bouquets">
-            </div>
-            <div class="price">
-                <h3>Rose & Eucalyptus</h3>
-                <h3>45$</h3>
-            </div>
-            <div>
-                <button class="btn" onclick="openPopup()">ORDER</button>
-            </div>
-        </div>
-
-        <div class="product-form">
-            <div class="img">
-                <img th:src="@{/innerFolder/bouquets/4.jpg}" alt="Bouquets">
-            </div>
-            <div class="price">
-                <h3>7 white peonies</h3>
-                <h3>50$</h3>
-            </div>
-            <div>
-                <button class="btn" onclick="openPopup()">ORDER</button>
-            </div>
-        </div>
-    </section>
-
-    <section class="products-section">
-        <div class="product-form">
-            <div class="img">
-                <img th:src="@{/innerFolder/bouquets/5.jpg}" alt="Bouquets">
-            </div>
-            <div class="price">
-                <h3>9 pink peonies</h3>
-                <h3>50$</h3>
-            </div>
-            <div>
-                <button class="btn" onclick="openPopup()">ORDER</button>
-            </div>
-        </div>
-
-        <div class="product-form">
-            <div class="img">
-                <img th:src="@{/innerFolder/bouquets/6.jpeg}" alt="Bouquets">
-            </div>
-            <div class="price">
-                <h3>Bubble gum</h3>
-                <h3>45$</h3>
-            </div>
-            <div>
-                <button class="btn" onclick="openPopup()">ORDER</button>
-            </div>
-        </div>
-
-        <div class="product-form">
-            <div class="img">
-                <img th:src="@{/innerFolder/bouquets/7.jpeg}" alt="Bouquets">
-            </div>
-            <div class="price">
-                <h3>Silvia peonies</h3>
-                <h3>55$</h3>
-            </div>
-            <div>
-                <button class="btn" onclick="openPopup()">ORDER</button>
-            </div>
-        </div>
-
-        <div class="product-form">
-            <div class="img">
-                <img th:src="@{/innerFolder/bouquets/8.jpeg}" alt="Bouquets">
-            </div>
-            <div class="price">
-                <h3>Pink dream</h3>
-                <h3>60$</h3>
-            </div>
-            <div>
-                <button class="btn" onclick="openPopup()">ORDER</button>
+                <button type="button" class="btn btn-primary add-to-cart-btn"
+                        th:data-product-id="${product.id}"
+                        th:data-product-name="${product.name}"
+                        th:data-product-price="${product.price}">
+                    ADD TO CART
+                </button>
             </div>
         </div>
     </section>
 </main>
 
-<div id="popupOverlay" class="overlay">
-    <div class="popup">
-        <h2>Great choice!</h2>
-        <h3>The item was added to the cart</h3>
-        <button class="close-btn" onclick="closePopup()">close</button>
-    </div>
-</div>
+    <script>
+        // Функции для работы с корзиной
+        function getCart() {
+            return JSON.parse(localStorage.getItem('cart') || '[]');
+        }
 
-<script>
-    function openPopup() {
-        document.getElementById('popupOverlay').style.display = 'flex';
-    }
+        function saveCart(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCounter();
+        }
 
-    function closePopup() {
-        document.getElementById('popupOverlay').style.display = 'none';
-    }
-</script>
+        function addToCart(productId, productName, productPrice) {
+            let cart = getCart();
 
+            // Проверяем, есть ли уже такой товар в корзине
+            const existingItem = cart.find(item => item.productId === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    productId: productId,
+                    name: productName,
+                    price: productPrice,
+                    quantity: 1
+                });
+            }
+
+            saveCart(cart);
+            showNotification('Product added to cart!');
+        }
+
+        function updateCartCounter() {
+            const cart = getCart();
+            const counter = document.getElementById('cartCounter');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            if (totalItems > 0) {
+                counter.textContent = totalItems;
+                counter.style.display = 'inline';
+            } else {
+                counter.style.display = 'none';
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('cartNotification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        function goToCart() {
+            window.location.href = '/cart/';
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCounter();
+
+            // Добавляем обработчики событий для всех кнопок "ADD TO CART"
+            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = parseInt(this.getAttribute('data-product-id'));
+                    const productName = this.getAttribute('data-product-name');
+                    const productPrice = parseFloat(this.getAttribute('data-product-price'));
+
+                    addToCart(productId, productName, productPrice);
+                });
+            });
+        });
+    </script>
 
 <footer class="footer">
     Copyright © PEONY GROUP
@@ -199,3 +179,45 @@
 
 </body>
 </html>
+
+
+
+<!--  <div class="modal fade" id="purchaseModal" tabindex="-1" aria-hidden="true">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title">Great choice!</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                              </div>
+                              <div class="modal-body">
+                                  The item was purchased successfully!
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+<script>
+                      document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+                          const quantity = document.getElementById('quantityInput').value;
+                          if (quantity <= 0) {
+                              e.preventDefault();
+                              alert('Quantity must be greater than 0');
+                              return false;
+                          }
+
+                      });
+                  </script>
+-->
+
+
+<!--   <form action="/sale/purchase" method="post" class="purchaseForm">
+       <input type="hidden" name="productId" th:value="${product.id}">
+       <input type="hidden" name="quantity" value="1">
+       <button type="submit" class="btn btn-primary">ADD TO CART</button>
+   </form>
+   <div th:if="${sale != null}">
+       <p>Purchase successful! Sale ID: <span th:text="${sale.id}"></span></p>
+   </div>
+   -->

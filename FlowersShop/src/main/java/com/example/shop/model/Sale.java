@@ -11,7 +11,7 @@ import lombok.Setter;
 public class Sale {
     @Id
     @GeneratedValue
-    public int id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -25,6 +25,5 @@ public class Sale {
 
     @Column(nullable = false)
     private int quantity;
-
 
 }

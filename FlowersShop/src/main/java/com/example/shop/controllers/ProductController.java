@@ -2,19 +2,16 @@ package com.example.shop.controllers;
 
 
 import com.example.shop.dto.ProductDTO;
-import com.example.shop.dto.ResponseDTO;
+import com.example.shop.dto.UserDTO;
 import com.example.shop.model.Product;
 import com.example.shop.service.ProductService;
+import com.example.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/product")
@@ -22,6 +19,9 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/")
     public ModelAndView listProducts() {
@@ -47,7 +47,6 @@ public class ProductController {
                                       @RequestParam(value="quantity",required = false)Integer quantity,
                                       @RequestParam(value="availability",required = false)Boolean availability,
                                       @RequestParam(required = false) String update
-
     )
 
      {
@@ -103,7 +102,37 @@ public class ProductController {
     @RequestMapping("/delete/{id}")
     public ModelAndView  deleteProduct(@PathVariable("id") int id) {
         productService.delete(id);
-        return new ModelAndView("redirect:/product");
+        return new ModelAndView("redirect:/product/");
     }
 
+    @GetMapping("/bouquets")
+    public ModelAndView listBouquetsWithUser(
+            @CookieValue(name = "authenticated", defaultValue = "no") String auth,
+            @CookieValue(name = "email", defaultValue = "guest") String email,
+            @CookieValue(name = "role", defaultValue = "buyer") String role
+    ) {
+        List<ProductDTO> productsDTO = productService.findAll();
+        List<ProductDTO> bouquets = productsDTO.stream()
+                .filter(product -> product.getCategory() != null)
+                .filter(product -> product.getCategory().toString().equalsIgnoreCase("bouquet"))
+                .toList();
+
+        ModelAndView modelAndView = new ModelAndView("bouquets");
+        modelAndView.addObject("allProducts", bouquets);
+
+        modelAndView.addObject("email", email);
+        modelAndView.addObject("role", role);
+
+        if ("yes".equals(auth)) {
+            modelAndView.addObject("isAuthenticated", true);
+            UserDTO user = userService.findByEmail(email);
+            if (user != null) {
+                modelAndView.addObject("fullName", user.getFullName());
+            }
+        } else {
+            modelAndView.addObject("isAuthenticated", false);
+        }
+
+        return modelAndView;
+    }
 }

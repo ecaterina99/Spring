@@ -52,17 +52,6 @@ public class HomeController {
         return modelAndView;
     }
 
-    @GetMapping("/bouquets")
-    public ModelAndView productsPage(
-            @CookieValue(name = "authenticated", defaultValue = "no") String auth,
-            @CookieValue(name = "email", defaultValue = "guest") String email,
-            @CookieValue(name = "role", defaultValue = "buyer") String role) {
-        ModelAndView modelAndView = new ModelAndView("bouquets");
-        addUserDataToModel(modelAndView, auth, email);
-        modelAndView.addObject("role", role);
-        return modelAndView;
-    }
-
     @GetMapping("/contact")
     public ModelAndView contactPage(
             @CookieValue(name = "authenticated", defaultValue = "no") String auth,
@@ -91,5 +80,4 @@ public class HomeController {
         addUserDataToModel(modelAndView, auth, email);
         return modelAndView;
     }
-
 }

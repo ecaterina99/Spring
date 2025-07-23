@@ -1,13 +1,10 @@
 package com.example.shop.controllers;
-
-import com.example.shop.dto.SalesDTO;
 import com.example.shop.model.Sale;
-import com.example.shop.repository.UsersRepositoryCrud;
-import com.example.shop.repository.ProductRepositoryCrud;
 import com.example.shop.service.SaleService;
+import com.example.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -18,26 +15,11 @@ public class SaleController {
     @Autowired
     private SaleService saleService;
     @Autowired
-    private UsersRepositoryCrud usersRepositoryCrud;
-    @Autowired
-    private ProductRepositoryCrud productRepositoryCrud;
+    private UserService userService;
 
-
-    @GetMapping("/all")
-    public List<Sale> getAllSales() {
-        return saleService.findAll();
+    @GetMapping("/")
+    public ModelAndView listSales() {
+        List<Sale> sales = saleService.findAll();
+        return new ModelAndView("sales/sales", "allSales", sales);
     }
-
-
-    @PostMapping("/request")
-    public ResponseEntity<String> makePurchase(@RequestBody SalesDTO request) {
-        try {
-            saleService.makePurchase(request.getUserId(), request.getProductId(), request.getQuantity()
-            );
-            return ResponseEntity.ok("Success");
-        }catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
 }

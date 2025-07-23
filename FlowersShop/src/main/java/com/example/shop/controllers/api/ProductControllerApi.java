@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-
+/*
 @RestController
 @RequestMapping("/product")
 public class ProductControllerApi {
@@ -62,4 +62,6 @@ public class ProductControllerApi {
         return ResponseEntity.badRequest().build();
     }
 }
+
+ */
 
