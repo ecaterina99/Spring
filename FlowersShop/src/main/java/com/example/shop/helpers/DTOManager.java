@@ -12,10 +12,11 @@ import java.util.List;
 @Component
 public class DTOManager {
 
+    // Converts Product entity to ProductDTO with availability calculation
     public ProductDTO productToDto(Product product) {
         return productToDto(product, true);
     }
-
+// Converts Product entity to ProductDTO with optional deep conversion
     public ProductDTO productToDto(Product product, boolean deep) {
         if (product == null) return null;
         ProductDTO productDTO = new ProductDTO();
@@ -27,19 +28,12 @@ public class DTOManager {
         productDTO.setBarcode(product.getBarcode());
         productDTO.setImage(product.getImage());
         productDTO.setQuantity(product.getQuantity());
-        productDTO.setAvailability(isAvailable(product.getQuantity()));
+        productDTO.setAvailability(product.getQuantity() > 0);
 
         return productDTO;
     }
 
-    private boolean isAvailable(int quantity) {
-        if (quantity <= 0) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
+//Converts User entity to UserDTO
     public UserDTO userToDto(User user) {
         return userToDto(user, true);
     }
@@ -62,5 +56,19 @@ public class DTOManager {
             userDTO.setSales(sales);
         }
         return userDTO;
+    }
+
+    private String buildFullName(String firstName, String lastName) {
+        StringBuilder fullName = new StringBuilder();
+        if (firstName != null && !firstName.trim().isEmpty()) {
+            fullName.append(firstName);
+        }
+        if (lastName != null && !lastName.trim().isEmpty()) {
+            if (!fullName.isEmpty()) {
+                fullName.append(" ");
+            }
+            fullName.append(lastName);
+        }
+        return fullName.toString();
     }
 }

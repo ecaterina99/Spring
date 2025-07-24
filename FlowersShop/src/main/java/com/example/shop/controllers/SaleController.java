@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-
+/**
+ * REST Controller for sales-related operations
+ */
 @RestController
 @RequestMapping("/sale")
 public class SaleController {
@@ -15,7 +17,10 @@ public class SaleController {
     public SaleController(SaleService saleService) {
         this.saleService = saleService;
     }
-
+    /**
+     * Retrieves and displays all sales records
+     * @return ModelAndView with sales list
+     */
     @GetMapping("/")
     public ModelAndView listSales() {
         List<Sale> sales = saleService.findAll();

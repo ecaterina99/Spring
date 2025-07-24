@@ -165,7 +165,6 @@ public class CartController {
         }
     }
 
-
     @PostMapping("/remove")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> removeFromCart(

@@ -2,6 +2,8 @@ package com.example.shop.controllers;
 
 import com.example.shop.dto.ProductDTO;
 import com.example.shop.dto.UserDTO;
+import com.example.shop.helpers.AuthUtils;
+import com.example.shop.helpers.ViewUtils;
 import com.example.shop.model.Sale;
 import com.example.shop.service.ProductService;
 import com.example.shop.service.SaleService;
@@ -21,15 +23,13 @@ public class AdminController {
     private final ProductService productService;
     private final SaleService saleService;
     private final UserService userService;
+    private final ViewUtils viewUtils;
 
-    public AdminController(ProductService productService, SaleService saleService, UserService userService) {
+    public AdminController(ProductService productService, ViewUtils viewUtils, SaleService saleService, UserService userService) {
         this.productService = productService;
         this.saleService = saleService;
         this.userService = userService;
-    }
-
-    private boolean isAdmin(String auth, String role) {
-        return "yes".equals(auth) && "admin".equals(role);
+        this.viewUtils = viewUtils;
     }
     /**
      * Displays admin dashboard with statistics and data overview
@@ -40,19 +40,14 @@ public class AdminController {
             @CookieValue(name = "role", defaultValue = "buyer") String role,
             @CookieValue(name = "email", defaultValue = "guest") String email
     ) {
-        if (!isAdmin(auth, role)) {
+        // Security check - redirect non-admin users
+        if (!AuthUtils.isAdmin(auth, role)) {
             return new ModelAndView("redirect:/auth/login");
         }
-
         ModelAndView modelAndView = new ModelAndView("dashboard");
-        modelAndView.addObject("isAuthenticated", "yes".equals(auth));
-        modelAndView.addObject("role", role);
+        viewUtils.addAuthenticationData(modelAndView, auth, email, role);
 
-        UserDTO user = userService.findByEmail(email);
-        if (user != null) {
-            modelAndView.addObject("fullName", user.getFullName());
-        }
-
+        // Load dashboard data
         List<ProductDTO> allProducts = productService.findAll();
         List<Sale> allSales = saleService.findAll();
         List<UserDTO> allUsers = userService.findAllUsers();

@@ -10,65 +10,20 @@
 </head>
 
 <body>
-<header>
-    <div id="cartNotification" class="cart-notification">
-        Product added to cart!
-    </div>
-
-    <div class="top-bar">
-        <div class="delivery">Home delivery available in Romania | Free returns</div>
-        <div class="user">
-               <span th:if="${isAuthenticated == true and fullName != null and role != 'admin'}">
-                Welcome, <span th:text="${fullName}"></span>!
-                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
-<a th:href="@{/cart/}" class="cart-link">Cart <span id="cartCounter" class="cart-counter">0</span></a>
-            </span>
-            <span th:if="${isAuthenticated == true and fullName != null and role == 'admin'}">
-                Welcome, <span th:text="${fullName}"></span>!
-                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
-                <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
-            </span>
-            <span th:if="${isAuthenticated == false or isAuthenticated == null}">
-                <a th:href="@{/auth/login}">Log in</a> |
-                <a th:href="@{/auth/register}">Register</a> |
-                <a th:href="@{/cart}" class="cart-link">Cart</a>
-            </span>
-        </div>
-    </div>
-    <div class="logo">Peony Bloom</div>
-</header>
-
-
 <main>
-    <nav>
-        <div class="category">
-            <a th:href="@{/home}">About us</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/product/bouquets}">Bouquets</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/main/plants}">Plants</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/main/gifts}">Gifts</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/home/contact}">Contact</a>
-        </div>
-    </nav>
-
+    <div th:replace="/fragments/common_fragments :: mainHeader"></div>
+    <!-- Product information section -->
     <div class="product-container">
         <div class="product">
             <img th:src="@{${product.image}}" alt="image" width="600">
-
         </div>
 
         <div class="product-info">
             <h1>[[${product.name}]]</h1>
             <ul>
                 <li>Description:<br>
-                    [[${product.description}]]</li>
+                    [[${product.description}]]
+                </li>
                 <li>Price: [[${product.price}]]</li>
                 <li>Quantity: [[${product.quantity}]]</li>
                 <br>
@@ -81,15 +36,11 @@
                     th:data-product-price="${product.price}">
                 ADD TO CART
             </button>
-
         </div>
     </div>
     <script src="/js/cart.js"></script>
-
 </main>
-
-<footer class="footer">
-    Copyright © PEONY GROUP
-</footer>
+<!-- Footer -->
+<div th:replace="/fragments/common_fragments :: mainFooter"></div>
 </body>
 </html>

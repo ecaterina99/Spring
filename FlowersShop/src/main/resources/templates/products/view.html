@@ -6,41 +6,10 @@
     <title>View</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/products.css}">
-
 </head>
-
 <body>
-<header>
-    <div class="top-bar">
-        <div class="delivery">Home delivery available in Romania | Free returns</div>
-        <div class="user">
-            Welcome, <span th:text="${fullName}"></span>!
-            <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
-            <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
-        </div>
-    </div>
-    <div class="logo">Peony Bloom</div>
-</header>
-
 <main>
-    <nav>
-        <div class="category">
-            <a th:href="@{/home}">About us</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/product/bouquets}">Bouquets</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/main/plants}">Plants</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/main/gifts}">Gifts</a>
-        </div>
-        <div class="category">
-            <a th:href="@{contact}">Contact</a>
-        </div>
-    </nav>
-
+    <div th:replace="/fragments/common_fragments :: mainHeader"></div>
     <div class="product-container">
         <div class="product">
            <img th:src="@{${product.image}}" alt="image" width="400">
@@ -62,8 +31,6 @@
 </div>
 
 </main>
-<footer class="footer">
-    Copyright © PEONY GROUP
-</footer>
+<div th:replace="/fragments/common_fragments :: mainFooter"></div>
 </body>
 </html>

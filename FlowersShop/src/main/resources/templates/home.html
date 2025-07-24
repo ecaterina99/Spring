@@ -9,49 +9,8 @@
 </head>
 
 <body>
-<header>
-    <div class="top-bar">
-        <div class="delivery">Home delivery available in Romania | Free returns</div>
-        <div class="user">
-               <span th:if="${isAuthenticated == true and fullName != null and role != 'admin'}">
-                Welcome, <span th:text="${fullName}"></span>!
-                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
-                <a th:href="@{/cart}" class="cart-link">Cart</a>
-            </span>
-            <span th:if="${isAuthenticated == true and fullName != null and role == 'admin'}">
-                Welcome, <span th:text="${fullName}"></span>!
-                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
-                <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
-            </span>
-            <span th:if="${isAuthenticated == false or isAuthenticated == null}">
-                <a th:href="@{/auth/login}">Log in</a> |
-                <a th:href="@{/auth/register}">Register</a> |
-                <a th:href="@{/cart}" class="cart-link">Cart</a>
-            </span>
-        </div>
-    </div>
-    <div class="logo">Peony Bloom</div>
-</header>
-
 <main>
-    <nav>
-        <div class="category">
-            <a th:href="@{/home}">About us</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/product/bouquets}">Bouquets</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/main/plants}">Plants</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/main/gifts}">Gifts</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/contact}">Contact</a>
-        </div>
-    </nav>
-
+    <div th:replace="/fragments/common_fragments :: mainHeader"></div>
     <section class="hero-section">
         <div class="hero-left">
             <div class="hero-box">
@@ -93,12 +52,8 @@
             </p>
         </div>
     </section>
-
+    <script src="/js/cart.js"></script>
 </main>
-
-<footer class="footer">
-    Copyright © PEONY GROUP
-</footer>
-
+<div th:replace="/fragments/common_fragments :: mainFooter"></div>
 </body>
 </html>

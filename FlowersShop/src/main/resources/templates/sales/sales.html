@@ -9,40 +9,9 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap-scope.css}">
 
 </head>
-
 <body>
-<header>
-    <div class="top-bar">
-        <div class="delivery">Home delivery available in Romania | Free returns</div>
-        <div class="user">
-            Welcome, <span th:text="${fullName}"></span>!
-            <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
-            <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
-        </div>
-    </div>
-    <div class="logo">Peony Bloom</div>
-</header>
-
 <main>
-    <nav>
-        <div class="category">
-            <a th:href="@{/home}">About us</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/bouquets}">Bouquets</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/main/plants}">Plants</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/main/gifts}">Gifts</a>
-        </div>
-        <div class="category">
-            <a th:href="@{contact}">Contact</a>
-        </div>
-    </nav>
-
-
+    <div th:replace="/fragments/common_fragments :: mainHeader"></div>
     <div class="admin-panel">
         <h1 class="titlePage">All users</h1>
         <div class="intro-text">
@@ -59,8 +28,6 @@
         <p th:if="${allSales == null or #lists.isEmpty(allSales)}">No sales yet.</p>
     </section>
 </main>
-<footer class="footer">
-    Copyright © PEONY GROUP
-</footer>
+<div th:replace="/fragments/common_fragments :: mainFooter"></div>
 </body>
 </html>

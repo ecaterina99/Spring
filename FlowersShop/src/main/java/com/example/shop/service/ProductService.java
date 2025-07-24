@@ -24,11 +24,15 @@ public class ProductService {
         this.dtoManager = dtoManager;
     }
 
+    //Converts Product entity to ProductDTO
     private ProductDTO productToDto(Product product) {
         return dtoManager.productToDto(product);
     }
-
+//Converts ProductDTO to Product entity with validation
     private Product productDtoToProduct(ProductDTO productDTO) {
+        if (productDTO == null) {
+            throw new IllegalArgumentException("ProductDTO cannot be null");
+        }
         Product product = new Product();
         product.setName(productDTO.getName());
         product.setPrice(productDTO.getPrice());
@@ -39,25 +43,25 @@ public class ProductService {
         product.setQuantity(productDTO.getQuantity());
         return product;
     }
-
+//Retrieves all products and converts them to DTOs
     public List<ProductDTO> findAll() {
         List<ProductDTO> productDTOList = new ArrayList<>();
         Iterable<Product> iterableProducts = productRepositoryCrud.findAll();
         for (Product product : iterableProducts) {
             ProductDTO productDTO = productToDto(product);
-            productDTOList.add(productDTO);
-        }
+            if (productDTO != null) {
+                productDTOList.add(productDTO);
+            }        }
         return productDTOList;
     }
 
+    //Finds product by ID and converts to DTO
     public ProductDTO findById(int id) {
         Optional<Product> productOptional = productRepositoryCrud.findById(id);
-        Product product;
-        product = productOptional.orElse(null);
-        return productToDto(product);
+        return productOptional.map(this::productToDto).orElse(null);
     }
 
-
+//Saves a new product with validation
     public ProductDTO save(ProductDTO productDTO) {
         try {
             Product product = productDtoToProduct(productDTO);
@@ -67,61 +71,58 @@ public class ProductService {
             throw new RuntimeException("Error saving product: " + e.getMessage(), e);
         }
     }
-
+//Updates existing product with partial data
     public ProductDTO update(ProductDTO productDTO, int id) {
         try {
             Optional<Product> existingProductOpt = productRepositoryCrud.findById(id);
             if (existingProductOpt.isEmpty()) {
                 return null;
             }
-
             Product existingProduct = existingProductOpt.get();
-
-            if (productDTO.getName() != null && !productDTO.getName().trim().isEmpty()) {
-                existingProduct.setName(productDTO.getName());
-            }
-            if (productDTO.getDescription() != null && !productDTO.getDescription().trim().isEmpty()) {
-                existingProduct.setDescription(productDTO.getDescription());
-            }
-            if (productDTO.getCategory() != null) {
-                existingProduct.setCategory(productDTO.getCategory());
-            }
-            if (productDTO.getImage() != null) {
-                existingProduct.setImage(productDTO.getImage());
-            }
-            if (productDTO.getBarcode() != null && !productDTO.getBarcode().trim().isEmpty()) {
-                existingProduct.setBarcode(productDTO.getBarcode());
-            }
-            if (productDTO.getQuantity() >= 0) {
-                existingProduct.setQuantity(productDTO.getQuantity());
-            }
-            if (productDTO.getPrice() > 0) {
-                existingProduct.setPrice(productDTO.getPrice());
-            }
+            updateProductFields(existingProduct, productDTO);
 
             Product savedProduct = productRepositoryCrud.save(existingProduct);
             return productToDto(savedProduct);
 
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Error updating product: " + e.getMessage(), e);
         }
     }
-
-    public boolean delete(int id) {
-        productRepositoryCrud.deleteById(id);
-        Optional<Product> productOptional = productRepositoryCrud.findById(id);
-        return productOptional.isEmpty();
-    }
-
-    private List<ProductDTO> productsToDTOs(List<Product> products) {
-        List<ProductDTO> productDTOs = new ArrayList<>();
-        for (Product product : products) {
-            ProductDTO productDTO = productToDto(product);
-            productDTOs.add(productDTO);
+//Helper method to update product fields with null checks
+    private void updateProductFields(Product existingProduct, ProductDTO productDTO) {
+        if (productDTO.getName() != null && !productDTO.getName().trim().isEmpty()) {
+            existingProduct.setName(productDTO.getName());
         }
-        return productDTOs;
+        if (productDTO.getDescription() != null && !productDTO.getDescription().trim().isEmpty()) {
+            existingProduct.setDescription(productDTO.getDescription());
+        }
+        if (productDTO.getCategory() != null) {
+            existingProduct.setCategory(productDTO.getCategory());
+        }
+        if (productDTO.getImage() != null) {
+            existingProduct.setImage(productDTO.getImage());
+        }
+        if (productDTO.getBarcode() != null && !productDTO.getBarcode().trim().isEmpty()) {
+            existingProduct.setBarcode(productDTO.getBarcode());
+        }
+        if (productDTO.getQuantity() >= 0) {
+            existingProduct.setQuantity(productDTO.getQuantity());
+        }
+        if (productDTO.getPrice() > 0) {
+            existingProduct.setPrice(productDTO.getPrice());
+        }
+    }
+// Deletes product by ID
+    public boolean delete(int id) {
+        try {
+            productRepositoryCrud.deleteById(id);
+            return !productRepositoryCrud.existsById(id);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
+//Saves uploaded image file with UUID naming
     public String saveImage(MultipartFile imageFile) {
         if (imageFile.isEmpty()) return null;
 

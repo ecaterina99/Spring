@@ -6,58 +6,13 @@
     <title>Bouquets</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/products.css}">
-
 </head>
-
 <body>
-
-<div id="cartNotification" class="cart-notification">
+<main>
+    <div th:replace="/fragments/common_fragments :: mainHeader"></div>
+    <div id="cartNotification" class="cart-notification">
     Product added to cart!
 </div>
-
-<header>
-    <div class="top-bar">
-        <div class="delivery">Home delivery available in Romania | Free returns</div>
-        <div class="user">
-               <span th:if="${isAuthenticated == true and fullName != null and role != 'admin'}">
-                Welcome, <span th:text="${fullName}"></span>!
-                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
-<a th:href="@{/cart/}" class="cart-link">Cart <span id="cartCounter" class="cart-counter">0</span></a>
-            </span>
-            <span th:if="${isAuthenticated == true and fullName != null and role == 'admin'}">
-                Welcome, <span th:text="${fullName}"></span>!
-                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
-                <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
-            </span>
-            <span th:if="${isAuthenticated == false or isAuthenticated == null}">
-                <a th:href="@{/auth/login}">Log in</a> |
-                <a th:href="@{/auth/register}">Register</a> |
-                <a th:href="@{/cart}" class="cart-link">Cart</a>
-            </span>
-        </div>
-    </div>
-    <div class="logo">Peony Bloom</div>
-</header>
-
-<main>
-    <nav>
-        <div class="category">
-            <a th:href="@{/home}">About us</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/product/bouquets}">Bouquets</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/main/plants}">Plants</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/main/gifts}">Gifts</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/home/contact}">Contact</a>
-        </div>
-    </nav>
-
     <div class="intro">
         <h1 class="titlePage">Bouquets</h1>
         <div class="intro-text">
@@ -69,7 +24,6 @@
             flowers, all with free nominated day delivery. Discover our wide selection of gorgeous bouquets today.
         </div>
     </div>
-
 
     <section class="bouquets-section">
         <div class="product-form">
@@ -96,10 +50,7 @@
     </section>
     <script src="/js/cart.js"></script>
 </main>
-
-<footer class="footer">
-    Copyright © PEONY GROUP
-</footer>
+<div th:replace="/fragments/common_fragments :: mainFooter"></div>
 
 </body>
 </html>

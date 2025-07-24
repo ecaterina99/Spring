@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-
+/**
+ * Controller for user management operations
+ */
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -19,7 +21,10 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
+    /**
+     * Displays list of all registered users
+     * @return ModelAndView with users list
+     */
     @GetMapping("/")
     public ModelAndView listCustomers() {
         List<UserDTO> userDTOs = userService.findAllUsers();

@@ -25,7 +25,7 @@ public class AuthController {
         this.authService = authService;
         this.userService = userService;
     }
-
+//Displays login page with optional error message
     @GetMapping("/login")
     public ModelAndView login(@RequestParam(required = false) String error) {
         ModelAndView modelAndView = new ModelAndView("login");
@@ -34,7 +34,7 @@ public class AuthController {
         }
         return modelAndView;
     }
-
+// Displays registration page with optional error message
     @GetMapping("/register")
     public ModelAndView register(@RequestParam(required = false) String error) {
         ModelAndView modelAndView = new ModelAndView("register");
@@ -47,13 +47,12 @@ public class AuthController {
     @GetMapping("/logout")
     public ResponseEntity<String> logout() {
         HttpHeaders headers = new HttpHeaders();
-        String yesterdayStr = "Tue, 29 Oct 1970 16:56:32 GMT";
-
-        headers.add("Set-Cookie", "authenticated=; Path=/; Expires=" + yesterdayStr);
-        headers.add("Set-Cookie", "email=; Path=/; Expires=" + yesterdayStr);
-        headers.add("Set-Cookie", "role=; Path=/; Expires=" + yesterdayStr);
+        String expiredDate = "Tue, 29 Oct 1970 16:56:32 GMT";
+        // Clear all authentication cookies
+        clearCookie(headers, "authenticated", expiredDate);
+        clearCookie(headers, "email", expiredDate);
+        clearCookie(headers, "role", expiredDate);
         headers.add("Location", "/auth/login");
-
         return new ResponseEntity<>("", headers, HttpStatus.SEE_OTHER);
     }
 
@@ -68,21 +67,16 @@ public class AuthController {
 
         if (valid) {
             UserDTO userDTO = userService.findByEmail(email);
-            headers.add("Set-Cookie", "authenticated=yes; Path=/");
-            headers.add("Set-Cookie", "email=" + email + "; Path=/");
-            headers.add("Set-Cookie", "role=" + userDTO.getRole().name() + "; Path=/");
+            setAuthenticationCookies(headers, email, userDTO.getRole().name());
 
             if (userDTO.getRole() == User.Role.admin) {
                 headers.add("Location", "/admin/dashboard");
-            } else {
-                headers.add("Location", "/home");
             }
         } else {
             headers.add("Location", "/auth/login");
         }
         return new ResponseEntity<>("", headers, HttpStatus.SEE_OTHER);
     }
-
     @PostMapping("/process-register")
     public ResponseEntity<String> processRegister(
             @RequestParam String name,
@@ -100,14 +94,19 @@ public class AuthController {
             User user = authService.registerUser(name, surname, phone, country, city, address, postalCode, email, password);
             System.out.println("User registered successfully: " + user.getEmail());
 
-            headers.add("Set-Cookie", "authenticated=yes; Path=/");
-            headers.add("Set-Cookie", "email=" + email + "; Path=/");
-            headers.add("Set-Cookie", "role=" + user.getRole().name() + "; Path=/");
-            headers.add("Location", "/home");
+            setAuthenticationCookies(headers, email, user.getRole().name());            headers.add("Location", "/home");
         } catch (RuntimeException e) {
             System.err.println("Registration error: " + e.getMessage());
             headers.add("Location", "/auth/register?error=" + e.getMessage());
         }
         return new ResponseEntity<>("", headers, HttpStatus.SEE_OTHER);
+    }
+
+    private void setAuthenticationCookies(HttpHeaders headers, String email, String role) {
+        headers.add("Set-Cookie", "authenticated=yes; Path=/");
+        headers.add("Set-Cookie", "email=" + email + "; Path=/");
+        headers.add("Set-Cookie", "role=" + role + "; Path=/");
+    }  private void clearCookie(HttpHeaders headers, String cookieName, String expiredDate) {
+        headers.add("Set-Cookie", cookieName + "=; Path=/; Expires=" + expiredDate);
     }
 }

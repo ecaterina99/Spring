@@ -21,6 +21,6 @@ public class PasswordService {
         return passwordEncoder.matches(password, hashedPassword);
     }
     public boolean isPasswordStrong(String password) {
-        return password.length() > 6;
+        return password.length() >= 6;
     }
 }

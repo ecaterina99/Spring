@@ -33,7 +33,6 @@ public class SaleService {
         this.productRepository = productRepository;
     }
 
-
     public List<Sale> findAll() {
         return saleRepository.findAll();
     }
