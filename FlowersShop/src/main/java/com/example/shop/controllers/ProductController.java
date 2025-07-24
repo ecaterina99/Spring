@@ -27,8 +27,8 @@ public class ProductController {
 
     @GetMapping("/")
     public ModelAndView listProducts() {
-    List<ProductDTO> productsDTO = productService.findAll();
-    return new ModelAndView("products/products","allProducts",productsDTO);
+        List<ProductDTO> productsDTO = productService.findAll();
+        return new ModelAndView("products/products","allProducts",productsDTO);
     }
 
     @GetMapping("/{id}")
@@ -55,7 +55,7 @@ public class ProductController {
                                       @RequestParam(value="availability",required = false)Boolean availability,
                                       @RequestParam(required = false) String update
     )
-     {
+    {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(id);
         productDTO.setName(name);

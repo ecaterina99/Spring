@@ -1,3 +1,4 @@
+
 package com.example.shop.service;
 
 import com.example.shop.dto.UserDTO;
@@ -11,7 +12,7 @@ public class AuthorizationService {
     private final UserService userService;
 
     public AuthorizationService(PasswordService passwordService, UserService userService) {
-       this.passwordService = passwordService;
+        this.passwordService = passwordService;
         this.userService = userService;
     }
 
@@ -72,7 +73,7 @@ public class AuthorizationService {
         newUser.setEmail(email);
         newUser.setPasswordHash(hashedPassword);
 
-         return userService.register(newUser);
+        return userService.register(newUser);
 
     }
 

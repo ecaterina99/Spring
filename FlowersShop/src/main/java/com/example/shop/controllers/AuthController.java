@@ -18,11 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/auth")
 public class AuthController {
 
- private final AuthorizationService authService;
+    private final AuthorizationService authService;
     private final UserService userService;
 
     public AuthController(AuthorizationService authService, UserService userService) {
-         this.authService = authService;
+        this.authService = authService;
         this.userService = userService;
     }
 
@@ -43,8 +43,6 @@ public class AuthController {
         }
         return modelAndView;
     }
-
-
 
     @GetMapping("/logout")
     public ResponseEntity<String> logout() {
@@ -68,15 +66,15 @@ public class AuthController {
         System.out.println("Received " + email + " and " + password + (valid ? " (valid)" : " (invalid)"));
         HttpHeaders headers = new HttpHeaders();
 
-        if (valid ) {
+        if (valid) {
             UserDTO userDTO = userService.findByEmail(email);
             headers.add("Set-Cookie", "authenticated=yes; Path=/");
             headers.add("Set-Cookie", "email=" + email + "; Path=/");
             headers.add("Set-Cookie", "role=" + userDTO.getRole().name() + "; Path=/");
 
-            if(userDTO.getRole()==User.Role.admin){
+            if (userDTO.getRole() == User.Role.admin) {
                 headers.add("Location", "/admin/dashboard");
-            }else {
+            } else {
                 headers.add("Location", "/home");
             }
         } else {
@@ -99,7 +97,7 @@ public class AuthController {
     ) {
         HttpHeaders headers = new HttpHeaders();
         try {
-            User user = authService.registerUser(name,surname,phone,country,city,address,postalCode, email, password);
+            User user = authService.registerUser(name, surname, phone, country, city, address, postalCode, email, password);
             System.out.println("User registered successfully: " + user.getEmail());
 
             headers.add("Set-Cookie", "authenticated=yes; Path=/");

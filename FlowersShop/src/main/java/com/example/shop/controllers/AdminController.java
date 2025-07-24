@@ -31,7 +31,6 @@ public class AdminController {
     private boolean isAdmin(String auth, String role) {
         return "yes".equals(auth) && "admin".equals(role);
     }
-
     /**
      * Displays admin dashboard with statistics and data overview
      */
@@ -64,5 +63,4 @@ public class AdminController {
 
         return modelAndView;
     }
-
 }
