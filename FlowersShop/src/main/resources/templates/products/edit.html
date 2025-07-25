@@ -13,7 +13,7 @@
 
 <body>
 <main>
-    <div th:replace="/fragments/common_fragments :: mainHeader"></div>
+    <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
 
     <form action="" method="post">
         <div class="bootstrap-scope">
@@ -73,6 +73,6 @@
 </div>
 
 </main>
-<div th:replace="/fragments/common_fragments :: mainFooter"></div>
+<div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>
 </body>
 </html>

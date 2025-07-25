@@ -10,7 +10,7 @@
 
 <body>
 <main>
-    <div th:replace="/fragments/common_fragments :: mainHeader"></div>
+    <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
     <br>
     <div class="cart-container">
         <button class="back-btn" onclick="goBack()"> Back to Shop</button>
@@ -50,9 +50,13 @@
                 </div>
 
                 <div id="cartSummary" class="cart-summary">
-                    <div class="total-price">
-                        Total: $<span id="totalPrice" th:text="${#numbers.formatDecimal(totalPrice, 1, 2)}">0.00</span>
+                    <div class="price-and-count">
                     </div>
+                    <div id="cartCounter" class="cart-counter"> Total items: </div>
+                </div>
+                    <div class="total-price">
+                        Subtotal: $<span id="totalPrice" th:text="${#numbers.formatDecimal(totalPrice, 1, 2)}">0.00</span>
+
                     <button id="checkoutBtn" class="checkout-btn" onclick="checkout()">
                         Checkout
                     </button>
@@ -67,7 +71,7 @@
     <script src="/js/cart.js"></script>
 <br>
 </main>
-    <div th:replace="/fragments/common_fragments :: mainFooter"></div>
+<div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>
 
 </body>
 </html>

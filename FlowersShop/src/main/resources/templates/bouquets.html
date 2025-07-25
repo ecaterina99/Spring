@@ -9,7 +9,7 @@
 </head>
 <body>
 <main>
-    <div th:replace="/fragments/common_fragments :: mainHeader"></div>
+    <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
     <div id="cartNotification" class="cart-notification">
     Product added to cart!
 </div>
@@ -28,7 +28,7 @@
     <section class="bouquets-section">
         <div class="product-form">
             <div class="product-card"  th:each="product : ${allProducts}"
-                 th:if="${product.category != null and product.category.toString().equalsIgnoreCase('bouquet')}">
+                 th:if="${product.category != null and product.category.toString().equals('bouquet')}">
                 <a th:href="@{'/product/info/' + ${product.id}}" style="text-decoration: none; color: inherit;">
                 <div class="img">
                 <img th:src="@{${product.image}}" alt="image">
@@ -50,7 +50,7 @@
     </section>
     <script src="/js/cart.js"></script>
 </main>
-<div th:replace="/fragments/common_fragments :: mainFooter"></div>
+<div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>
 
 </body>
 </html>

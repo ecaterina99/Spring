@@ -20,4 +20,5 @@ public class UserDTO {
     private List<Sale> sales;
     private String passwordHash;
     private User.Role role;
+
 }

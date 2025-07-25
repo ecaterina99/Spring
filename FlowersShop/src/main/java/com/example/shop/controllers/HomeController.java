@@ -1,10 +1,5 @@
 package com.example.shop.controllers;
-
-import com.example.shop.dto.UserDTO;
 import com.example.shop.helpers.ViewUtils;
-import com.example.shop.service.AuthorizationService;
-import com.example.shop.service.UserService;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;

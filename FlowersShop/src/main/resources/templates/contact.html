@@ -10,7 +10,7 @@
 
 <body>
 <main>
-    <div th:replace="/fragments/common_fragments :: mainHeader"></div>
+    <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
     <div class="intro">
         <h1 class="titlePage">LEAVE US A MESSAGE</h1>
         <div class="intro-text">
@@ -54,6 +54,6 @@
     </section>
     <script src="/js/cart.js"></script>
 </main>
-<div th:replace="/fragments/common_fragments :: mainFooter"></div>
+<div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>
 </body>
 </html>

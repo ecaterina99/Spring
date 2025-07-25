@@ -11,7 +11,7 @@
 
 <body>
 <main>
-    <div th:replace="/fragments/common_fragments :: mainHeader"></div>
+    <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
     <!-- Product information section -->
     <div class="product-container">
         <div class="product">
@@ -41,6 +41,6 @@
     <script src="/js/cart.js"></script>
 </main>
 <!-- Footer -->
-<div th:replace="/fragments/common_fragments :: mainFooter"></div>
+<div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>
 </body>
 </html>

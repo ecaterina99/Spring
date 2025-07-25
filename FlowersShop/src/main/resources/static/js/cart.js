@@ -5,12 +5,12 @@ class CartManager {
 
     init() {
         document.addEventListener('DOMContentLoaded', () => {
-            this.updateCartCounter();
+            this.loadCartCount();
             this.bindEvents();
         });
     }
 
-    async addToCart(productId, productName, productPrice) {
+    async addToCart(productId) {
         try {
             const response = await this.apiRequest('/cart/add', {
                 method: 'POST',
@@ -132,11 +132,7 @@ class CartManager {
         }
         return await response.json();
     }
-
-    updateCartCounter() {
-        this.loadCartCount();
-    }
-
+////
     async loadCartCount() {
         try {
             const response = await fetch('/cart/count');
@@ -153,9 +149,11 @@ class CartManager {
         const counter = document.getElementById('cartCounter');
         if (!counter) return;
 
-        counter.textContent = count;
+        counter.textContent =  counter.textContent + count;
         counter.style.display = count > 0 ? 'inline' : 'none';
     }
+    ////
+
 
     showNotification(message, type = 'success') {
         const notification = document.getElementById('cartNotification');

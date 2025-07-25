@@ -11,7 +11,7 @@
 
 <body>
 <main>
-    <div th:replace="/fragments/common_fragments :: mainHeader"></div>
+    <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
 
     <div class="admin-panel">
         <h1 class="titlePage">All products</h1>
@@ -62,6 +62,6 @@
         </div>
     </section>
 </main>
-<div th:replace="/fragments/common_fragments :: mainFooter"></div>
+<div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>
 </body>
 </html>

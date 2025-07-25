@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -24,13 +25,13 @@ public class AdminController {
     private final SaleService saleService;
     private final UserService userService;
     private final ViewUtils viewUtils;
-
-    public AdminController(ProductService productService, ViewUtils viewUtils, SaleService saleService, UserService userService) {
+    public AdminController(ProductService productService, SaleService saleService, UserService userService, ViewUtils viewUtils) {
         this.productService = productService;
         this.saleService = saleService;
         this.userService = userService;
         this.viewUtils = viewUtils;
     }
+
     /**
      * Displays admin dashboard with statistics and data overview
      */
@@ -40,14 +41,14 @@ public class AdminController {
             @CookieValue(name = "role", defaultValue = "buyer") String role,
             @CookieValue(name = "email", defaultValue = "guest") String email
     ) {
-        // Security check - redirect non-admin users
         if (!AuthUtils.isAdmin(auth, role)) {
             return new ModelAndView("redirect:/auth/login");
         }
-        ModelAndView modelAndView = new ModelAndView("dashboard");
+        UserDTO user = userService.findByEmail(email);
+        ModelAndView modelAndView = new ModelAndView("dashboard", "user", user);
+        modelAndView.addObject("fullName", user.getFullName());
         viewUtils.addAuthenticationData(modelAndView, auth, email, role);
 
-        // Load dashboard data
         List<ProductDTO> allProducts = productService.findAll();
         List<Sale> allSales = saleService.findAll();
         List<UserDTO> allUsers = userService.findAllUsers();
@@ -59,3 +60,4 @@ public class AdminController {
         return modelAndView;
     }
 }
+

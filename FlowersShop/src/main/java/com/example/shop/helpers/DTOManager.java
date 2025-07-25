@@ -16,7 +16,8 @@ public class DTOManager {
     public ProductDTO productToDto(Product product) {
         return productToDto(product, true);
     }
-// Converts Product entity to ProductDTO with optional deep conversion
+
+    // Converts Product entity to ProductDTO with optional deep conversion
     public ProductDTO productToDto(Product product, boolean deep) {
         if (product == null) return null;
         ProductDTO productDTO = new ProductDTO();
@@ -33,7 +34,7 @@ public class DTOManager {
         return productDTO;
     }
 
-//Converts User entity to UserDTO
+    //Converts User entity to UserDTO
     public UserDTO userToDto(User user) {
         return userToDto(user, true);
     }
@@ -42,7 +43,7 @@ public class DTOManager {
         if (user == null) return null;
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
-        userDTO.setFullName(user.getFirstName()+" "+ user.getLastName());
+        userDTO.setFullName(user.getFirstName() + " " + user.getLastName());
         userDTO.setEmail(user.getEmail());
         userDTO.setPhone(user.getPhone());
         userDTO.setAddress(user.getAddress());
@@ -51,24 +52,10 @@ public class DTOManager {
         userDTO.setPasswordHash(user.getPasswordHash());
         userDTO.setRole(user.getRole());
 
-        if(deep){
-            List<Sale>sales = user.getSales();
+        if (deep) {
+            List<Sale> sales = user.getSales();
             userDTO.setSales(sales);
         }
         return userDTO;
-    }
-
-    private String buildFullName(String firstName, String lastName) {
-        StringBuilder fullName = new StringBuilder();
-        if (firstName != null && !firstName.trim().isEmpty()) {
-            fullName.append(firstName);
-        }
-        if (lastName != null && !lastName.trim().isEmpty()) {
-            if (!fullName.isEmpty()) {
-                fullName.append(" ");
-            }
-            fullName.append(lastName);
-        }
-        return fullName.toString();
     }
 }

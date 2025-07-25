@@ -5,7 +5,6 @@ import com.example.shop.dto.UserDTO;
 import com.example.shop.model.User;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class AuthorizationService {
     private final PasswordService passwordService;
@@ -58,7 +57,5 @@ public class AuthorizationService {
         newUser.setPasswordHash(hashedPassword);
 
         return userService.register(newUser);
-
     }
-
 }

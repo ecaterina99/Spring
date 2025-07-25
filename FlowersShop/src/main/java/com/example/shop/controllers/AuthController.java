@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * Authentication controller handling login, registration, and logout
  */
+
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
@@ -25,7 +26,7 @@ public class AuthController {
         this.authService = authService;
         this.userService = userService;
     }
-//Displays login page with optional error message
+
     @GetMapping("/login")
     public ModelAndView login(@RequestParam(required = false) String error) {
         ModelAndView modelAndView = new ModelAndView("login");
@@ -34,7 +35,7 @@ public class AuthController {
         }
         return modelAndView;
     }
-// Displays registration page with optional error message
+
     @GetMapping("/register")
     public ModelAndView register(@RequestParam(required = false) String error) {
         ModelAndView modelAndView = new ModelAndView("register");
@@ -71,12 +72,15 @@ public class AuthController {
 
             if (userDTO.getRole() == User.Role.admin) {
                 headers.add("Location", "/admin/dashboard");
+            } else if (userDTO.getRole() == User.Role.buyer) {
+                headers.add("Location", "/home");
             }
         } else {
             headers.add("Location", "/auth/login");
         }
         return new ResponseEntity<>("", headers, HttpStatus.SEE_OTHER);
     }
+
     @PostMapping("/process-register")
     public ResponseEntity<String> processRegister(
             @RequestParam String name,
@@ -93,15 +97,14 @@ public class AuthController {
         try {
             User user = authService.registerUser(name, surname, phone, country, city, address, postalCode, email, password);
             System.out.println("User registered successfully: " + user.getEmail());
-
-            setAuthenticationCookies(headers, email, user.getRole().name());            headers.add("Location", "/home");
+            setAuthenticationCookies(headers, email, user.getRole().name());
+            headers.add("Location", "/home");
         } catch (RuntimeException e) {
             System.err.println("Registration error: " + e.getMessage());
             headers.add("Location", "/auth/register?error=" + e.getMessage());
         }
         return new ResponseEntity<>("", headers, HttpStatus.SEE_OTHER);
     }
-
     private void setAuthenticationCookies(HttpHeaders headers, String email, String role) {
         headers.add("Set-Cookie", "authenticated=yes; Path=/");
         headers.add("Set-Cookie", "email=" + email + "; Path=/");
@@ -109,4 +112,5 @@ public class AuthController {
     }  private void clearCookie(HttpHeaders headers, String cookieName, String expiredDate) {
         headers.add("Set-Cookie", cookieName + "=; Path=/; Expires=" + expiredDate);
     }
+
 }

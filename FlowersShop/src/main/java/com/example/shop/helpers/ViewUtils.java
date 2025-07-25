@@ -4,7 +4,9 @@ import com.example.shop.dto.UserDTO;
 import com.example.shop.service.UserService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
-
+/**
+ * Adds common user authentication data to ModelAndView
+ */
 @Component
 public class ViewUtils {
 
@@ -13,14 +15,6 @@ public class ViewUtils {
     public ViewUtils(UserService userService) {
         this.userService = userService;
     }
-
-    /**
-     * Adds common user authentication data to ModelAndView
-     * @param modelAndView the ModelAndView to enhance
-     * @param auth authentication status
-     * @param email user email
-     * @param role user role
-     */
     public void addAuthenticationData(ModelAndView modelAndView, String auth, String email, String role) {
         boolean isAuthenticated = AuthUtils.isAuthenticated(auth);
 
