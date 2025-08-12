@@ -105,11 +105,14 @@ public class AuthController {
         }
         return new ResponseEntity<>("", headers, HttpStatus.SEE_OTHER);
     }
+
     private void setAuthenticationCookies(HttpHeaders headers, String email, String role) {
         headers.add("Set-Cookie", "authenticated=yes; Path=/");
         headers.add("Set-Cookie", "email=" + email + "; Path=/");
         headers.add("Set-Cookie", "role=" + role + "; Path=/");
-    }  private void clearCookie(HttpHeaders headers, String cookieName, String expiredDate) {
+    }
+
+    private void clearCookie(HttpHeaders headers, String cookieName, String expiredDate) {
         headers.add("Set-Cookie", cookieName + "=; Path=/; Expires=" + expiredDate);
     }
 

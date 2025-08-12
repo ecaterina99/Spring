@@ -4,56 +4,83 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Flower Shop</title>
-    <link rel="stylesheet" th:href="@{/css/mainPage.css}">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap-custom.css}">
 </head>
 
 <body>
 <main>
     <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
+    <!-- Hero Section -->
     <section class="hero-section">
-        <div class="hero-left">
-            <div class="hero-box">
-                <img th:src="@{/innerFolder/main/00.png}" alt="Bouquets">
-                <a th:href="@{/product/bouquets}">
-                    <button class="btn">Bouquets</button>
-                </a>
-            </div>
-        </div>
+        <div class="container-fluid h-100 p-0">
+            <div class="row h-100 g-0">
+                <!-- Left Column -->
+                <div class="col-6">
+                    <div class="hero-box">
+                        <img th:src="@{/innerFolder/main/00.png}" alt="Bouquets" class="img-fluid">
+                        <a th:href="@{/product/bouquets}" class="text-decoration-none">
+                            <button class="btn hero-btn px-4 py-2">Bouquets</button>
+                        </a>
+                    </div>
+                </div>
 
-        <div class="hero-right">
-            <div class="hero-box">
-                <img th:src="@{/innerFolder/main/02.jpg}" alt="Plants">
-                <a th:href="@{/main/plants}">
-                    <button class="btn">Plants</button>
-                </a>
-            </div>
-            <div class="hero-box">
-                <img th:src="@{/innerFolder/main/04.jpg}" alt="Gifts">
-                <a th:href="@{/main/gifts}">
-                    <button class="btn">Gifts</button>
-                </a>
+                <!-- Right Column -->
+                <div class="col-6 d-flex flex-column">
+                    <!-- Top Right -->
+                    <div class="flex-fill">
+                        <div class="hero-box">
+                            <img th:src="@{/innerFolder/main/02.jpg}" alt="Plants" class="img-fluid">
+                            <a th:href="@{/product/plants}" class="text-decoration-none">
+                                <button class="btn hero-btn px-4 py-2">Plants</button>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Right -->
+                    <div class="flex-fill">
+                        <div class="hero-box">
+                            <img th:src="@{/innerFolder/main/04.jpg}" alt="Gifts" class="img-fluid">
+                            <a th:href="@{/product/gifts}" class="text-decoration-none">
+                                <button class="btn hero-btn px-4 py-2">Gifts</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="bloom-text">Let it bloom</div>
     </section>
 
-    <section class="about-us" id="about-us">
-        <div class="about-header">
-            <h1>About us</h1>
-        </div>
-        <div class="about-text">
-            <p>Whether you're treating someone special or bringing extra cheer to your home, browse the M&S flowers and
-                plants collection for inspiration. You'll find bouquets of seasonal blooms to mark milestone occasions,
-                alongside top-quality indoor plants that make a thoughtful present for green-fingered recipients. Create
-                your own gift bundle
-                Select your bouquet or plant then choose chocolates, wine, fizz or a candle to add to your gift.
-            </p>
+    <!-- About Us Section -->
+    <section class="py-5" id="about-us">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="display-4 fw-bold mb-4">About us</h1>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <p class="about-text">
+                                Whether you're treating someone special or bringing extra cheer to your home, browse the Peony Bloom flowers and
+                                plants collection for inspiration. You'll find bouquets of seasonal blooms to mark milestone occasions,
+                                alongside top-quality indoor plants that make a thoughtful present for green-fingered recipients. Create
+                                your own gift bundle
+                                Select your bouquet or plant then choose chocolates, wine, fizz or a candle to add to your gift.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     <script src="/js/cart.js"></script>
 </main>
 <div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

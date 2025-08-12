@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +60,7 @@ public class CartController {
 
         return modelAndView;
     }
+
     /**
      * Adds new product in the cart
      */
@@ -232,7 +233,7 @@ public class CartController {
     }
 
 
-   //Adds new item or updates existing item quantity in cart
+    //Adds new item or updates existing item quantity in cart
     private void addOrUpdateCartItem(List<Cart> cartItems, Integer productId,
                                      ProductDTO product, Integer quantity) {
         Optional<Cart> existingItem = cartItems.stream()

@@ -1,26 +1,21 @@
 .bouquets-section {
-    display: flex;
-    padding: 50px;
-    align-items: center;
+    padding: 50px 0;
     text-align: center;
-    justify-content: space-between;
 }
 
 .product-form {
-    display: flex;
-    flex-direction: row;
+    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    justify-items: center;
-    align-items: start;
+    gap: 50px;
+    padding: 0 50px;
 }
 
 .product-card {
-    background-color: #f8f9fa;
+    background-color: #ececec;
     border-radius: 10px;
     padding: 20px;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
     max-width: 300px;
@@ -28,7 +23,7 @@
 
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
 .product-card .img {
@@ -43,6 +38,7 @@
     border-radius: 8px;
 }
 .price {
+    font-family: 'San Francisco', sans-serif;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -55,7 +51,7 @@ h3 {
     line-height: 2em;
 }
 .add-to-cart{
-    margin-top: 15px;
+    margin: 20px;
 }
 
 .overlay {
@@ -66,15 +62,6 @@ h3 {
     background: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
-}
-
-.popup {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 300px;
-    text-align: center;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
 .close-btn {
@@ -139,18 +126,18 @@ h3 {
     margin: 10px;
     max-width: 500px;
 }
- .cart-notification {
-     position: fixed;
-     top: 70px;
-     right: 20px;
-     background: darkslategray;
-     color: white;
-     padding: 15px;
-     border-radius: 5px;
-     z-index: 1000;
-     display: none;
-     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
- }
+.cart-notification {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    background: darkslategray;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
 
 .cart-counter {
     background: #ff4444;
@@ -169,4 +156,10 @@ h3 {
 
 .cart-link:hover {
     text-decoration: underline !important;
+}
+.description {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.6;
 }

@@ -3,75 +3,84 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cart</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/cart.css}">
+    <title>Flower Shop</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-custom.css}">
+
 </head>
-
 <body>
-<main>
-    <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
-    <br>
-    <div class="cart-container">
-        <button class="back-btn" onclick="goBack()"> Back to Shop</button>
 
-        <div class="cart-header">
-            <h1>Shopping Cart</h1>
-        </div>
+    <main>
+        <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
+        <div class="container my-4">
 
-        <div id="successMessage" class="success-message"></div>
-        <div id="errorMessage" class="error-message"></div>
+            <button class="btn btn-secondary mb-3" onclick="goBack()">
+                <i class="bi bi-arrow-left"></i> Back to Shop
+            </button>
 
-        <div id="cartContent">
-            <div th:if="${cartItems != null and !cartItems.empty}">
-                <div id="cartItems">
-                    <div class="cart-item" th:each="item : ${cartItems}">
-                        <div class="item-info">
-                            <div class="item-name" th:text="${item.name}">Product Name</div>
-                            <div class="item-price" th:text="${item.price + ' $ each'}">Price</div>
-                            <div class="quantity-controls">
-                                <button class="quantity-btn"
-                                        th:onclick="'updateQuantity(' + ${item.productId} + ', -1)'">-</button>
-                                <span class="quantity-display"
-                                      th:data-product-id="${item.productId}"
-                                      th:text="${item.quantity}">1</span>
-                                <button class="quantity-btn"
-                                        th:onclick="'updateQuantity(' + ${item.productId} + ', 1)'">+</button>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h1 class="title text-center border-bottom pb-3">Shopping Cart</h1>
+                    <div id="successMessage" class="alert alert-success d-none"></div>
+                    <div id="errorMessage" class="alert alert-danger d-none"></div>
+
+                    <div id="cartContent">
+                        <div th:if="${cartItems != null and !cartItems.empty}">
+                            <div id="cartItems" class="list-group list-group-flush">
+                                <div class="list-group-item d-flex align-items-center" th:each="item : ${cartItems}">
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5 class="mb-1 fw-bold" th:text="${item.name}">Product Name</h5>
+                                        <p class="text-muted mb-1" th:text="${item.price + ' $ each'}">Price</p>
+
+                                        <div class="d-flex align-items-center my-2">
+                                            <button class="quantity-btn"
+                                                    th:onclick="'updateQuantity(' + ${item.productId} + ', -1)'">-</button>
+                                            <span class="quantity-display"
+                                                  th:data-product-id="${item.productId}"
+                                                  th:text="${item.quantity}">1</span>
+                                            <button class="quantity-btn"
+                                                    th:onclick="'updateQuantity(' + ${item.productId} + ', 1)'">+
+                                            </button>
+                                        </div>
+
+                                        <div class="fw-bold text-success">
+                                            Subtotal: $<span th:text="${#numbers.formatDecimal(item.price * item.quantity, 1, 2)}">0.00</span>
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-danger btn-sm ms-3"
+                                            th:onclick="'removeFromCart(' + ${item.productId} + ')'">
+                                        Remove
+                                    </button>
+                                </div>
                             </div>
-                            <div style="font-weight: bold; color: #28a745;">
-                                Subtotal: $<span th:text="${#numbers.formatDecimal(item.price * item.quantity, 1, 2)}">0.00</span>
+
+                            <div id="cartSummary" class="bg-light p-3 rounded mt-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div id="cartCounter" class="fw-bold fs-5">Total items:</div>
+                                    <div class="fw-bold fs-5">
+                                        Subtotal: $<span id="totalPrice" th:text="${#numbers.formatDecimal(totalPrice, 1, 2)}">0.00</span>
+                                    </div>
+                                </div>
+                                <button id="checkoutBtn" class="btn btn-dark w-100 btn-lg" onclick="checkout()">Checkout</button>
                             </div>
                         </div>
-                        <button class="remove-btn"
-                                th:onclick="'removeFromCart(' + ${item.productId} + ')'">
-                            Remove
-                        </button>
+
+                        <div id="emptyCart" class="text-center py-5 text-muted d-none">
+                            <h2>Your cart is empty</h2>
+                            <p>Add some products to your cart to see them here!</p>
+                        </div>
                     </div>
                 </div>
-
-                <div id="cartSummary" class="cart-summary">
-                    <div class="price-and-count">
-                    </div>
-                    <div id="cartCounter" class="cart-counter"> Total items: </div>
-                </div>
-                    <div class="total-price">
-                        Subtotal: $<span id="totalPrice" th:text="${#numbers.formatDecimal(totalPrice, 1, 2)}">0.00</span>
-
-                    <button id="checkoutBtn" class="checkout-btn" onclick="checkout()">
-                        Checkout
-                    </button>
-                </div>
-            </div>
-            <div id="emptyCart" class="empty-cart" style="display: none;">
-                <h2>Your cart is empty</h2>
-                <p>Add some products to your cart to see them here!</p>
             </div>
         </div>
-    </div>
-    <script src="/js/cart.js"></script>
-<br>
-</main>
+    </main>
+
 <div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>
 
+<script src="/js/cart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

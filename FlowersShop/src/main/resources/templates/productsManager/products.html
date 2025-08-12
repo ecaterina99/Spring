@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cart</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-scope.css}">
+</head>
+
+<body>
+<main>
+    <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
+
+    <div class="admin-panel">
+        <h1 class="titlePage">All products</h1>
+        <div class="intro-text">
+            Found [[${allProducts.size()}]] products.
+        </div>
+    </div>
+
+    <section class="products-section">
+        <div class="bootstrap-scope">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Barcode</th>
+                    <th>Image</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="product : ${allProducts}">
+                    <td>[[${product.id}]]</td>
+                    <td th:text="${product.name}"/>
+                    <td th:text="${product.description}"/>
+                    <td th:text="${product.category}"/>
+                    <td th:text="${product.price}"/>
+                    <td th:text="${product.quantity}"/>
+                    <td th:text="${product.barcode}"/>
+                    <td>
+                        <img th:src="@{${product.image}}" alt="image" width="60">
+                    </td>
+                    <td class="actions">
+                        <a th:href='${"/product/"+product.id}'>View</a>
+                        <a th:href='${"/product/edit/"+product.id}'>Edit</a>
+                        <a th:href='${"/product/delete/"+product.id}'>Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+    </section>
+</main>
+<div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>
+</body>
+</html>

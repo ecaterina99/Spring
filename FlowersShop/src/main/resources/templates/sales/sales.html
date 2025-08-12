@@ -22,7 +22,8 @@
         <h1>List of sales: </h1>
         <ul th:if="${allSales != null and !#lists.isEmpty(allSales)}">
             <li th:each="sale : ${allSales}">
-                Customer: [[${sale.user.firstName}]] [[${sale.user.lastName}]] -  Purchase: [[${sale.product.name}]], Quantity: [[${sale.quantity}]]
+                Customer: [[${sale.user.firstName}]] [[${sale.user.lastName}]] - Purchase: [[${sale.product.name}]],
+                Quantity: [[${sale.quantity}]]
             </li>
         </ul>
         <p th:if="${allSales == null or #lists.isEmpty(allSales)}">No sales yet.</p>

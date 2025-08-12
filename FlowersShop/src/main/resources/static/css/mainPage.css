@@ -52,11 +52,12 @@
 }
 
 .about-us {
-    padding: 40px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+
 }
 
 .about-header {
@@ -67,7 +68,8 @@
 .about-text {
     width: 50%;
     text-align: center;
-    font-size: 14px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
     font-style: italic;
-    line-height: 2em;
+    line-height: 1.6;
 }

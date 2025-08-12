@@ -25,6 +25,7 @@ public class AdminController {
     private final SaleService saleService;
     private final UserService userService;
     private final ViewUtils viewUtils;
+
     public AdminController(ProductService productService, SaleService saleService, UserService userService, ViewUtils viewUtils) {
         this.productService = productService;
         this.saleService = saleService;

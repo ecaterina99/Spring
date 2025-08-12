@@ -4,56 +4,69 @@
 
 <!-- HEADER FRAGMENT -->
 <div th:fragment="mainHeader">
-<header>
-    <div class="top-bar">
-        <div class="delivery">Home delivery available in Romania | Free returns</div>
-        <div class="user">
-               <span th:if="${isAuthenticated == true and fullName != null and role != 'admin'}">
-                Welcome, <span th:text="${fullName}"></span>!
-                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
-                <a th:href="@{/cart/}" class="cart-link">Cart</a>
-            </span>
-            <span th:if="${isAuthenticated == true and fullName != null and role == 'admin'}">
-                Welcome, <span th:text="${fullName}"></span>!
-                <a th:href="@{/auth/logout}" class="logout-link">Logout</a> |
-                <a th:href="@{/admin/dashboard}" class="dashboard-link">Dashboard</a>
-            </span>
-            <span th:if="${isAuthenticated == false or isAuthenticated == null}">
-                <a th:href="@{/auth/login}">Log in</a> |
-                <a th:href="@{/auth/register}">Register</a> |
-                <a th:href="@{/cart/}" class="cart-link">Cart</a>
-            </span>
-        </div>
-    </div>
-    <div class="logo">Peony Bloom</div>
-</header>
+    <header>
+        <div class="bg-dark text-white py-2 px-3">
+            <div class="row align-items-center text-center text-md-start">
 
-    <nav>
-        <div class="category">
-            <a th:href="@{/home}">About us</a>
+                <!-- left empty part -->
+                <div class="col-md-4 text-md-start"></div>
+
+                <!-- center -->
+                <div class="col-md-4 d-flex justify-content-center">
+                    <small>Home delivery available in Romania | Free returns</small>
+                </div>
+
+                <!-- right part -->
+                <div class="col-md-4 text-md-end">
+                    <small>
+                <span th:if="${isAuthenticated == true and fullName != null and role != 'admin'}">
+                    Welcome, <span th:text="${fullName}"></span>!
+                    <a th:href="@{/auth/logout}" class="text-white text-decoration-none"><i
+                            class="ms-1 bi bi-box-arrow-right me-1"></i> Logout </a> |
+                    <a th:href="@{/cart/}" class="text-white text-decoration-none"><i class="ms-1 bi bi-bag me-1"></i> Cart </a>
+                </span>
+                        <span th:if="${isAuthenticated == true and fullName != null and role == 'admin'}">
+                    Welcome, <span th:text="${fullName}"></span>!
+                    <a th:href="@{/auth/logout}" class="text-white text-decoration-none"> Logout</a> |
+                    <a th:href="@{/admin/dashboard}" class="text-white text-decoration-none">Dashboard</a>
+                </span>
+                        <span th:if="${isAuthenticated == false or isAuthenticated == null}">
+                    <a th:href="@{/auth/login}" class="text-white text-decoration-none">Log in</a> |
+                    <a th:href="@{/auth/register}" class="text-white text-decoration-none">Register</a> |
+                    <a th:href="@{/cart/}" class="text-white text-decoration-none">Cart</a>
+                </span>
+                    </small>
+                </div>
+            </div>
         </div>
-        <div class="category">
-            <a th:href="@{/product/bouquets}">Bouquets</a>
+        <!-- Logo -->
+        <br>
+        <div class="text-center py-3">
+            <div class="logo">Peony Bloom</div>
+            <br>
         </div>
-        <div class="category">
-            <a th:href="@{/product/plants}">Plants</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/product/gifts}">Gifts</a>
-        </div>
-        <div class="category">
-            <a th:href="@{/contact}">Contact</a>
-        </div>
-    </nav>
+        <!-- Navigation -->
+        <nav class="nav-custom d-flex justify-content-center py-3">
+            <a th:href="@{/home}" class="nav-link">ABOUT US</a>
+            <a th:href="@{/product/bouquets}" class="nav-link">BOUQUETS</a>
+            <a th:href="@{/product/plants}" class="nav-link">PLANTS</a>
+            <a th:href="@{/product/gifts}" class="nav-link">GIFTS</a>
+            <a th:href="@{/contact}" class="nav-link">CONTACT</a>
+        </nav>
+    </header>
 </div>
 
 
 <!-- FOOTER FRAGMENT -->
-    <div th:fragment="mainFooter">
-        <footer class="footer">
-            Copyright © PEONY GROUP
-        </footer>
-    </div>
+<div th:fragment="mainFooter">
+    <footer class="bg-dark text-white text-center py-4">
+        <div class="container">
+            <br>
+            <small>Copyright © PEONY GROUP</small>
+            <br>
+        </div>
+    </footer>
+</div>
 
 </body>
 </html>

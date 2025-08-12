@@ -28,7 +28,7 @@ public class ProductController {
                                      @CookieValue(name = "email", defaultValue = "guest") String email,
                                      @CookieValue(name = "role", defaultValue = "buyer") String role) {
         List<ProductDTO> productsDTO = productService.findAll();
-        ModelAndView modelAndView = new ModelAndView("products/products", "allProducts", productsDTO);
+        ModelAndView modelAndView = new ModelAndView("productsManager/products", "allProducts", productsDTO);
         viewUtils.addAuthenticationData(modelAndView, auth, email, role);
         return modelAndView;
     }
@@ -40,7 +40,7 @@ public class ProductController {
                                     @CookieValue(name = "role", defaultValue = "buyer") String role
     ) {
         ProductDTO productDTO = productService.findById(id);
-        ModelAndView modelAndView = new ModelAndView("products/view", "product", productDTO);
+        ModelAndView modelAndView = new ModelAndView("productsManager/view", "product", productDTO);
         viewUtils.addAuthenticationData(modelAndView, auth, email, role);
         return modelAndView;
     }
@@ -52,7 +52,7 @@ public class ProductController {
                                      @CookieValue(name = "role", defaultValue = "buyer") String role
     ) {
         ProductDTO productDTO = productService.findById(id);
-        ModelAndView modelAndView = new ModelAndView("products/edit", "product", productDTO);
+        ModelAndView modelAndView = new ModelAndView("productsManager/edit", "product", productDTO);
         viewUtils.addAuthenticationData(modelAndView, auth, email, role);
         return modelAndView;
     }
@@ -66,8 +66,8 @@ public class ProductController {
                                       @RequestParam(value = "barcode", required = false) String barcode,
                                       @RequestParam(value = "quantity", required = false) Integer quantity,
                                       @RequestParam(value = "availability", required = false) Boolean availability,
-                                      @RequestParam(required = false) String update
-    ) {
+                                      @RequestParam(value = "image", required = false) MultipartFile image){
+        String imagePath = productService.saveImage(image);
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(id);
         productDTO.setName(name);
@@ -77,8 +77,10 @@ public class ProductController {
         productDTO.setBarcode(barcode);
         productDTO.setQuantity(quantity);
         productDTO.setAvailability(availability);
+        productDTO.setImage(imagePath);
+
         productDTO = productService.update(productDTO, id);
-        return new ModelAndView("products/view", "product", productDTO);
+        return new ModelAndView("productsManager/view", "product", productDTO);
     }
 
     @GetMapping("/add")
@@ -87,7 +89,7 @@ public class ProductController {
             @CookieValue(name = "email", defaultValue = "guest") String email,
             @CookieValue(name = "role", defaultValue = "buyer") String role
     ) {
-        ModelAndView modelAndView = new ModelAndView("products/add", "product", new ProductDTO());
+        ModelAndView modelAndView = new ModelAndView("productsManager/add", "product", new ProductDTO());
         viewUtils.addAuthenticationData(modelAndView, auth, email, role);
         return modelAndView;
     }
@@ -115,7 +117,7 @@ public class ProductController {
         productDTO.setImage(imagePath);
 
         productDTO = productService.save(productDTO);
-        return new ModelAndView("products/view", "product", productDTO);
+        return new ModelAndView("redirect:/product/", "product", productDTO);
     }
 
     @RequestMapping("/delete/{id}")
@@ -138,6 +140,40 @@ public class ProductController {
                 .toList();
 
         ModelAndView modelAndView = new ModelAndView("bouquets");
+        modelAndView.addObject("allProducts", bouquets);
+        viewUtils.addAuthenticationData(modelAndView, auth, email, role);
+        return modelAndView;
+    }
+    @GetMapping("/plants")
+    public ModelAndView listPlants(
+            @CookieValue(name = "authenticated", defaultValue = "no") String auth,
+            @CookieValue(name = "email", defaultValue = "guest") String email,
+            @CookieValue(name = "role", defaultValue = "buyer") String role
+    ) {
+        List<ProductDTO> productsDTO = productService.findAll();
+        List<ProductDTO> bouquets = productsDTO.stream()
+                .filter(product -> product.getCategory() != null)
+                .filter(product -> product.getCategory().toString().equalsIgnoreCase("plant"))
+                .toList();
+
+        ModelAndView modelAndView = new ModelAndView("plants");
+        modelAndView.addObject("allProducts", bouquets);
+        viewUtils.addAuthenticationData(modelAndView, auth, email, role);
+        return modelAndView;
+    }
+    @GetMapping("/gifts")
+    public ModelAndView listGifts(
+            @CookieValue(name = "authenticated", defaultValue = "no") String auth,
+            @CookieValue(name = "email", defaultValue = "guest") String email,
+            @CookieValue(name = "role", defaultValue = "buyer") String role
+    ) {
+        List<ProductDTO> productsDTO = productService.findAll();
+        List<ProductDTO> bouquets = productsDTO.stream()
+                .filter(product -> product.getCategory() != null)
+                .filter(product -> product.getCategory().toString().equalsIgnoreCase("gift"))
+                .toList();
+
+        ModelAndView modelAndView = new ModelAndView("gifts");
         modelAndView.addObject("allProducts", bouquets);
         viewUtils.addAuthenticationData(modelAndView, auth, email, role);
         return modelAndView;

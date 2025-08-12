@@ -14,7 +14,7 @@ class CartManager {
         try {
             const response = await this.apiRequest('/cart/add', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: `productId=${productId}&quantity=1`
             });
 
@@ -38,7 +38,7 @@ class CartManager {
         try {
             const response = await this.apiRequest('/cart/update', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: `productId=${productId}&quantity=${newQuantity}`
             });
 
@@ -74,12 +74,11 @@ class CartManager {
     }
 
 
-
     async removeFromCart(productId) {
         try {
             const response = await this.apiRequest('/cart/remove', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: `productId=${productId}`
             });
 
@@ -104,7 +103,7 @@ class CartManager {
         try {
             const response = await this.apiRequest('/cart/checkout', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
+                headers: {'Content-Type': 'application/json'}
             });
 
             if (response.success) {
@@ -132,6 +131,7 @@ class CartManager {
         }
         return await response.json();
     }
+
 ////
     async loadCartCount() {
         try {
@@ -149,9 +149,10 @@ class CartManager {
         const counter = document.getElementById('cartCounter');
         if (!counter) return;
 
-        counter.textContent =  counter.textContent + count;
+        counter.textContent = count;
         counter.style.display = count > 0 ? 'inline' : 'none';
     }
+
     ////
 
 
@@ -163,7 +164,7 @@ class CartManager {
         notification.className = `cart-notification ${type}`;
         notification.style.display = 'block';
 
-        setTimeout(() => notification.style.display = 'none', 3000);
+        setTimeout(() => notification.style.display = 'none', 2000);
     }
 
     showSuccess(message) {
@@ -216,8 +217,6 @@ class CartManager {
 }
 
 
-
-
 const cartManager = new CartManager();
 
 function goToCart() {
@@ -242,6 +241,7 @@ function updateQuantity(productId, change) {
         }
     }
 }
+
 function removeFromCart(productId) {
     cartManager.removeFromCart(productId);
 }

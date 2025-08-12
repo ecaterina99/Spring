@@ -72,8 +72,7 @@ public class SaleService {
             }
 
             if (product.getQuantity() < item.getQuantity()) {
-                throw new IllegalArgumentException("Not enough stock for: " + item.getName() +
-                        ". Available: " + product.getQuantity() + ", requested: " + item.getQuantity());
+                throw new IllegalArgumentException("Not enough stock for: " + item.getName());
             }
         }
     }

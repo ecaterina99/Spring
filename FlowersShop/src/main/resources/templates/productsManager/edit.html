@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/products.css}">
+    <link rel="stylesheet" th:href="@{/css/update-product.css}">
+
+
+</head>
+
+<body>
+<main>
+    <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
+
+    <section class="form-container">
+        <h2>Edit Product</h2>
+
+        <form th:action="@{/product/edit/{id}(id=${product.id})}" method="post" enctype="multipart/form-data">
+            <div class="form-field">
+                <label for="edit-name">Name:</label>
+                <input type="text" id="edit-name" name="name" th:value="${product.name}" readonly>
+            </div>
+
+            <div class="form-field">
+                <label for="edit-description">Description:</label>
+                <input type="text" id="edit-description" name="description" th:value="${product.description}">
+            </div>
+
+            <div class="form-field">
+                <label for="edit-category">Category:</label>
+                <input type="text" id="edit-category" name="category" th:value="${product.category}">
+            </div>
+
+            <div class="form-field">
+                <label for="edit-price">Price:</label>
+                <input type="number" min="0" step="0.01" id="edit-price" name="price" th:value="${product.price}">
+            </div>
+
+            <div class="form-field">
+                <label for="edit-barcode">Barcode:</label>
+                <input type="text" id="edit-barcode" name="barcode" th:value="${product.barcode}">
+            </div>
+
+            <div class="form-field">
+                <label for="edit-quantity">Quantity:</label>
+                <input type="number" min="0" id="edit-quantity" name="quantity" th:value="${product.quantity}">
+            </div>
+
+            <div class="form-field">
+                <label for="edit-availability">Availability:</label>
+                <input type="text" id="edit-availability" name="availability" th:value="${product.availability}">
+            </div>
+
+            <div class="form-field">
+                <label for="edit-image">Image:</label>
+                <input type="file" id="edit-image" name="image">
+                <p class="current-image-note">Current: [[${product.image}]]</p>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Update Product</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="updates-info">
+        <h3>Current Product Info</h3>
+        <ul>
+            <li>Id: [[${product.id}]]</li>
+            <li>Name: [[${product.name}]]</li>
+            <li>Description: [[${product.description}]]</li>
+            <li>Category: [[${product.category}]]</li>
+            <li>Price: [[${product.price}]]</li>
+            <li>Quantity: [[${product.quantity}]]</li>
+            <li>Barcode: [[${product.barcode}]]</li>
+            <li>Image: [[${product.image}]]</li>
+        </ul>
+    </section>
+
+    <div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>
+</main>
+</body>
+</html>

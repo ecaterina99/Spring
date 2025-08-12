@@ -13,18 +13,19 @@
 
 <main>
     <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
+    <!-- Notification -->
     <div id="cartNotification"></div>
 
     <!-- Intro -->
     <section class="intro container py-5 text-md-start">
-        <h1 class="title display-4 fw-bold">Bouquets</h1>
+        <h1 class="title display-4 fw-bold">Plants</h1>
         <br>
         <p class="lead fst-italic">
-            Made with passion in our atelier, our fresh flower bouquets are crafted with expertise derived from the
-            century-old “Lachaume Techniques”. Each creation is meticulously designed as an immersion into our floral
-            universe. Timeless, elegant and refined style that reflects our heritage. From stunning chrysanthemum and roses to vibrant seasonal bouquets, our range of beautiful blooms are
-            perfect for brightening the home and celebrating life’s special moments. Whatever the occasion, say it with
-            flowers, all with free nominated day delivery. Discover our wide selection of gorgeous bouquets today.
+            Want to Buy Houseplants Online with Confidence? Whether you're after rare houseplants, easy-care greenery,
+            or pet-safe indoor plants, you'll find them all at Foliage Factory.
+            From beginner-friendly favorites to collector’s gems, we’ve got something for every space and skill level.
+            Expert care tips included – so your plants thrive, not just survive.
+            We make buying houseplants online simple, safe, and rewarding.
         </p>
     </section>
 
@@ -33,7 +34,7 @@
         <div class="row g-4 justify-content-center">
             <div class="col-12 col-sm-6 col-md-4 col-lg-3"
                  th:each="product : ${allProducts}"
-                 th:if="${product.category != null and product.category.toString().equals('bouquet')}">
+                 th:if="${product.category != null and product.category.toString().equals('plant')}">
 
                 <div class="card shadow-sm h-100 text-center border-0">
                     <a th:href="@{'/product/info/' + ${product.id}}" class="text-decoration-none text-dark">
@@ -43,10 +44,9 @@
                             <p class="card-text text-muted" th:text="${product.price + ' $'}"></p>
                         </div>
                     </a>
-
                     <div class="card-footer border-0">
                         <button type="button"
-                                class="add-to-cart-btn"
+                                class="btn btn-dark w-80 add-to-cart-btn"
                                 th:data-product-id="${product.id}"
                                 th:data-product-name="${product.name}"
                                 th:data-product-price="${product.price}">
