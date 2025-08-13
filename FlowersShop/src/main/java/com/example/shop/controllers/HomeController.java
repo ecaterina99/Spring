@@ -4,6 +4,7 @@ import com.example.shop.helpers.ViewUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -43,7 +44,7 @@ public class HomeController {
         return modelAndView;
     }
 
-    @GetMapping("/response")
+   /* @PostMapping("/response")
     public ModelAndView responsePage(
             @CookieValue(name = "authenticated", defaultValue = "no") String auth,
             @CookieValue(name = "email", defaultValue = "guest") String email,
@@ -53,4 +54,6 @@ public class HomeController {
         viewUtils.addAuthenticationData(modelAndView, auth, email, role);
         return modelAndView;
     }
+
+    */
 }

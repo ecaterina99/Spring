@@ -65,7 +65,7 @@ body {
 
 /* About section */
 .about-text {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Playfair Display', sans-serif;
     font-size: 18px;
     font-style: italic;
     line-height: 1.6;
@@ -121,26 +121,35 @@ i{
     background-color: #ececec;
 }
 
-.add-to-cart-btn {
+.add-to-cart-btn , .btn-send{
     background-color: darkslategray;
     color: white;
 }
 
-.add-to-cart-btn:hover {
+.add-to-cart-btn:hover , .btn-send:hover{
     background-color: #a020f0;
     transform: scale(1.1);
 }
 
+.btn-send{
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
 .intro .title{
+    font-family: 'Playfair Display', sans-serif;
     font-size: 30px;
 }
 .intro .lead{
+    font-family: 'Playfair Display', sans-serif;
     font-size: 16px;
     font-style: italic;
     line-height: 2em;
 }
 .list-unstyled .mb-3{
-    font-family: 'Playfair Display', serif;"
+    font-family: 'Playfair Display', sans-serif;"
 }
 
 .quantity-btn {
@@ -168,4 +177,40 @@ i{
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     z-index: 1050;
     display: none;
+}
+.signboard{
+    height: 100vh;
+}
+.signboard img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.info-contact h3, fieldset .mb-3 {
+    font-family: 'Playfair Display', sans-serif;
+    font-size: 18px;
+    line-height: 1.6em;
+}
+
+.mailForm{
+    background-color: darkslategray;
+    color: white;
+}
+
+.login-card{
+    background-color: white;
+    max-width: 400px;
+    margin: auto;
+}
+.register-card{
+    background-color: white;
+    max-width: 550px;
+    margin: auto;
+}
+.btn-modal, .view-all{
+    color: darkslategray;
+}
+.btn-modal:hover, .view-all:hover{
+    color: salmon;
 }
