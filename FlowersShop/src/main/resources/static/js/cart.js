@@ -149,12 +149,9 @@ class CartManager {
         const counter = document.getElementById('cartCounter');
         if (!counter) return;
 
-        counter.textContent = count;
+        counter.textContent = `Total items: ${count}`;
         counter.style.display = count > 0 ? 'inline' : 'none';
     }
-
-    ////
-
 
     showNotification(message, type = 'success') {
         const notification = document.getElementById('cartNotification');

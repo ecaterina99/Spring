@@ -78,29 +78,42 @@ body {
     transform: translateX(-50%);
 }
 
-.nav-custom {
+.navbar {
     background-color: darkslategray;
+!important;
     gap: 30px;
 }
 
-.nav-custom a {
-    color: white !important;
-    text-decoration: none;
-    width: 85px;
-    text-align: center;
+.navbar-nav .nav-link {
+    white-space: nowrap;
+    padding: 0 10px;
 }
 
-.nav-custom a:hover {
+.navbar a {
+    color: white !important;
+    text-decoration: none;
+    text-align: center;
+!important;
+}
+
+.navbar a:hover {
     color: lightsalmon !important;
 }
-.row a:hover{
-    color: lightsalmon !important;
-}
-i{
+
+.navbar-toggler-icon {
     color: white;
 }
 
-.card{
+
+.row a:hover {
+    color: lightsalmon !important;
+}
+
+i {
+    color: white;
+}
+
+.card {
     background-color: #ececec;
     border-radius: 10px;
     padding: 15px;
@@ -108,48 +121,56 @@ i{
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:hover{
+.card:hover {
     transform: translateY(-6px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
 }
 
-.card-img-top{
-    height:250px;
-    object-fit:cover;
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
 }
-.card-footer{
+
+.card-footer {
     background-color: #ececec;
 }
 
-.add-to-cart-btn , .btn-send{
+.add-to-cart-btn, .btn-send {
     background-color: darkslategray;
     color: white;
 }
 
-.add-to-cart-btn:hover , .btn-send:hover{
+.add-to-cart-btn:hover, .btn-send:hover {
     background-color: #a020f0;
     transform: scale(1.1);
+    color: white;
 }
 
-.btn-send{
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+.btn-send {
+    padding: 5px 15px;
 }
 
-.intro .title{
+.intro .title {
     font-family: 'Playfair Display', sans-serif;
     font-size: 30px;
 }
-.intro .lead{
+
+.intro .lead {
     font-family: 'Playfair Display', sans-serif;
     font-size: 16px;
     font-style: italic;
     line-height: 2em;
 }
-.list-unstyled .mb-3{
-    font-family: 'Playfair Display', sans-serif;"
+
+.about {
+    font-family: 'Playfair Display', sans-serif;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 2em;
+}
+
+.list-unstyled .mb-3 {
+    font-family: 'Playfair Display', sans-serif;
 }
 
 .quantity-btn {
@@ -161,11 +182,13 @@ i{
     border-radius: 50%;
     cursor: pointer;
     font-size: 16px;
+    margin: 2px;
 }
 
 .quantity-btn:hover {
-    background:dimgrey;
+    background: dimgrey;
 }
+
 #cartNotification {
     position: fixed;
     top: 30px;
@@ -178,9 +201,11 @@ i{
     z-index: 1050;
     display: none;
 }
-.signboard{
+
+.signboard {
     height: 100vh;
 }
+
 .signboard img {
     width: 100%;
     height: 100%;
@@ -193,24 +218,81 @@ i{
     line-height: 1.6em;
 }
 
-.mailForm{
+.mailForm {
     background-color: darkslategray;
     color: white;
 }
 
-.login-card{
+.login-card {
     background-color: white;
     max-width: 400px;
     margin: auto;
 }
-.register-card{
+
+.register-card {
     background-color: white;
     max-width: 550px;
     margin: auto;
 }
-.btn-modal, .view-all{
+
+.btn-modal, .view-all {
     color: darkslategray;
 }
-.btn-modal:hover, .view-all:hover{
+
+.btn-modal:hover, .view-all:hover {
     color: salmon;
+}
+
+.btn-link {
+    color: darkslategray;
+
+}
+
+.btn-link:hover {
+    color: salmon;
+}
+
+.actions {
+    background-color: darkslategray;
+    color: white;
+    padding: 4px 10px;
+}
+
+.actions:hover {
+    background-color: darkslategray;
+    color: salmon;
+}
+
+.btn-group {
+    gap: 5px;
+}
+
+.description-cell {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+    .description-cell {
+        max-width: 120px;
+    }
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.sales-list {
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.list-group-item {
+    background-color: transparent !important;
+}
+
+.current-info .list-group-item {
+    background-color: transparent !important;
 }

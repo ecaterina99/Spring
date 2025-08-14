@@ -44,7 +44,6 @@
                              class="ms-1 bi bi-box-arrow-right me-1"></i> Logout </a>
                 </span>
 
-
                         <span th:if="${isAuthenticated == false or isAuthenticated == null}">
                             <a th:href="@{/cart/}" class="text-white text-decoration-none">
                                 <i class="ms-1 bi bi-bag me-1"></i>Cart</a>
@@ -58,30 +57,122 @@
         </div>
         <!-- Logo -->
         <br>
-        <div class="text-center py-3">
+        <div class="text-center ">
+
             <div class="logo">Peony Bloom</div>
             <br>
+
+            <!-- Navigation -->
+
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                        <ul class="navbar-nav d-flex justify-content-center gap-4">
+                            <li class="nav-item">
+                                <a th:href="@{/home}" class="nav-link">ABOUT US</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a th:href="@{/product/bouquets}" class="nav-link">BOUQUETS</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a th:href="@{/product/plants}" class="nav-link">PLANTS</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a th:href="@{/product/gifts}" class="nav-link">GIFTS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a th:href="@{/contact}" class="nav-link">CONTACT</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
         </div>
-        <!-- Navigation -->
-        <nav class="nav-custom d-flex justify-content-center py-3">
-            <a th:href="@{/home}" class="nav-link">ABOUT US</a>
-            <a th:href="@{/product/bouquets}" class="nav-link">BOUQUETS</a>
-            <a th:href="@{/product/plants}" class="nav-link">PLANTS</a>
-            <a th:href="@{/product/gifts}" class="nav-link">GIFTS</a>
-            <a th:href="@{/contact}" class="nav-link">CONTACT</a>
-        </nav>
     </header>
 </div>
-
 
 <!-- FOOTER FRAGMENT -->
 <div th:fragment="mainFooter">
     <footer class="bg-dark text-white text-center py-4">
-        <div class="container">
-            <br>
-            <small>Copyright © PEONY GROUP</small>
-            <br>
-        </div>
+        <!-- Footer -->
+        <footer class="text-center text-lg-start text-white">
+
+            <section class="">
+                <div class="container text-center text-md-start mt-5">
+                    <div class="row mt-2">
+                        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                            <!-- Content -->
+                            <h6 class="text-uppercase fw-bold">Peony Bloom</h6>
+                            <hr
+                                    class="mb-4 mt-0 d-inline-block mx-auto"
+                                    style="width: 60px;  height: 2px"
+                            />
+                            <p>
+                                Peony Bloom is a charming flower shop opened in 2025 in Romania,
+                                dedicated to bringing beauty and elegance into every occasion.
+                                Every product reflects the shop’s commitment to quality, artistry, and customer
+                                happiness.
+                            </p>
+                        </div>
+
+                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <!-- Links -->
+                            <h6 class="text-uppercase fw-bold">Products</h6>
+                            <hr
+                                    class="mb-4 mt-0 d-inline-block mx-auto"
+                                    style="width: 60px; height: 2px"
+                            />
+                            <p>
+                                <a th:href="@{/product/bouquets}" class="text-white">Bouquets</a>
+                            </p>
+                            <p>
+                                <a th:href="@{/product/plants}" class="text-white">Plants</a>
+                            </p>
+                            <p>
+                                <a th:href="@{/product/gifts}" class="text-white">Gifts</a>
+                            </p>
+                        </div>
+                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <!-- Links -->
+                            <h6 class="text-uppercase fw-bold">Useful links</h6>
+                            <hr
+                                    class="mb-4 mt-0 d-inline-block mx-auto"
+                                    style="width: 60px; height: 2px"
+                            />
+                            <p>
+                                <a th:href="@{/contact}" class="text-white">Contact us</a>
+                            </p>
+                            <p>
+                                <a th:href="@{/home}" class="text-white">About Us</a>
+                            </p>
+                            <p>
+                                <a th:href="@{/cart/}" class="text-white">Cart</a>
+                            </p>
+                        </div>
+                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                            <h6 class="text-uppercase fw-bold">Contact</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                                style="width: 60px; height: 2px"/>
+                            <p><i class="fas fa-home mr-3"></i>Iași, Bvd. Chimiei, 7B </p>
+                            <p><i class="fas fa-envelope mr-3"></i>office@peonybloom.ro</p>
+                            <p><i class="fas fa-phone mr-3"></i> + 40 234 567 88</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="text-center p-3">
+                <small>Copyright © PEONY GROUP</small>
+            </div>
+        </footer>
     </footer>
 </div>
 

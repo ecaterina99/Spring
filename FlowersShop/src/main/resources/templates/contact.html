@@ -15,69 +15,67 @@
     </div>
 
     <section class="contact">
-        <div class="container-fluid">
-            <div class="row g-0">
+        <div class="row g-0">
 
-                <div class="mailForm col-md-5 col-lg-5 p-5">
-                    <div class="info-contact">
-                        <h3>Monday - Sunday:<br>
-                            08:00 AM – 10:00 PM<br>
-                            office@peonybloom.ro<br>
-                        </h3>
-                    </div>
-
-                    <fieldset class="contact-form pt-3 pb-3 pl-10 pr-10">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name:</label>
-                            <input class="input-field form-control" type="text" name="name" id="name" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email:</label>
-                            <input class="input-field form-control" type="email" name="email" id="email" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone:</label>
-                            <input class="input-field form-control" type="tel" name="phone" id="phone">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Message:</label>
-                            <textarea class="input-field form-control" name="message" id="message"
-                                      rows="4"></textarea>
-                        </div>
-
-                        <div class="button-container">
-                            <button type="button" class="btn-send" data-bs-toggle="modal" data-bs-target="#successModal">
-                                SEND
-                            </button>
-                        </div>
-                    </fieldset>
+            <div class="mailForm col-md-5 col-lg-5 p-5">
+                <div class="info-contact">
+                    <h3>Monday - Sunday:<br>
+                        08:00 AM – 10:00 PM<br>
+                        office@peonybloom.ro<br>
+                    </h3>
                 </div>
 
-                <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content text-center">
-                            <div class="modal-body">
-                                <h5 class="card-title">Email sent successfully!</h5>
-                                <br>
-                                <p class="card-text">We will contact you soon.</p>
-                                <div class="d-grid p-2">
-                                    <a href="/home" class="btn-modal">
-                                        CONTINUE SHOPPING
-                                    </a>
-                                </div>
+                <fieldset class="contact-form pt-3 pb-3 pl-10 pr-10">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name:</label>
+                        <input class="input-field form-control" type="text" name="name" id="name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input class="input-field form-control" type="email" name="email" id="email" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone:</label>
+                        <input class="input-field form-control" type="tel" name="phone" id="phone">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message:</label>
+                        <textarea class="input-field form-control" name="message" id="message"
+                                  rows="4"></textarea>
+                    </div>
+
+                    <div class="button-container">
+                        <button type="button" class="btn-send" data-bs-toggle="modal" data-bs-target="#successModal">
+                            SEND
+                        </button>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content text-center">
+                        <div class="modal-body">
+                            <h5 class="card-title">Email sent successfully!</h5>
+                            <br>
+                            <p class="card-text">We will contact you soon.</p>
+                            <div class="d-grid p-2">
+                                <a href="/home" class="btn-modal">
+                                    CONTINUE SHOPPING
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Image Section -->
-                <div class="signboard col-md-7 col-lg-7 p-0 ">
-                    <img th:src="@{/innerFolder/main/0.jpg}" alt="signboard">
-                </div>
+            <!-- Image Section -->
+            <div class="signboard col-md-7 col-lg-7 p-0 ">
+                <img th:src="@{/innerFolder/main/0.jpg}" alt="signboard">
             </div>
         </div>
     </section>

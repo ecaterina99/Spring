@@ -1,42 +1,49 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>View</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/products.css}">
-
-</head>
+<div th:insert="~{/fragments/common_fragments :: head}"></div>
 <body>
+
 <main>
     <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
-    <div class="user-container">
-        <div class="user-info">
-            <h1>[[${user.fullName}]] #[[${user.id}]]</h1>
-            <ul>
-                <li>Id: [[${user.id}]]</li>
-                <li>Name: [[${user.fullName}]]</li>
-                <li>Email: [[${user.email}]]</li>
-                <li>Phone: [[${user.phone}]]</li>
-                <li>City: [[${user.city}]]</li>
-                <li>Address: [[${user.address}]]</li>
-                <li>Postal code: [[${user.postalCode}]]</li>
-                <li>Role: [[${user.role}]]</li>
-                <li>Sales:
-                    <span th:if="${user.sales == null or #lists.isEmpty(user.sales)}">
-        No sales yet
-    </span>
-                    <ul th:if="${user.sales != null and !#lists.isEmpty(user.sales)}">
-                        <li th:each="sale : ${user.sales}">
-                            Product: [[${sale.product.name}]], Quantity: [[${sale.quantity}]]
+
+    <div class="container my-4">
+        <div class="card shadow p-4 mx-auto" style="max-width: 600px;">
+
+            <h3 class="fw-bold p-3 ">
+                [[${user.fullName}]]
+            </h3>
+
+            <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item"><strong>Id:</strong> [[${user.id}]]</li>
+                <li class="list-group-item"><strong>Email:</strong> [[${user.email}]]</li>
+                <li class="list-group-item"><strong>Phone:</strong> [[${user.phone}]]</li>
+                <li class="list-group-item"><strong>City:</strong> [[${user.city}]]</li>
+                <li class="list-group-item"><strong>Address:</strong> [[${user.address}]]</li>
+                <li class="list-group-item"><strong>Postal code:</strong> [[${user.postalCode}]]</li>
+                <li class="list-group-item"><strong>Role:</strong> [[${user.role}]]</li>
+                <li class="list-group-item">
+                    <strong>Sales:</strong>
+                    <div th:if="${user.sales == null or #lists.isEmpty(user.sales)}" class="text-muted">
+                        No sales yet
+                    </div>
+                    <ul th:if="${user.sales != null and !#lists.isEmpty(user.sales)}"
+                        class="list-group list-group-numbered mt-2 sales-list">
+                        <li class="list-group-item" th:each="sale : ${user.sales}">
+                            <strong>Product:</strong> [[${sale.product.name}]],
+                            <strong>Quantity:</strong> [[${sale.quantity}]]
                         </li>
                     </ul>
+                </li>
+                <li class="list-group-item">
+                    <a class="btn-modal" th:href="@{/user/}">View all customers</a>
                 </li>
             </ul>
         </div>
     </div>
 </main>
+
 <div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
