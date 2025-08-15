@@ -149,7 +149,7 @@ class CartManager {
         const counter = document.getElementById('cartCounter');
         if (!counter) return;
 
-        counter.textContent = `Total items: ${count}`;
+        counter.textContent = `${count}`;
         counter.style.display = count > 0 ? 'inline' : 'none';
     }
 

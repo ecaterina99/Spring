@@ -174,7 +174,7 @@ i {
 }
 
 .quantity-btn {
-    background: gray;
+    background: darkslategray;
     color: white;
     border: none;
     width: 30px;
@@ -186,7 +186,8 @@ i {
 }
 
 .quantity-btn:hover {
-    background: dimgrey;
+    background-color: darkslategray;
+    color: salmon;
 }
 
 #cartNotification {
@@ -295,4 +296,35 @@ i {
 
 .current-info .list-group-item {
     background-color: transparent !important;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background-color: salmon;
+    color: white;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.cart-badge.hidden {
+    display: none;
+}
+
+.cart-link{
+    position: relative;
+    display: inline-block;
+}
+
+.gift-title{
+    font-family: 'Playfair Display', sans-serif;
+    font-style: italic;
 }

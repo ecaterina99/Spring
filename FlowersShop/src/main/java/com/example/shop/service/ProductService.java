@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -144,6 +145,24 @@ public class ProductService {
         } catch (IOException e) {
             throw new RuntimeException("Failed to save image", e);
         }
+    }
+
+
+    public List<ProductDTO> getRandomProducts() {
+        List<Product> allProducts = (List<Product>) productRepositoryCrud.findAll();
+        List<Product> gifts = new ArrayList<>(allProducts.stream()
+                .filter(product -> product.getCategory() != null)
+                .filter(product -> product.getCategory().toString().equalsIgnoreCase("gift"))
+                .toList());
+
+        Collections.shuffle(gifts);
+        int actualLimit = Math.min(gifts.size(), 4);
+        List<Product> randomGifts = gifts.subList(0, actualLimit);
+
+        return randomGifts.stream()
+                .map(this::productToDto)
+                .collect(Collectors.toList());
+
     }
 
 }

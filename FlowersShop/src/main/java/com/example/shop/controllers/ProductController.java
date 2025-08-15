@@ -4,6 +4,7 @@ import com.example.shop.dto.ProductDTO;
 import com.example.shop.helpers.ViewUtils;
 import com.example.shop.model.Product;
 import com.example.shop.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -187,8 +188,13 @@ public class ProductController {
             @CookieValue(name = "role", defaultValue = "buyer") String role
     ) {
         ProductDTO productDTO = productService.findById(id);
-        ModelAndView modelAndView = new ModelAndView("info", "product", productDTO);
+        List<ProductDTO> randomGifts = productService.getRandomProducts();
+
+        ModelAndView modelAndView = new ModelAndView("info");
+        modelAndView.addObject("product", productDTO);
+        modelAndView.addObject("allProducts", randomGifts);
         viewUtils.addAuthenticationData(modelAndView, auth, email, role);
         return modelAndView;
     }
+
 }

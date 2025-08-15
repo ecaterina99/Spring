@@ -41,6 +41,42 @@
                     </button>
                 </div>
             </div>
+
+            <div class="container mt-2">
+                <div class="product-selector">
+                    <h4 class="gift-title fw-bold">Add a thoughtful extra gift</h4>
+                    <br>
+
+                    <div class="row g-4">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3"
+                             th:each="giftProduct : ${allProducts}">
+                            <div class="card shadow-sm h-100 text-center border-0">
+                                <a th:href="@{'/product/info/' + ${giftProduct.id}}"
+                                   class="text-decoration-none text-dark">
+                                    <img th:src="@{${giftProduct.image}}" class="card-img-top rounded" alt="image"
+                                         style="height: 80px; object-fit: cover;">
+                                    <div class="card-body">
+                                        <h6 class="card-title fw-bold" th:text="${giftProduct.name.toUpperCase()}"></h6>
+                                        <p class="card-text text-muted" th:text="${giftProduct.price + ' $'}"></p>
+                                    </div>
+                                </a>
+                                <div class="card-footer border-0">
+                                    <button type="button"
+                                            class="btn btn-dark w-80 add-to-cart-btn"
+                                            th:data-product-id="${giftProduct.id}"
+                                            th:data-product-name="${giftProduct.name}"
+                                            th:data-product-price="${giftProduct.price}">
+                                        ADD TO CART
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
 </main>
