@@ -58,7 +58,7 @@
                                                      th:text="${#numbers.formatDecimal(totalPrice, 1, 2)}">0.00</span>
                                 </div>
                             </div>
-                            <button id="checkoutBtn" class="btn btn-dark w-100 btn-lg" onclick="checkout()">Checkout
+                            <button id="checkoutBtn" class="btn btn-dark w-100 btn-lg"  data-bs-toggle="modal" data-bs-target="#successModal" onclick="checkout()">Checkout
                             </button>
                         </div>
                     </div>
@@ -74,6 +74,24 @@
         </div>
     </div>
 </main>
+
+
+
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-body">
+                <h5 class="card-title">You should be an authorised user!</h5>
+                <br>
+                <p class="card-text">Please login or register.</p>
+                <div class="d-grid p-2">
+                    <a th:href="@{/auth/login}" class="btn-modal text-decoration-none">LOGIN</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>
 
