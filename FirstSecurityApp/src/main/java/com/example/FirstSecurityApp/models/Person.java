@@ -28,12 +28,17 @@ public class Person {
     @Column(name = "year_of_birth")
     private Integer yearOfBirth;
 
+    @Column(name = "role")
+    private String role;
+
     public Person() {}
 
-    public Person(String name, String password, Integer yearOfBirth) {
+    public Person(String name, String password, Integer yearOfBirth, String role) {
         this.name = name;
         this.password = password;
         this.yearOfBirth = yearOfBirth;
+        this.role = role;
+
     }
 
     @Override
@@ -42,6 +47,7 @@ public class Person {
                 "id="+id+
                 ", username="+ name+
                 ", year of birth="+yearOfBirth+
+                ", role="+role+
                 ", password="+ password+"}";
     }
 }

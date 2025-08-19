@@ -23,6 +23,12 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+    }
+}
+
+  /*  @Override
+    public void run(String... args) throws Exception {
         if (peopleRepository.count() == 0) {
             Person admin = new Person("admin", passwordEncoder.encode("admin123"), 1990);
             Person user = new Person("user", passwordEncoder.encode("user123"), 1995);
@@ -34,5 +40,5 @@ public class DataLoader implements CommandLineRunner {
             System.out.println("user/user123");
             System.out.println("alice/alice123");
         }
-    }
-}
+
+   */

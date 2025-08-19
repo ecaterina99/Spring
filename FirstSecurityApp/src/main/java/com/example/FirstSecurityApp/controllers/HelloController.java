@@ -4,6 +4,7 @@ import com.example.FirstSecurityApp.repository.PeopleRepository;
 import com.example.FirstSecurityApp.models.Person;
 import com.example.FirstSecurityApp.security.PersonDetails;
 import com.example.FirstSecurityApp.security.RegistrationService;
+import com.example.FirstSecurityApp.services.AdminService;
 import com.example.FirstSecurityApp.util.PersonValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,14 @@ public class HelloController {
     private final PeopleRepository peopleRepository;
     private final PersonValidator personValidator;
     private final RegistrationService registrationService;
+    private final AdminService adminService;
 
     @Autowired
-    public HelloController(PeopleRepository peopleRepository, PersonValidator personValidator, RegistrationService registrationService) {
+    public HelloController(PeopleRepository peopleRepository, PersonValidator personValidator, RegistrationService registrationService, AdminService adminService) {
         this.peopleRepository = peopleRepository;
         this.personValidator = personValidator;
         this.registrationService = registrationService;
+        this.adminService = adminService;
     }
 
     @GetMapping("/login")
@@ -64,12 +67,19 @@ public class HelloController {
                                       BindingResult bindingResult) {
         personValidator.validate(person, bindingResult);
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "/registration";
         }
 
         registrationService.register(person);
         return "redirect:/login";
+    }
+
+    @GetMapping("/admin")
+    public String adminPage() {
+        adminService.doAdminStaff();
+        return "admin";
+
     }
 
 }

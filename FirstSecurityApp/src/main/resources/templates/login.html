@@ -81,6 +81,8 @@
     </div>
 
     <form th:action="@{/login}" method="post">
+        <input type = "hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
@@ -93,6 +95,9 @@
 
         <button type="submit" class="btn">Login</button>
     </form>
+
+
+
     <div class="registration">
         <h5>
             Don't have an account?
@@ -101,12 +106,7 @@
             <button type="submit" class="btn btn-secondary">Register</button>
         </form>
     </div>
-    <div class="test-users">
-        <strong>Test Accounts:</strong><br>
-        admin / admin123<br>
-        user / user123<br>
-        alice / alice123
-    </div>
+
 </div>
 </body>
 </html>
