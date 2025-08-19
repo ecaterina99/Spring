@@ -3,12 +3,18 @@ package com.example.FirstSecurityApp.controllers;
 import com.example.FirstSecurityApp.repository.PeopleRepository;
 import com.example.FirstSecurityApp.models.Person;
 import com.example.FirstSecurityApp.security.PersonDetails;
+import com.example.FirstSecurityApp.security.RegistrationService;
+import com.example.FirstSecurityApp.util.PersonValidator;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -16,10 +22,14 @@ import java.util.List;
 public class HelloController {
 
     private final PeopleRepository peopleRepository;
+    private final PersonValidator personValidator;
+    private final RegistrationService registrationService;
 
     @Autowired
-    public HelloController(PeopleRepository peopleRepository) {
+    public HelloController(PeopleRepository peopleRepository, PersonValidator personValidator, RegistrationService registrationService) {
         this.peopleRepository = peopleRepository;
+        this.personValidator = personValidator;
+        this.registrationService = registrationService;
     }
 
     @GetMapping("/login")
@@ -42,4 +52,24 @@ public class HelloController {
         System.out.println(personDetails.getPerson());
         return "userInfo";
     }
+
+
+    @GetMapping("/registration")
+    public String registerUser(@ModelAttribute("person") Person person) {
+        return "registration";
+    }
+
+    @PostMapping("/registration")
+    public String performRegistration(@ModelAttribute("person") @Valid Person person,
+                                      BindingResult bindingResult) {
+        personValidator.validate(person, bindingResult);
+
+        if(bindingResult.hasErrors()) {
+            return "/registration";
+        }
+
+        registrationService.register(person);
+        return "redirect:/login";
+    }
+
 }

@@ -93,7 +93,14 @@
 
         <button type="submit" class="btn">Login</button>
     </form>
-
+    <div class="registration">
+        <h5>
+            Don't have an account?
+        </h5>
+        <form th:action="@{/registration}" method="get" style="display: inline;">
+            <button type="submit" class="btn btn-secondary">Register</button>
+        </form>
+    </div>
     <div class="test-users">
         <strong>Test Accounts:</strong><br>
         admin / admin123<br>
