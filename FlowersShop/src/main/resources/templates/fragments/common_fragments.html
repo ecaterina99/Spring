@@ -33,9 +33,7 @@
 
               <span th:if="${role != 'admin'}">
                                 <a th:href="@{/cart/}" class="text-white text-decoration-none cart-link">
-                                    <i class="ms-1 bi bi-bag me-3"></i> <span id="cartCounter"
-                                                                              class="cart-badge">0</span>Cart
-                                </a> |
+                                    <i class="ms-1 bi bi-bag me-3"></i> <span id="cartCounter" class="cart-badge">0</span>Cart</a> |
               </span>
 
                         <span th:if="${isAuthenticated == true and fullName != null and role != 'admin'}">

@@ -64,6 +64,15 @@ class CartManager {
                 quantitySpan.textContent = response.quantity;
             }
 
+            if (response.itemSubtotal !== undefined) {
+                const subtotalSpan = document.querySelector(`.item-subtotal[data-product-id="${response.productId}"]`);
+                if (subtotalSpan) {
+                    subtotalSpan.textContent = response.itemSubtotal.toFixed(2);
+                }
+            }
+
+
+
             if (response.totalPrice !== undefined) {
                 const totalElement = document.getElementById('totalPrice');
                 if (totalElement) {

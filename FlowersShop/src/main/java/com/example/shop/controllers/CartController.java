@@ -114,12 +114,14 @@ public class CartController {
             if (cartItems.isEmpty()) {
                 return createErrorResponse("Cart is empty");
             }
+
             // Remove item if quantity is 0
             if (quantity == 0) {
                 cartItems.removeIf(item -> item.getProductId().equals(productId));
                 session.setAttribute(CART_SESSION_KEY, cartItems);
                 return ResponseEntity.ok(createSuccessResponse("Item removed", cartItems, productId, 0));
             }
+
             // Validate stock availability
             ProductDTO product = productService.findById(productId);
             if (product == null) {
@@ -137,12 +139,19 @@ public class CartController {
             if (cartItem.isPresent()) {
                 cartItem.get().setQuantity(quantity);
                 session.setAttribute(CART_SESSION_KEY, cartItems);
-                return ResponseEntity.ok(createSuccessResponse(
+
+                // Build response and extend it
+                Map<String, Object> response = new java.util.HashMap<>(createSuccessResponse(
                         "Quantity updated",
                         cartItems,
                         productId,
                         quantity
                 ));
+
+                // add item subtotal
+                response.put("itemSubtotal", cartItem.get().getPrice() * cartItem.get().getQuantity());
+
+                return ResponseEntity.ok(response);
             } else {
                 return createErrorResponse("Product not found in cart");
             }
@@ -150,7 +159,6 @@ public class CartController {
             return createErrorResponse("Failed to update quantity");
         }
     }
-
     /**
      * Removes a product from cart
      */

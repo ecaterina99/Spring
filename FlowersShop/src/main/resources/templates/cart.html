@@ -39,6 +39,8 @@
 
                                     <div class="fw-bold text-success">
                                         Subtotal: $<span
+                                            class="item-subtotal"
+                                            th:data-product-id="${item.productId}"
                                             th:text="${#numbers.formatDecimal(item.price * item.quantity, 1, 2)}">0.00</span>
                                     </div>
                                 </div>
@@ -74,8 +76,6 @@
         </div>
     </div>
 </main>
-
-
 
 <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
      aria-hidden="true">

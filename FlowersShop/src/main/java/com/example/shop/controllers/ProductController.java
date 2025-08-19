@@ -4,7 +4,7 @@ import com.example.shop.dto.ProductDTO;
 import com.example.shop.helpers.ViewUtils;
 import com.example.shop.model.Product;
 import com.example.shop.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -130,52 +130,65 @@ public class ProductController {
 
     @GetMapping("/bouquets")
     public ModelAndView listBouquets(
+            @RequestParam(name = "sort", defaultValue = "relevance") String sort,
             @CookieValue(name = "authenticated", defaultValue = "no") String auth,
             @CookieValue(name = "email", defaultValue = "guest") String email,
             @CookieValue(name = "role", defaultValue = "buyer") String role
     ) {
-        List<ProductDTO> productsDTO = productService.findAll();
-        List<ProductDTO> bouquets = productsDTO.stream()
-                .filter(product -> product.getCategory() != null)
-                .filter(product -> product.getCategory().toString().equalsIgnoreCase("bouquet"))
-                .toList();
+        List<ProductDTO> products;
+        if (sort.equalsIgnoreCase("price")) {
+            products = productService.orderByPriceAsc(Product.Category.valueOf("bouquet"));
+        } else if(sort.equalsIgnoreCase("priceDesc")) {
+            products=productService.orderByPriceDesc(Product.Category.valueOf("bouquet"));
+        }else {
+            products = productService.findAll();
+        }
 
         ModelAndView modelAndView = new ModelAndView("bouquets");
-        modelAndView.addObject("allProducts", bouquets);
+        modelAndView.addObject("allProducts", products);
         viewUtils.addAuthenticationData(modelAndView, auth, email, role);
         return modelAndView;
     }
     @GetMapping("/plants")
     public ModelAndView listPlants(
+            @RequestParam(name = "sort", defaultValue = "relevance") String sort,
             @CookieValue(name = "authenticated", defaultValue = "no") String auth,
             @CookieValue(name = "email", defaultValue = "guest") String email,
             @CookieValue(name = "role", defaultValue = "buyer") String role
     ) {
-        List<ProductDTO> productsDTO = productService.findAll();
-        List<ProductDTO> bouquets = productsDTO.stream()
-                .filter(product -> product.getCategory() != null)
-                .filter(product -> product.getCategory().toString().equalsIgnoreCase("plant"))
-                .toList();
+        List<ProductDTO> products;
+        if (sort.equalsIgnoreCase("price")) {
+            products = productService.orderByPriceAsc(Product.Category.valueOf("plant"));
+        }  else if(sort.equalsIgnoreCase("priceDesc")) {
+            products=productService.orderByPriceDesc(Product.Category.valueOf("plant"));
+        }else {
+            products = productService.findAll();
+        }
 
         ModelAndView modelAndView = new ModelAndView("plants");
-        modelAndView.addObject("allProducts", bouquets);
+        modelAndView.addObject("allProducts", products);
         viewUtils.addAuthenticationData(modelAndView, auth, email, role);
         return modelAndView;
     }
     @GetMapping("/gifts")
     public ModelAndView listGifts(
+            @RequestParam(name = "sort", defaultValue = "relevance") String sort,
             @CookieValue(name = "authenticated", defaultValue = "no") String auth,
             @CookieValue(name = "email", defaultValue = "guest") String email,
-            @CookieValue(name = "role", defaultValue = "buyer") String role
-    ) {
-        List<ProductDTO> productsDTO = productService.findAll();
-        List<ProductDTO> bouquets = productsDTO.stream()
-                .filter(product -> product.getCategory() != null)
-                .filter(product -> product.getCategory().toString().equalsIgnoreCase("gift"))
-                .toList();
+            @CookieValue(name = "role", defaultValue = "buyer") String role,
+            Pageable pageable) {
+        List<ProductDTO> products;
+
+        if (sort.equalsIgnoreCase("priceAsc")) {
+            products = productService.orderByPriceAsc(Product.Category.valueOf("gift"));
+        } else if(sort.equalsIgnoreCase("priceDesc")) {
+            products=productService.orderByPriceDesc(Product.Category.valueOf("gift"));
+        }else {
+            products = productService.findAll();
+        }
 
         ModelAndView modelAndView = new ModelAndView("gifts");
-        modelAndView.addObject("allProducts", bouquets);
+        modelAndView.addObject("allProducts", products);
         viewUtils.addAuthenticationData(modelAndView, auth, email, role);
         return modelAndView;
     }
@@ -189,6 +202,7 @@ public class ProductController {
     ) {
         ProductDTO productDTO = productService.findById(id);
         List<ProductDTO> randomGifts = productService.getRandomProducts();
+
 
         ModelAndView modelAndView = new ModelAndView("info");
         modelAndView.addObject("product", productDTO);
