@@ -17,8 +17,9 @@ body {
 
 /* Hero section */
 .hero-section {
-    height: 800px;
     position: relative;
+    min-height: 100vh;
+    margin-bottom: 20px;
 }
 
 .hero-box {
@@ -333,3 +334,7 @@ i {
 .dropdown-item:hover{
     background-color: lightgray;
 }
+.modal.show {
+    display: block !important;
+}
+

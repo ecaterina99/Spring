@@ -7,13 +7,13 @@
     <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
     <!-- Hero Section -->
     <section class="hero-section">
-        <div class="container-fluid h-100 p-0">
-            <div class="row h-100 g-0">
+        <div class="container-fluid p-0">
+            <div class="row g-0">
                 <!-- Left Column -->
                 <div class="col-6">
                     <div class="hero-box">
                         <img th:src="@{/innerFolder/main/00.png}" alt="Bouquets" class="img-fluid">
-                        <a th:href="@{/product/bouquets}" class="text-decoration-none">
+                        <a th:href="@{/bouquets}" class="text-decoration-none">
                             <button class="btn hero-btn px-4 py-2">Bouquets</button>
                         </a>
                     </div>
@@ -25,7 +25,7 @@
                     <div class="flex-fill">
                         <div class="hero-box">
                             <img th:src="@{/innerFolder/main/02.jpg}" alt="Plants" class="img-fluid">
-                            <a th:href="@{/product/plants}" class="text-decoration-none">
+                            <a th:href="@{/plants}" class="text-decoration-none">
                                 <button class="btn hero-btn px-4 py-2">Plants</button>
                             </a>
                         </div>
@@ -35,7 +35,7 @@
                     <div class="flex-fill">
                         <div class="hero-box">
                             <img th:src="@{/innerFolder/main/04.jpg}" alt="Gifts" class="img-fluid">
-                            <a th:href="@{/product/gifts}" class="text-decoration-none">
+                            <a th:href="@{/gifts}" class="text-decoration-none">
                                 <button class="btn hero-btn px-4 py-2">Gifts</button>
                             </a>
                         </div>

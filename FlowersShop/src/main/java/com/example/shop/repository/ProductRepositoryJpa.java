@@ -11,4 +11,5 @@ public interface ProductRepositoryJpa extends JpaRepository<Product, Long> {
 
     List<Product> findAllByCategoryOrderByPriceAsc(Product.Category category);
     List<Product> findAllByCategoryOrderByPriceDesc(Product.Category category);
+
 }

@@ -1,59 +1,33 @@
 package com.example.shop.controllers;
 
-import com.example.shop.helpers.ViewUtils;
+import com.example.shop.helpers.UserAttributes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
 
-    private final ViewUtils viewUtils;
 
-    public HomeController(ViewUtils viewUtils) {
-        this.viewUtils = viewUtils;
-    }
+private final UserAttributes userAttributes;
 
-    /**
-     * Displays home page with user authentication status
-     */
+@Autowired
+public HomeController(UserAttributes userAttributes) {
+    this.userAttributes = userAttributes;
+}
+
     @GetMapping("/home")
-    public ModelAndView home(
-            @CookieValue(name = "authenticated", defaultValue = "no") String auth,
-            @CookieValue(name = "email", defaultValue = "guest") String email,
-            @CookieValue(name = "role", defaultValue = "buyer") String role
-    ) {
-        ModelAndView modelAndView = new ModelAndView("home");
-        viewUtils.addAuthenticationData(modelAndView, auth, email, role);
-        return modelAndView;
+    public String home(Model model, Authentication authentication) {
+        userAttributes.addUserAttributes(model, authentication);
+        return "home";
     }
 
-    /**
-     * Displays contact page with user authentication status
-     */
+
     @GetMapping("/contact")
-    public ModelAndView contactPage(
-            @CookieValue(name = "authenticated", defaultValue = "no") String auth,
-            @CookieValue(name = "email", defaultValue = "guest") String email,
-            @CookieValue(name = "role", defaultValue = "buyer") String role) {
-
-        ModelAndView modelAndView = new ModelAndView("contact");
-        viewUtils.addAuthenticationData(modelAndView, auth, email, role);
-        return modelAndView;
+    public String contact(Model model, Authentication authentication) {
+    userAttributes.addUserAttributes(model, authentication);
+    return "contact";
     }
-
-   /* @PostMapping("/response")
-    public ModelAndView responsePage(
-            @CookieValue(name = "authenticated", defaultValue = "no") String auth,
-            @CookieValue(name = "email", defaultValue = "guest") String email,
-            @CookieValue(name = "role", defaultValue = "buyer") String role) {
-
-        ModelAndView modelAndView = new ModelAndView("response");
-        viewUtils.addAuthenticationData(modelAndView, auth, email, role);
-        return modelAndView;
-    }
-
-    */
 }

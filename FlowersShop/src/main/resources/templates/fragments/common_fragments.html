@@ -38,8 +38,14 @@
 
                         <span th:if="${isAuthenticated == true and fullName != null and role != 'admin'}">
                                                      Welcome, <span th:text="${fullName}"></span>! |
-                                   <a th:href="@{/auth/logout}" class="text-white text-decoration-none"><i
-                                           class="ms-1 bi bi-box-arrow-right me-1"></i> Logout </a>
+
+                                           <form th:action="@{/logout}" method="post" style="display: inline;">
+                                       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                       <button type="submit" class="btn btn-link text-white text-decoration-none p-0" style="border: none; background: none;">
+                                           <i class="ms-1 bi bi-box-arrow-right me-1"></i> Logout
+                                       </button>
+                                   </form>
+
                         </span>
 
                         <span th:if="${isAuthenticated == false or isAuthenticated == null and role != 'admin'}">
@@ -51,15 +57,19 @@
                     Welcome, <span th:text="${fullName}"></span>!
                     <a th:href="@{/admin/dashboard}" class="text-white text-decoration-none"><i
                             class="ms-1 bi bi-person me-1"></i>Dashboard</a> |
-                     <a th:href="@{/auth/logout}" class="text-white text-decoration-none"><i
-                             class="ms-1 bi bi-box-arrow-right me-1"></i> Logout </a>
+                             <form th:action="@{/logout}" method="post" style="display: inline;">
+                                       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                       <button type="submit" class="btn btn-link text-white text-decoration-none p-0" style="border: none; background: none;">
+                                           <i class="ms-1 bi bi-box-arrow-right me-1"></i> Logout
+                                       </button>
+                                   </form>
                 </span>
 
                     </small>
                 </div>
             </div>
         </div>
-        <!-- Logo -->
+
         <br>
         <div class="text-center ">
 
@@ -82,15 +92,15 @@
                             </li>
 
                             <li class="nav-item">
-                                <a th:href="@{/product/bouquets}" class="nav-link">BOUQUETS</a>
+                                <a th:href="@{/bouquets}" class="nav-link">BOUQUETS</a>
                             </li>
 
                             <li class="nav-item">
-                                <a th:href="@{/product/plants}" class="nav-link">PLANTS</a>
+                                <a th:href="@{/plants}" class="nav-link">PLANTS</a>
                             </li>
 
                             <li class="nav-item">
-                                <a th:href="@{/product/gifts}" class="nav-link">GIFTS</a>
+                                <a th:href="@{/gifts}" class="nav-link">GIFTS</a>
                             </li>
                             <li class="nav-item">
                                 <a th:href="@{/contact}" class="nav-link">CONTACT</a>
@@ -136,13 +146,13 @@
                                     style="width: 60px; height: 2px"
                             />
                             <p>
-                                <a th:href="@{/product/bouquets}" class="text-white">Bouquets</a>
+                                <a th:href="@{/bouquets}" class="text-white">Bouquets</a>
                             </p>
                             <p>
-                                <a th:href="@{/product/plants}" class="text-white">Plants</a>
+                                <a th:href="@{/plants}" class="text-white">Plants</a>
                             </p>
                             <p>
-                                <a th:href="@{/product/gifts}" class="text-white">Gifts</a>
+                                <a th:href="@{/gifts}" class="text-white">Gifts</a>
                             </p>
                         </div>
                         <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">

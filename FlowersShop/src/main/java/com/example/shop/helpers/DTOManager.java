@@ -49,7 +49,7 @@ public class DTOManager {
         userDTO.setAddress(user.getAddress());
         userDTO.setCity(user.getCity());
         userDTO.setPostalCode(user.getPostalCode());
-        userDTO.setPasswordHash(user.getPasswordHash());
+        userDTO.setPasswordHash(user.getPassword());
         userDTO.setRole(user.getRole());
 
         if (deep) {

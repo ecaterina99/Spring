@@ -19,6 +19,6 @@ public class UserDTO {
     private String postalCode;
     private List<Sale> sales;
     private String passwordHash;
-    private User.Role role;
+    private String role;
 
 }

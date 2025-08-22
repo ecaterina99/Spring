@@ -4,11 +4,9 @@ import com.example.shop.dto.UserDTO;
 import com.example.shop.helpers.DTOManager;
 import com.example.shop.model.User;
 import com.example.shop.model.Sale;
-import com.example.shop.repository.ProductRepositoryCrud;
 import com.example.shop.repository.UsersRepositoryCrud;
 import com.example.shop.repository.UsersRepositoryJpa;
 import com.example.shop.repository.SaleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,7 +42,7 @@ public class UserService {
         user.setAddress(userDto.getAddress());
         user.setCity(userDto.getCity());
         user.setPostalCode(userDto.getPostalCode());
-        user.setPasswordHash(userDto.getPasswordHash());
+        user.setPassword(userDto.getPasswordHash());
         user.setRole(userDto.getRole());
 
         List<Sale> sales = userDto.getSales();
@@ -76,10 +74,6 @@ public class UserService {
         Optional<User> userOptional = usersRepositoryCrud.findByEmail(email);
         User user = userOptional.orElse(null);
         return userToDto(user);
-    }
-
-    public User register(User user) {
-        return  usersRepositoryCrud.save(user);
     }
 
 

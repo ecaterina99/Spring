@@ -26,9 +26,9 @@
             </a>
 
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/product/plants">Relevance</a></li>
-                <li><a class="dropdown-item" href="/product/plants?sort=price">Price low to high</a></li>
-                <li><a class="dropdown-item" href="/product/plants?sort=priceDesc">Price high to low</a></li>
+                <li><a class="dropdown-item" href="/plants">Relevance</a></li>
+                <li><a class="dropdown-item" href="/plants?sort=price">Price low to high</a></li>
+                <li><a class="dropdown-item" href="/plants?sort=priceDesc">Price high to low</a></li>
             </ul>
         </div>
     </section>
@@ -41,7 +41,7 @@
                  th:if="${product.category != null and product.category.toString().equals('plant')}">
 
                 <div class="card shadow-sm h-100 text-center border-0">
-                    <a th:href="@{'/product/info/' + ${product.id}}" class="text-decoration-none text-dark">
+                    <a th:href="@{'/info/' + ${product.id}}" class="text-decoration-none text-dark">
                         <img th:src="@{${product.image}}" class="card-img-top rounded" alt="image">
                         <div class="card-body">
                             <h5 class="card-title fw-bold" th:text="${product.name.toUpperCase()}"></h5>

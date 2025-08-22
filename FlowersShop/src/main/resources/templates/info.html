@@ -27,7 +27,7 @@
                         Price: [[${product.price}]]$
                     </li>
                     <li>
-                        <a class="view-all" th:href='${"/product/bouquets"}'>View all
+                        <a class="view-all" th:href='${"/bouquets"}'>View all
                             products</a>
                     </li>
                 </ul>
@@ -51,7 +51,7 @@
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3"
                              th:each="giftProduct : ${allProducts}">
                             <div class="card shadow-sm h-100 text-center border-0">
-                                <a th:href="@{'/product/info/' + ${giftProduct.id}}"
+                                <a th:href="@{'/info/' + ${giftProduct.id}}"
                                    class="text-decoration-none text-dark">
                                     <img th:src="@{${giftProduct.image}}" class="card-img-top rounded" alt="image"
                                          style="height: 80px; object-fit: cover;">

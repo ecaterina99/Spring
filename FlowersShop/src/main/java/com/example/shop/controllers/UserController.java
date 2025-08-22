@@ -1,7 +1,6 @@
 package com.example.shop.controllers;
 
 import com.example.shop.dto.UserDTO;
-import com.example.shop.helpers.ViewUtils;
 import com.example.shop.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -14,7 +13,7 @@ import java.util.List;
 /**
  * Controller for user management operations
  */
-@Controller
+/*@Controller
 @RequestMapping("/user")
 public class UserController {
 
@@ -30,7 +29,7 @@ public class UserController {
      * Displays list of all registered users
      * @return ModelAndView with users list
      */
-    @GetMapping("/")
+   /* @GetMapping("/")
     public ModelAndView listCustomers(@CookieValue(name = "authenticated", defaultValue = "no") String auth,
                                       @CookieValue(name = "email", defaultValue = "guest") String email,
                                       @CookieValue(name = "role", defaultValue = "buyer") String role) {
@@ -53,3 +52,5 @@ public class UserController {
         return modelAndView;
     }
 }
+
+    */

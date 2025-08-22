@@ -1,6 +1,8 @@
 class CartManager {
     constructor() {
         this.init();
+        this.initCsrf();
+
     }
 
     init() {
@@ -9,12 +11,32 @@ class CartManager {
             this.bindEvents();
         });
     }
+    // Initialize CSRF token
+    initCsrf() {
+        const token = document.querySelector('meta[name="_csrf"]');
+        const header = document.querySelector('meta[name="_csrf_header"]');
+
+        if (token && header) {
+            this.csrfToken = token.getAttribute('content');
+            this.csrfHeader = header.getAttribute('content');
+        }
+    }
+
+    // Get CSRF headers for requests
+    getCsrfHeaders() {
+        const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+        if (this.csrfToken && this.csrfHeader) {
+            headers[this.csrfHeader] = this.csrfToken;
+        }
+        return headers;
+    }
+
 
     async addToCart(productId) {
         try {
             const response = await this.apiRequest('/cart/add', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                headers: this.getCsrfHeaders(),
                 body: `productId=${productId}&quantity=1`
             });
 
@@ -38,7 +60,7 @@ class CartManager {
         try {
             const response = await this.apiRequest('/cart/update', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                headers: this.getCsrfHeaders(),
                 body: `productId=${productId}&quantity=${newQuantity}`
             });
 
@@ -87,7 +109,7 @@ class CartManager {
         try {
             const response = await this.apiRequest('/cart/remove', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                headers: this.getCsrfHeaders(),
                 body: `productId=${productId}`
             });
 
@@ -112,22 +134,36 @@ class CartManager {
         try {
             const response = await this.apiRequest('/cart/checkout', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'}
+                headers: this.getCsrfHeaders(),
+                body: ''
             });
 
-            if (response.success) {
-                this.showSuccess('Purchase successful! Thank you for your order!');
-                setTimeout(() => window.location.href = '/product/bouquets', 2000);
+            console.log('Checkout response:', response);
+            console.log('Response success:', response.success);
+            console.log('Response error:', response.error);
+            console.log('Response requireLogin:', response.requireLogin);
+
+            if (response.success === true) {
+                this.showSuccessModal('Purchase successful! Thank you for your order!');
             } else {
-                if (response.redirect) {
-                    window.location.href = response.redirect;
+                if (response.requireLogin === true ||
+                    (response.redirect && response.redirect.includes('/auth/login')) ||
+                    response.error === 'Authentication required' ||
+                    response.error === 'User not found') {
+                    this.showLoginRequiredModal('Authentication required, please log in');
                     return;
                 }
                 this.showError(response.error || 'Checkout failed. Please try again.');
             }
         } catch (error) {
             console.error('Checkout error:', error);
-            this.showError('Network error. Please check your connection and try again.');
+            console.log('Error message:', error.message);
+
+            if (error.message && error.message.includes('401')) {
+                this.showLoginRequiredModal('Authentication required, please log in');
+            } else {
+                this.showError('Network error. Please check your connection and try again.');
+            }
         } finally {
             this.setButtonLoading(checkoutBtn, false);
         }
@@ -135,11 +171,57 @@ class CartManager {
 
     async apiRequest(url, options) {
         const response = await fetch(url, options);
+
+        if (response.status === 401) {
+            const data = await response.json();
+            return data;
+        }
+
         if (!response.ok && response.status !== 400) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
+
         return await response.json();
     }
+
+    showSuccessModal(message) {
+        const modal = new bootstrap.Modal(document.getElementById('successModal'));
+
+        const messageElement = document.querySelector('#successModal .card-text');
+        if (messageElement && message) {
+            messageElement.textContent = message;
+        }
+
+        modal.show();
+
+        setTimeout(() => {
+            modal.hide();
+            window.location.href = '/bouquets';
+        }, 3000);
+    }
+
+    showLoginRequiredModal(message) {
+        console.log('showLoginRequiredModal called with message:', message);
+
+        const modalElement = document.getElementById('loginRequiredModal');
+        console.log('Modal element found:', modalElement);
+
+        if (!modalElement) {
+            console.error('loginRequiredModal element not found!');
+            alert('Please log in to continue');
+            window.location.href = '/auth/login';
+            return;
+        }
+
+        try {
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        } catch (error) {
+            alert('Please log in to continue');
+            window.location.href = '/auth/login';
+        }
+    }
+
 
 ////
     async loadCartCount() {
@@ -214,14 +296,20 @@ class CartManager {
         document.querySelectorAll('.add-to-cart-btn').forEach(button => {
             button.addEventListener('click', () => {
                 const productId = parseInt(button.getAttribute('data-product-id'));
-                const productName = button.getAttribute('data-product-name');
-                const productPrice = parseFloat(button.getAttribute('data-product-price'));
-                this.addToCart(productId, productName, productPrice);
+                this.addToCart(productId);
             });
         });
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', () => {
+            cartManager.checkout();
+        });
+    }
+});
 
 const cartManager = new CartManager();
 
@@ -230,7 +318,7 @@ function goToCart() {
 }
 
 function goBack() {
-    window.location.href = '/product/bouquets';
+    window.location.href = '/bouquets';
 }
 
 function checkout() {

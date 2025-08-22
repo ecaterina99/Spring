@@ -2,74 +2,67 @@ package com.example.shop.controllers;
 
 import com.example.shop.dto.ProductDTO;
 import com.example.shop.dto.UserDTO;
-import com.example.shop.helpers.ViewUtils;
+import com.example.shop.helpers.PersonDetails;
+import com.example.shop.helpers.UserAttributes;
 import com.example.shop.model.Cart;
+import com.example.shop.model.User;
 import com.example.shop.service.ProductService;
 import com.example.shop.service.SaleService;
 import com.example.shop.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Handles all shopping cart operations: view, add, update, remove, and checkout.
  */
+
+
 @Controller
 @RequestMapping("/cart")
 public class CartController {
     private static final String CART_SESSION_KEY = "cartItems";
-    private static final String AUTH_YES = "yes";
-    private static final String GUEST_EMAIL = "guest";
 
     private final ProductService productService;
     private final SaleService saleService;
     private final UserService userService;
-    private final ViewUtils viewUtils;
+    private final UserAttributes userAttributes;
 
-    public CartController(ProductService productService, ViewUtils viewUtils, SaleService saleService, UserService userService) {
+    public CartController(ProductService productService, SaleService saleService, UserService userService, UserAttributes userAttributes) {
         this.productService = productService;
         this.saleService = saleService;
         this.userService = userService;
-        this.viewUtils = viewUtils;
+        this.userAttributes = userAttributes;
     }
-
     /**
      * Displays the cart page with all items and total price
      */
     @GetMapping("/")
-    public ModelAndView showCart(
-            @CookieValue(name = "authenticated", defaultValue = "no") String auth,
-            @CookieValue(name = "email", defaultValue = "guest") String email,
-            @CookieValue(name = "role", defaultValue = "buyer") String role,
-            HttpSession session) {
+    public String showCart(Model model, Authentication authentication, HttpSession session) {
+        userAttributes.addUserAttributes(model, authentication);
         List<Cart> cartItems = getCartFromSession(session);
-        ModelAndView modelAndView = new ModelAndView("cart");
-
-        modelAndView.addObject("cartItems", cartItems);
-        modelAndView.addObject("totalPrice", calculateTotal(cartItems));
-        viewUtils.addAuthenticationData(modelAndView, auth, email, role);
-
-        return modelAndView;
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("totalPrice", calculateTotal(cartItems));
+        return "cart";
     }
 
-    /**
-     * Adds new product in the cart
-     */
+
+/**
+ * Adds new product in the cart
+ */
     @PostMapping("/add")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> addToCart(
-            @RequestParam Integer productId,
-            @RequestParam Integer quantity,
-            HttpSession session) {
+    public ResponseEntity<Map<String, Object>> addToCart(HttpSession session,
+                                                         @RequestParam Integer productId,
+                                                         @RequestParam Integer quantity) {
 
         try {
             ProductDTO product = productService.findById(productId);
@@ -77,6 +70,7 @@ public class CartController {
                 return createErrorResponse("Product not found");
             }
             List<Cart> cartItems = getCartFromSession(session);
+
             // Check total quantity (existing + new) doesn't exceed stock
             int currentQuantityInCart = getCurrentQuantityInCart(cartItems, productId);
             if (product.getQuantity() < (currentQuantityInCart + quantity)) {
@@ -94,14 +88,16 @@ public class CartController {
                     getCurrentQuantityInCart(cartItems, productId)
             ));
 
-        } catch (Exception e) {
+        }catch (Exception e) {
+            System.err.println("Error adding to cart: " + e.getMessage());
+            e.printStackTrace();
             return createErrorResponse("Failed to add product to cart");
         }
     }
+/**
+ * Updates quantity of a specific item in cart via AJAX
+ */
 
-    /**
-     * Updates quantity of a specific item in cart via AJAX
-     */
     @PostMapping("/update")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> updateQuantity(
@@ -156,12 +152,16 @@ public class CartController {
                 return createErrorResponse("Product not found in cart");
             }
         } catch (Exception e) {
+            System.err.println("Error updating quantity: " + e.getMessage());
+            e.printStackTrace();
             return createErrorResponse("Failed to update quantity");
         }
     }
-    /**
-     * Removes a product from cart
-     */
+
+/**
+ * Removes a product from cart
+ */
+
     @PostMapping("/remove")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> removeFromCart(
@@ -174,39 +174,51 @@ public class CartController {
 
             return ResponseEntity.ok(Map.of(
                     "success", true,
-                    "cartCount", cartItems.stream().mapToInt(Cart::getQuantity).sum()
+                    "cartCount", cartItems.stream().mapToInt(Cart::getQuantity).sum(),
+                    "totalPrice", calculateTotal(cartItems)
             ));
 
         } catch (Exception e) {
+            System.err.println("Error removing from cart: " + e.getMessage());
+            e.printStackTrace();
             return createErrorResponse("Failed to remove product from cart");
         }
     }
 
-    //Processes checkout for authenticated users
     @PostMapping("/checkout")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> checkout(
-            @CookieValue(name = "authenticated", defaultValue = "no") String authenticated,
-            @CookieValue(name = "email", defaultValue = GUEST_EMAIL) String email,
-            HttpSession session) {
-
+    public ResponseEntity<Map<String, Object>> checkout(Authentication authentication, HttpSession session) {
         try {
-            // Check authentication
-            if (!AUTH_YES.equals(authenticated) || GUEST_EMAIL.equals(email)) {
+            if (!isUserAuthenticated(authentication)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(Map.of("error", "Authentication required", "redirect", "/auth/login"));
+                        .body(Map.of(
+                                "success", false,
+                                "error", "Authentication required",
+                                "redirect", "/auth/login",
+                                "requireLogin", true
+                        ));
             }
+
             // Validate cart
             List<Cart> cartItems = getCartFromSession(session);
             if (cartItems.isEmpty()) {
                 return ResponseEntity.badRequest()
-                        .body(Map.of("error", "Cart is empty"));
+                        .body(Map.of("success", false, "error", "Cart is empty"));
             }
+
+            PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
+            User user = personDetails.getPerson();
+
             // Get user
-            UserDTO user = userService.findByEmail(email);
-            if (user == null) {
+            UserDTO userDTO = userService.findByEmail(user.getEmail());
+            if (userDTO == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(Map.of("error", "User not found", "redirect", "/auth/login"));
+                        .body(Map.of(
+                                "success", false,
+                                "error", "User not found",
+                                "redirect", "/auth/login",
+                                "requireLogin", true
+                        ));
             }
 
             // Process purchase
@@ -222,10 +234,12 @@ public class CartController {
             ));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("error", e.getMessage()));
+                    .body(Map.of("success", false, "error", e.getMessage()));
         } catch (Exception e) {
+            System.err.println("Checkout error: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Purchase failed. Please try again."));
+                    .body(Map.of("success", false, "error", "Purchase failed. Please try again."));
         }
     }
 
@@ -300,4 +314,11 @@ public class CartController {
                 "quantity", quantity
         );
     }
+    private boolean isUserAuthenticated(Authentication authentication) {
+        return authentication != null
+                && authentication.isAuthenticated()
+                && !(authentication instanceof AnonymousAuthenticationToken)
+                && authentication.getPrincipal() instanceof PersonDetails;
+    }
 }
+
