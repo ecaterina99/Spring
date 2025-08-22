@@ -93,8 +93,6 @@ class CartManager {
                 }
             }
 
-
-
             if (response.totalPrice !== undefined) {
                 const totalElement = document.getElementById('totalPrice');
                 if (totalElement) {
@@ -103,7 +101,6 @@ class CartManager {
             }
         }
     }
-
 
     async removeFromCart(productId) {
         try {
@@ -221,7 +218,6 @@ class CartManager {
             window.location.href = '/auth/login';
         }
     }
-
 
 ////
     async loadCartCount() {

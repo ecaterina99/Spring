@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
-
-
 private final UserAttributes userAttributes;
 
 @Autowired
@@ -23,7 +21,6 @@ public HomeController(UserAttributes userAttributes) {
         userAttributes.addUserAttributes(model, authentication);
         return "home";
     }
-
 
     @GetMapping("/contact")
     public String contact(Model model, Authentication authentication) {

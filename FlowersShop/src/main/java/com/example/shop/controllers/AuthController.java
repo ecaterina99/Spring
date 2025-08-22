@@ -2,12 +2,10 @@ package com.example.shop.controllers;
 
 
 import com.example.shop.helpers.PersonValidator;
-import com.example.shop.helpers.UserAttributes;
 import com.example.shop.model.User;
 import com.example.shop.service.RegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,13 +21,11 @@ public class AuthController {
 
     private final PersonValidator personValidator;
     private final RegistrationService registrationService;
-    private final UserAttributes userAttributes;
 
     @Autowired
-    public AuthController(PersonValidator personValidator, RegistrationService registrationService, UserAttributes userAttributes) {
+    public AuthController(PersonValidator personValidator, RegistrationService registrationService) {
         this.personValidator = personValidator;
         this.registrationService = registrationService;
-        this.userAttributes = userAttributes;
     }
 
     @GetMapping("/login")
@@ -37,7 +33,6 @@ public class AuthController {
         model.addAttribute("isAuthenticated", false);
         return "login";
     }
-
 
 
     @GetMapping("/register")
@@ -60,6 +55,4 @@ public class AuthController {
         registrationService.register(person);
         return "redirect:/auth/login?registered";
     }
-
-
 }

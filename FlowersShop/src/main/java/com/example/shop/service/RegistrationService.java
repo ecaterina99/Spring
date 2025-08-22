@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RegistrationService {
 
-
     private final UsersRepositoryCrud peopleRepository;
     private final PasswordEncoder passwordEncoder;
 

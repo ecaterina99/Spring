@@ -123,13 +123,8 @@ public class ProductService {
     }
 
     // Deletes product by ID
-    public boolean delete(int id) {
-        try {
+    public void delete(int id) {
             productRepositoryCrud.deleteById(id);
-            return !productRepositoryCrud.existsById(id);
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     //Saves uploaded image file with UUID naming
@@ -182,6 +177,4 @@ public class ProductService {
                 .map(this::productToDto)
                 .collect(Collectors.toList());
     }
-
-
 }

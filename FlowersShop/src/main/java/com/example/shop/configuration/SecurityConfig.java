@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/cart/add", "/cart/update", "/cart/remove", "/cart/count", "/cart/checkout")
                 )
                 .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/admin/**", "/sale/**", "/users/**").hasRole("ADMIN")
                         .requestMatchers("/auth/login", "/auth/register", "/auth/process-register").permitAll()
                         .requestMatchers("/cart/checkout").permitAll()
                         .requestMatchers("/cart/**").permitAll()
@@ -72,8 +73,6 @@ public class SecurityConfig {
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(false)
                 );
-
-
         return http.build();
     }
 

@@ -11,7 +11,7 @@
             <div class="row g-0 align-items-stretch">
                 <h3 class="fw-bold text-center mb-4">Edit Product</h3>
                 <div class="col-md-6 p-4">
-                    <form th:action="@{/product/edit/{id}(id=${product.id})}" method="post"
+                    <form th:action="@{/admin/edit/{id}(id=${product.id})}" method="post"
                           enctype="multipart/form-data">
 
                         <div class="mb-3">
@@ -81,7 +81,7 @@
                         <li class="list-group-item"><strong>Quantity:</strong> [[${product.quantity}]]</li>
                         <li class="list-group-item"><strong>Barcode:</strong> [[${product.barcode}]]</li>
                         <li class="list-group-item">
-                            <a class="btn-modal" th:href="@{/product/}">View all products</a>
+                            <a class="btn-modal" th:href="@{/admin/products}">View all products</a>
                         </li>
                     </ul>
 

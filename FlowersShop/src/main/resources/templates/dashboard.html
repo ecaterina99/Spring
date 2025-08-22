@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html>
-<!DOCTYPE html>
-<html>
 <div th:insert="~{/fragments/common_fragments :: head}"></div>
 <body>
 
@@ -49,22 +47,22 @@
             <h3 class="m-4">Quick actions</h3>
             <div class="row g-3">
                 <div class="col-6 col-md-4 col-lg-2">
-                    <a th:href="@{/product/}" class="actions btn w-100 action-btn">all products</a>
+                    <a th:href="@{/admin/products}" class="actions btn w-100 action-btn">all products</a>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2">
-                    <a th:href="@{/product/add}" class="actions btn w-100 action-btn">add product</a>
+                    <a th:href="@{/admin/add}" class="actions btn w-100 action-btn">add product</a>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2">
-                    <a th:href="@{/product/}" class="actions btn w-100 action-btn">update product</a>
+                    <a th:href="@{/admin/products}" class="actions btn w-100 action-btn">update product</a>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2">
-                    <a th:href="@{/product/}" class="actions btn w-100 action-btn">delete product</a>
+                    <a th:href="@{/admin/products}" class="actions btn w-100 action-btn">delete product</a>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2">
                     <a th:href="@{/sale/}" class="actions btn w-100 action-btn">list of sales</a>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2">
-                    <a th:href="@{/user/}" class="actions btn w-100 action-btn">list of customers</a>
+                    <a th:href="@{/users/}" class="actions btn w-100 action-btn">list of customers</a>
                 </div>
             </div>
         </div>

@@ -50,7 +50,6 @@ public class UserService {
             List<Sale>salesList = saleRepository.findAll();
             user.setSales(salesList);
         }
-
         return user;
     }
 
@@ -75,7 +74,6 @@ public class UserService {
         User user = userOptional.orElse(null);
         return userToDto(user);
     }
-
 
     public UserDTO update(UserDTO userDTO, int id) {
         User user = userDtoToModel(userDTO);

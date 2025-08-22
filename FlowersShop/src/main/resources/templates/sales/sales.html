@@ -17,7 +17,7 @@
         <ul class="list-group" th:if="${allSales != null and !#lists.isEmpty(allSales)}">
             <li class="list-group-item"
                 th:each="sale : ${allSales}"><strong>Customer:</strong>
-                <a th:href='${"/user/"+sale.user.id}' class="btn-modal">
+                <a th:href='${"/users/"+sale.user.id}' class="btn-modal">
                     [[${sale.user.firstName}]] [[${sale.user.lastName}]]</a>
 
                 - <strong>Purchase:</strong> [[${sale.product.name}]],

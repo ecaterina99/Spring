@@ -1,7 +1,6 @@
 package com.example.shop.dto;
 
 import com.example.shop.model.Sale;
-import com.example.shop.model.User;
 import lombok.Getter;
 import lombok.Setter;
 
