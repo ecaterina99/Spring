@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <div th:insert="~{/fragments/common_fragments :: head}"></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <body>
 
 <main>
@@ -8,65 +9,114 @@
 
     <div class="container py-4 admin-container">
 
-        <div class="text-center mb-4 admin-panel">
-            <h1 class="title fw-bold">Dashboard</h1>
-            <p class="lead fst-italic pt-3 pb-3">Welcome to admin-panel!</p>
+        <div class="container my-5">
+            <div class="title mb-5 mt-5">
+                <h1 class="title fw-bold text-center mb-4">DASHBOARD</h1>
+            </div>
+            <div class="row justify-content-center g-5 dashboard-cards">
+
+                <div class="col-6 col-md-4 col-lg-2 ">
+                    <div class="card shadow-sm text-center h-100 dashboard-card">
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <a th:href="@{/admin/products}" class="actions btn w-120">ALL PRODUCTS</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-2 ">
+                    <div class="card shadow-sm text-center h-100 dashboard-card">
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <a th:href="@{/admin/add}" class="actions btn w-120">ADD PRODUCT</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-2 ">
+                    <div class="card shadow-sm text-center h-100 dashboard-card">
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <a th:href="@{/admin/products}" class="actions btn w-120">UPDATE PRODUCT</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-2 ">
+                    <div class="card shadow-sm text-center h-100 dashboard-card bg-darkslategray">
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <a th:href="@{/admin/products}" class="actions btn w-120">DELETE PRODUCT</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-2 ">
+                    <div class="card shadow-sm text-center h-100 dashboard-card bg-darkslategray">
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <a th:href="@{/sale/}" class="actions btn w-120">LIST OF SALES</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="card shadow-sm text-center h-100 dashboard-card bg-darkslategray">
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <a th:href="@{/users/}" class="actions btn w-120">LIST OF CUSTOMERS</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <div class="row g-4 dashboard-cards">
-            <div class="col-md-4">
-                <div class="card shadow-sm text-center h-100 dashboard-card">
-                    <div class="card-body">
-                        <h4 class="card-title">TOTAL PRODUCTS</h4>
-                        <div class="number" id="totalProducts">[[${allProducts.size()}]]</div>
+
+        <div class="container my-5">
+            <div class="title mb-5 mt-5">
+
+                <h3 class="title fw-bold text-center mb-4">STATISTICS</h3>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+
+                    <div class="row g-4 dashboard-cards">
+                        <div class="col-md-4">
+                            <div class="card shadow-sm text-center h-100 dashboard-card bg-light">
+                                <div class="statistics">
+                                    <h5 class="card-title">TOTAL PRODUCTS</h5>
+                                    <div class="number" id="totalProducts">
+                                        [[${allProducts.size()}]]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card shadow-sm text-center h-100 dashboard-card bg-light">
+                                <div class="statistics">
+                                    <h5 class="card-title">TOTAL SALES</h5>
+                                    <div class="number" id="todaySales">
+                                        [[${allSales.size()}]]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card shadow-sm text-center h-100 dashboard-card bg-light">
+                                <div class="statistics">
+                                    <h5 class="card-title">TOTAL USERS</h5>
+                                    <div class="number" id="totalUsers">
+                                        [[${allUsers.size()}]]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="card shadow-sm text-center h-100 dashboard-card">
-                    <div class="card-body">
-                        <h4 class="card-title">TOTAL SALES</h4>
-                        <div class="number" id="todaySales">[[${allSales.size()}]]</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card shadow-sm text-center h-100 dashboard-card">
-                    <div class="card-body">
-                        <h4 class="card-title">TOTAL USERS</h4>
-                        <div class="number" id="totalUsers">[[${allUsers.size()}]]</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- quick actions -->
-        <div class="text-center mb-4 quick-actions mt-4">
-            <h3 class="m-4">Quick actions</h3>
-            <div class="row g-3">
-                <div class="col-6 col-md-4 col-lg-2">
-                    <a th:href="@{/admin/products}" class="actions btn w-100 action-btn">all products</a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <a th:href="@{/admin/add}" class="actions btn w-100 action-btn">add product</a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <a th:href="@{/admin/products}" class="actions btn w-100 action-btn">update product</a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <a th:href="@{/admin/products}" class="actions btn w-100 action-btn">delete product</a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <a th:href="@{/sale/}" class="actions btn w-100 action-btn">list of sales</a>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <a th:href="@{/users/}" class="actions btn w-100 action-btn">list of customers</a>
-                </div>
-            </div>
         </div>
     </div>
+
+
 </main>
 
 <div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>

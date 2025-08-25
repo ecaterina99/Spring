@@ -26,4 +26,5 @@ public class Sale {
     @Column(nullable = false)
     private int quantity;
 
+
 }

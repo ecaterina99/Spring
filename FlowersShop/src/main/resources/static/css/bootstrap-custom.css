@@ -19,7 +19,6 @@ body {
 .hero-section {
     position: relative;
     min-height: 100vh;
-    margin-bottom: 20px;
 }
 
 .hero-box {
@@ -70,6 +69,18 @@ body {
     font-size: 18px;
     font-style: italic;
     line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    #about-us {
+        padding-top: 2rem;
+    }
+    .hero-section {
+        min-height: auto;
+    }
+    .bloom-text{
+        font-size: 24px;
+    }
 }
 
 /* Header styling */
@@ -338,3 +349,27 @@ i {
     display: block !important;
 }
 
+
+.dashboard-card {
+    background-color: darkslategray;
+    color: #ececec;
+    min-height: 120px;
+}
+
+.dashboard-btn:hover {
+    background-color: darkslategray;
+    color: salmon;
+}
+.actions {
+    word-wrap: break-word;
+    hyphens: auto;
+    line-height: 1.2;
+}
+.statistics{
+    color: black;
+}
+
+.number{
+    font-size:18px;
+    font-weight: bold;
+}
