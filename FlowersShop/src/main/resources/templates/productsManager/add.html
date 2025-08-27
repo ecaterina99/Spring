@@ -7,6 +7,7 @@
     <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
 
     <form th:action="@{/admin/add}" method="post" enctype="multipart/form-data">
+
         <div class="container form-container my-3" style="max-width: 600px">
             <h3 class="fw-bold p-3 text-md-center">Add new product</h3>
             <div class="row form-group">
@@ -61,8 +62,8 @@
                 </div>
 
                 <div class="col-12 mb-3 form-field">
-                    <label for="edit-image" class="form-label">Image:</label>
-                    <input name="image" id="edit-image" class="form-control" type="file">
+                    <label for="add-image" class="form-label">Image:</label>
+                    <input name="image" id="add-image" class="form-control" type="file"  accept="image/*" required>
                 </div>
 
             </div>

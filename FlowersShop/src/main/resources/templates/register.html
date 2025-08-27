@@ -17,13 +17,11 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="firstName" class="form-label fw-bold">First name:</label>
-                            <!-- ИСПРАВЛЕНО: правильное имя поля и привязка -->
                             <input type="text" th:field="*{firstName}" id="firstName" class="form-control">
                             <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></div>
                         </div>
                         <div class="col-md-6">
                             <label for="lastName" class="form-label fw-bold">Last name:</label>
-                            <!-- ИСПРАВЛЕНО: правильное имя поля и привязка -->
                             <input type="text" th:field="*{lastName}" id="lastName" class="form-control">
                             <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></div>
                         </div>

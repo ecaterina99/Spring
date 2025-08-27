@@ -1,9 +1,7 @@
 package com.example.shop.configuration;
 
+import com.example.shop.helpers.CartEventHandler;
 import com.example.shop.service.PersonDetailsService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,24 +11,21 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-
-import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
 
 public class SecurityConfig {
     private final PersonDetailsService personDetailsService;
+    private final CartEventHandler cartEventHandler;
 
     @Autowired
-    public SecurityConfig(PersonDetailsService personDetailsService) {
+    public SecurityConfig(PersonDetailsService personDetailsService, CartEventHandler cartEventHandler) {
         this.personDetailsService = personDetailsService;
+        this.cartEventHandler = cartEventHandler;
     }
 
     @Bean
@@ -57,13 +52,14 @@ public class SecurityConfig {
                         .loginProcessingUrl("/auth/process-login")
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .successHandler(authenticationSuccessHandler())
+                        .successHandler(cartEventHandler)
                         .defaultSuccessUrl("/home", true)
                         .failureUrl("/auth/login?error")
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
+                        .addLogoutHandler(cartEventHandler)
                         .logoutSuccessUrl("/auth/login?logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
@@ -92,21 +88,5 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new SimpleUrlAuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest request,
-                                                HttpServletResponse response,
-                                                Authentication authentication) throws IOException {
-                HttpSession session = request.getSession(false);
-                if (session != null) {
-                    session.removeAttribute("cartItems");
-                }
-                getRedirectStrategy().sendRedirect(request, response, "/home");
-            }
-        };
     }
 }

@@ -11,8 +11,9 @@
             <div class="row g-0 align-items-stretch">
                 <h3 class="fw-bold text-center mb-4">Edit Product</h3>
                 <div class="col-md-6 p-4">
-                    <form th:action="@{/admin/edit/{id}(id=${product.id})}" method="post"
-                          enctype="multipart/form-data">
+                    <form th:action="@{/admin/edit/{id}(id=${product.id})}" method="post" enctype="multipart/form-data">
+
+
 
                         <div class="mb-3">
                             <label for="edit-name" class="form-label">Name:</label>

@@ -135,11 +135,6 @@ class CartManager {
                 body: ''
             });
 
-            console.log('Checkout response:', response);
-            console.log('Response success:', response.success);
-            console.log('Response error:', response.error);
-            console.log('Response requireLogin:', response.requireLogin);
-
             if (response.success === true) {
                 this.showSuccessModal('Purchase successful! Thank you for your order!');
             } else {
@@ -153,8 +148,6 @@ class CartManager {
                 this.showError(response.error || 'Checkout failed. Please try again.');
             }
         } catch (error) {
-            console.error('Checkout error:', error);
-            console.log('Error message:', error.message);
 
             if (error.message && error.message.includes('401')) {
                 this.showLoginRequiredModal('Authentication required, please log in');
@@ -170,8 +163,7 @@ class CartManager {
         const response = await fetch(url, options);
 
         if (response.status === 401) {
-            const data = await response.json();
-            return data;
+            return await response.json();
         }
 
         if (!response.ok && response.status !== 400) {
@@ -188,9 +180,7 @@ class CartManager {
         if (messageElement && message) {
             messageElement.textContent = message;
         }
-
         modal.show();
-
         setTimeout(() => {
             modal.hide();
             window.location.href = '/bouquets';
@@ -198,18 +188,12 @@ class CartManager {
     }
 
     showLoginRequiredModal(message) {
-        console.log('showLoginRequiredModal called with message:', message);
-
         const modalElement = document.getElementById('loginRequiredModal');
-        console.log('Modal element found:', modalElement);
-
         if (!modalElement) {
-            console.error('loginRequiredModal element not found!');
             alert('Please log in to continue');
             window.location.href = '/auth/login';
             return;
         }
-
         try {
             const modal = new bootstrap.Modal(modalElement);
             modal.show();

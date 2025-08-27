@@ -22,7 +22,7 @@ public class ProductService {
     private final DTOManager dtoManager;
     private final ProductRepositoryJpa productRepositoryJpa;
 
-    public ProductService(ProductRepositoryCrud productRepositoryCrud, DTOManager dtoManager,  ProductRepositoryJpa productRepositoryJpa) {
+    public ProductService(ProductRepositoryCrud productRepositoryCrud, DTOManager dtoManager, ProductRepositoryJpa productRepositoryJpa) {
         this.productRepositoryCrud = productRepositoryCrud;
         this.dtoManager = dtoManager;
         this.productRepositoryJpa = productRepositoryJpa;
@@ -124,13 +124,14 @@ public class ProductService {
 
     // Deletes product by ID
     public void delete(int id) {
-            productRepositoryCrud.deleteById(id);
+        productRepositoryCrud.deleteById(id);
     }
 
     //Saves uploaded image file with UUID naming
     public String saveImage(MultipartFile imageFile) {
-        if (imageFile.isEmpty()) return null;
-
+        if (imageFile == null || imageFile.isEmpty()) {
+            return null;
+        }
         try {
             String uploadDir = "src/main/resources/static/innerFolder/products/";
             String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
@@ -159,7 +160,13 @@ public class ProductService {
         return randomGifts.stream()
                 .map(this::productToDto)
                 .collect(Collectors.toList());
+    }
 
+    public List<ProductDTO> getProductsByCategory(Product.Category category) {
+        List<Product> allProducts = (List<Product>) productRepositoryJpa.findProductByCategory(category);
+        return allProducts.stream()
+                .map(this::productToDto)
+                .collect(Collectors.toList());
     }
 
     public List<ProductDTO> orderByPriceAsc(Product.Category category) {

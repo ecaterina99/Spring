@@ -22,7 +22,6 @@
             </div>
 
             <form th:action="@{/auth/process-login}" method="post">
-                <input type = "hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
                 <fieldset class="border rounded-3 p-4">
                     <legend class="fw-bold fs-5">Log in</legend>

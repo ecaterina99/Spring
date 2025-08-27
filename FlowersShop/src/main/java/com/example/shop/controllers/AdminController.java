@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -35,9 +33,8 @@ public class AdminController {
         this.saleService = saleService;
         this.userService = userService;
     }
-
     @GetMapping("/dashboard")
-    public String home(Model model, Authentication authentication) {
+    public String dashboard(Model model, Authentication authentication) {
         List<ProductDTO> allProducts = productService.findAll();
         List<Sale> allSales = saleService.findAll();
         List<UserDTO> allUsers = userService.findAllUsers();
@@ -66,7 +63,6 @@ public class AdminController {
         return "productsManager/view";
     }
 
-
     @GetMapping("edit/{id}")
     public String showEditForm(@PathVariable("id") int id, Model model, Authentication authentication) {
         userAttributes.addUserAttributes(model, authentication);
@@ -86,7 +82,10 @@ public class AdminController {
                               @RequestParam(value = "availability", required = false) Boolean availability,
                               @RequestParam(value = "image", required = false) MultipartFile image) {
 
-        String imagePath = productService.saveImage(image);
+        String imagePath = null;
+        if (image != null && !image.isEmpty()) {
+            imagePath = productService.saveImage(image);
+        }
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(id);
         productDTO.setName(name);
@@ -148,8 +147,6 @@ public class AdminController {
         userAttributes.addUserAttributes(model, authentication);
         return "redirect:/admin/products";
     }
-
-
 }
 
 

@@ -28,47 +28,17 @@ public class ProductController {
 
     @GetMapping("/bouquets")
     public String bouquets(Model model, Authentication authentication, @RequestParam(name = "sort", defaultValue = "relevance") String sort) {
-        List<ProductDTO> products;
-        if (sort.equalsIgnoreCase("price")) {
-            products = productService.orderByPriceAsc(Product.Category.valueOf("bouquet"));
-        } else if (sort.equalsIgnoreCase("priceDesc")) {
-            products = productService.orderByPriceDesc(Product.Category.valueOf("bouquet"));
-        } else {
-            products = productService.findAll();
-        }
-        userAttributes.addUserAttributes(model, authentication);
-        model.addAttribute("allProducts", products);
-        return "bouquets";
+        return showProductsByCategory("bouquet", sort, "bouquets", model, authentication);
     }
 
     @GetMapping("/plants")
     public String plants(Model model, Authentication authentication, @RequestParam(name = "sort", defaultValue = "relevance") String sort) {
-        List<ProductDTO> products;
-        if (sort.equalsIgnoreCase("price")) {
-            products = productService.orderByPriceAsc(Product.Category.valueOf("plant"));
-        } else if (sort.equalsIgnoreCase("priceDesc")) {
-            products = productService.orderByPriceDesc(Product.Category.valueOf("plant"));
-        } else {
-            products = productService.findAll();
-        }
-        userAttributes.addUserAttributes(model, authentication);
-        model.addAttribute("allProducts", products);
-        return "plants";
+        return showProductsByCategory("plant", sort, "plants", model, authentication);
     }
 
     @GetMapping("/gifts")
     public String gifts(Model model, Authentication authentication, @RequestParam(name = "sort", defaultValue = "relevance") String sort) {
-        List<ProductDTO> products;
-        if (sort.equalsIgnoreCase("price")) {
-            products = productService.orderByPriceAsc(Product.Category.valueOf("gift"));
-        } else if (sort.equalsIgnoreCase("priceDesc")) {
-            products = productService.orderByPriceDesc(Product.Category.valueOf("gift"));
-        } else {
-            products = productService.findAll();
-        }
-        userAttributes.addUserAttributes(model, authentication);
-        model.addAttribute("allProducts", products);
-        return "gifts";
+        return showProductsByCategory("gift", sort, "gifts", model, authentication);
     }
 
     @GetMapping("/info/{id}")
@@ -80,5 +50,19 @@ public class ProductController {
         model.addAttribute("product", productDTO);
         model.addAttribute("allProducts", randomGifts);
         return "info";
+    }
+
+    private String showProductsByCategory(String category, String sort, String viewName, Model model,
+                                          Authentication authentication) {
+        List<ProductDTO> products;
+        Product.Category productCategory = Product.Category.valueOf(category);
+        switch (sort.toLowerCase()) {
+            case "pricedesc" -> products = productService.orderByPriceDesc(productCategory);
+            case "price" -> products = productService.orderByPriceAsc(productCategory);
+            default -> products = productService.getProductsByCategory(productCategory);
+        }
+        userAttributes.addUserAttributes(model, authentication);
+        model.addAttribute("allProducts", products);
+        return viewName;
     }
 }

@@ -20,7 +20,6 @@ public class PersonValidator implements Validator {
         return User.class.equals(aClazz);
     }
 
-    //TODO create method thar returns optional list in personService
     @Override
     public void validate(Object target, Errors errors) {
         User person = (User) target;
