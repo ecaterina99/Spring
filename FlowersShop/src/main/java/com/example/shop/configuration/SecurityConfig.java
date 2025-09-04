@@ -37,6 +37,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/admin/**", "/sale/**", "/users/**").hasRole("ADMIN")
                         .requestMatchers("/auth/login", "/auth/register", "/auth/process-register").permitAll()
+                        .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers("*.png", "*.jpg", "*.jpeg", "*.avif").permitAll()
                         .requestMatchers("/cart/checkout").permitAll()
                         .requestMatchers("/cart/**").permitAll()
                         .requestMatchers("/home", "/contact").permitAll()

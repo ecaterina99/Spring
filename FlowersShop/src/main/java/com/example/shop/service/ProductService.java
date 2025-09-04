@@ -133,14 +133,14 @@ public class ProductService {
             return null;
         }
         try {
-            String uploadDir = "src/main/resources/static/innerFolder/products/";
+            String uploadDir = "/home/ubuntu/flower_shop/uploads/products";
             String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
-            Path filepath = Paths.get(uploadDir + filename);
+            Path filepath = Paths.get(uploadDir, filename);
 
             Files.createDirectories(filepath.getParent());
             Files.copy(imageFile.getInputStream(), filepath, StandardCopyOption.REPLACE_EXISTING);
 
-            return "/innerFolder/products/" + filename;
+            return filename;
         } catch (IOException e) {
             throw new RuntimeException("Failed to save image", e);
         }

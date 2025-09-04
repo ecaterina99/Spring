@@ -9,15 +9,15 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 @Setter
 @Getter
 public class ProductDTO {
-    private int id;
+    private Integer  id;
     private String name;
     private String description;
     private Product.Category category;
-    private double price;
+    private Double  price;
     private String barcode;
     private String image;
-    private int quantity;
-    private boolean availability;
+    private Integer quantity;
+    private Boolean availability;
 
     @JsonSetter("category")
     public void setCategory(String categoryValue) {

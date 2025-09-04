@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<div th:insert="~{/fragments/common_fragments :: head}"></div>
+<div th:insert="~{fragments/common_fragments :: head}"></div>
 <body>
 
 <main>
-    <div th:insert="~{/fragments/common_fragments :: mainHeader}"></div>
+    <div th:insert="~{fragments/common_fragments :: mainHeader}"></div>
     <div id="cartNotification"></div>
 
     <!-- Intro -->
@@ -43,6 +43,8 @@
                 <div class="card shadow-sm h-100 text-center border-0">
                     <a th:href="@{'/info/' + ${product.id}}" class="text-decoration-none text-dark">
                         <img th:src="@{${product.image}}" class="card-img-top rounded" alt="image">
+
+
                         <div class="card-body">
                             <h5 class="card-title fw-bold" th:text="${product.name.toUpperCase()}"></h5>
                             <p class="card-text text-muted" th:text="${product.price + ' $'}"></p>
@@ -64,7 +66,7 @@
     </section>
 </main>
 
-<div th:insert="~{/fragments/common_fragments :: mainFooter}"></div>
+<div th:insert="~{fragments/common_fragments :: mainFooter}"></div>
 
 <script src="/js/cart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

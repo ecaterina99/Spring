@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
-<div th:insert="~{/fragments/common_fragments :: head}"></div>
+<div th:insert="~{fragments/common_fragments :: head}"></div>
 <body class="bg-light py-4">
 
 <main class="container">
     <div class="register-card shadow-lg rounded-3">
         <div class="card-body">
             <form th:action="@{/auth/process-register}" th:object="${user}" method="post">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
                 <h1 class="fw-bold text-center fs-2 p-4">Create an Account</h1>
 
