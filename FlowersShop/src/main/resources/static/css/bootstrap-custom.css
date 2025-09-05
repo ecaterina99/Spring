@@ -13,6 +13,7 @@ body {
     font-family: 'Agraham';
     font-size: 50px;
     color: black;
+    white-space: nowrap;
 }
 
 /* Hero section */
@@ -80,6 +81,9 @@ body {
     }
     .bloom-text{
         font-size: 24px;
+    }
+    .logo {
+        font-size: 28px;
     }
 }
 

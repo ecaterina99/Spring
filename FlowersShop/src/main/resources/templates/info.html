@@ -53,7 +53,7 @@
                             <div class="card shadow-sm h-100 text-center border-0">
                                 <a th:href="@{'/info/' + ${giftProduct.id}}"
                                    class="text-decoration-none text-dark">
-                                    <img th:src="@{'/' + ${product.image}}" class="card-img-top rounded" alt="image"
+                                    <img th:src="@{'/' + ${giftProduct.image}}" class="card-img-top rounded" alt="image"
                                          style="height: 80px; object-fit: cover;">
                                     <div class="card-body">
                                         <h6 class="card-title fw-bold" th:text="${giftProduct.name.toUpperCase()}"></h6>
