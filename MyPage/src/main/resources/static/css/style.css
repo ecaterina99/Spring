@@ -1,0 +1,89 @@
+
+@font-face {
+    font-family: 'Cosmic Vibrant';
+    src: url('/innerFolder/Cosmic Vibrant.otf"') format('opentype');
+}
+
+.bg-image {
+    display:block;
+    width: 100vw;
+    height: auto;
+}
+.main-image {
+    position: relative;
+    width: 100vw;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.explore-btn{
+    position: absolute;
+    top: 77%;
+    left: 51%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    transition: all 0.3s ease;
+    font-family: 'Cosmic Vibrant';
+    white-space: nowrap;
+    z-index: 5;
+    border: none;
+    padding: 8px;
+    font-size: 14px;
+}
+@media (max-width: 768px) {
+    .explore-btn {
+
+        font-size: 7px;
+    }
+    .explore-btn:hover{
+        transform: translate(-50%, -50%) scale(1.03);
+    }
+}
+
+.explore-btn:hover{
+    transform: translate(-50%, -50%) scale(1.05);
+    background-color: white;
+    color: black;
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.8),
+    0 0 40px rgba(147, 51, 234, 0.6),
+    0 0 60px rgba(147, 51, 234, 0.4);
+}
+
+
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.navbar .nav-link {
+    color: white !important;
+    text-decoration: none;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+    color: lightblue !important;
+}
+
+.navbar a {
+    color: gray !important;
+    text-decoration: none;
+    text-align: center;
+!important;
+}
+
+.navbar a:hover {
+    color: lightblue !important;
+}
+
+.navbar-toggler-icon {
+    color: white;
+}
