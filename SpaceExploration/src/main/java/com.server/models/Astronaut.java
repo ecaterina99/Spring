@@ -1,11 +1,14 @@
 package com.server.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -130,5 +133,9 @@ public class Astronaut {
     @Column(name = "specialization", nullable = false)
     @Enumerated(EnumType.STRING)
     private Specialization specialization;
+
+    @OneToMany(mappedBy = "astronaut", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference("astronaut_participants")
+    private List<MissionParticipants> missionParticipants = new ArrayList<>();
 
 }
