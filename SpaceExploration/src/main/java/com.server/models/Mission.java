@@ -1,5 +1,6 @@
 package com.server.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -97,14 +98,20 @@ public class Mission {
     @Enumerated(EnumType.STRING)
     private DifficultyLevel difficultyLevel = DifficultyLevel.MEDIUM;
 
-
-    @Pattern(regexp = "^[+]?[0-9]{1,3}$", message = "Invalid number format")
-    @NotNull
-    @Column(name="destination_id", nullable = false)
-    private int destinationId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "destination_id", nullable = false)
+    @JsonBackReference("destination-missions")
+    private Destination destination;
 
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference("mission_participants")
+    @JsonManagedReference("mission-participants")
     private List<MissionParticipants> missionParticipants = new ArrayList<>();
 
+    @OneToOne(mappedBy = "mission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("mission-report")
+    private MissionReport missionReport;
+
+    @OneToOne(mappedBy = "mission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("mission-finance")
+    private Finance finance;
 }

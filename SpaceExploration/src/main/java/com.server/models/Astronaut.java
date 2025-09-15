@@ -135,7 +135,7 @@ public class Astronaut {
     private Specialization specialization;
 
     @OneToMany(mappedBy = "astronaut", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference("astronaut_participants")
+    @JsonManagedReference("astronaut-participants")
     private List<MissionParticipants> missionParticipants = new ArrayList<>();
 
 }

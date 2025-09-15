@@ -16,12 +16,12 @@ public class MissionParticipants {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false)
-    @JsonBackReference("mission_participants")
+    @JsonBackReference("mission-participants")
     private Mission mission;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "astronaut_id", nullable = false)
-    @JsonBackReference("astronaut_participants")
+    @JsonBackReference("astronaut-participants")
     private Astronaut astronaut;
 
 }
