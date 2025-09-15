@@ -13,7 +13,7 @@ import java.util.List;
 
 @Setter
 @Getter
-@Entity(name = "destination")
+@Entity(name = "destinations")
 public class Destination {
 
     @Id
@@ -35,8 +35,6 @@ public class Destination {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column (name = "is_habitable", nullable = false)
-    private boolean isHabitable;
 
     @Column(name = "gravity")
     private Integer gravity;
