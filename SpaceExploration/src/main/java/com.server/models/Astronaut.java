@@ -44,7 +44,7 @@ public class Astronaut {
     @DecimalMin(value = "200.0", message = "Daily rate must be at least 200")
     @DecimalMax(value = "2000.0", message = "Daily rate cannot exceed 2000")
     @Column(name = "daily_rate", nullable = false)
-    private Double dailyRate;
+    private Integer dailyRate;
 
     @Min(value = 0, message = "Fitness score must be between 0 and 100")
     @Max(value = 100, message = "Fitness score must be between 0 and 100")
@@ -63,6 +63,14 @@ public class Astronaut {
 
     @Column(name = "overall_score")
     private Integer overallScore;
+
+    @PrePersist
+    @PreUpdate
+    public void calculateOverallScore() {
+        if (fitnessScore != null && educationScore != null && psychologicalScore != null) {
+            this.overallScore = (fitnessScore + educationScore + psychologicalScore) / 3;
+        }
+    }
 
     @Column(name = "image_url")
     private String image;
