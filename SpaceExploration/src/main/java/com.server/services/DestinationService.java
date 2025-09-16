@@ -5,7 +5,6 @@ import com.server.models.Destination;
 import com.server.repositories.DestinationRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,5 +32,4 @@ public class DestinationService {
                 .map(destination -> modelMapper.map(destination, DestinationDTO.class))
                 .toList();
     }
-
 }

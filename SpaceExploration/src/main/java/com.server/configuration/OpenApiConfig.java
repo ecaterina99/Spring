@@ -19,3 +19,4 @@ public class OpenApiConfig{
 }
 
 //http://localhost:8080/api/swagger-ui/index.html
+//http://localhost:8080/api/swagger-ui/index.html#/Missions/partialUpdateMission

@@ -18,5 +18,4 @@ public class DestinationDTO {
     private String image;
     private Destination.EntityType entityType;
     private List<Mission> missions;
-
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashMap;
 import java.util.Map;
 
 //Global scope: Catches exceptions from ALL your controllers, not just one
@@ -20,6 +21,7 @@ public class GlobalExceptionHandler {
                 "message", e.getMessage()
         );
     }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String, String> handleGenericException(Exception e) {
@@ -28,4 +30,22 @@ public class GlobalExceptionHandler {
                 "message", "Something went wrong"
         );
     }
+
+    // Handle validation errors (Bean Validation)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> fieldErrors = new HashMap<>();
+
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            fieldErrors.put(error.getField(), error.getDefaultMessage());
+        });
+
+        return Map.of(
+                "error", "Validation failed",
+                "message", "Invalid input data",
+                "fieldErrors", fieldErrors
+        );
+    }
+
 }

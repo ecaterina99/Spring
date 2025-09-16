@@ -3,10 +3,7 @@ package com.server.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,20 +26,20 @@ public class Mission {
 
     @NotBlank(message = "Mission code is required")
     @Size(min = 4, max = 6, message = "Mission name must be between 2 and 6 characters")
-    @Column(name="code", nullable = false)
+    @Column(name="code", nullable = false, unique = true)
     private String code;
 
     @NotBlank(message = "Mission description is required")
     @Column(name="description", nullable = false)
     private String description;
 
-    @Pattern(regexp = "^[+]?[0-9]+$", message = "Invalid number format")
+    @Min(value = 1)
     @NotNull
     @Column(name="duration_days", nullable = false)
     private int durationDays;
 
 
-    @Pattern(regexp = "^[+]?[0-9]+$", message = "Invalid number format")
+    @Min(value = 1)
     @NotNull
     @Column(name="crew_size_required", nullable = false)
     private int crewSizeRequired;
@@ -51,7 +48,7 @@ public class Mission {
     @Column(name="required_specializations", nullable = false)
     private String requiredSpecializations;
 
-    @Pattern(regexp = "^[+]?[0-9]+$", message = "Invalid number format")
+    @Min(value = 1)
     @NotNull
     @Column(name="score_value", nullable = false)
     private int scoreValue;
