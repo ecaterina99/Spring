@@ -6,10 +6,12 @@ import com.server.repositories.DestinationRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class DestinationService {
     private final DestinationRepository destinationRepository;
     private final ModelMapper modelMapper;

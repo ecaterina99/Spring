@@ -89,7 +89,7 @@ public class AstronautService {
     }
 
     public void deleteAstronaut(int id) {
-       Astronaut astronaut = astronautRepository.findById(id)
+        Astronaut astronaut = astronautRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + id));
         astronautRepository.delete(astronaut);
     }

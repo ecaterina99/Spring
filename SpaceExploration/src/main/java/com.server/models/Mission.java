@@ -109,6 +109,6 @@ public class Mission {
     private MissionReport missionReport;
 
     @OneToOne(mappedBy = "mission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference("mission-finance")
-    private Finance finance;
+    @JsonManagedReference("mission-payment")
+    private Payment payment;
 }

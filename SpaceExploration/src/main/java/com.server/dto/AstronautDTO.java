@@ -1,11 +1,13 @@
 package com.server.dto;
 
 import com.server.models.Astronaut;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
+@Schema(description = "Astronauts information")
 public class AstronautDTO {
     private int id;
     private String fullName;

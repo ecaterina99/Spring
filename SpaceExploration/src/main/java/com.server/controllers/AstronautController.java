@@ -1,7 +1,6 @@
 package com.server.controllers;
 
 import com.server.dto.AstronautDTO;
-import com.server.dto.MissionDTO;
 import com.server.services.AstronautService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,10 +25,11 @@ public class AstronautController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get astronaut by ID")
+    @Operation(summary = "Retrieve astronaut by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Astronaut found"),
             @ApiResponse(responseCode = "404", description = "Astronaut not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
 
     })
     public ResponseEntity<AstronautDTO> getAstronaut(@PathVariable int id) {
@@ -38,16 +38,21 @@ public class AstronautController {
     }
 
     @GetMapping()
-    @Operation(summary = "Get all astronauts")
+    @Operation(summary = "Retrieve all astronauts")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved all astronauts"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
+    })
     public ResponseEntity<List<AstronautDTO>> getAllAstronauts() {
         return ResponseEntity.ok(astronautService.getAllAstronauts());
     }
 
-    @PostMapping("/add")
-    @Operation(summary = "Add a new astronauts")
+    @PostMapping
+    @Operation(summary = "Create new astronaut")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Astronaut created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
     public ResponseEntity<AstronautDTO> addAstronaut(@Valid @RequestBody AstronautDTO astronautDTO) {
         AstronautDTO createdAstronaut = astronautService.addAstronaut(astronautDTO);
@@ -55,11 +60,11 @@ public class AstronautController {
     }
 
     @PatchMapping("/{id}")
-    @Operation(summary = "Partially update an existing astronaut")
+    @Operation(summary = "Update astronaut partially ")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Astronaut updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "404", description = "Astronaut not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
     public ResponseEntity<AstronautDTO> updateAstronaut(
             @PathVariable int id,
@@ -69,10 +74,11 @@ public class AstronautController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete an existing astronaut")
+    @Operation(summary = "Delete astronaut")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Astronaut deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Astronaut not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
     public ResponseEntity<Void> deleteAstronaut(@PathVariable int id) {
         astronautService.deleteAstronaut(id);

@@ -1,9 +1,12 @@
 package com.server.services;
 
+import com.server.dto.AstronautDTO;
 import com.server.dto.MissionDTO;
+import com.server.dto.MissionParticipantsDTO;
 import com.server.models.Destination;
 import com.server.models.Mission;
 import com.server.repositories.DestinationRepository;
+import com.server.repositories.MissionParticipantsRepository;
 import com.server.repositories.MissionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -18,13 +21,15 @@ public class MissionService {
     private final MissionRepository missionRepository;
     private final DestinationRepository destinationRepository;
     private final ModelMapper modelMapper;
+    private final MissionParticipantsRepository missionParticipantsRepository;
 
     public MissionService(ModelMapper modelMapper,
                           MissionRepository missionRepository,
-                          DestinationRepository destinationRepository) {
+                          DestinationRepository destinationRepository, MissionParticipantsRepository missionParticipantsRepository) {
         this.missionRepository = missionRepository;
         this.destinationRepository = destinationRepository;
         this.modelMapper = modelMapper;
+        this.missionParticipantsRepository = missionParticipantsRepository;
     }
 
     public MissionDTO getMissionById(int id) {
@@ -41,28 +46,15 @@ public class MissionService {
                 .toList();
     }
 
-
     public MissionDTO addMission(MissionDTO missionDTO) {
         // Check if mission code already exists
         if (missionRepository.existsByCode(missionDTO.getCode())) {
             throw new IllegalArgumentException("Mission with code '" + missionDTO.getCode() + "' already exists");
         }
-
         // Validate and fetch destination
         Destination destination = destinationRepository.findById(missionDTO.getDestinationId())
                 .orElseThrow(() -> new EntityNotFoundException("Destination not found with id: " + missionDTO.getDestinationId()));
-
-        Mission mission = new Mission();
-        mission.setMissionName(missionDTO.getMissionName());
-        mission.setCode(missionDTO.getCode());
-        mission.setDescription(missionDTO.getDescription());
-        mission.setDurationDays(missionDTO.getDurationDays());
-        mission.setCrewSizeRequired(missionDTO.getCrewSizeRequired());
-        mission.setRequiredSpecializations(missionDTO.getRequiredSpecializations());
-        mission.setScoreValue(missionDTO.getScoreValue());
-        mission.setPotentialIssues(missionDTO.getPotentialIssues());
-        mission.setImage(missionDTO.getImage());
-        mission.setDifficultyLevel(missionDTO.getDifficultyLevel());
+        Mission mission = modelMapper.map(missionDTO, Mission.class);
         mission.setDestination(destination);
         Mission savedMission = missionRepository.save(mission);
         return modelMapper.map(savedMission, MissionDTO.class);

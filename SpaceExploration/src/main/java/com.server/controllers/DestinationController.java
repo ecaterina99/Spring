@@ -28,6 +28,7 @@ public class DestinationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Destination found"),
             @ApiResponse(responseCode = "404", description = "Destination not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
 
     })
     public ResponseEntity<DestinationDTO> getDestination(@PathVariable int id) {
@@ -37,6 +38,10 @@ public class DestinationController {
 
     @GetMapping()
     @Operation(summary = "Get all destinations")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved all destinations"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
+    })
     public ResponseEntity<List<DestinationDTO>> getAllDestinations() {
         return ResponseEntity.ok(destinationService.getAllDestinations());
     }

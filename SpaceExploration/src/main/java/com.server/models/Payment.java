@@ -4,14 +4,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-@Entity(name = "finances")
-public class Finance {
+@Entity(name = "payments")
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -35,7 +34,7 @@ public class Finance {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false, unique = true)
-    @JsonBackReference("mission-finance")
+    @JsonBackReference("mission-payment")
     private Mission mission;
 
 }

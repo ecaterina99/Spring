@@ -11,6 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 //Global scope: Catches exceptions from ALL your controllers, not just one
+/*
+Handle exceptions in one place
+Uniform error responses
+Keep business logic separate from error handling
+Meaningful error messages
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)

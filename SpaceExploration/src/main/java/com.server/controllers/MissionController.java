@@ -25,10 +25,11 @@ public class MissionController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get mission by ID")
+    @Operation(summary = "Retrieve mission by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Mission found"),
             @ApiResponse(responseCode = "404", description = "Mission not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
 
     })
     public ResponseEntity<MissionDTO> getMission(@PathVariable int id) {
@@ -37,17 +38,24 @@ public class MissionController {
     }
 
     @GetMapping()
-    @Operation(summary = "Get all missions")
+    @Operation(summary = "Retrieve all missions")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved all missions"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
+
+    })
     public ResponseEntity<List<MissionDTO>> getAllMissions() {
         return ResponseEntity.ok(missionService.getAllMissions());
     }
 
-    @PostMapping("/add")
-    @Operation(summary = "Add a new mission")
+    @PostMapping
+    @Operation(summary = "Create a new mission")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Mission created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "409", description = "Mission code already exists")
+            @ApiResponse(responseCode = "409", description = "Mission code already exists"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
+
     })
     public ResponseEntity<MissionDTO> addMission(@Valid @RequestBody MissionDTO missionDTO) {
         MissionDTO createdMission = missionService.addMission(missionDTO);
@@ -55,12 +63,12 @@ public class MissionController {
     }
 
     @PatchMapping("/{id}")
-    @Operation(summary = "Partially update an existing mission")
+    @Operation(summary = "Update mission partially")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Mission updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "404", description = "Mission not found"),
-            @ApiResponse(responseCode = "409", description = "Mission code already exists for another mission")
+            @ApiResponse(responseCode = "409", description = "Mission code already exists for another mission"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
     public ResponseEntity<MissionDTO> partialUpdateMission(
             @PathVariable int id,
@@ -70,10 +78,11 @@ public class MissionController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete an existing mission")
+    @Operation(summary = "Delete mission")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Mission deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Mission not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
     public ResponseEntity<Void> deleteMission(@PathVariable int id) {
         missionService.deleteMission(id);
