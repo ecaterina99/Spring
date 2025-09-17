@@ -1,8 +1,6 @@
 package com.server.services;
 
-import com.server.dto.AstronautDTO;
 import com.server.dto.MissionDTO;
-import com.server.dto.MissionParticipantsDTO;
 import com.server.models.Destination;
 import com.server.models.Mission;
 import com.server.repositories.DestinationRepository;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 
 @Service
 @Transactional
@@ -111,6 +110,20 @@ public class MissionService {
         Mission mission = missionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Mission not found with id: " + id));
         missionRepository.delete(mission);
+    }
+
+    public List<MissionDTO> getMissionsByDestinationId(int destinationId) {
+        if (!destinationRepository.existsById(destinationId)) {
+            throw new EntityNotFoundException("Destination not found with id: " + destinationId);
+        }
+        List<Mission> missions = missionRepository.findByDestinationId(destinationId);
+
+        return missions.stream().map(mission ->
+        {
+            MissionDTO dto = modelMapper.map(mission, MissionDTO.class);
+            dto.setDestinationName(mission.getDestination().getDestinationName());
+            return dto;
+        }).toList();
     }
 }
 

@@ -14,6 +14,4 @@ public interface MissionParticipantsRepository extends JpaRepository<MissionPart
 
     List<MissionParticipants> findByAstronautId(int astronautId);
 
-    Optional<MissionParticipants> findByMissionIdAndAstronautId(int missionId, int astronautId);
-
 }

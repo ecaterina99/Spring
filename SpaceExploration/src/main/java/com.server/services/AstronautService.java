@@ -28,6 +28,12 @@ public class AstronautService {
                 .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + id));
     }
 
+    public AstronautDTO getAstronautWithMissions(int astronautId) {
+        Astronaut astronaut = astronautRepository.findById(astronautId)
+                .orElseThrow(() -> new RuntimeException("Astronaut not found"));
+        return  AstronautDTO.withMissions(astronaut);
+    }
+
     public List<AstronautDTO> getAllAstronauts() {
 
         List<Astronaut> astronauts = astronautRepository.findAll();
@@ -93,4 +99,7 @@ public class AstronautService {
                 .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + id));
         astronautRepository.delete(astronaut);
     }
+
+
+
 }

@@ -48,6 +48,17 @@ public class MissionController {
         return ResponseEntity.ok(missionService.getAllMissions());
     }
 
+    @GetMapping("/by-destination/{id}")
+    @Operation(summary = "Retrieve all missions by destination id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved all missions by destinantion id"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
+
+    })
+    public ResponseEntity<List<MissionDTO>> getAllMissionsByDestinationId(@PathVariable("id") int destinationId) {
+        return ResponseEntity.ok(missionService.getMissionsByDestinationId(destinationId));
+    }
+
     @PostMapping
     @Operation(summary = "Create a new mission")
     @ApiResponses(value = {

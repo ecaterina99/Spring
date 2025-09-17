@@ -1,7 +1,9 @@
 package com.server.services;
 
+import com.server.dto.AstronautDTO;
 import com.server.dto.MissionDTO;
 import com.server.dto.MissionReportDTO;
+import com.server.models.Astronaut;
 import com.server.models.Mission;
 import com.server.models.MissionReport;
 import com.server.repositories.MissionParticipantsRepository;
@@ -42,4 +44,11 @@ public class MissionReportService {
                 .map(missionReport -> modelMapper.map(missionReport, MissionReportDTO.class))
                 .toList();
     }
+
+
+    public MissionReportDTO getMissionReportByMissionIdWithDetails(int missionId) {
+        MissionReport missionReport = missionReportRepository.getMissionReportByMission_Id(missionId)
+                .orElseThrow(() -> new RuntimeException("Mission report not found with mission id"+missionId));
+        return  MissionReportDTO.withDetails(missionReport);    }
+
 }

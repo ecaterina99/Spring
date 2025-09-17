@@ -45,5 +45,16 @@ public class MissionReportsController {
     public ResponseEntity<List<MissionReportDTO>> getAllMissionReports() {
         return ResponseEntity.ok(missionReportService.getAllMissionReports());
     }
+    @GetMapping("details/{id}")
+    @Operation(summary = "Retrieve mission report with mission participants data by mission ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Mission report found"),
+            @ApiResponse(responseCode = "404", description = "Mission report not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
 
+    })
+    public ResponseEntity<MissionReportDTO> getMissionReportByMissionId(@PathVariable int id) {
+        MissionReportDTO missionReport = missionReportService.getMissionReportByMissionIdWithDetails(id);
+        return ResponseEntity.ok(missionReport);
+    }
 }
