@@ -44,10 +44,6 @@ public class Mission {
     @Column(name="crew_size_required", nullable = false)
     private int crewSizeRequired;
 
-    @NotBlank(message = "Please enter required specializations")
-    @Column(name="required_specializations", nullable = false)
-    private String requiredSpecializations;
-
     @Min(value = 1)
     @NotNull
     @Column(name="score_value", nullable = false)
@@ -111,4 +107,27 @@ public class Mission {
     @OneToOne(mappedBy = "mission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("mission-payment")
     private Payment payment;
+
+    @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference("mission-requiredSpecializations")
+    private List<MissionRequiredSpecializations> missionRequiredSpecializations = new ArrayList<>();
+
+    public void addRequiredSpecialization(MissionRequiredSpecializations.Specialization specialization, int quantity) {
+        MissionRequiredSpecializations reqSpec = new MissionRequiredSpecializations();
+        reqSpec.setMission(this);
+        reqSpec.setSpecialization(specialization);
+        reqSpec.setQuantityRequired(quantity);
+        this.missionRequiredSpecializations.add(reqSpec);
+    }
+
+    public void removeRequiredSpecialization(MissionRequiredSpecializations.Specialization specialization) {
+        this.missionRequiredSpecializations.removeIf(rs -> rs.getSpecialization().equals(specialization));
+    }
+    public int getTotalRequiredCrew() {
+        return missionRequiredSpecializations.stream()
+                .mapToInt(MissionRequiredSpecializations::getQuantityRequired)
+                .sum();
+    }
+
 }
+

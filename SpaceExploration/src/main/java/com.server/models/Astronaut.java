@@ -113,7 +113,8 @@ public class Astronaut {
         PILOT("Pilot"),
         ENGINEER("Engineer"),
         SCIENTIST("Scientist"),
-        DOCTOR("Doctor");
+        DOCTOR("Doctor"),
+        GEOLOGIST("Geologist");
 
         private final String displayName;
 
@@ -132,7 +133,7 @@ public class Astronaut {
                 return Specialization.valueOf(normalized);
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException("Invalid specialization: " + value +
-                        ". Valid values are: PILOT, ENGINEER, SCIENTIST, DOCTOR");
+                        ". Valid values are: PILOT, ENGINEER, SCIENTIST, DOCTOR, GEOLOGIST ");
             }
         }
     }
