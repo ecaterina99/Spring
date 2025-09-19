@@ -76,12 +76,6 @@ public class MissionDTO {
     @NoArgsConstructor
     public static class MissionWithoutDetailsDTO {
         private String missionName;
-
-       /* public MissionWithoutDetailsDTO(String missionName) {
-            this.missionName = missionName;
-        }
-
-        */
     }
 
     public static MissionDTO withDetails(Mission mission) {

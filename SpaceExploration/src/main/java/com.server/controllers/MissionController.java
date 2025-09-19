@@ -1,6 +1,9 @@
 package com.server.controllers;
 
 import com.server.dto.MissionDTO;
+import com.server.dto.MissionParticipantsDTO;
+import com.server.dto.MissionRequiredSpecializationDTO;
+import com.server.models.MissionRequiredSpecializations;
 import com.server.services.MissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -99,4 +102,24 @@ public class MissionController {
         missionService.deleteMission(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{missionId}/add-specialization")
+    @Operation(summary = "Add specialization to mission")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Specialization added to the mission successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "404", description = "Mission not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
+    })
+    public ResponseEntity<MissionRequiredSpecializationDTO> addSpecializationToMission(
+            @PathVariable int missionId,
+            @Valid @RequestBody MissionRequiredSpecializationDTO.AddSpecializationRequest request) {
+
+        MissionRequiredSpecializationDTO addedSpecialization =
+                missionService.addSpecializationToMission(missionId, request.getSpecialization(), request.getQuantity());
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedSpecialization);
+    }
+
 }
+
+

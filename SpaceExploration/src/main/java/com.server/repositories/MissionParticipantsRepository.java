@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface MissionParticipantsRepository extends JpaRepository<MissionParticipants, Integer> {
     List<MissionParticipants> findByMissionId(int missionId);
 
+    boolean existsByMissionIdAndAstronautId(int missionId, int astronautId);
+
     List<MissionParticipants> findByAstronautId(int astronautId);
 
 }

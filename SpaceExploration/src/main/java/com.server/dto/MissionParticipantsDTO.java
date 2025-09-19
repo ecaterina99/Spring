@@ -17,17 +17,9 @@ import lombok.NoArgsConstructor;
 public class MissionParticipantsDTO {
     private Integer id;
     private Integer missionId;
-    private int astronautId;
+    private Integer astronautId;
     private String astronautName;
     private String missionName;
-
-
-    public static MissionParticipantsDTO astronautDetails(MissionParticipants missionParticipants) {
-        return MissionParticipantsDTO.builder()
-                .astronautId(missionParticipants.getAstronaut().getId())
-                .astronautName(missionParticipants.getAstronaut().getFullName())
-                .build();
-    }
 
     public static MissionParticipantsDTO missionParticipantsDetails(MissionParticipants missionParticipants) {
         return MissionParticipantsDTO.builder()

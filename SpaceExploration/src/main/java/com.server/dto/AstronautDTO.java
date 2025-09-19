@@ -116,22 +116,4 @@ public class AstronautDTO {
                 )
                 .build();
     }
-
-    public static AstronautDTO withoutMissions(Astronaut astronaut) {
-        return AstronautDTO.builder()
-                .id(astronaut.getId())
-                .fullName(astronaut.getFullName())
-                .yearsOfExperience(astronaut.getYearsOfExperience())
-                .phone(astronaut.getPhone())
-                .dateOfBirth(astronaut.getDateOfBirth())
-                .dailyRate(astronaut.getDailyRate())
-                .fitnessScore(astronaut.getFitnessScore())
-                .educationScore(astronaut.getEducationScore())
-                .psychologicalScore(astronaut.getPsychologicalScore())
-                .overallScore(astronaut.getOverallScore())
-                .image(astronaut.getImage())
-                .specialization(astronaut.getSpecialization())
-                .healthStatus(astronaut.getHealthStatus())
-                .build();
-    }
 }

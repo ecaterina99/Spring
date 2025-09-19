@@ -1,4 +1,5 @@
 package com.server.dto;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.server.models.Mission;
 import com.server.models.MissionReport;
@@ -29,14 +30,14 @@ public class MissionReportDTO {
     private Integer proceeds;
 
     public static MissionReportDTO withDetails(MissionReport missionReport) {
-        return  MissionReportDTO.builder()
+        return MissionReportDTO.builder()
                 .id(missionReport.getId())
                 .resultsDescription(missionReport.getResultsDescription())
                 .isSuccessful(missionReport.isSuccessful())
-                        .missionId(missionReport.getMission().getId())
-                                .missionName(missionReport.getMission().getMissionName())
-                                        .destinationName(missionReport.getMission().getDestination().getDestinationName())
-                                                .difficultyLevel(missionReport.getMission().getDifficultyLevel())
+                .missionId(missionReport.getMission().getId())
+                .missionName(missionReport.getMission().getMissionName())
+                .destinationName(missionReport.getMission().getDestination().getDestinationName())
+                .difficultyLevel(missionReport.getMission().getDifficultyLevel())
                 .participants(
                         missionReport.getMission().getMissionParticipants().stream()
                                 .map(mp -> MissionParticipantsDTO.builder()
@@ -48,4 +49,4 @@ public class MissionReportDTO {
                 )
                 .build();
     }
-    }
+}

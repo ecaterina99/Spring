@@ -10,11 +10,14 @@ import com.server.repositories.MissionParticipantsRepository;
 import com.server.repositories.MissionRepository;
 import com.server.repositories.MissionRequiredSpecializationsRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.Builder;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -158,6 +161,42 @@ public class MissionService {
             return dto;
         }).toList();
     }
+
+    @Builder
+    public MissionRequiredSpecializationDTO addSpecializationToMission(int missionId, String specializationName, int quantity) {
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow(() -> new EntityNotFoundException("Mission with id " + missionId + " not found"));
+        MissionRequiredSpecializations.Specialization specialization;
+        try {
+            specialization = MissionRequiredSpecializations.Specialization.valueOf(specializationName.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid specialization: " + specializationName +
+                    ". Valid values are: " + Arrays.toString(MissionRequiredSpecializations.Specialization.values()));
+        }
+// Check if this specialization already exists for this mission
+        Optional<MissionRequiredSpecializations> existing =
+                specializationsRepository.findByMissionIdAndSpecialization(missionId, specialization);
+
+        if (existing.isPresent()) {
+            // Update existing quantity
+            MissionRequiredSpecializations existingSpec = existing.get();
+            existingSpec.setQuantityRequired(existingSpec.getQuantityRequired() + quantity);
+            MissionRequiredSpecializations saved = specializationsRepository.save(existingSpec);
+            return MissionRequiredSpecializationDTO.create(saved);
+        } else {
+            // Create new specialization requirement
+            MissionRequiredSpecializations newSpecialization = MissionRequiredSpecializations.builder()
+                    .mission(mission)
+                    .specialization(specialization)
+                    .quantityRequired(quantity)
+                    .build();
+
+            MissionRequiredSpecializations saved = specializationsRepository.save(newSpecialization);
+            return MissionRequiredSpecializationDTO.create(saved);
+        }
+    }
+
+
 }
 
 
