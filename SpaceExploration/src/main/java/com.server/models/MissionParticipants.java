@@ -2,12 +2,14 @@ package com.server.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
 @Entity(name = "mission_participants")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class MissionParticipants {
 
     @Id
@@ -23,5 +25,6 @@ public class MissionParticipants {
     @JoinColumn(name = "astronaut_id", nullable = false)
     @JsonBackReference("astronaut-participants")
     private Astronaut astronaut;
+
 
 }

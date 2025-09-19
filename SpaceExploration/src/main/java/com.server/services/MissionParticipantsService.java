@@ -1,6 +1,7 @@
 package com.server.services;
 
 import com.server.dto.MissionParticipantsDTO;
+import com.server.models.Mission;
 import com.server.models.MissionParticipants;
 import com.server.repositories.AstronautRepository;
 import com.server.repositories.MissionParticipantsRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -36,10 +38,10 @@ public MissionParticipantsService(MissionParticipantsRepository missionParticipa
         }
 
         List<MissionParticipants> participants = missionParticipantsRepository.findByMissionId(missionId);
-
         return participants.stream()
-                .map(participant -> modelMapper.map(participant, MissionParticipantsDTO.class))
-                .toList();
+                .map(MissionParticipantsDTO::missionParticipantsDetails)
+                .collect(Collectors.toList());
     }
-
 }
+
+

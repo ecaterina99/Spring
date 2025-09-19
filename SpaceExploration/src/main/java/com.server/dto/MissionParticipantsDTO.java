@@ -19,12 +19,22 @@ public class MissionParticipantsDTO {
     private Integer missionId;
     private int astronautId;
     private String astronautName;
+    private String missionName;
 
 
     public static MissionParticipantsDTO astronautDetails(MissionParticipants missionParticipants) {
         return MissionParticipantsDTO.builder()
                 .astronautId(missionParticipants.getAstronaut().getId())
                 .astronautName(missionParticipants.getAstronaut().getFullName())
+                .build();
+    }
+
+    public static MissionParticipantsDTO missionParticipantsDetails(MissionParticipants missionParticipants) {
+        return MissionParticipantsDTO.builder()
+                .astronautId(missionParticipants.getAstronaut().getId())
+                .astronautName(missionParticipants.getAstronaut().getFullName())
+                .missionId(missionParticipants.getMission().getId())
+                .missionName(missionParticipants.getMission().getMissionName())
                 .build();
     }
 }
