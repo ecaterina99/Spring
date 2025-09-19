@@ -8,7 +8,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -86,6 +88,9 @@ public class Astronaut {
             this.displayName = displayName;
         }
 
+        public String getDisplayName() {
+            return displayName;
+        }
 
         public static HealthStatus fromString(String value) {
             if (value == null || value.trim().isEmpty()) {
@@ -145,6 +150,6 @@ public class Astronaut {
 
     @OneToMany(mappedBy = "astronaut", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference("astronaut-participants")
-    private List<MissionParticipants> missionParticipants = new ArrayList<>();
+    private Set<MissionParticipants> missionParticipants = new HashSet<>();
 
 }

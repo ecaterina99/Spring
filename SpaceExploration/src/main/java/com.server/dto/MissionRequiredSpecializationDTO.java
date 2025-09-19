@@ -1,5 +1,6 @@
 package com.server.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.server.models.MissionRequiredSpecializations;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -11,18 +12,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Schema(description = "Mission required specializations for the crew")
 public class MissionRequiredSpecializationDTO {
-    private int id;
-    private int missionId;
+    private Integer id;
+    private Integer missionId;
     private MissionRequiredSpecializations.Specialization specialization;
-    private int quantityRequired;
+    private Integer quantityRequired;
 
-    @Schema(description = "Display name of the specialization", example = "Pilot")
-    public String getDisplayName() {
-        return specialization != null ? specialization.getDisplayName() : "";
-
-    }
         public static MissionRequiredSpecializationDTO create(
                 MissionRequiredSpecializations.Specialization specialization,
         int quantity) {
@@ -31,14 +28,6 @@ public class MissionRequiredSpecializationDTO {
                     .quantityRequired(quantity)
                     .build();
         }
-    public static MissionRequiredSpecializationDTO fromEntity(MissionRequiredSpecializations entity) {
-        return MissionRequiredSpecializationDTO.builder()
-                .id(entity.getId())
-                .missionId(entity.getMission().getId())
-                .specialization(entity.getSpecialization())
-                .quantityRequired(entity.getQuantityRequired())
-                .build();
-    }
     }
 
 

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,19 +17,20 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "Mission information")
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Builder
 public class MissionDTO {
     private int id;
     private String missionName;
     private String code;
     private String description;
-    private int durationDays;
-    private int crewSizeRequired;
-    private int scoreValue;
+    private Integer durationDays;
+    private Integer crewSizeRequired;
+    private Integer scoreValue;
     private String potentialIssues;
     private String image;
     private Mission.DifficultyLevel difficultyLevel;
-    private int destinationId;
+    private Integer destinationId;
     private List<MissionParticipants> missionParticipants;
     private String destinationName;
 
@@ -46,6 +48,7 @@ public class MissionDTO {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class MissionSummaryDTO {
         private int id;
         private String missionName;
@@ -53,44 +56,70 @@ public class MissionDTO {
         private String destinationName;
         private String resultsDescription;
         private boolean isSuccessful;
-    //    private List<MissionRequiredSpecializations.Specialization> specializations;
         private List<SpecializationSummaryDTO> specializations = new ArrayList<>();
 
-       /* public MissionSummaryDTO(
-                int id,
-                @NotBlank(message = "Mission name is required")
-                @Size(min = 2, max = 100, message = "Mission name must be between 2 and 100 characters")
-                String missionName,
-                Mission.DifficultyLevel difficultyLevel,
-                String destinationName,
-                boolean isSuccessful,
-                String resultsDescription,
-            List<MissionRequiredSpecializations.Specialization> specializations)
-        {
-            this.id = id;
-            this.missionName = missionName;
-            this.difficultyLevel = difficultyLevel;
-            this.destinationName = destinationName;
-            this.isSuccessful = isSuccessful;
-            this.resultsDescription = resultsDescription;
-           this.specializations = specializations;
+        @Data
+        @NoArgsConstructor
+        public static class SpecializationSummaryDTO {
+            private MissionRequiredSpecializations.Specialization specialization;
+            private int quantityRequired;
 
+            public SpecializationSummaryDTO(MissionRequiredSpecializations.Specialization specialization, int quantityRequired) {
+                this.specialization = specialization;
+                this.quantityRequired = quantityRequired;
+            }
+        }
+
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class MissionWithoutDetailsDTO {
+        private String missionName;
+
+       /* public MissionWithoutDetailsDTO(String missionName) {
+            this.missionName = missionName;
         }
 
         */
-       @Data
-       @NoArgsConstructor
-       @AllArgsConstructor
-       public static class SpecializationSummaryDTO {
-           private MissionRequiredSpecializations.Specialization specialization;
-           private int quantityRequired;
-           private String displayName;
-
-           public SpecializationSummaryDTO(MissionRequiredSpecializations.Specialization specialization, int quantityRequired) {
-               this.specialization = specialization;
-               this.quantityRequired = quantityRequired;
-               this.displayName = specialization.getDisplayName();
-           }
-           }
     }
+
+    public static MissionDTO withDetails(Mission mission) {
+        return MissionDTO.builder()
+                .id(mission.getId())
+                .missionName(mission.getMissionName())
+                .code(mission.getCode())
+                .description(mission.getDescription())
+                .crewSizeRequired(mission.getCrewSizeRequired())
+                .difficultyLevel(mission.getDifficultyLevel())
+                .potentialIssues(mission.getPotentialIssues())
+                .durationDays(mission.getDurationDays())
+                .destinationId(mission.getDestination().getId())
+                .destinationName(mission.getDestination().getDestinationName())
+                .scoreValue(mission.getScoreValue())
+                .requiredSpecializations(
+                        mission.getMissionRequiredSpecializations().stream()
+                                .map(mrs -> MissionRequiredSpecializationDTO.builder()
+                                        .specialization(mrs.getSpecialization())
+                                        .quantityRequired(mrs.getQuantityRequired())
+                                        .build()
+                                )
+                                .toList()
+                )
+
+                .participants(
+                        mission.getMissionParticipants().stream()
+                                .map(mp -> MissionParticipantsDTO.builder()
+                                        .astronautId(mp.getAstronaut().getId())
+                                        .astronautName(mp.getAstronaut().getFullName())
+                                        .build()
+                                )
+                                .toList()
+                )
+
+                .build();
+    }
+
+
 }
+

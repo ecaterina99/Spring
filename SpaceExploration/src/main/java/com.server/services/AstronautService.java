@@ -23,22 +23,21 @@ public class AstronautService {
     }
 
     public AstronautDTO getAstronautById(int id) {
-        return astronautRepository.findById(id)
-                .map(astronaut -> modelMapper.map(astronaut, AstronautDTO.class))
+        Astronaut astronaut =  astronautRepository.findByIdWithMissions(id)
                 .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + id));
+        return AstronautDTO.withMissionWithoutDetails(astronaut);
     }
 
     public AstronautDTO getAstronautWithMissions(int astronautId) {
-        Astronaut astronaut = astronautRepository.findById(astronautId)
+        Astronaut astronaut = astronautRepository.findByIdWithMissions(astronautId)
                 .orElseThrow(() -> new RuntimeException("Astronaut not found"));
         return  AstronautDTO.withMissions(astronaut);
     }
 
     public List<AstronautDTO> getAllAstronauts() {
-
-        List<Astronaut> astronauts = astronautRepository.findAll();
+        List<Astronaut> astronauts = astronautRepository.findAllWithMissions();
         return astronauts.stream()
-                .map(astronaut -> modelMapper.map(astronaut, AstronautDTO.class))
+                .map(AstronautDTO::withMissionWithoutDetails)
                 .toList();
     }
 
@@ -99,7 +98,5 @@ public class AstronautService {
                 .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + id));
         astronautRepository.delete(astronaut);
     }
-
-
 
 }

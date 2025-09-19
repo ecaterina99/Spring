@@ -28,6 +28,7 @@ public interface AstronautRepository extends JpaRepository<Astronaut, Integer> {
             "LEFT JOIN FETCH m.missionReport mr")
     List<Astronaut> findAllWithMissions();
 
+
     List<Astronaut> findBySpecialization(Astronaut.Specialization specialization);
 
     List<Astronaut> findByHealthStatus(Astronaut.HealthStatus healthStatus);

@@ -39,9 +39,9 @@ public class MissionService {
     }
     @Transactional(readOnly = true)
     public MissionDTO getMissionById(int id) {
-        return missionRepository.findById(id)
-                .map(mission -> modelMapper.map(mission, MissionDTO.class))
-                .orElseThrow(() -> new EntityNotFoundException("Mission not found with id: " + id));
+        Mission mission = missionRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Mission not found with id: "+ id));
+        return MissionDTO.withDetails(mission);
     }
     @Transactional(readOnly = true)
     public List<MissionDTO> getAllMissions() {

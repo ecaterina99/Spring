@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -37,7 +39,6 @@ public class Mission {
     @NotNull
     @Column(name="duration_days", nullable = false)
     private int durationDays;
-
 
     @Min(value = 1)
     @NotNull
@@ -110,14 +111,14 @@ public class Mission {
 
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference("mission-requiredSpecializations")
-    private List<MissionRequiredSpecializations> missionRequiredSpecializations = new ArrayList<>();
+    private Set<MissionRequiredSpecializations> missionRequiredSpecializations = new HashSet<>();
 
     public void addRequiredSpecialization(MissionRequiredSpecializations.Specialization specialization, int quantity) {
-        MissionRequiredSpecializations reqSpec = new MissionRequiredSpecializations();
-        reqSpec.setMission(this);
-        reqSpec.setSpecialization(specialization);
-        reqSpec.setQuantityRequired(quantity);
-        this.missionRequiredSpecializations.add(reqSpec);
+        MissionRequiredSpecializations requiredSpecialization = new MissionRequiredSpecializations();
+        requiredSpecialization.setMission(this);
+        requiredSpecialization.setSpecialization(specialization);
+        requiredSpecialization.setQuantityRequired(quantity);
+        this.missionRequiredSpecializations.add(requiredSpecialization);
     }
 
     public void removeRequiredSpecialization(MissionRequiredSpecializations.Specialization specialization) {

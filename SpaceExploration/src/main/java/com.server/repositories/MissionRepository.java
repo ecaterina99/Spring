@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface MissionRepository extends JpaRepository <Mission, Integer> {
+
         boolean existsByCode(String code);
         List <Mission> findByDestinationId(Integer destinationId);
 
