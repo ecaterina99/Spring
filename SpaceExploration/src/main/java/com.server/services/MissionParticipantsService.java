@@ -31,7 +31,7 @@ public class MissionParticipantsService {
         this.astronautRepository = astronautRepository;
     }
 
-    public List<MissionParticipantsDTO> getAllParticipantsByMissionId(int missionId) {
+    public List<MissionParticipantsDTO> showMissonCrew(int missionId) {
         if (!missionRepository.existsById(missionId)) {
             throw new EntityNotFoundException("Mission not found with id: " + missionId);
         }
@@ -59,6 +59,8 @@ public class MissionParticipantsService {
         missionParticipantsRepository.save(missionParticipants);
         return MissionParticipantsDTO.missionParticipantsDetails(missionParticipants);
     }
+
+
 }
 
 

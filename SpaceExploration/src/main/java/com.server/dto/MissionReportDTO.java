@@ -42,7 +42,7 @@ public class MissionReportDTO {
                         missionReport.getMission().getMissionParticipants().stream()
                                 .map(mp -> MissionParticipantsDTO.builder()
                                         .astronautId(mp.getAstronaut().getId())
-                                        .astronautName(mp.getAstronaut().getFullName())
+                                        .astronautName(mp.getAstronaut().getFirstName())
                                         .build()
                                 )
                                 .toList()

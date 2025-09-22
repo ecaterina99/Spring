@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+
+
 
 @Service
-@Transactional
 public class AstronautService {
     private final ModelMapper modelMapper;
     private final AstronautRepository astronautRepository;
@@ -22,31 +24,29 @@ public class AstronautService {
         this.astronautRepository = astronautRepository;
     }
 
+    @Transactional(readOnly = true)
     public AstronautDTO getAstronautById(int id) {
-        Astronaut astronaut =  astronautRepository.findByIdWithMissions(id)
+        Astronaut astronaut = astronautRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + id));
-        return AstronautDTO.withMissionWithoutDetails(astronaut);
+        return modelMapper.map(astronaut, AstronautDTO.class);
     }
 
-    public AstronautDTO getAstronautWithMissions(int astronautId) {
-        Astronaut astronaut = astronautRepository.findByIdWithMissions(astronautId)
-                .orElseThrow(() -> new RuntimeException("Astronaut not found"));
-        return  AstronautDTO.withMissions(astronaut);
-    }
-
+    @Transactional(readOnly = true)
     public List<AstronautDTO> getAllAstronauts() {
-        List<Astronaut> astronauts = astronautRepository.findAllWithMissions();
+        List<Astronaut> astronauts = astronautRepository.findAll();
         return astronauts.stream()
-                .map(AstronautDTO::withMissionWithoutDetails)
+                .map(astronaut -> modelMapper.map(astronaut, AstronautDTO.class))
                 .toList();
     }
 
+    @Transactional
     public AstronautDTO addAstronaut(AstronautDTO astronautDTO) {
         Astronaut astronaut = modelMapper.map(astronautDTO, Astronaut.class);
         Astronaut savedAstronaut = astronautRepository.save(astronaut);
         return modelMapper.map(savedAstronaut, AstronautDTO.class);
     }
 
+    @Transactional
     public AstronautDTO updateAstronaut(int id, AstronautDTO astronautDTO) {
         Astronaut existingAstronaut = astronautRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + id));
@@ -58,45 +58,25 @@ public class AstronautService {
     }
 
     private void updateEntityFromDTO(Astronaut entity, AstronautDTO dto) {
-        if (dto.getFullName() != null) {
-            entity.setFullName(dto.getFullName());
-        }
-        if (dto.getYearsOfExperience() != 0) {
-            entity.setYearsOfExperience(dto.getYearsOfExperience());
-        }
-        if (dto.getPhone() != null) {
-            entity.setPhone(dto.getPhone());
-        }
-        if (dto.getDateOfBirth() != null) {
-            entity.setDateOfBirth(dto.getDateOfBirth());
-        }
-        if (dto.getDailyRate() != null) {
-            entity.setDailyRate(dto.getDailyRate());
-        }
-        if (dto.getFitnessScore() != null) {
-            entity.setFitnessScore(dto.getFitnessScore());
-        }
-        if (dto.getEducationScore() != null) {
-            entity.setEducationScore(dto.getEducationScore());
-        }
-        if (dto.getPsychologicalScore() != null) {
-            entity.setPsychologicalScore(dto.getPsychologicalScore());
-        }
-        if (dto.getImage() != null) {
-            entity.setImage(dto.getImage());
-        }
-        if (dto.getSpecialization() != null) {
-            entity.setSpecialization(dto.getSpecialization());
-        }
-        if (dto.getHealthStatus() != null) {
-            entity.setHealthStatus(dto.getHealthStatus());
-        }
+        Optional.ofNullable(dto.getFirstName()).ifPresent(entity::setFirstName);
+        Optional.ofNullable(dto.getLastName()).ifPresent(entity::setLastName);
+        Optional.ofNullable(dto.getYearsOfExperience()).ifPresent(entity::setYearsOfExperience);
+        Optional.ofNullable(dto.getPhone()).ifPresent(entity::setPhone);
+        Optional.ofNullable(dto.getDateOfBirth()).ifPresent(entity::setDateOfBirth);
+        Optional.ofNullable(dto.getDailyRate()).ifPresent(entity::setDailyRate);
+        Optional.ofNullable(dto.getFitnessScore()).ifPresent(entity::setFitnessScore);
+        Optional.ofNullable(dto.getEducationScore()).ifPresent(entity::setEducationScore);
+        Optional.ofNullable(dto.getPsychologicalScore()).ifPresent(entity::setPsychologicalScore);
+        Optional.ofNullable(dto.getImageUrl()).ifPresent(entity::setImageUrl);
+        Optional.ofNullable(dto.getSpecialization()).ifPresent(entity::setSpecialization);
+        Optional.ofNullable(dto.getHealthStatus()).ifPresent(entity::setHealthStatus);
     }
 
+    @Transactional
     public void deleteAstronaut(int id) {
-        Astronaut astronaut = astronautRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + id));
-        astronautRepository.delete(astronaut);
+        if (!astronautRepository.existsById(id)) {
+            throw new EntityNotFoundException("Astronaut not found with id: " + id);
+        }
+        astronautRepository.deleteById(id);
     }
-
 }

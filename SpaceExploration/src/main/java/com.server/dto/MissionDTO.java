@@ -3,8 +3,6 @@ package com.server.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.server.models.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,16 +32,9 @@ public class MissionDTO {
     private List<MissionParticipants> missionParticipants;
     private String destinationName;
 
-    private List<MissionRequiredSpecializationDTO> requiredSpecializations = new ArrayList<>();
+    private List<MissionSpecializationDTO> specializations = new ArrayList<>();
 
     private List<MissionParticipantsDTO> participants = new ArrayList<>();
-
-    public void addRequiredSpecialization(MissionRequiredSpecializations.Specialization specialization, int quantity) {
-        MissionRequiredSpecializationDTO dto = new MissionRequiredSpecializationDTO();
-        dto.setSpecialization(specialization);
-        dto.setQuantityRequired(quantity);
-        this.requiredSpecializations.add(dto);
-    }
 
     @Data
     @NoArgsConstructor
@@ -61,12 +52,12 @@ public class MissionDTO {
         @Data
         @NoArgsConstructor
         public static class SpecializationSummaryDTO {
-            private MissionRequiredSpecializations.Specialization specialization;
-            private int quantityRequired;
+            private MissionSpecialization.Specialization specialization;
+            private int quantity;
 
-            public SpecializationSummaryDTO(MissionRequiredSpecializations.Specialization specialization, int quantityRequired) {
+            public SpecializationSummaryDTO(MissionSpecialization.Specialization specialization, int quantity) {
                 this.specialization = specialization;
-                this.quantityRequired = quantityRequired;
+                this.quantity = quantity;
             }
         }
 
@@ -91,11 +82,11 @@ public class MissionDTO {
                 .destinationId(mission.getDestination().getId())
                 .destinationName(mission.getDestination().getDestinationName())
                 .scoreValue(mission.getScoreValue())
-                .requiredSpecializations(
-                        mission.getMissionRequiredSpecializations().stream()
-                                .map(mrs -> MissionRequiredSpecializationDTO.builder()
+                .specializations(
+                        mission.getMissionSpecializations().stream()
+                                .map(mrs -> MissionSpecializationDTO.builder()
                                         .specialization(mrs.getSpecialization())
-                                        .quantityRequired(mrs.getQuantityRequired())
+                                        .quantity(mrs.getQuantity())
                                         .build()
                                 )
                                 .toList()
@@ -105,7 +96,7 @@ public class MissionDTO {
                         mission.getMissionParticipants().stream()
                                 .map(mp -> MissionParticipantsDTO.builder()
                                         .astronautId(mp.getAstronaut().getId())
-                                        .astronautName(mp.getAstronaut().getFullName())
+                                        .astronautName(mp.getAstronaut().getFirstName())
                                         .build()
                                 )
                                 .toList()

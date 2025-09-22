@@ -1,14 +1,14 @@
 package com.server.services;
 
 import com.server.dto.MissionDTO;
-import com.server.dto.MissionRequiredSpecializationDTO;
+import com.server.dto.MissionSpecializationDTO;
 import com.server.models.Destination;
 import com.server.models.Mission;
-import com.server.models.MissionRequiredSpecializations;
+import com.server.models.MissionSpecialization;
 import com.server.repositories.DestinationRepository;
 import com.server.repositories.MissionParticipantsRepository;
 import com.server.repositories.MissionRepository;
-import com.server.repositories.MissionRequiredSpecializationsRepository;
+import com.server.repositories.MissionSpecializationRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.Builder;
 import org.modelmapper.ModelMapper;
@@ -27,25 +27,27 @@ public class MissionService {
     private final DestinationRepository destinationRepository;
     private final ModelMapper modelMapper;
     private final MissionParticipantsRepository missionParticipantsRepository;
-    private final MissionRequiredSpecializationsRepository specializationsRepository;
+    private final MissionSpecializationRepository specializationsRepository;
 
 
     public MissionService(ModelMapper modelMapper,
                           MissionRepository missionRepository,
                           DestinationRepository destinationRepository, MissionParticipantsRepository missionParticipantsRepository,
-                          MissionRequiredSpecializationsRepository specializationsRepository) {
+                          MissionSpecializationRepository specializationsRepository) {
         this.missionRepository = missionRepository;
         this.destinationRepository = destinationRepository;
         this.modelMapper = modelMapper;
         this.missionParticipantsRepository = missionParticipantsRepository;
         this.specializationsRepository = specializationsRepository;
     }
+
     @Transactional(readOnly = true)
     public MissionDTO getMissionById(int id) {
         Mission mission = missionRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Mission not found with id: "+ id));
+                .orElseThrow(() -> new RuntimeException("Mission not found with id: " + id));
         return MissionDTO.withDetails(mission);
     }
+
     @Transactional(readOnly = true)
     public List<MissionDTO> getAllMissions() {
 
@@ -56,24 +58,22 @@ public class MissionService {
     }
 
     public MissionDTO addMission(MissionDTO missionDTO) {
-        // Check if mission code already exists
         if (missionRepository.existsByCode(missionDTO.getCode())) {
             throw new IllegalArgumentException("Mission with code '" + missionDTO.getCode() + "' already exists");
         }
-        // Validate and fetch destination
         Destination destination = destinationRepository.findById(missionDTO.getDestinationId())
                 .orElseThrow(() -> new EntityNotFoundException("Destination not found with id: " + missionDTO.getDestinationId()));
         Mission mission = modelMapper.map(missionDTO, Mission.class);
         mission.setDestination(destination);
         Mission savedMission = missionRepository.save(mission);
 
-        if (missionDTO.getRequiredSpecializations() != null && !missionDTO.getRequiredSpecializations().isEmpty()) {
-            for (MissionRequiredSpecializationDTO specDTO : missionDTO.getRequiredSpecializations()) {
-                MissionRequiredSpecializations spec = new MissionRequiredSpecializations();
+        if (missionDTO.getSpecializations() != null && !missionDTO.getSpecializations().isEmpty()) {
+            for (MissionSpecializationDTO specDTO : missionDTO.getSpecializations()) {
+                MissionSpecialization spec = new MissionSpecialization();
                 spec.setMission(savedMission);
                 spec.setSpecialization(specDTO.getSpecialization());
-                spec.setQuantityRequired(specDTO.getQuantityRequired());
-                savedMission.getMissionRequiredSpecializations().add(spec);
+                spec.setQuantity(specDTO.getQuantity());
+                savedMission.getMissionSpecializations().add(spec);
             }
             savedMission = missionRepository.save(savedMission);
         }
@@ -122,22 +122,22 @@ public class MissionService {
                     .orElseThrow(() -> new EntityNotFoundException("Destination not found with id: " + missionDTO.getDestinationId()));
             existingMission.setDestination(destination);
         }
-        if (missionDTO.getRequiredSpecializations() != null) {
-            updateMissionSpecializations(existingMission, missionDTO.getRequiredSpecializations());
+        if (missionDTO.getSpecializations() != null) {
+            updateMissionSpecializations(existingMission, missionDTO.getSpecializations());
         }
         Mission savedMission = missionRepository.save(existingMission);
         return modelMapper.map(savedMission, MissionDTO.class);
     }
 
-    private void updateMissionSpecializations(Mission mission, List<MissionRequiredSpecializationDTO> newSpecs) {
-        mission.getMissionRequiredSpecializations().clear();
+    private void updateMissionSpecializations(Mission mission, List<MissionSpecializationDTO> newSpecs) {
+        mission.getMissionSpecializations().clear();
 
-        for (MissionRequiredSpecializationDTO specDTO : newSpecs) {
-            MissionRequiredSpecializations spec = new MissionRequiredSpecializations();
+        for (MissionSpecializationDTO specDTO : newSpecs) {
+            MissionSpecialization spec = new MissionSpecialization();
             spec.setMission(mission);
             spec.setSpecialization(specDTO.getSpecialization());
-            spec.setQuantityRequired(specDTO.getQuantityRequired());
-            mission.getMissionRequiredSpecializations().add(spec);
+            spec.setQuantity(specDTO.getQuantity());
+            mission.getMissionSpecializations().add(spec);
         }
     }
 
@@ -163,41 +163,39 @@ public class MissionService {
     }
 
     @Builder
-    public MissionRequiredSpecializationDTO addSpecializationToMission(int missionId, String specializationName, int quantity) {
+    public MissionSpecializationDTO addSpecializationToMission(int missionId, String specializationName, int quantity) {
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(() -> new EntityNotFoundException("Mission with id " + missionId + " not found"));
-        MissionRequiredSpecializations.Specialization specialization;
+        MissionSpecialization.Specialization specialization;
         try {
-            specialization = MissionRequiredSpecializations.Specialization.valueOf(specializationName.toUpperCase());
+            specialization = MissionSpecialization.Specialization.valueOf(specializationName.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid specialization: " + specializationName +
-                    ". Valid values are: " + Arrays.toString(MissionRequiredSpecializations.Specialization.values()));
+                    ". Valid values are: " + Arrays.toString(MissionSpecialization.Specialization.values()));
         }
-// Check if this specialization already exists for this mission
-        Optional<MissionRequiredSpecializations> existing =
+        Optional<MissionSpecialization> existing =
                 specializationsRepository.findByMissionIdAndSpecialization(missionId, specialization);
 
         if (existing.isPresent()) {
-            // Update existing quantity
-            MissionRequiredSpecializations existingSpec = existing.get();
-            existingSpec.setQuantityRequired(existingSpec.getQuantityRequired() + quantity);
-            MissionRequiredSpecializations saved = specializationsRepository.save(existingSpec);
-            return MissionRequiredSpecializationDTO.create(saved);
+            MissionSpecialization existingSpecialization = existing.get();
+            existingSpecialization.setQuantity(existingSpecialization.getQuantity() + quantity);
+            MissionSpecialization saved = specializationsRepository.save(existingSpecialization);
+            return MissionSpecializationDTO.create(saved);
         } else {
-            // Create new specialization requirement
-            MissionRequiredSpecializations newSpecialization = MissionRequiredSpecializations.builder()
+            MissionSpecialization newSpecialization = MissionSpecialization.builder()
                     .mission(mission)
                     .specialization(specialization)
-                    .quantityRequired(quantity)
+                    .quantity(quantity)
                     .build();
 
-            MissionRequiredSpecializations saved = specializationsRepository.save(newSpecialization);
-            return MissionRequiredSpecializationDTO.create(saved);
+            MissionSpecialization saved = specializationsRepository.save(newSpecialization);
+            return MissionSpecializationDTO.create(saved);
         }
     }
 
 
 }
+
 
 
 

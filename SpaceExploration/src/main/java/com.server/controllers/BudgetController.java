@@ -1,7 +1,7 @@
 package com.server.controllers;
 
-import com.server.dto.PaymentDTO;
-import com.server.services.PaymentService;
+import com.server.dto.BudgetDTO;
+import com.server.services.BudgetService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -15,35 +15,35 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/payments")
-@Tag(name = "Payments", description = "Operations related to payments")
+@RequestMapping("/budgets")
+@Tag(name = "Budget", description = "Operations related to budget")
 
-public class PaymentController {
-    private final PaymentService paymentService;
-    public PaymentController(PaymentService paymentService) {
-        this.paymentService = paymentService;
+public class BudgetController {
+    private final BudgetService budgetService;
+    public BudgetController(BudgetService budgetService) {
+        this.budgetService = budgetService;
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Retrieve payment by ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Payment found"),
-            @ApiResponse(responseCode = "404", description = "Payment not found"),
+            @ApiResponse(responseCode = "200", description = "Budget found"),
+            @ApiResponse(responseCode = "404", description = "Budget not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
-    public ResponseEntity<PaymentDTO> getPayment(@PathVariable int id) {
-        PaymentDTO payment = paymentService.getPaymentById(id);
+    public ResponseEntity<BudgetDTO> getBudget(@PathVariable int id) {
+        BudgetDTO payment = budgetService.getBudgetById(id);
         return ResponseEntity.ok(payment);
     }
 
     @GetMapping()
-    @Operation(summary = "Retrieve all payments")
+    @Operation(summary = "Retrieve all budgets")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved all payments"),
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved all budgets"),
             @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
-    public ResponseEntity<List<PaymentDTO>> getAllPayments() {
-        return ResponseEntity.ok(paymentService.getAllPayments());
+    public ResponseEntity<List<BudgetDTO>> getAllBudgets() {
+        return ResponseEntity.ok(budgetService.getAllBudgets());
     }
 
 

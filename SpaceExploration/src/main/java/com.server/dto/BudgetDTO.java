@@ -6,14 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Schema(description = "Payments details")
+@Schema(description = "Budget details")
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentDTO {
+public class BudgetDTO {
     private int id;
     private int initialBudget;
-    private int proceeds;
     private int finalBudget;
-    private int missionPayment;
     private int missionId;
 }

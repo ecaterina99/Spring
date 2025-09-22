@@ -17,6 +17,3 @@ public class OpenApiConfig{
                         .description("API for managing space destinations and missions"));
     }
 }
-
-//http://localhost:8080/api/swagger-ui/index.html
-//http://localhost:8080/api/swagger-ui/index.html#/Missions/partialUpdateMission

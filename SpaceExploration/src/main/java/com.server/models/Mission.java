@@ -107,13 +107,13 @@ public class Mission {
 
     @OneToOne(mappedBy = "mission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("mission-payment")
-    private Payment payment;
+    private Budget budget;
 
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference("mission-requiredSpecializations")
-    private Set<MissionRequiredSpecializations> missionRequiredSpecializations = new HashSet<>();
+    @JsonManagedReference("mission-specializations")
+    private Set<MissionSpecialization> missionSpecializations = new HashSet<>();
 
-    public void addRequiredSpecialization(MissionRequiredSpecializations.Specialization specialization, int quantity) {
+   /* public void addRequiredSpecialization(MissionRequiredSpecializations.Specialization specialization, int quantity) {
         MissionRequiredSpecializations requiredSpecialization = new MissionRequiredSpecializations();
         requiredSpecialization.setMission(this);
         requiredSpecialization.setSpecialization(specialization);
@@ -129,6 +129,7 @@ public class Mission {
                 .mapToInt(MissionRequiredSpecializations::getQuantityRequired)
                 .sum();
     }
+    */
 
 }
 

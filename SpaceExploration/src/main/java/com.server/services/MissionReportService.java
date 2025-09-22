@@ -1,10 +1,6 @@
 package com.server.services;
 
-import com.server.dto.AstronautDTO;
-import com.server.dto.MissionDTO;
 import com.server.dto.MissionReportDTO;
-import com.server.models.Astronaut;
-import com.server.models.Mission;
 import com.server.models.MissionReport;
 import com.server.repositories.MissionParticipantsRepository;
 import com.server.repositories.MissionReportRepository;

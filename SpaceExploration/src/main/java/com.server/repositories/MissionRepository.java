@@ -13,9 +13,26 @@ public interface MissionRepository extends JpaRepository <Mission, Integer> {
 
         boolean existsByCode(String code);
         List <Mission> findByDestinationId(Integer destinationId);
+}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
     @Query("SELECT DISTINCT m FROM missions m " +
             "LEFT JOIN FETCH m.missionParticipants mp " +
             "LEFT JOIN FETCH m.destination d " +
@@ -34,4 +51,5 @@ public interface MissionRepository extends JpaRepository <Mission, Integer> {
             "LEFT JOIN FETCH m.missionRequiredSpecializations mrs " +
             "WHERE d.id = :destinationId")
     List<Mission> findByDestinationIdWithDetails(@Param("destinationId") int destinationId);
-}
+
+ */

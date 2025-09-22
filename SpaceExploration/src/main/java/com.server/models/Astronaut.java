@@ -1,16 +1,12 @@
 package com.server.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
 
 @Setter
 @Getter
@@ -20,10 +16,15 @@ public class Astronaut {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank(message = "Full name is required")
-    @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
-    @Column(name = "full_name", nullable = false)
-    private String fullName;
+    @NotBlank(message = "First name is required")
+    @Size(min = 2, max = 100, message = "First name must be between 2 and 100 characters")
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @NotBlank(message = "Last name is required")
+    @Size(min = 2, max = 100, message = "Last name must be between 2 and 100 characters")
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @NotNull(message = "Years of experience is required")
     @Min(value = 0, message = "Years of experience cannot be negative")
@@ -41,12 +42,11 @@ public class Astronaut {
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
-
     @NotNull(message = "Daily rate is required")
     @DecimalMin(value = "200.0", message = "Daily rate must be at least 200")
     @DecimalMax(value = "2000.0", message = "Daily rate cannot exceed 2000")
     @Column(name = "daily_rate", nullable = false)
-    private Integer dailyRate;
+    private Double dailyRate;
 
     @Min(value = 0, message = "Fitness score must be between 0 and 100")
     @Max(value = 100, message = "Fitness score must be between 0 and 100")
@@ -75,7 +75,7 @@ public class Astronaut {
     }
 
     @Column(name = "image_url")
-    private String image;
+    private String imageUrl;
 
     public enum HealthStatus {
         FLIGHT_READY("Flight Ready"),
@@ -113,7 +113,6 @@ public class Astronaut {
     @Enumerated(EnumType.STRING)
     private HealthStatus healthStatus = HealthStatus.FLIGHT_READY;
 
-
     public enum Specialization {
         PILOT("Pilot"),
         ENGINEER("Engineer"),
@@ -147,9 +146,5 @@ public class Astronaut {
     @Column(name = "specialization", nullable = false)
     @Enumerated(EnumType.STRING)
     private Specialization specialization;
-
-    @OneToMany(mappedBy = "astronaut", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference("astronaut-participants")
-    private Set<MissionParticipants> missionParticipants = new HashSet<>();
 
 }

@@ -1,7 +1,7 @@
 package com.server.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.server.models.MissionRequiredSpecializations;
+import com.server.models.MissionSpecialization;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -15,19 +15,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@Schema(description = "Mission required specializations for the crew")
-public class MissionRequiredSpecializationDTO {
+@Schema(description = "Mission specializations required for the crew")
+public class MissionSpecializationDTO {
     private Integer id;
     private Integer missionId;
-    private MissionRequiredSpecializations.Specialization specialization;
-    private Integer quantityRequired;
+    private MissionSpecialization.Specialization specialization;
+    private Integer quantity;
 
-        public static MissionRequiredSpecializationDTO create(
-                MissionRequiredSpecializations missionRequiredSpecializations) {
-            return MissionRequiredSpecializationDTO.builder()
-                    .missionId(missionRequiredSpecializations.getMission().getId())
-                    .specialization(missionRequiredSpecializations.getSpecialization())
-                    .quantityRequired(missionRequiredSpecializations.getQuantityRequired()
+        public static MissionSpecializationDTO create(
+                MissionSpecialization missionSpecialization) {
+            return MissionSpecializationDTO.builder()
+                    .missionId(missionSpecialization.getMission().getId())
+                    .specialization(missionSpecialization.getSpecialization())
+                    .quantity(missionSpecialization.getQuantity()
                     )
                     .build();
         }
@@ -36,7 +36,6 @@ public class MissionRequiredSpecializationDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    @Schema(description = "Request to add specialization to mission")
     public static class AddSpecializationRequest {
         @NotNull(message = "Specialization is required")
         @Schema(description = "Specialization type", example = "PILOT", allowableValues = {"PILOT", "DOCTOR", "SCIENTIST"})
@@ -46,7 +45,6 @@ public class MissionRequiredSpecializationDTO {
         @Schema(description = "Quantity required", example = "2")
         private int quantity = 1;
     }
-
 }
 
 

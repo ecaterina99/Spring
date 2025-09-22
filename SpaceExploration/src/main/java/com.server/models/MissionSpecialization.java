@@ -13,8 +13,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "mission_required_specializations")
-public class MissionRequiredSpecializations {
+@Entity(name = "mission_specializations")
+public class MissionSpecialization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class MissionRequiredSpecializations {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false, unique = true)
-    @JsonBackReference("mission-requiredSpecializations")
+    @JsonBackReference("mission-specializations")
     private Mission mission;
 
 
@@ -63,9 +63,9 @@ public class MissionRequiredSpecializations {
     @Enumerated(EnumType.STRING)
     private Specialization specialization;
 
-    @Min(value = 1, message = "Quantity required must be at least 1")
-    @Max(value = 10, message = "Quantity required cannot exceed 10")
-    @Column(name = "quantity_required", nullable = false)
-    private int quantityRequired = 1;
+    @Min(value = 1, message = "Quantity must be at least 1")
+    @Max(value = 10, message = "Quantity cannot exceed 10")
+    @Column(name = "quantity", nullable = false)
+    private int quantity = 1;
 
 }

@@ -9,8 +9,8 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@Entity(name = "payments")
-public class Payment {
+@Entity(name = "budgets")
+public class Budget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -20,17 +20,9 @@ public class Payment {
     @Column(name="initial_budget", nullable = false)
     private int initialBudget;
 
-    @NotNull
-    @Column(name="proceeds", nullable = false)
-    private int proceeds;
-
     @NotNull(message = "Final budget is required")
     @Column(name="final_budget", nullable = false)
     private int finalBudget;
-
-    @NotNull(message = "Mission payment is required")
-    @Column(name="mission_payment", nullable = false)
-    private int missionPayment;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false, unique = true)

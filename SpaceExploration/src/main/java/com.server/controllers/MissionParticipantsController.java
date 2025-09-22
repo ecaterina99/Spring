@@ -1,14 +1,11 @@
 package com.server.controllers;
 
-import com.server.dto.AstronautDTO;
-import com.server.dto.MissionDTO;
 import com.server.dto.MissionParticipantsDTO;
 import com.server.services.MissionParticipantsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +33,7 @@ public class MissionParticipantsController {
     })
     public ResponseEntity<List<MissionParticipantsDTO>> getAllParticipantsByMissionId(
             @PathVariable @Min(1) int missionId) {
-        List<MissionParticipantsDTO> participants = missionParticipantsService.getAllParticipantsByMissionId(missionId);
+        List<MissionParticipantsDTO> participants = missionParticipantsService.showMissonCrew(missionId);
         return ResponseEntity.ok(participants);
     }
 
