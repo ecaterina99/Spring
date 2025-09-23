@@ -26,18 +26,16 @@ public class MissionService {
     private final MissionRepository missionRepository;
     private final DestinationRepository destinationRepository;
     private final ModelMapper modelMapper;
-    private final MissionParticipantsRepository missionParticipantsRepository;
     private final MissionSpecializationRepository specializationsRepository;
 
 
     public MissionService(ModelMapper modelMapper,
                           MissionRepository missionRepository,
-                          DestinationRepository destinationRepository, MissionParticipantsRepository missionParticipantsRepository,
+                          DestinationRepository destinationRepository,
                           MissionSpecializationRepository specializationsRepository) {
         this.missionRepository = missionRepository;
         this.destinationRepository = destinationRepository;
         this.modelMapper = modelMapper;
-        this.missionParticipantsRepository = missionParticipantsRepository;
         this.specializationsRepository = specializationsRepository;
     }
 
@@ -45,12 +43,11 @@ public class MissionService {
     public MissionDTO getMissionById(int id) {
         Mission mission = missionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Mission not found with id: " + id));
-        return MissionDTO.withDetails(mission);
+        return MissionDTO.missionWithDetails(mission);
     }
 
     @Transactional(readOnly = true)
     public List<MissionDTO> getAllMissions() {
-
         List<Mission> missions = missionRepository.findAll();
         return missions.stream()
                 .map(mission -> modelMapper.map(mission, MissionDTO.class))
@@ -63,22 +60,51 @@ public class MissionService {
         }
         Destination destination = destinationRepository.findById(missionDTO.getDestinationId())
                 .orElseThrow(() -> new EntityNotFoundException("Destination not found with id: " + missionDTO.getDestinationId()));
+
         Mission mission = modelMapper.map(missionDTO, Mission.class);
         mission.setDestination(destination);
+        missionRepository.save(mission);
+        return modelMapper.map(mission, MissionDTO.class);
+    }
+
+    public MissionDTO addSpecialization(Integer missionId,
+                                        MissionSpecialization.Specialization specialization,
+                                        int quantity) {
+        Mission mission = findMissionById(missionId);
+        mission.addRequiredSpecialization(specialization, quantity);
+        validateMissionConstraints(mission);
         Mission savedMission = missionRepository.save(mission);
-
-        if (missionDTO.getSpecializations() != null && !missionDTO.getSpecializations().isEmpty()) {
-            for (MissionSpecializationDTO specDTO : missionDTO.getSpecializations()) {
-                MissionSpecialization spec = new MissionSpecialization();
-                spec.setMission(savedMission);
-                spec.setSpecialization(specDTO.getSpecialization());
-                spec.setQuantity(specDTO.getQuantity());
-                savedMission.getMissionSpecializations().add(spec);
-            }
-            savedMission = missionRepository.save(savedMission);
-        }
-
         return modelMapper.map(savedMission, MissionDTO.class);
+    }
+
+    public MissionDTO removeSpecialization(Integer missionId,
+                                           MissionSpecialization.Specialization specialization) {
+        Mission mission = findMissionById(missionId);
+        mission.removeRequiredSpecialization(specialization);
+        Mission savedMission = missionRepository.save(mission);
+        return modelMapper.map(savedMission, MissionDTO.class);
+    }
+
+    public MissionDTO updateSpecializations(Integer missionId,
+                                            List<MissionSpecialization> requests) {
+        Mission mission = findMissionById(missionId);
+
+        requests.forEach(request ->
+                mission.updateSpecializationQuantity(request.getSpecialization(), request.getQuantity())
+        );
+        validateMissionConstraints(mission);
+        Mission savedMission = missionRepository.save(mission);
+        return modelMapper.map(savedMission, MissionDTO.class);
+    }
+
+
+    private void validateMissionConstraints(Mission mission) {
+        if (mission.getTotalRequiredCrew() > mission.getCrewSizeRequired()) {
+            throw new IllegalArgumentException(
+                    String.format("Required specialists (%d) exceed maximum crew size (%d)",
+                            mission.getTotalRequiredCrew(), mission.getCrewSizeRequired())
+            );
+        }
     }
 
     public MissionDTO updateMission(MissionDTO missionDTO, int id) {
@@ -117,28 +143,17 @@ public class MissionService {
         if (missionDTO.getDifficultyLevel() != null) {
             existingMission.setDifficultyLevel(missionDTO.getDifficultyLevel());
         }
+        if (missionDTO.getPaymentAmount() > 0) {
+            existingMission.setPaymentAmount(missionDTO.getPaymentAmount());
+        }
         if (missionDTO.getDestinationId() > 0 && existingMission.getDestination().getId() != missionDTO.getDestinationId()) {
             Destination destination = destinationRepository.findById(missionDTO.getDestinationId())
                     .orElseThrow(() -> new EntityNotFoundException("Destination not found with id: " + missionDTO.getDestinationId()));
             existingMission.setDestination(destination);
         }
-        if (missionDTO.getSpecializations() != null) {
-            updateMissionSpecializations(existingMission, missionDTO.getSpecializations());
-        }
+
         Mission savedMission = missionRepository.save(existingMission);
         return modelMapper.map(savedMission, MissionDTO.class);
-    }
-
-    private void updateMissionSpecializations(Mission mission, List<MissionSpecializationDTO> newSpecs) {
-        mission.getMissionSpecializations().clear();
-
-        for (MissionSpecializationDTO specDTO : newSpecs) {
-            MissionSpecialization spec = new MissionSpecialization();
-            spec.setMission(mission);
-            spec.setSpecialization(specDTO.getSpecialization());
-            spec.setQuantity(specDTO.getQuantity());
-            mission.getMissionSpecializations().add(spec);
-        }
     }
 
 
@@ -162,108 +177,13 @@ public class MissionService {
         }).toList();
     }
 
-    @Builder
-    public MissionSpecializationDTO addSpecializationToMission(int missionId, String specializationName, int quantity) {
-        Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(() -> new EntityNotFoundException("Mission with id " + missionId + " not found"));
-        MissionSpecialization.Specialization specialization;
-        try {
-            specialization = MissionSpecialization.Specialization.valueOf(specializationName.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid specialization: " + specializationName +
-                    ". Valid values are: " + Arrays.toString(MissionSpecialization.Specialization.values()));
-        }
-        Optional<MissionSpecialization> existing =
-                specializationsRepository.findByMissionIdAndSpecialization(missionId, specialization);
-
-        if (existing.isPresent()) {
-            MissionSpecialization existingSpecialization = existing.get();
-            existingSpecialization.setQuantity(existingSpecialization.getQuantity() + quantity);
-            MissionSpecialization saved = specializationsRepository.save(existingSpecialization);
-            return MissionSpecializationDTO.create(saved);
-        } else {
-            MissionSpecialization newSpecialization = MissionSpecialization.builder()
-                    .mission(mission)
-                    .specialization(specialization)
-                    .quantity(quantity)
-                    .build();
-
-            MissionSpecialization saved = specializationsRepository.save(newSpecialization);
-            return MissionSpecializationDTO.create(saved);
-        }
+    private Mission findMissionById(Integer missionId) {
+        return missionRepository.findById(missionId)
+                .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " not found"));
     }
-
 
 }
 
-
-
-
-   /*
-
-   public list<astronaut> createCrew(int astronautId, Mission mission){
-   if (!astronautRepository.existsById(astronautId)) {
-            throw new EntityNotFoundException("Astronaut not found with id: " + astronautId);
-
-        } List<MissionParticipants> crew = new Array list();
-        for(int i=0; i<crewRequaried; i++){
-        crew.addAstronautToMission()
-        }
-        for(int i=0; i:crewRequaried; i++){
-        if(astrasnaut.getSpecialization != specialization){
-        "you have to select all requaried specializations!"
-        } else if(crew.size< crewRequaried ||crew.size > crewRequaried ){
-        please add exactly necessary number of astronauts
-        }
-
-
-
-   }
-
-
-   public int getTheAstronautRating(int id, Mission mission) {
-        int rating;
-        rating = astronaut.getOverallScore + yearOfExpirience /2
-    }
-
-    public int getTheRiskOfFailure(){
-        for(Astronaut a astronauts){
-            ratingCrew = a.getRating ++;
-        }
-
-        boolean successful = false;
-
-        ratingCrew= ratingCrew/missionParticipants.size();
-        switch (successful){
-            case mission.getDifficultyLevel()=='low'{
-                if (ratingCrew <30){
-                    successful = false;
-                }else{
-                    successful = true;
-                }
-            }break;
-            case mission.getDifficultyLevel()=='medium'{
-                if (ratingCrew <50){
-                    successful = false;
-                }else{
-                    successful = true;
-                }break;
-                case mission.getDifficultyLevel()=='high'{
-                    if (ratingCrew <70){
-                        successful = false;
-                    }else{
-                        successful = true;
-                    }break;
-                    case mission.getDifficultyLevel()=='extreme'{
-                        if (ratingCrew <90){
-                            successful = false;
-                        }else{
-                            successful = true;
-                        }break;
-                        default:successful = true;
-        }
-
-    */
 
 
 

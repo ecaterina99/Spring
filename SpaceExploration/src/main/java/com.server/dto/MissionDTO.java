@@ -18,7 +18,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Builder
 public class MissionDTO {
-    private int id;
+    private int  id;
     private String missionName;
     private String code;
     private String description;
@@ -29,47 +29,11 @@ public class MissionDTO {
     private String image;
     private Mission.DifficultyLevel difficultyLevel;
     private Integer destinationId;
-    private List<MissionParticipants> missionParticipants;
     private String destinationName;
-
+    private Integer  paymentAmount;
     private List<MissionSpecializationDTO> specializations = new ArrayList<>();
 
-    private List<MissionParticipantsDTO> participants = new ArrayList<>();
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class MissionSummaryDTO {
-        private int id;
-        private String missionName;
-        private Mission.DifficultyLevel difficultyLevel;
-        private String destinationName;
-        private String resultsDescription;
-        private boolean isSuccessful;
-        private List<SpecializationSummaryDTO> specializations = new ArrayList<>();
-
-        @Data
-        @NoArgsConstructor
-        public static class SpecializationSummaryDTO {
-            private MissionSpecialization.Specialization specialization;
-            private int quantity;
-
-            public SpecializationSummaryDTO(MissionSpecialization.Specialization specialization, int quantity) {
-                this.specialization = specialization;
-                this.quantity = quantity;
-            }
-        }
-
-    }
-
-    @Data
-    @NoArgsConstructor
-    public static class MissionWithoutDetailsDTO {
-        private String missionName;
-    }
-
-    public static MissionDTO withDetails(Mission mission) {
+    public static MissionDTO missionWithDetails(Mission mission) {
         return MissionDTO.builder()
                 .id(mission.getId())
                 .missionName(mission.getMissionName())
@@ -79,6 +43,7 @@ public class MissionDTO {
                 .difficultyLevel(mission.getDifficultyLevel())
                 .potentialIssues(mission.getPotentialIssues())
                 .durationDays(mission.getDurationDays())
+                .paymentAmount(mission.getPaymentAmount())
                 .destinationId(mission.getDestination().getId())
                 .destinationName(mission.getDestination().getDestinationName())
                 .scoreValue(mission.getScoreValue())
@@ -91,20 +56,8 @@ public class MissionDTO {
                                 )
                                 .toList()
                 )
-
-                .participants(
-                        mission.getMissionParticipants().stream()
-                                .map(mp -> MissionParticipantsDTO.builder()
-                                        .astronautId(mp.getAstronaut().getId())
-                                        .astronautName(mp.getAstronaut().getFirstName())
-                                        .build()
-                                )
-                                .toList()
-                )
-
                 .build();
     }
-
 
 }
 

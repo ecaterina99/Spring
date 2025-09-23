@@ -2,6 +2,7 @@ package com.server.controllers;
 
 import com.server.dto.MissionDTO;
 import com.server.dto.MissionSpecializationDTO;
+import com.server.models.MissionSpecialization;
 import com.server.services.MissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -109,12 +110,12 @@ public class MissionController {
             @ApiResponse(responseCode = "404", description = "Mission not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
-    public ResponseEntity<MissionSpecializationDTO> addSpecializationToMission(
+    public ResponseEntity<MissionDTO> addSpecializationToMission(
             @PathVariable int missionId,
             @Valid @RequestBody MissionSpecializationDTO.AddSpecializationRequest request) {
 
-        MissionSpecializationDTO addedSpecialization =
-                missionService.addSpecializationToMission(missionId, request.getSpecialization(), request.getQuantity());
+        MissionDTO addedSpecialization =
+                missionService.addSpecialization(missionId, MissionSpecialization.Specialization.valueOf(request.getSpecialization()), request.getQuantity());
         return ResponseEntity.status(HttpStatus.CREATED).body(addedSpecialization);
     }
 }

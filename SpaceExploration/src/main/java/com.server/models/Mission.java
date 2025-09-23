@@ -7,10 +7,7 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Setter
 @Getter
@@ -28,30 +25,35 @@ public class Mission {
 
     @NotBlank(message = "Mission code is required")
     @Size(min = 4, max = 6, message = "Mission name must be between 2 and 6 characters")
-    @Column(name="code", nullable = false, unique = true)
+    @Column(name = "code", nullable = false, unique = true)
     private String code;
 
     @NotBlank(message = "Mission description is required")
-    @Column(name="description", nullable = false)
+    @Column(name = "description", nullable = false)
     private String description;
 
     @Min(value = 1)
     @NotNull
-    @Column(name="duration_days", nullable = false)
+    @Column(name = "duration_days", nullable = false)
     private int durationDays;
 
     @Min(value = 1)
     @NotNull
-    @Column(name="crew_size_required", nullable = false)
+    @Column(name = "payment_amount", nullable = false)
+    private int paymentAmount;
+
+    @Min(value = 1)
+    @NotNull
+    @Column(name = "crew_size_required", nullable = false)
     private int crewSizeRequired;
 
     @Min(value = 1)
     @NotNull
-    @Column(name="score_value", nullable = false)
+    @Column(name = "score_value", nullable = false)
     private int scoreValue;
 
     @NotBlank(message = "Potential issues description is required")
-    @Column(name="potential_issues", nullable = false)
+    @Column(name = "potential_issues", nullable = false)
     private String potentialIssues;
 
     @Column(name = "image_url")
@@ -98,38 +100,75 @@ public class Mission {
     private Destination destination;
 
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference("mission-participants")
-    private List<MissionParticipants> missionParticipants = new ArrayList<>();
-
-    @OneToOne(mappedBy = "mission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference("mission-report")
-    private MissionReport missionReport;
-
-    @OneToOne(mappedBy = "mission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference("mission-payment")
-    private Budget budget;
-
-    @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference("mission-specializations")
     private Set<MissionSpecialization> missionSpecializations = new HashSet<>();
 
-   /* public void addRequiredSpecialization(MissionRequiredSpecializations.Specialization specialization, int quantity) {
-        MissionRequiredSpecializations requiredSpecialization = new MissionRequiredSpecializations();
-        requiredSpecialization.setMission(this);
-        requiredSpecialization.setSpecialization(specialization);
-        requiredSpecialization.setQuantityRequired(quantity);
-        this.missionRequiredSpecializations.add(requiredSpecialization);
+    public void addRequiredSpecialization(MissionSpecialization.Specialization specialization, int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be positive");
+        }
+        if (quantity > 10) {
+            throw new IllegalArgumentException("Maximum 10 specialists per specialization");
+        }
+
+        Optional<MissionSpecialization> existingSpec = findSpecialization(specialization);
+        if (existingSpec.isPresent()) {
+            existingSpec.get().setQuantity(quantity);
+        } else {
+            MissionSpecialization newSpec = MissionSpecialization.builder()
+                    .mission(this)
+                    .specialization(specialization)
+                    .quantity(quantity)
+                    .build();
+            this.missionSpecializations.add(newSpec);
+        }
     }
 
-    public void removeRequiredSpecialization(MissionRequiredSpecializations.Specialization specialization) {
-        this.missionRequiredSpecializations.removeIf(rs -> rs.getSpecialization().equals(specialization));
+    public void removeRequiredSpecialization(MissionSpecialization.Specialization specialization) {
+        this.missionSpecializations.removeIf(rs ->
+                rs.getSpecialization().equals(specialization));
     }
+
+    public void updateSpecializationQuantity(MissionSpecialization.Specialization specialization, int newQuantity) {
+        if (newQuantity <= 0) {
+            removeRequiredSpecialization(specialization);
+            return;
+        }
+
+        findSpecialization(specialization)
+                .ifPresentOrElse(
+                        spec -> spec.setQuantity(newQuantity),
+                        () -> addRequiredSpecialization(specialization, newQuantity)
+                );
+    }
+
+
+    private Optional<MissionSpecialization> findSpecialization(MissionSpecialization.Specialization specialization) {
+        return missionSpecializations.stream()
+                .filter(rs -> rs.getSpecialization().equals(specialization))
+                .findFirst();
+    }
+
     public int getTotalRequiredCrew() {
-        return missionRequiredSpecializations.stream()
-                .mapToInt(MissionRequiredSpecializations::getQuantityRequired)
+        return missionSpecializations.stream()
+                .mapToInt(MissionSpecialization::getQuantity)
                 .sum();
     }
-    */
 
+    public boolean hasSpecialization(MissionSpecialization.Specialization specialization) {
+        return findSpecialization(specialization).isPresent();
+    }
+
+    public int getRequiredQuantityForSpecialization(MissionSpecialization.Specialization specialization) {
+        return findSpecialization(specialization)
+                .map(MissionSpecialization::getQuantity)
+                .orElse(0);
+    }
+
+    public boolean isCrewRequirementMet() {
+        return getTotalRequiredCrew() <= this.crewSizeRequired;
+    }
 }
+
+
 

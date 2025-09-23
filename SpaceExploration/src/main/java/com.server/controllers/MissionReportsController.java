@@ -45,7 +45,8 @@ public class MissionReportsController {
     public ResponseEntity<List<MissionReportDTO>> getAllMissionReports() {
         return ResponseEntity.ok(missionReportService.getAllMissionReports());
     }
-    @GetMapping("details/{id}")
+
+   /* @GetMapping("details/{id}")
     @Operation(summary = "Retrieve mission report with mission participants data by mission ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Mission report found"),
@@ -57,4 +58,6 @@ public class MissionReportsController {
         MissionReportDTO missionReport = missionReportService.getMissionReportByMissionIdWithDetails(id);
         return ResponseEntity.ok(missionReport);
     }
+
+    */
 }

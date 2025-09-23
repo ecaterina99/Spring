@@ -26,5 +26,4 @@ public class MissionParticipants {
     @JsonBackReference("astronaut-participants")
     private Astronaut astronaut;
 
-
 }

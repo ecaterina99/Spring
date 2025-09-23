@@ -1,11 +1,15 @@
 package com.server.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -28,5 +32,10 @@ public class MissionReport {
     @JoinColumn(name = "mission_id", nullable = false, unique = true)
     @JsonBackReference("mission-report")
     private Mission mission;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mission_id")
+    @JsonManagedReference("report-participants")
+    private List<MissionParticipants> participants = new ArrayList<>();
 
 }
