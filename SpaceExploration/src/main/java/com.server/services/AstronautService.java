@@ -4,6 +4,7 @@ import com.server.dto.AstronautDTO;
 import com.server.models.Astronaut;
 import com.server.repositories.AstronautRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +48,7 @@ public class AstronautService {
     }
 
     @Transactional
-    public AstronautDTO updateAstronaut(int id, AstronautDTO astronautDTO) {
+    public AstronautDTO updateAstronaut(int id, AstronautDTO.@Valid AstronautUpdateDTO astronautDTO) {
         Astronaut existingAstronaut = astronautRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + id));
 
@@ -57,7 +58,7 @@ public class AstronautService {
         return modelMapper.map(updatedAstronaut, AstronautDTO.class);
     }
 
-    private void updateEntityFromDTO(Astronaut entity, AstronautDTO dto) {
+    private void updateEntityFromDTO(Astronaut entity, AstronautDTO.@Valid AstronautUpdateDTO dto) {
         Optional.ofNullable(dto.getFirstName()).ifPresent(entity::setFirstName);
         Optional.ofNullable(dto.getLastName()).ifPresent(entity::setLastName);
         Optional.ofNullable(dto.getYearsOfExperience()).ifPresent(entity::setYearsOfExperience);

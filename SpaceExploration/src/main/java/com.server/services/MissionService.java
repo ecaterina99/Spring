@@ -6,37 +6,29 @@ import com.server.models.Destination;
 import com.server.models.Mission;
 import com.server.models.MissionSpecialization;
 import com.server.repositories.DestinationRepository;
-import com.server.repositories.MissionParticipantsRepository;
 import com.server.repositories.MissionRepository;
-import com.server.repositories.MissionSpecializationRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.Builder;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
-@Transactional
 public class MissionService {
     private final MissionRepository missionRepository;
     private final DestinationRepository destinationRepository;
     private final ModelMapper modelMapper;
-    private final MissionSpecializationRepository specializationsRepository;
 
 
     public MissionService(ModelMapper modelMapper,
                           MissionRepository missionRepository,
-                          DestinationRepository destinationRepository,
-                          MissionSpecializationRepository specializationsRepository) {
+                          DestinationRepository destinationRepository
+                         ) {
         this.missionRepository = missionRepository;
         this.destinationRepository = destinationRepository;
         this.modelMapper = modelMapper;
-        this.specializationsRepository = specializationsRepository;
     }
 
     @Transactional(readOnly = true)
@@ -53,7 +45,7 @@ public class MissionService {
                 .map(mission -> modelMapper.map(mission, MissionDTO.class))
                 .toList();
     }
-
+    @Transactional
     public MissionDTO addMission(MissionDTO missionDTO) {
         if (missionRepository.existsByCode(missionDTO.getCode())) {
             throw new IllegalArgumentException("Mission with code '" + missionDTO.getCode() + "' already exists");
@@ -67,16 +59,7 @@ public class MissionService {
         return modelMapper.map(mission, MissionDTO.class);
     }
 
-    public MissionDTO addSpecialization(Integer missionId,
-                                        MissionSpecialization.Specialization specialization,
-                                        int quantity) {
-        Mission mission = findMissionById(missionId);
-        mission.addRequiredSpecialization(specialization, quantity);
-        validateMissionConstraints(mission);
-        Mission savedMission = missionRepository.save(mission);
-        return modelMapper.map(savedMission, MissionDTO.class);
-    }
-
+    @Transactional
     public MissionDTO removeSpecialization(Integer missionId,
                                            MissionSpecialization.Specialization specialization) {
         Mission mission = findMissionById(missionId);
@@ -84,85 +67,87 @@ public class MissionService {
         Mission savedMission = missionRepository.save(mission);
         return modelMapper.map(savedMission, MissionDTO.class);
     }
-
-    public MissionDTO updateSpecializations(Integer missionId,
-                                            List<MissionSpecialization> requests) {
+    @Transactional
+    public MissionDTO addOrUpdateSpecializations(Integer missionId,
+                                                 List<MissionSpecializationDTO.AddSpecializationRequest> requests) {
+        if (requests == null || requests.isEmpty()) {
+            throw new IllegalArgumentException("Specializations list cannot be empty");
+        }
         Mission mission = findMissionById(missionId);
+        requests.forEach(request -> {
+            try {
+                MissionSpecialization.Specialization specialization =
+                        MissionSpecialization.Specialization.fromString(request.getSpecialization());
+                mission.updateSpecializationQuantity(specialization, request.getQuantity());
 
-        requests.forEach(request ->
-                mission.updateSpecializationQuantity(request.getSpecialization(), request.getQuantity())
-        );
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Invalid specialization: " + request.getSpecialization() +
+                        ". " + e.getMessage());
+            }
+        });
         validateMissionConstraints(mission);
+
         Mission savedMission = missionRepository.save(mission);
         return modelMapper.map(savedMission, MissionDTO.class);
     }
 
 
     private void validateMissionConstraints(Mission mission) {
-        if (mission.getTotalRequiredCrew() > mission.getCrewSizeRequired()) {
+        if (mission.getTotalRequiredCrew() > mission.getCrewSize()) {
             throw new IllegalArgumentException(
                     String.format("Required specialists (%d) exceed maximum crew size (%d)",
-                            mission.getTotalRequiredCrew(), mission.getCrewSizeRequired())
+                            mission.getTotalRequiredCrew(), mission.getCrewSize())
             );
         }
     }
-
-    public MissionDTO updateMission(MissionDTO missionDTO, int id) {
+    @Transactional
+    public MissionDTO updateMission(MissionDTO.@Valid MissionUpdateDTO missionDTO, int id) {
         Mission existingMission = missionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Mission not found with id: " + id));
-        if (missionDTO.getMissionName() != null && !missionDTO.getMissionName().trim().isEmpty()) {
-            existingMission.setMissionName(missionDTO.getMissionName());
-        }
-        if (missionDTO.getCode() != null && !missionDTO.getCode().trim().isEmpty()) {
-            if (!existingMission.getCode().equals(missionDTO.getCode())) {
-                if (missionRepository.existsByCode(missionDTO.getCode())) {
-                    throw new IllegalArgumentException("Mission with code '" + missionDTO.getCode() + "' already exists");
-                }
-            }
-            existingMission.setCode(missionDTO.getCode());
-        }
-        if (missionDTO.getDescription() != null && !missionDTO.getDescription().trim().isEmpty()) {
-            existingMission.setDescription(missionDTO.getDescription());
-        }
-        if (missionDTO.getDurationDays() > 0) {
-            existingMission.setDurationDays(missionDTO.getDurationDays());
-        }
-        if (missionDTO.getCrewSizeRequired() > 0) {
-            existingMission.setCrewSizeRequired(missionDTO.getCrewSizeRequired());
-        }
-
-        if (missionDTO.getScoreValue() >= 0) {
-            existingMission.setScoreValue(missionDTO.getScoreValue());
-        }
-        if (missionDTO.getPotentialIssues() != null && !missionDTO.getPotentialIssues().trim().isEmpty()) {
-            existingMission.setPotentialIssues(missionDTO.getPotentialIssues());
-        }
-        if (missionDTO.getImage() != null) {
-            existingMission.setImage(missionDTO.getImage());
-        }
-        if (missionDTO.getDifficultyLevel() != null) {
-            existingMission.setDifficultyLevel(missionDTO.getDifficultyLevel());
-        }
-        if (missionDTO.getPaymentAmount() > 0) {
-            existingMission.setPaymentAmount(missionDTO.getPaymentAmount());
-        }
-        if (missionDTO.getDestinationId() > 0 && existingMission.getDestination().getId() != missionDTO.getDestinationId()) {
-            Destination destination = destinationRepository.findById(missionDTO.getDestinationId())
-                    .orElseThrow(() -> new EntityNotFoundException("Destination not found with id: " + missionDTO.getDestinationId()));
-            existingMission.setDestination(destination);
-        }
-
-        Mission savedMission = missionRepository.save(existingMission);
-        return modelMapper.map(savedMission, MissionDTO.class);
+        updateEntityFromDTO(existingMission, missionDTO);
+        Mission updatedMission = missionRepository.save(existingMission);
+        return modelMapper.map(updatedMission, MissionDTO.class);
     }
 
+    private void updateEntityFromDTO(Mission entity, MissionDTO.@Valid MissionUpdateDTO dto) {
+        Optional.ofNullable(dto.getName())
+                .filter(name -> !name.trim().isEmpty())
+                .ifPresent(entity::setName);
+        Optional.ofNullable(dto.getCode())
+                .filter(code -> !code.trim().isEmpty())
+                .ifPresent(code -> {
+                    if (!entity.getCode().equals(code)) {
+                        if (missionRepository.existsByCode(code)) {
+                            throw new IllegalArgumentException("Mission with code '" + code + "' already exists");
+                        }
+                        entity.setCode(code);
+                    }
+                });
+        Optional.ofNullable(dto.getDescription()).ifPresent(entity::setDescription);
+        Optional.ofNullable(dto.getDurationDays()).ifPresent(entity::setDurationDays);
+        Optional.ofNullable(dto.getCrewSize()).ifPresent(entity::setCrewSize);
+        Optional.ofNullable(dto.getScoreValue()).ifPresent(entity::setScoreValue);
+        Optional.ofNullable(dto.getImageUrl()).ifPresent(entity::setImageUrl);
+        Optional.ofNullable(dto.getPotentialIssues()).ifPresent(entity::setPotentialIssues);
+        Optional.ofNullable(dto.getDifficultyLevel()).ifPresent(entity::setDifficultyLevel);
+        Optional.ofNullable(dto.getPaymentAmount()).ifPresent(entity::setPaymentAmount);
+        Optional.ofNullable(dto.getDestinationId())
+                .filter(destId -> destId > 0)
+                .filter(destId -> entity.getDestination() == null || !destId.equals(entity.getDestination().getId()))
+                .ifPresent(destId -> {
+                    Destination destination = destinationRepository.findById(destId)
+                            .orElseThrow(() -> new EntityNotFoundException("Destination not found with id: " + destId));
+                    entity.setDestination(destination);
+                });
+    }
 
+    @Transactional
     public void deleteMission(int id) {
         Mission mission = missionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Mission not found with id: " + id));
         missionRepository.delete(mission);
     }
-
+    @Transactional(readOnly = true)
     public List<MissionDTO> getMissionsByDestinationId(int destinationId) {
         if (!destinationRepository.existsById(destinationId)) {
             throw new EntityNotFoundException("Destination not found with id: " + destinationId);
@@ -176,6 +161,7 @@ public class MissionService {
             return dto;
         }).toList();
     }
+
 
     private Mission findMissionById(Integer missionId) {
         return missionRepository.findById(missionId)

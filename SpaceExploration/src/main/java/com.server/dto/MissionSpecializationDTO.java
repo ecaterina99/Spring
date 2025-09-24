@@ -3,12 +3,11 @@ package com.server.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.server.models.MissionSpecialization;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,18 +31,27 @@ public class MissionSpecializationDTO {
                     .build();
         }
 
-    @Data
+
+    @Getter
+    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class AddSpecializationRequest {
-        @NotNull(message = "Specialization is required")
-        @Schema(description = "Specialization type", example = "PILOT", allowableValues = {"PILOT", "DOCTOR", "SCIENTIST"})
+
+        @NotBlank(message = "Specialization is required")
+        @Schema(description = "Required specialization type",
+                allowableValues = {"PILOT", "ENGINEER", "SCIENTIST", "DOCTOR","GEOLOGIST"},
+                example = "PILOT")
         private String specialization;
 
+        @NotNull(message = "Quantity is required")
         @Min(value = 1, message = "Quantity must be at least 1")
-        @Schema(description = "Quantity required", example = "2")
-        private int quantity = 1;
+        @Max(value = 10, message = "Quantity cannot exceed 10")
+        @Schema(description = "Number of specialists required",
+                example = "2",
+                minimum = "1",
+                maximum = "10")
+        private Integer quantity;
     }
 }
 

@@ -101,7 +101,7 @@ public class AstronautController {
     })
     public ResponseEntity<AstronautDTO> updateAstronaut(
             @PathVariable @Min(1) int id,
-            @Valid @RequestBody AstronautDTO astronautDTO) {
+            @Valid @RequestBody AstronautDTO.AstronautUpdateDTO astronautDTO) {
         AstronautDTO updatedAstronaut = astronautService.updateAstronaut(id, astronautDTO);
         return ResponseEntity.ok(updatedAstronaut);
     }
@@ -125,22 +125,3 @@ public class AstronautController {
         return ResponseEntity.noContent().build();
     }
 }
-
-
-
-
-
-   /* @GetMapping("astronaut-and-missions/{id}")
-    @Operation(summary = "Retrieve astronaut with his missions by ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Astronaut found"),
-            @ApiResponse(responseCode = "404", description = "Astronaut not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error"),
-
-    })
-    public ResponseEntity<AstronautDTO> getAstronautWithMissionsById(@PathVariable int id) {
-        AstronautDTO astronaut = astronautService.getAstronautWithMissions(id);
-        return ResponseEntity.ok(astronaut);
-    }
-
-    */

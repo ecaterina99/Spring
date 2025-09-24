@@ -59,7 +59,49 @@ public class AstronautDTO {
     @NotNull(message = "Health status is required")
     private Astronaut.HealthStatus healthStatus;
 
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    @Schema(description = "Astronaut update information - all fields are optional for partial updates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public static class AstronautUpdateDTO {
+        @Size(min = 2, max = 100, message = "First name must be between 2 and 100 characters")
+        private String firstName;
+        @Size(min = 2, max = 100, message = "Last name must be between 2 and 100 characters")
+        private String lastName;
+        @Min(value = 0, message = "Years of experience cannot be negative")
+        @Max(value = 50, message = "Years of experience cannot exceed 50")
+        private Integer yearsOfExperience;
+        @Pattern(regexp = "^[+]?[0-9]{8,10}$", message = "Invalid phone number format")
+        private String phone;
+        @Past(message = "Date of birth must be in the past")
+        private LocalDate dateOfBirth;
+        @DecimalMin(value = "200.0", message = "Daily rate must be at least 200")
+        @DecimalMax(value = "2000.0", message = "Daily rate cannot exceed 2000")
+        private Double dailyRate;
+        @Min(value = 0, message = "Fitness score must be between 0 and 100")
+        @Max(value = 100, message = "Fitness score must be between 0 and 100")
+        private Integer fitnessScore;
+        @Min(value = 0, message = "Education score must be between 0 and 100")
+        @Max(value = 100, message = "Education score must be between 0 and 100")
+        private Integer educationScore;
+        @Min(value = 0, message = "Psychological score must be between 0 and 100")
+        @Max(value = 100, message = "Psychological score must be between 0 and 100")
+        private Integer psychologicalScore;
+        @Min(value = 0, message = "Overall score must be between 0 and 100")
+        @Max(value = 100, message = "Overall score must be between 0 and 100")
+        private Integer overallScore;
+        private String imageUrl;
+        private Astronaut.Specialization specialization;
+        private Astronaut.HealthStatus healthStatus;
+    }
 }
+
+
+
+
 
 
 

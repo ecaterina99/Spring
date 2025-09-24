@@ -26,7 +26,7 @@ public class MissionParticipantsDTO {
 
     public static MissionParticipantsDTO missionParticipantsDetails(MissionParticipants missionParticipants) {
         return MissionParticipantsDTO.builder()
-                .missionName(missionParticipants.getMission().getMissionName())
+                .missionName(missionParticipants.getMission().getName())
                 .astronautName(missionParticipants.getAstronaut().getFirstName())
                 .specialization(missionParticipants.getAstronaut().getSpecialization())
                 .overallScore(missionParticipants.getAstronaut().getOverallScore())

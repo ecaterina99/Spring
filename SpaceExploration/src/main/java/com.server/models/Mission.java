@@ -20,8 +20,8 @@ public class Mission {
 
     @NotBlank(message = "Mission name is required")
     @Size(min = 2, max = 100, message = "Mission name must be between 2 and 100 characters")
-    @Column(name = "mission_name", nullable = false)
-    private String missionName;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @NotBlank(message = "Mission code is required")
     @Size(min = 4, max = 6, message = "Mission name must be between 2 and 6 characters")
@@ -44,8 +44,8 @@ public class Mission {
 
     @Min(value = 1)
     @NotNull
-    @Column(name = "crew_size_required", nullable = false)
-    private int crewSizeRequired;
+    @Column(name = "crew_size", nullable = false)
+    private int crewSize;
 
     @Min(value = 1)
     @NotNull
@@ -57,7 +57,7 @@ public class Mission {
     private String potentialIssues;
 
     @Column(name = "image_url")
-    private String image;
+    private String imageUrl;
 
 
     public enum DifficultyLevel {
@@ -155,7 +155,12 @@ public class Mission {
                 .sum();
     }
 
-    public boolean hasSpecialization(MissionSpecialization.Specialization specialization) {
+}
+
+
+
+/*
+  public boolean hasSpecialization(MissionSpecialization.Specialization specialization) {
         return findSpecialization(specialization).isPresent();
     }
 
@@ -168,7 +173,6 @@ public class Mission {
     public boolean isCrewRequirementMet() {
         return getTotalRequiredCrew() <= this.crewSizeRequired;
     }
-}
-
+ */
 
 
