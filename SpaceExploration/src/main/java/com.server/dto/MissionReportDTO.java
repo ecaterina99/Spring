@@ -5,6 +5,9 @@ import com.server.models.Mission;
 import com.server.models.MissionReport;
 import com.server.models.MissionSpecialization;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,65 +20,36 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-
 @Builder
-@Schema(description = "Mission report details")
+@Schema(description = "Mission report")
 public class MissionReportDTO {
     private int id;
-    private String resultsDescription;
     private boolean isSuccessful;
+    @NotBlank(message = "Results description is required")
+    @Size(min = 2, message = "Results description must be longer")
+    private String resultsDescription;
+    @NotNull
     private int missionId;
+    @NotBlank
     private String missionName;
+    @NotBlank
     private String destinationName;
+    @NotBlank
     private Mission.DifficultyLevel difficultyLevel;
     private List<MissionParticipantsDTO> participants;
-    private Integer proceeds;
+    @NotNull
+    private Integer paymentAmount;
 
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class MissionSummaryDTO {
-        private int id;
-        private String missionName;
-        private Mission.DifficultyLevel difficultyLevel;
-        private String destinationName;
-        private String resultsDescription;
-        private boolean isSuccessful;
-        private List<SpecializationSummaryDTO> specializations = new ArrayList<>();
-
-        @Data
-        @NoArgsConstructor
-        public static class SpecializationSummaryDTO {
-            private MissionSpecialization.Specialization specialization;
-            private int quantity;
-            public SpecializationSummaryDTO(MissionSpecialization.Specialization specialization, int quantity) {
-                this.specialization = specialization;
-                this.quantity = quantity;
-            }
-        }
-    }
-  /*  public static MissionReportDTO withDetails(MissionReport missionReport) {
+    public static MissionReportDTO fromMissionReport(MissionReport missionReport) {
         return MissionReportDTO.builder()
                 .id(missionReport.getId())
-                .resultsDescription(missionReport.getResultsDescription())
                 .isSuccessful(missionReport.isSuccessful())
+                .resultsDescription(missionReport.getResultsDescription())
                 .missionId(missionReport.getMission().getId())
-                .missionName(missionReport.getMission().getMissionName())
+                .missionName(missionReport.getMission().getName())
                 .destinationName(missionReport.getMission().getDestination().getDestinationName())
-                .difficultyLevel(missionReport.getMission().getDifficultyLevel())
-                .participants(
-                        missionReport.getMission().getMissionParticipants().stream()
-                                .map(mp -> MissionParticipantsDTO.builder()
-                                        .astronautId(mp.getAstronaut().getId())
-                                        .astronautName(mp.getAstronaut().getFirstName())
-                                        .build()
-                                )
-                                .toList()
-                )
+                .paymentAmount(missionReport.getMission().getPaymentAmount())
                 .build();
     }
 
-   */
 }

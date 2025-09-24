@@ -21,15 +21,14 @@ public class BudgetService {
         this.budgetRepository = budgetRepository;
         this.modelMapper = new ModelMapper();
     }
-
+    @Transactional(readOnly = true)
     public BudgetDTO getBudgetById(int id) {
         return budgetRepository.findById(id)
                 .map(budget -> modelMapper.map(budget, BudgetDTO.class))
                 .orElseThrow(() -> new EntityNotFoundException("Budget with id: " + id + " not found"));
     }
-
+    @Transactional(readOnly = true)
     public List<BudgetDTO> getAllBudgets() {
-
         List<Budget> budgets = budgetRepository.findAll();
         return budgets.stream()
                 .map(budget -> modelMapper.map(budget, BudgetDTO.class))

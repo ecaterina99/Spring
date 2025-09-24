@@ -38,6 +38,7 @@ public class MissionSpecialization {
         Specialization(String displayName) {
             this.displayName = displayName;
         }
+
         public String getDisplayName() {
             return displayName;
         }
@@ -57,9 +58,11 @@ public class MissionSpecialization {
             }
         }
     }
+
     @NotNull(message = "Specialization is required")
     @Schema(description = "Required specialization type",
-            allowableValues = {"PILOT", "ENGINEER", "SCIENTIST", "DOCTOR", "GEOLOGIST"})    @Column(name = "specialization", nullable = false)
+            allowableValues = {"PILOT", "ENGINEER", "SCIENTIST", "DOCTOR", "GEOLOGIST"})
+    @Column(name = "specialization", nullable = false)
     @Enumerated(EnumType.STRING)
     private Specialization specialization;
 

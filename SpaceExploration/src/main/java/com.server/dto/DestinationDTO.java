@@ -67,7 +67,6 @@ public class DestinationDTO {
                             .map(mission -> MissionDTO.builder()
                                     .id(mission.getId())
                                     .name(mission.getName())
-                                    // Показываем только ID и название миссии
                                     .build())
                             .toList())
                     .build();

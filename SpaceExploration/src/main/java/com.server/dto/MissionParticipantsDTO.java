@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.server.models.Astronaut;
 import com.server.models.MissionParticipants;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +21,9 @@ public class MissionParticipantsDTO {
     private String missionName;
     private String astronautName;
     private Integer id;
+    @NotNull
     private Integer missionId;
+    @NotNull
     private Integer astronautId;
     private Astronaut.Specialization specialization;
     private Integer overallScore;

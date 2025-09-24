@@ -13,33 +13,30 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class MissionReportService {
     private final MissionReportRepository missionReportRepository;
     private final ModelMapper modelMapper;
-    private final MissionRepository missionRepository;
-    private final MissionParticipantsRepository missionParticipantsRepository;
 
-
-    public MissionReportService( MissionParticipantsRepository missionParticipantsRepository, MissionRepository missionRepository, MissionReportRepository missionReportRepository) {
+    public MissionReportService(MissionReportRepository missionReportRepository) {
         this.missionReportRepository = missionReportRepository;
-        this.missionRepository = missionRepository;
-        this.missionParticipantsRepository = missionParticipantsRepository;
         this.modelMapper = new ModelMapper();
     }
-
+    @Transactional(readOnly = true)
     public MissionReportDTO getMissionReportById(int id) {
-        return missionReportRepository.findById(id)
-                .map(missionReport -> modelMapper.map(missionReport, MissionReportDTO.class))
-                .orElseThrow(() -> new EntityNotFoundException("Mission report not found with id: " + id));
-    }
+     MissionReport missionReport = missionReportRepository.findById(id)
+             .orElseThrow(()-> new EntityNotFoundException("Mission Report with id: " + id + " not found"));
+        return MissionReportDTO.fromMissionReport(missionReport);
 
+    }
+    @Transactional(readOnly = true)
     public List<MissionReportDTO> getAllMissionReports() {
         List<MissionReport> missionReports = missionReportRepository.findAll();
         return missionReports.stream()
                 .map(missionReport -> modelMapper.map(missionReport, MissionReportDTO.class))
                 .toList();
     }
+}
+
 
 
  /*   public MissionReportDTO getMissionReportByMissionIdWithDetails(int missionId) {
@@ -48,5 +45,3 @@ public class MissionReportService {
         return  MissionReportDTO.(missionReport);    }
 
   */
-
-}

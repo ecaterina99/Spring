@@ -17,19 +17,26 @@ import lombok.*;
 @Schema(description = "Mission specializations required for the crew")
 public class MissionSpecializationDTO {
     private Integer id;
+    @NotNull
     private Integer missionId;
+    @NotBlank(message = "Specialization is required")
+    @Schema(description = "Required specialization type",
+            allowableValues = {"PILOT", "ENGINEER", "SCIENTIST", "DOCTOR", "GEOLOGIST"})
     private MissionSpecialization.Specialization specialization;
+    @NotNull
+    @Min(value = 1, message = "Quantity must be at least 1")
+    @Max(value = 10, message = "Quantity cannot exceed 10")
     private Integer quantity;
 
-        public static MissionSpecializationDTO create(
-                MissionSpecialization missionSpecialization) {
-            return MissionSpecializationDTO.builder()
-                    .missionId(missionSpecialization.getMission().getId())
-                    .specialization(missionSpecialization.getSpecialization())
-                    .quantity(missionSpecialization.getQuantity()
-                    )
-                    .build();
-        }
+    public static MissionSpecializationDTO create(
+            MissionSpecialization missionSpecialization) {
+        return MissionSpecializationDTO.builder()
+                .missionId(missionSpecialization.getMission().getId())
+                .specialization(missionSpecialization.getSpecialization())
+                .quantity(missionSpecialization.getQuantity()
+                )
+                .build();
+    }
 
 
     @Getter
@@ -40,7 +47,7 @@ public class MissionSpecializationDTO {
 
         @NotBlank(message = "Specialization is required")
         @Schema(description = "Required specialization type",
-                allowableValues = {"PILOT", "ENGINEER", "SCIENTIST", "DOCTOR","GEOLOGIST"},
+                allowableValues = {"PILOT", "ENGINEER", "SCIENTIST", "DOCTOR", "GEOLOGIST"},
                 example = "PILOT")
         private String specialization;
 
