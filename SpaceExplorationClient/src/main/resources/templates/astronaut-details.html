@@ -7,11 +7,12 @@
 <h1>Astronaut Details</h1>
 
 <p><strong>ID:</strong> <span th:text="${astronaut.id}"></span></p>
-<p><strong>First name:</strong> <span th:text="${astronaut.firstName}"></span></p>
-<p><strong>Last name:</strong> <span th:text="${astronaut.lastName}"></span></p>
+<p><strong>Full name:</strong> <span th:text="${astronaut.firstName + astronaut.lastName}"></span></p>
 <p><strong>Specialization:</strong> <span th:text="${astronaut.specialization}"></span></p>
 <p><strong>Health status:</strong> <span th:text="${astronaut.healthStatus}"></span></p>
 <p><strong>Years of experience:</strong> <span th:text="${astronaut.yearsOfExperience}"></span></p>
+<p><strong>Date of birth:</strong> <span th:text="${astronaut.dateOfBirth}"></span></p>
+<p><strong>Overall score:</strong> <span th:text="${astronaut.overallScore}"></span></p>
 
 <a th:href="@{/astronauts}">Back to list</a>
 </body>

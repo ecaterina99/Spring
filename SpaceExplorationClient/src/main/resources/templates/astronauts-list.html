@@ -10,18 +10,19 @@
     <thead>
     <tr>
         <th>ID</th>
-        <th>First name</th>
-        <th>Last name</th>
+        <th>Full name</th>
         <th>Specialization</th>
+        <th>Status</th>
         <th>Details</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="astronaut : ${astronauts}">
         <td th:text="${astronaut.id}"></td>
-        <td th:text="${astronaut.firstName}"></td>
-        <td th:text="${astronaut.lastName}"></td>
+        <td th:text="${astronaut.firstName + astronaut.lastName}"></td>
         <td th:text="${astronaut.specialization}"></td>
+        <td th:text="${astronaut.healthStatus}"></td>
+
         <td>
             <a th:href="@{/astronauts/{id}(id=${astronaut.id})}">View</a>
         </td>

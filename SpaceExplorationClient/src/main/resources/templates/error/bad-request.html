@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Invalid Request</title>
+</head>
+<body>
+<div class="error-container">
+    <h1>400 - Bad Request</h1>
+    <p th:text="${errorMessage}">Invalid request parameters.</p>
+    <p>Please check your input and try again.</p>
+    <a th:href="@{/astronauts}">Back to Astronauts List</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${errorTitle}">Resource Not Found</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="error-container">
+    <h1 th:text="${errorCode + ' - ' + errorTitle}">404 - Resource Not Found</h1>
+    <p class="error-message" th:text="${errorMessage}">The requested resource was not found.</p>
+    <p class="suggested-action" th:text="${suggestedAction}">Please check the URL or go back to the main page.</p>
+
+    <div class="action-buttons">
+        <a th:href="@{/astronauts}" class="btn">Back to Astronauts</a>
+        <a th:href="@{/}" class="btn">Home Page</a>
+    </div>
+</div>
+</body>
+</html>

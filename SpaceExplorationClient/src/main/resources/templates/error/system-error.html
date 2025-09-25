@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>System Error</title>
+</head>
+<body>
+<div class="error-container">
+    <h1>500 - System Error</h1>
+    <p th:text="${errorMessage}">An unexpected error occurred.</p>
+    <p>Please try again later or contact support.</p>
+    <a th:href="@{/astronauts}">Back to Astronauts List</a>
+</div>
+</body>
+</html>
