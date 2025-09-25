@@ -55,15 +55,4 @@ public class AstronautController {
         return "astronaut-details";
     }
 
-    @GetMapping("/health")
-    public String healthCheck(Model model) {
-        log.debug("Handling health check request for astronauts service");
-
-        boolean isHealthy = astronautService.isServiceHealthy();
-
-        model.addAttribute("serviceStatus", isHealthy ? "Healthy" : "Unavailable");
-        model.addAttribute("isHealthy", isHealthy);
-
-        return "health-status";
-    }
 }
