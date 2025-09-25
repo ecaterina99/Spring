@@ -1,33 +1,33 @@
 package com.client.service;
 
-import com.client.DTO.AstronautDTO;
+import com.client.DTO.DestinationDTO;
 import com.client.helpers.RestClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.print.attribute.standard.Destination;
 import java.util.List;
 
 @Service
 @Slf4j
-public class AstronautService {
-
+public class DestinationService {
     private final String apiUrl;
     private final RestClientUtil restUtil;
 
 
-    public AstronautService( @Value("${api.url}") String apiUrl, RestClientUtil restUtil) {
-        this.apiUrl = apiUrl + "/astronauts";
+    public DestinationService(@Value("${api.url}") String apiUrl, RestClientUtil restUtil) {
+        this.apiUrl = apiUrl + "/destinations";
         this.restUtil = restUtil;
     }
 
-    public List<AstronautDTO> getAllAstronauts() {
-        return restUtil.getList(apiUrl, AstronautDTO[].class);
+    public List<DestinationDTO> getAllDestinations() {
+        return restUtil.getList(apiUrl, DestinationDTO[].class);
     }
 
-    public AstronautDTO getAstronautById(int id) {
-        validateId(id, "Astronaut");
-        return restUtil.getObject(apiUrl + "/" + id, AstronautDTO.class);
+    public DestinationDTO getDestinationById(int id) {
+        validateId(id, "Destination");
+        return restUtil.getObject(apiUrl + "/" + id, DestinationDTO.class);
     }
 
     private void validateId(int id, String entityType) {

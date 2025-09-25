@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Destination Details</title>
+</head>
+<body>
+<h1>Destination Details</h1>
+
+<p><strong>ID:</strong> <span th:text="${destination.id}"></span></p>
+<p><strong>Name:</strong> <span th:text="${destination.destinationName}"></span></p>
+<p><strong>Entity Type:</strong> <span th:text="${destination.entityType}"></span></p>
+<p><strong>Description:</strong> <span th:text="${destination.description}"></span></p>
+<p><strong>Distance from Earth:</strong> <span th:text="${destination.distanceFromEarth}"></span></p>
+<p><strong>Gravity:</strong> <span th:text="${destination.gravity}"></span></p>
+
+
+<a th:href="@{/destinations}">Back to list</a>
+</body>
+</html>
