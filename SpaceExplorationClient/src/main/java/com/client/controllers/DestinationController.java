@@ -1,8 +1,6 @@
 package com.client.controllers;
 
-import com.client.DTO.AstronautDTO;
 import com.client.DTO.DestinationDTO;
-import com.client.helpers.RestClientUtil;
 import com.client.service.DestinationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -17,9 +15,6 @@ import java.util.List;
 @RequestMapping("/destinations")
 @Slf4j
 public class DestinationController {
-
-
-
     private final DestinationService destinationService;
 
     public DestinationController(DestinationService destinationService) {
@@ -27,7 +22,7 @@ public class DestinationController {
     }
 
     @GetMapping
-    public String getDestinations(Model model) {
+    public String getAllDestinations(Model model) {
         log.debug("Handling request to display all destinations");
 
         List<DestinationDTO> destinations = destinationService.getAllDestinations();
@@ -38,7 +33,7 @@ public class DestinationController {
         return "destinations-list";
     }
     @GetMapping("/{id}")
-    public String getAstronaut(@PathVariable int id, Model model) {
+    public String getDestination(@PathVariable int id, Model model) {
         log.debug("Handling request to display destination.html details for ID: {}", id);
 
         DestinationDTO destination = destinationService.getDestinationById(id);
@@ -50,6 +45,23 @@ public class DestinationController {
                 destination.getDestinationName());
         return "destination";
     }
+    @GetMapping("/interactive-map")
+    public String getInteractiveMap(Model model) {
+        log.debug("Handling request for interactive space map");
 
+        List<DestinationDTO> destinations = destinationService.getAllDestinations();
 
+        // DEBUG: Add this logging
+        log.info("DEBUG: Retrieved {} destinations from database", destinations.size());
+        destinations.forEach(dest ->
+                log.info("DEBUG: Destination - ID: {}, Name: {}, Type: {}",
+                        dest.getId(), dest.getDestinationName(), dest.getEntityType())
+        );
+
+        model.addAttribute("destinations", destinations);
+        model.addAttribute("pageTitle", "Interactive Space Map");
+
+        log.debug("Rendering interactive map with {} destinations", destinations.size());
+        return "space-map";
+    }
 }
