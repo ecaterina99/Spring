@@ -1,14 +1,15 @@
 // Global variables
 let scene, camera, renderer;
-let planets = [];
+let spaceEntities = [];
 let destinationsData = [];
-let selectedPlanet = null;
+let selectedSpaceEntity = null;
 let autoRotate = true;
+let textureLoader = new THREE.TextureLoader();
+
 
 // Initialize the clean 3D space map (no WebGL errors)
 function initSpaceMap() {
     console.log(' Initializing Clean Space Map...');
-    updateLoadingProgress(10, 'Getting database data...');
 
     // Get destinations data from Thymeleaf
     if (typeof DESTINATIONS_DATA !== 'undefined' && DESTINATIONS_DATA && DESTINATIONS_DATA.length > 0) {
@@ -16,82 +17,28 @@ function initSpaceMap() {
         console.log('Database data loaded:', destinationsData.length, 'destinations');
     } else {
         console.error('No database data available');
-        updateLoadingProgress(100, 'No database data available');
-        setTimeout(hideLoadingScreen, 2000);
         return;
     }
 
     try {
-        updateLoadingProgress(20, 'Creating scene...');
-
-        // Create simple scene
         scene = new THREE.Scene();
-      //  scene.background = new THREE.Color(0x000011); // Simple dark blue background
-
-        updateLoadingProgress(40, 'Setting up camera...');
-
         // Create camera
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.set(0, 0, 15);
 
-        updateLoadingProgress(60, 'Creating renderer...');
-
         // Create renderer with basic settings
-        const canvas = document.getElementById('three-canvas');
-        if (!canvas) {
-            throw new Error('Canvas not found!');
-        }
-
-        renderer = new THREE.WebGLRenderer({
-            canvas: canvas,
-            antialias: true,
-            alpha: false // Disable alpha to avoid context issues
-        });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        const starGeometry = new THREE.BufferGeometry();
-        const starCount = 2000;
-        const starPositions = new Float32Array(starCount * 3);
-        for (let i = 0; i < starCount; i += 1) {
-            const i3 = i * 3;
-            starPositions[i3] = (Math.random() - 0.5) * 400;
-            starPositions[i3 + 1] = (Math.random() - 0.5) * 400;
-            starPositions[i3 + 2] = (Math.random() - 0.5) * 400;
-        }
-        starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-        const starMaterial = new THREE.PointsMaterial({
-            color: 0x9fb5ff,
-            size: 0.55,
-            transparent: true,
-            opacity: 0.65,
-        });
-        const stars = new THREE.Points(starGeometry, starMaterial);
-        scene.add(stars);
-
-
-        updateLoadingProgress(70, 'Adding lighting...');
         setupLighting();
-
-        updateLoadingProgress(80, 'Creating planets...');
-        createSimplePlanets();
-
-        updateLoadingProgress(90, 'Setting up controls...');
+        createStars();
+        createSpaceEntities();
         setupControls();
         setupEventListeners();
-
-        updateLoadingProgress(100, 'Ready!');
-
         setTimeout(() => {
-            hideLoadingScreen();
             animate();
             updateStats();
         }, 500);
 
     } catch (error) {
         console.error('Initialization failed:', error);
-        updateLoadingProgress(100, 'Error: ' + error.message);
-        setTimeout(hideLoadingScreen, 2000);
     }
 }
 
@@ -108,18 +55,75 @@ function setupLighting() {
     console.log('Lighting added');
 }
 
-function createSimplePlanets() {
-    console.log('Creating simple planets (NO TEXTURES)...');
+function createStars(){
+    const canvas = document.getElementById('three-canvas');
+    if (!canvas) {
+        throw new Error('Canvas not found!');
+    }
+    renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: false
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    planets.forEach(planet => scene.remove(planet));
-    planets = [];
+    const starGeometry = new THREE.BufferGeometry();
+    const starCount = 2000;
+    const starPositions = new Float32Array(starCount * 3);
+    const sizes = new Float32Array(starCount);
+    for (let i = 0; i < starCount; i += 1) {
+        const i3 = i * 3;
+        starPositions[i3] = (Math.random() - 0.5) * 400;
+        starPositions[i3 + 1] = (Math.random() - 0.5) * 400;
+        starPositions[i3 + 2] = (Math.random() - 0.5) * 400;
+        sizes[i] = Math.random() * 2 + 0.5;
+    }
+    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    starGeometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
+
+    const textureCanvas = document.createElement('canvas');
+    textureCanvas.width = 64;
+    textureCanvas.height = 64;
+    const ctx = textureCanvas.getContext('2d');
+
+    const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    gradient.addColorStop(0.2, 'rgba(255, 255, 255, 0.8)');
+    gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.3)');
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 64, 64);
+
+    const starTexture = new THREE.CanvasTexture(textureCanvas);
+
+    const starMaterial = new THREE.PointsMaterial({
+        size: 2,
+        sizeAttenuation: true,
+        map: starTexture,
+        transparent: true,
+        opacity: 0.9,
+        vertexColors: false,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+    });
+
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
+}
+
+function createSpaceEntities() {
+    console.log('Creating simple space entities...');
+
+    spaceEntities.forEach(planet => scene.remove(planet));
+    spaceEntities = [];
 
     destinationsData.forEach((destination, index) => {
         try {
-            const planet = createSimplePlanet(destination, index);
-            if (planet) {
-                scene.add(planet);
-                planets.push(planet);
+            const spaceEntity = createEntity(destination, index);
+            if (spaceEntity) {
+                scene.add(spaceEntity);
+                spaceEntities.push(spaceEntity);
                 console.log(`Created planet: ${destination.destinationName}`);
             }
         } catch (error) {
@@ -127,57 +131,73 @@ function createSimplePlanets() {
         }
     });
 
-    console.log(`Created ${planets.length} planets`);
+    console.log(`Created ${spaceEntities.length} space entities.`);
     updateStats();
 }
 
-function createSimplePlanet(destination, index) {
-    const planetName = destination.destinationName.toLowerCase();
-    const radius = 1.5; // Fixed size for easier clicking
+function createEntity(destination, index) {
+    const entityName = destination.destinationName.toLowerCase();
+    const radius = 1.5;
     const geometry = new THREE.SphereGeometry(radius, 32, 32);
 
     // SIMPLE MATERIALS - NO TEXTURES TO AVOID WEBGL ERRORS
-    let color;
-    switch (planetName) {
+    let texturePath;
+    switch (entityName) {
         case 'mars':
-            color = 0xff4444; // Red
+            texturePath = '/api/images/mars.jpg';
             break;
         case 'earth':
-            color = 0x4444ff; // Blue
+            texturePath= '/api/images/earth2.jpg';
             break;
         case 'aurelia':
-            color = 0x44ff44; // Green
+            texturePath= '/api/images/aurelia.jpg';
+            break;
+        case 'proxima centauri':
+            texturePath= '/api/images/proxima.jpg';
+            break;
+        case 'eros':
+            texturePath= '/api/images/asteroid.jpg';
             break;
         default:
-            color = 0xffff44; // Yellow
+            texturePath = '/api/images/default.jpg';
     }
 
-    // Create simple material with NO TEXTURES
     const material = new THREE.MeshLambertMaterial({
-        color: color,
-        transparent: false,
-        opacity: 1.0
+        map: textureLoader.load(texturePath)
     });
 
-    const planet = new THREE.Mesh(geometry, material);
+    const entity = new THREE.Mesh(geometry, material);
 
-    // Position planets clearly visible
+    // Position spaceEntities clearly visible
     const angle = (index / destinationsData.length) * Math.PI * 2;
     const distance = 8;
 
-    planet.position.x = Math.cos(angle) * distance;
-    planet.position.z = Math.sin(angle) * distance;
-    planet.position.y = 0; // Keep at same level
+    entity.position.x = Math.cos(angle) * distance;
+    entity.position.z = Math.sin(angle) * distance;
+    entity.position.y = (index % 2 === 0 ? 1 : -1) * (0.5 + Math.random()) + 1;
+
+    if (entityName === 'proxima centauri') {
+        const spriteMaterial = new THREE.SpriteMaterial({
+            map: new THREE.TextureLoader().load('/api/images/glow.png'),
+            color: 0xffaa00,
+            transparent: true,
+            blending: THREE.AdditiveBlending
+        });
+
+        const sprite = new THREE.Sprite(spriteMaterial);
+        sprite.scale.set(radius * 5, radius * 5, 1);
+        entity.add(sprite);
+
+        entity.userData.glow = sprite;
+    }
 
     // Store database data
-    planet.userData = destination;
-    planet.name = destination.destinationName;
+    entity.userData = destination;
+    entity.name = destination.destinationName;
+    entity.visible = true;
 
-    // Make sure it's clickable
-    planet.visible = true;
-
-    console.log(`Created clickable planet: ${destination.destinationName} at position:`, planet.position);
-    return planet;
+    console.log(`Created clickable space entity: ${destination.destinationName} at position:`, entity.position);
+    return entity;
 }
 
 function setupControls() {
@@ -281,34 +301,36 @@ function onPlanetClick(event) {
 
     raycaster.setFromCamera(mouse, camera);
 
-    // Recursive = true → checks children of groups
-    const intersects = raycaster.intersectObjects(planets, true);
+    const intersects = raycaster.intersectObjects(spaceEntities, true);
 
-    console.log('Checking', planets.length, 'planets');
+    console.log('Checking', spaceEntities.length, 'spaceEntities');
     console.log('Found', intersects.length, 'intersections', intersects);
 
     if (intersects.length > 0) {
-        const clickedPlanet = intersects[0].object;
-        console.log('PLANET CLICKED:', clickedPlanet.name || clickedPlanet.userData?.destinationName);
+        let clickedEntity = intersects[0].object;
 
-        selectPlanet(clickedPlanet);
+        if (clickedEntity.parent && clickedEntity.parent.userData && clickedEntity.parent.userData.destinationName) {
+            clickedEntity = clickedEntity.parent;
+        }
+        console.log('ENTITY CLICKED:', clickedEntity.name || clickedEntity.userData?.destinationName);
+        selectSpaceEntity(clickedEntity);
     } else {
-        console.log('No planet hit');
+        console.log('No entity hit');
     }
 }
 
-function selectPlanet(planet) {
-    selectedPlanet = planet;
-    const destination = planet.userData;
-    console.log('PLANET SELECTED:', destination.destinationName);
+function selectSpaceEntity(entity) {
+    selectedSpaceEntity = entity;
+    const destination = entity.userData;
+    console.log('ENTITY SELECTED:', destination.destinationName);
 
     updateInfoPanel(destination);
     updateStats();
 
     if (destination) {
-        showPlanetPopup(destination);
+        showPopup(destination);
     } else {
-        console.warn("No destination data found for", planet.name);
+        console.warn("No destination data found for", entity.name);
     }
 }
 
@@ -316,11 +338,11 @@ function updateInfoPanel(destination) {
     const infoPanel = document.getElementById('planet-info');
     if (infoPanel && destination) {
         infoPanel.innerHTML = `
-            <h5 class="text-info mb-3">
+            <h5 class="text-info mb-3 " style="font-family: 'Orbitron', monospace !important;">
                 <i class="bi bi-globe me-2"></i>${destination.destinationName}
             </h5>
             <div class="mb-2">
-                <strong>Database ID:</strong> ${destination.id}
+                <strong>ID:</strong> ${destination.id}
             </div>
             <div class="mb-2">
                 <strong>Type:</strong> ${destination.entityType || 'Unknown'}
@@ -329,13 +351,12 @@ function updateInfoPanel(destination) {
     }
 }
 
-function showPlanetPopup(destination) {
+function showPopup(destination) {
     document.getElementById("popup-title").textContent =
         `${destination.destinationName}`;
-    document.getElementById("popup-type").textContent = destination.entityType;
     document.getElementById("popup-description").textContent = destination.description || "No description";
-    document.getElementById("popup-gravity").textContent = destination.gravity || "No gravity";
     document.getElementById("popup-distance").textContent = destination.distanceFromEarth;
+    document.getElementById("popup-gravity").textContent = destination.gravity || "No gravity";
 
     const popup = document.getElementById("planet-popup");
     popup.style.display = "flex";
@@ -349,20 +370,17 @@ function showPlanetPopup(destination) {
 
 function animate() {
     requestAnimationFrame(animate);
-
     // Update camera controls
     if (window.updateCameraControls) {
         window.updateCameraControls();
     }
-
-    // Auto rotate planets
-    if (autoRotate && planets.length > 0) {
-        planets.forEach((planet, index) => {
-            planet.rotation.y += 0.01;
-            planet.rotation.x += 0.005;
+    // Auto rotate spaceEntities
+    if (autoRotate && spaceEntities.length > 0) {
+        spaceEntities.forEach((planet, index) => {
+            planet.rotation.y += 0.002;
+            planet.rotation.x += 0.001;
         });
     }
-
     renderer.render(scene, camera);
 }
 
@@ -375,37 +393,14 @@ function onWindowResize() {
 function updateStats() {
     const destCount = document.getElementById('destination-count');
     const selectedName = document.getElementById('selected-planet');
-    const modelsCount = document.getElementById('loaded-models');
-
     if (destCount) destCount.textContent = destinationsData.length;
-    if (selectedName) selectedName.textContent = selectedPlanet ? selectedPlanet.name : 'None';
-    if (modelsCount) modelsCount.textContent = planets.length;
+    if (selectedName) selectedName.textContent = selectedSpaceEntity ? selectedSpaceEntity.name : 'None';
 }
-
-function updateLoadingProgress(percentage, status) {
-    const progressBar = document.getElementById('loading-progress');
-    const statusText = document.getElementById('loading-status');
-
-    if (progressBar) progressBar.style.width = percentage + '%';
-    if (statusText) statusText.textContent = status;
-}
-
-function hideLoadingScreen() {
-    const loadingScreen = document.getElementById('loading-screen');
-    if (loadingScreen) {
-        loadingScreen.style.opacity = '0';
-        setTimeout(() => {
-            loadingScreen.style.display = 'none';
-        }, 300);
-    }
-}
-
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('📄 DOM ready - Starting CLEAN space map...');
+    console.log('DOM ready - Starting CLEAN space map...');
     setTimeout(() => {
         initSpaceMap();
     }, 200);
 });
-

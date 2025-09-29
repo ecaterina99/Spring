@@ -19,10 +19,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .setCachePeriod(3600)
                 .resourceChain(true);
 
-        registry.addResourceHandler("/hdri/**")
-                .addResourceLocations("classpath:/static/hdri/")
-                .setCachePeriod(3600)
-                .resourceChain(true);
 
         registry.addResourceHandler("/js/**")
                 .addResourceLocations("classpath:/static/js/");

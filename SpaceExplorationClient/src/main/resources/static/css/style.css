@@ -17,13 +17,11 @@ body {
     width: 100%;
     position: relative;
     z-index: 10;
-    margin: 0;
-    padding: 0;
 }
 
 .cosmo-trail img {
     width: 100%;
-    height: 150px;
+    height: 200px;
     object-fit: cover;
     object-position: center;
     display: block;
@@ -78,21 +76,16 @@ nav.navbar,
     border-color: #000 !important;
 }
 
-
 /* Space container - MUCH TALLER for scrolling */
 #space-container {
     width: 100vw;
-    height: 200vh; /* 200% of viewport height - DOUBLED! */
-    min-height: 1800px; /* Increased from 1200px */
+    height: 100vh;
     position: relative;
-    margin-top: 0;
     background: #000011;
 }
 
 #three-canvas {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     z-index: 1;
@@ -125,6 +118,9 @@ nav.navbar,
     color: white;
     min-width: 200px;
 }
+#popup-title {
+    font-family: 'Orbitron', monospace !important;
+}
 
 #popup-close {
     float: right;
@@ -151,6 +147,10 @@ nav.navbar,
     border-color: #00ff88;
     box-shadow: 0 8px 32px rgba(0, 255, 136, 0.3);
 }
+.info-text{
+    color: gray !important;
+    font-size: 16px;
+    z-index: 9999;}
 
 .panel-content {
     padding: 20px;

@@ -62,6 +62,6 @@ public class DestinationController {
         model.addAttribute("pageTitle", "Interactive Space Map");
 
         log.debug("Rendering interactive map with {} destinations", destinations.size());
-        return "space-map";
+        return "space";
     }
 }
