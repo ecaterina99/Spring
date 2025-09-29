@@ -1,27 +1,28 @@
-2025-09-25T12:01:57.311+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] com.server.ServerApplication             : Starting ServerApplication using Java 23 with PID 11732 (C:\Users\Admin\Desktop\Learning\Spring\SpaceExploration\target\classes started by Admin in C:\Users\Admin\Desktop\Learning\Spring\SpaceExploration)
-2025-09-25T12:01:57.311+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] com.server.ServerApplication             : No active profile set, falling back to 1 default profile: "default"
-2025-09-25T12:01:57.492+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-09-25T12:01:57.510+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17 ms. Found 7 JPA repository interfaces.
-2025-09-25T12:01:57.605+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2025-09-25T12:01:57.606+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-09-25T12:01:57.607+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
-2025-09-25T12:01:57.649+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring embedded WebApplicationContext
-2025-09-25T12:01:57.650+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 337 ms
-2025-09-25T12:01:57.691+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-09-25T12:01:57.693+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2025-09-25T12:01:57.702+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-09-25T12:01:57.703+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
-2025-09-25T12:01:57.717+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3133c53a
-2025-09-25T12:01:57.718+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
-2025-09-25T12:01:57.825+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-09-25T12:01:57.875+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-09-25T12:01:58.043+03:00  WARN 11732 --- [SpaceExploration] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-09-25T12:01:58.122+03:00  WARN 11732 --- [SpaceExploration] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
-2025-09-25T12:01:58.190+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2025-09-25T12:01:58.204+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/api'
-2025-09-25T12:01:58.207+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] com.server.ServerApplication             : Started ServerApplication in 0.941 seconds (process running for 4613.307)
-2025-09-25T12:01:58.209+03:00  INFO 11732 --- [SpaceExploration] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
-2025-09-25T12:19:37.415+03:00  INFO 11732 --- [SpaceExploration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-09-25T12:19:37.415+03:00  INFO 11732 --- [SpaceExploration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2025-09-25T12:19:37.416+03:00  INFO 11732 --- [SpaceExploration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2025-09-25T12:21:30.585+03:00  WARN 11732 --- [SpaceExploration] [http-nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [jakarta.persistence.EntityNotFoundException: Astronaut not found with id: 8]
+2025-09-29T11:58:54.547+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] com.server.ServerApplication             : Starting ServerApplication using Java 23 with PID 14668 (C:\Users\Admin\Desktop\Learning\Spring\SpaceExploration\target\classes started by Admin in C:\Users\Admin\Desktop\Learning\Spring\SpaceExploration)
+2025-09-29T11:58:54.557+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] com.server.ServerApplication             : No active profile set, falling back to 1 default profile: "default"
+2025-09-29T11:58:54.617+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-09-29T11:58:54.618+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-09-29T11:58:55.509+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-29T11:58:55.584+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 66 ms. Found 7 JPA repository interfaces.
+2025-09-29T11:58:56.124+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-29T11:58:56.138+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-29T11:58:56.138+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-09-29T11:58:56.191+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring embedded WebApplicationContext
+2025-09-29T11:58:56.192+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1573 ms
+2025-09-29T11:58:56.335+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-29T11:58:56.412+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2025-09-29T11:58:56.448+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-29T11:58:56.763+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-29T11:58:56.794+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-09-29T11:58:57.218+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4ab05a71
+2025-09-29T11:58:57.220+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-09-29T11:58:58.308+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-29T11:58:58.436+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-29T11:58:58.966+03:00  WARN 14668 --- [SpaceExploration] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-29T11:58:59.316+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-09-29T11:58:59.701+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-09-29T11:58:59.736+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/api'
+2025-09-29T11:58:59.745+03:00  INFO 14668 --- [SpaceExploration] [restartedMain] com.server.ServerApplication             : Started ServerApplication in 5.64 seconds (process running for 7.094)
+2025-09-29T12:01:37.934+03:00  INFO 14668 --- [SpaceExploration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-29T12:01:37.934+03:00  INFO 14668 --- [SpaceExploration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-29T12:01:37.940+03:00  INFO 14668 --- [SpaceExploration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms

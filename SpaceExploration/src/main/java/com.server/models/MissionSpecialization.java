@@ -14,7 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity(name = "mission_specializations")
-public class MissionSpecialization {
+public class  MissionSpecialization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

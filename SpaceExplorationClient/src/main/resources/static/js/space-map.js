@@ -26,7 +26,7 @@ function initSpaceMap() {
 
         // Create simple scene
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x000011); // Simple dark blue background
+      //  scene.background = new THREE.Color(0x000011); // Simple dark blue background
 
         updateLoadingProgress(40, 'Setting up camera...');
 
@@ -50,7 +50,6 @@ function initSpaceMap() {
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // === Background Starfield ==================================================
         const starGeometry = new THREE.BufferGeometry();
         const starCount = 2000;
         const starPositions = new Float32Array(starCount * 3);
