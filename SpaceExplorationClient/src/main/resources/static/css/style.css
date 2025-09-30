@@ -1,7 +1,10 @@
 {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin: 0
+;
+    padding: 0
+;
+    box-sizing: border-box
+;
 }
 
 body {
@@ -26,9 +29,8 @@ body {
     object-position: center;
     display: block;
     filter: brightness(1.1) contrast(1.2) saturate(1.3);
-    box-shadow:
-            0 0 30px rgba(255, 215, 0, 0.3),
-            inset 0 0 50px rgba(138, 43, 226, 0.1);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.3),
+    inset 0 0 50px rgba(138, 43, 226, 0.1);
 }
 
 nav.navbar,
@@ -44,13 +46,13 @@ nav.navbar,
     margin: 0 !important;
     padding: 8px 0 !important;
     border: none;
-    box-shadow:
-            0 0 20px rgba(255, 215, 0, 0.6),
-            0 0 40px rgba(255, 215, 0, 0.4),
-            0 0 60px rgba(255, 215, 0, 0.2),
-            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6),
+    0 0 40px rgba(255, 215, 0, 0.4),
+    0 0 60px rgba(255, 215, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
 }
+
 .navbar .container-fluid {
     background-color: transparent !important;
 }
@@ -118,6 +120,7 @@ nav.navbar,
     color: white;
     min-width: 200px;
 }
+
 #popup-title {
     font-family: 'Orbitron', monospace !important;
 }
@@ -133,6 +136,35 @@ nav.navbar,
     color: #00ff88;
 }
 
+
+.astronaut-popup{
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #00d4ff;
+    border-radius: 15px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+.astronaut-popup-content {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 1200px;
+    text-align: center;
+    color: white;
+    min-width: 200px;
+    min-height: 400px;
+}
+
+
 /* Info and stats panels */
 .info-panel, .stats-panel {
     background: rgba(0, 0, 0, 0.9);
@@ -147,10 +179,12 @@ nav.navbar,
     border-color: #00ff88;
     box-shadow: 0 8px 32px rgba(0, 255, 136, 0.3);
 }
-.info-text{
+
+.info-text {
     color: gray !important;
     font-size: 16px;
-    z-index: 9999;}
+    z-index: 9999;
+}
 
 .panel-content {
     padding: 20px;
@@ -166,7 +200,7 @@ nav.navbar,
     min-width: 150px;
 }
 
-.title-astronauts, .lead{
+.title-astronauts, .lead {
     color: #d6d4d4;
 }
 
@@ -178,10 +212,9 @@ nav.navbar,
 
 .card:hover {
     transform: translateY(-6px);
-    box-shadow:
-            0 0 20px rgba(255, 215, 0, 1),
-            0 0 40px rgba(255, 215, 0, 0.8),
-            0 0 80px rgba(255, 215, 0, 0.5);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 1),
+    0 0 40px rgba(255, 215, 0, 0.8),
+    0 0 80px rgba(255, 215, 0, 0.5);
 }
 
 .card-img-top {
@@ -217,6 +250,7 @@ nav.navbar,
         height: 150vh;
         min-height: 1400px;
     }
+
     .cosmo-trail img {
         width: 100%;
         height: 100px;

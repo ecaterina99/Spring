@@ -6,49 +6,134 @@
 
 <!-- Intro -->
 <main class="container">
-<section class="intro container py-5 text-md-start">
-    <h1 class="title-astronauts display-4 fw-bold">WHO IS IN SPACE?</h1>
-    <br>
-    <p class="lead">
-        The term “astronaut” derives from the Greek words meaning “star sailor,”
-        and refers to all who have been launched as crew members aboard NASA spacecraft bound
-        for orbit and beyond. The term “astronaut” has been maintained as the title for those
-        selected to join the NASA corps of astronauts who make “star sailing” their career profession.
-    </p>
-</section>
+    <section class="intro container py-5 text-md-start">
+        <h1 class="title-astronauts display-4 fw-bold">WHO IS IN SPACE?</h1>
+        <br>
+        <p class="lead">
+            The term “astronaut” derives from the Greek words meaning “star sailor,”
+            and refers to all who have been launched as crew members aboard NASA spacecraft bound
+            for orbit and beyond. The term “astronaut” has been maintained as the title for those
+            selected to join the NASA corps of astronauts who make “star sailing” their career profession.
+        </p>
+    </section>
 
-<section class="container pt-0 pb-5">
-    <div class="row g-4 justify-content-center">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3"
-             th:each="astronaut : ${astronauts}">
-            <div class="card  h-100 text-center border-0">
-            <img th:src="@{${astronaut.imageUrl}}" class="card-img-top rounded" alt="image">
+    <section class="container pt-0 pb-5">
+        <div class="row g-4 justify-content-center">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3"
+                 th:each="astronaut : ${astronauts}">
+                <div class="card  h-80 text-center border-0">
+                    <img th:src="@{${astronaut.imageUrl}}" class="card-img-top rounded" alt="image">
 
-                <div class="card-body">
-                 <h5 class="card-title fw-bold" style="color: #013a9f;" th:text="${astronaut.firstName.toUpperCase() + astronaut.lastName.toUpperCase()}"></h5><br>
-                    <p class="d-flex justify-content-between card-text">
-                        <strong>SPECIALIZATION:</strong>
-                        <span th:text="${astronaut.specialization}" class="text-muted"></span>
-                    </p>
-                    <p class="d-flex justify-content-between card-text">
-                        <strong>OVERALL SCORE:</strong>
-                        <span th:text="${astronaut.overallScore}" class="text-muted"></span>
-                    </p>
-                    <p class="d-flex justify-content-between card-text">
-                        <strong>YEARS OF EXPERIENCE:</strong>
-                        <span th:text="${astronaut.yearsOfExperience}" class="text-muted"></span>
-                    </p>
-                     <a th:href="@{/astronauts/{id}(id=${astronaut.id})}" class="text-decoration-none">
-                         <button class="btn hero-btn px-4 py-2"><strong>VIEW DETAILS</strong></button>
-                     </a>
-             </div>
-         </div>
-     </div>
- </section>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold" style="color: #013a9f;"
+                            th:text="${astronaut.firstName.toUpperCase() + astronaut.lastName.toUpperCase()}"></h5><br>
+                        <p class="d-flex justify-content-between card-text">
+                            <strong>SPECIALIZATION:</strong>
+                            <span th:text="${astronaut.specialization}" class="text-muted"></span>
+                        </p>
+                        <p class="d-flex justify-content-between card-text">
+                            <strong>OVERALL SCORE:</strong>
+                            <span th:text="${astronaut.overallScore}" class="text-muted"></span>
+                        </p>
+                        <p class="d-flex justify-content-between card-text">
+                            <strong>YEARS OF EXPERIENCE:</strong>
+                            <span th:text="${astronaut.yearsOfExperience}" class="text-muted"></span>
+                        </p>
 
- </main>
+                        <button class="btn hero-btn px-4 py-2"
+                                th:attr="data-id=${astronaut.id},
+                     data-firstname=${astronaut.firstName},
+                     data-lastname=${astronaut.lastName},
+                     data-specialization=${astronaut.specialization},
+                     data-imageurl=${astronaut.imageUrl},
+                     data-experience=${astronaut.yearsOfExperience},
+                     data-birthdate=${astronaut.dateOfBirth},
+                     data-phone=${astronaut.phone},
+                     data-health=${astronaut.healthStatus},
+                     data-fitness=${astronaut.fitnessScore},
+                     data-education=${astronaut.educationScore},
+                     data-psychological=${astronaut.psychologicalScore},
+                     data-overall=${astronaut.overallScore},
+                     data-rate=${astronaut.dailyRate}"
+                                onclick="showPopup(this)">
+                            <strong>VIEW DETAILS</strong>
+                        </button>
+                    </div>
+                </div>
 
- <div th:insert="~{common_fragments :: mainFooter}"></div>
+            </div>
+        </div>
+    </section>
+    <!-- Popup -->
+    <div id="astronaut-popup" class="astronaut-popup" style="display:none;">
+        <div class="astronaut-popup-content">
+            <span id="popup-close">&times;</span>
 
- </body>
- </html>
+            <p id="popup-description"></p>
+            <h4 id="popup-title" style=" font-family: 'Orbitron', monospace; color: rgba(255, 215, 0, 0.9)">ASTRONAUT BIOGRAPHY</h4>
+            <img id="astronaut-img" class="astronaut-img rounded" alt="astronaut">
+        <div class ="astronaut-info">
+            <div class="main-info d-flex justify-content-between">
+                <p><strong>Specialization:</strong> <span id="popup-specialization"></span></p>
+                <p><strong>Date of birth:</strong> <span id="popup-birthDate"></span></p>
+                <p><strong>Years of experience:</strong> <span id="popup-experience"></span></p>
+                <p><strong>Phone:</strong> <span id="popup-phone"></span></p>
+                <p><strong>Health status:</strong> <span id="popup-status"></span></p>
+            </div>
+            <div class="score-info d-flex justify-content-between">
+                <p><strong>Fitness score:</strong> <span id="popup-fitness"></span></p>
+                <p><strong>Education score:</strong> <span id="popup-education"></span></p>
+                <p><strong>Psychological score:</strong> <span id="popup-psychological"></span></p>
+                <p><strong>Overall score:</strong> <span id="popup-overall"></span></p>
+                <p><strong>Daily rate:</strong> <span id="popup-rate"></span></p>
+            </div>
+        </div>
+            <button id="downloadBtn" class="btn btn-outline-info btn-sm">
+                DOWNLOAD BIOGRAPHY
+            </button>
+        </div>
+    </div>
+</main>
+<script>
+    function showPopup(button) {
+        const firstname = button.getAttribute("data-firstname");
+        const lastname = button.getAttribute("data-lastname");
+        const specialization = button.getAttribute("data-specialization");
+        const imageUrl = button.getAttribute("data-imageurl");
+        const experience = button.getAttribute("data-experience");
+        const birthDate = button.getAttribute("data-birthdate");
+        const phone = button.getAttribute("data-phone");
+        const health = button.getAttribute("data-health");
+        const fitness = button.getAttribute("data-fitness");
+        const education = button.getAttribute("data-education");
+        const psychological = button.getAttribute("data-psychological");
+        const overall = button.getAttribute("data-overall");
+        const rate = button.getAttribute("data-rate");
+        const img = document.getElementById("astronaut-img");
+        img.src = imageUrl || "";
+        document.getElementById("popup-title").textContent = `${firstname || ""} ${lastname || ""}`.trim();
+        document.getElementById("popup-specialization").textContent = specialization || "—";
+        document.getElementById("popup-birthDate").textContent = birthDate || "—";
+        document.getElementById("popup-experience").textContent = experience || "0";
+        document.getElementById("popup-phone").textContent = phone || "—";
+        document.getElementById("popup-status").textContent = health || "—";
+        document.getElementById("popup-fitness").textContent = fitness || "—";
+        document.getElementById("popup-education").textContent = education || "—";
+        document.getElementById("popup-psychological").textContent = psychological || "—";
+        document.getElementById("popup-overall").textContent = overall || "—";
+        document.getElementById("popup-rate").textContent = rate || "—";
+
+        const popup = document.getElementById("astronaut-popup");
+        popup.style.display = "flex";
+
+        document.getElementById("popup-close").onclick = () => popup.style.display = "none";
+        popup.onclick = (e) => { if (e.target.id === "astronaut-popup") popup.style.display = "none"; };
+        document.onkeydown = (e) => { if (e.key === "Escape") popup.style.display = "none"; };
+    }
+</script>
+
+
+<div th:insert="~{common_fragments :: mainFooter}"></div>
+
+</body>
+</html>
