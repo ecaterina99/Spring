@@ -166,6 +166,28 @@ nav.navbar,
     min-width: 150px;
 }
 
+.title-astronauts, .lead{
+    color: #d6d4d4;
+}
+
+.card {
+    background-color: #d6d4d4;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: none;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+            0 0 20px rgba(255, 215, 0, 1),
+            0 0 40px rgba(255, 215, 0, 0.8),
+            0 0 80px rgba(255, 215, 0, 0.5);
+}
+
+.card-img-top {
+    object-fit: cover;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .info-panel, .stats-panel {

@@ -1,53 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" >
-<head>
-    <title>Interactive Space Map - 3D</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Bootstrap 5.3 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
-
+<head th:insert="~{common_fragments :: head}"></head>
 <body>
-<header>
-    <!-- Cosmo-trail image FIRST -->
-    <div id="cosmo-trail" class="cosmo-trail">
-        <img th:src="@{/images/1.jpg}" alt="cosmo-trail" class="img-fluid">
-    </div>
+<div th:insert="~{common_fragments :: mainHeader}"></div>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav d-flex justify-content-center gap-4">
-                    <li class="nav-item">
-                        <a th:href="@{/home}" class="nav-link">HOME</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/astronauts}" class="nav-link">ASTRONAUTS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/destinations/interactive-map}" class="nav-link">EXPLORE SPACE</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/missons}" class="nav-link">MISSIONS</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
 
 <!-- 3D Canvas Container -->
 <div id="space-container" class="position-relative">
@@ -97,79 +53,9 @@
     </div>
 </div>
 
+<div th:insert="~{common_fragments :: mainFooter}"></div>
 
-<footer class="bg-dark text-white text-center py-4">
-    <!-- Footer -->
-    <footer class="text-center text-lg-start text-white">
 
-        <section class="">
-            <div class="container text-center text-md-start mt-5">
-                <div class="row mt-2">
-                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                        <!-- Content -->
-                        <h6 class="text-uppercase fw-bold">Cosmo Trail</h6>
-                        <hr
-                                class="mb-4 mt-0 d-inline-block mx-auto"
-                                style="width: 60px;  height: 2px"
-                        />
-                        <p>
-                            Cosmo Trail is an elite astronaut organization dedicated to executing humanity's
-                            most challenging space missions across the solar system and beyond.
-                            Through courage, expertise, and cutting-edge technology, Cosmo Trail astronauts overcome
-                            extreme conditions to expand our understanding of the cosmos and secure humanity's
-                            future among the stars.
-                        </p>
-                    </div>
-
-                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <!-- Links -->
-                        <h6 class="text-uppercase fw-bold">Home</h6>
-                        <hr
-                                class="mb-4 mt-0 d-inline-block mx-auto"
-                                style="width: 60px; height: 2px"
-                        />
-                        <p>
-                            <a th:href="@{/bouquets}" class="text-white">Missions</a>
-                        </p>
-                        <p>
-                            <a th:href="@{/plants}" class="text-white">Destinations</a>
-                        </p>
-                        <p>
-                            <a th:href="@{/gifts}" class="text-white">Astronauts</a>
-                        </p>
-                    </div>
-                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <!-- Links -->
-                        <h6 class="text-uppercase fw-bold">Useful links</h6>
-                        <hr
-                                class="mb-4 mt-0 d-inline-block mx-auto"
-                                style="width: 60px; height: 2px"
-                        />
-                        <p>
-                            <a th:href="@{/contact}" class="text-white">Contact us</a>
-                        </p>
-                        <p>
-                            <a th:href="@{/home}" class="text-white">About Us</a>
-                        </p>
-                        <p>
-                            <a th:href="@{/cart/}" class="text-white">Statistic</a>
-                        </p>
-                    </div>
-                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                        <h6 class="text-uppercase fw-bold">Contact</h6>
-                        <hr class="mb-4 mt-0 d-inline-block mx-auto"
-                            style="width: 60px; height: 2px"/>
-                        <p><i class="fas fa-home mr-3"></i>Iași, Bvd. Chimiei, 7B </p>
-                        <p><i class="fas fa-envelope mr-3"></i>office@cosmo-trail.ro</p>
-                        <p><i class="fas fa-phone mr-3"></i> + 40 234 567 88</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <div class="text-center p-3">
-            <small>Copyright © COSMO TRAIL</small>
-        </div>
-    </footer>
 
 <!-- 1. INLINE DATA (comes straight from Thymeleaf) -->
 <script th:inline="javascript">
