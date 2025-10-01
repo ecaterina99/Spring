@@ -40,11 +40,11 @@
                             <span th:text="${astronaut.yearsOfExperience}" class="text-muted"></span>
                         </p>
 
-                        <button class="btn hero-btn px-4 py-2"
+                        <button class="btn hero-btn px-4 py-2" id="btn-view"
                                 th:attr="data-id=${astronaut.id},
                      data-firstname=${astronaut.firstName},
                      data-lastname=${astronaut.lastName},
-                     data-specialization=${astronaut.specialization.getDisplayName()},
+                     data-specialization=${astronaut.specialization.getDisplayName().toUpperCase()},
                      data-image=@{${astronaut.imageUrl}},
                      data-experience=${astronaut.yearsOfExperience},
                      data-birthdate=${astronaut.dateOfBirth},
@@ -79,7 +79,7 @@
                 </div>
                 <div class="astronaut-main-info">
                     <h3 id="popup-name" class="popup-name"></h3>
-                    <p><strong>Specialization:</strong><span id="popup-specialization"></span></p>
+                    <p><strong><span id="popup-specialization"></span></strong></p>
                 </div>
             </div>
 

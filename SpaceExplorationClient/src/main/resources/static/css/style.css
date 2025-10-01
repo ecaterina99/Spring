@@ -171,6 +171,9 @@ nav.navbar,
     margin-bottom: 10px;
     text-transform: uppercase;
 }
+#btn-view:hover {
+    color: #001d8c
+}
 
 .astronaut-info p {
     margin: 4px 0;
@@ -182,7 +185,6 @@ nav.navbar,
 #downloadBtn {
     margin-top: 15px;
 }
-
 
 .astronaut-popup {
     display: none;
