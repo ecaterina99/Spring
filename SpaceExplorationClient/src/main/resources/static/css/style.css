@@ -132,12 +132,59 @@ nav.navbar,
     color: #00d4ff;
 }
 
-#popup-close:hover {
+#popup-close:hover, #popup-close:focus{
     color: #00ff88;
+}
+.astronaut-popup:hover, #astronaut-popup:focus {
+    border-color: #00ff88;
+}
+
+.popup-header {
+    font-family: 'Orbitron', monospace;
+    color: rgba(255, 215, 0, 0.9);
+    text-align: left;
+    margin-bottom: 20px;
+    white-space: nowrap;
+}
+
+.astronaut-top {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.astronaut-image img {
+    max-height: 220px;
+    border: 2px solid #00d4ff;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
+}
+
+.popup-name {
+    font-family: 'Orbitron', monospace;
+    color: rgba(255, 215, 0, 0.9);
+    font-size: 1.8rem;
+    text-align: left;
+}
+
+.popup-subtitle {
+
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.astronaut-info p {
+    margin: 4px 0;
+    color: #dcdcdc;
+}
+.score-info {
+    padding: 15px;
+}
+#downloadBtn {
+    margin-top: 15px;
 }
 
 
-.astronaut-popup{
+.astronaut-popup {
     display: none;
     position: fixed;
     justify-content: center;
@@ -153,17 +200,40 @@ nav.navbar,
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
 }
+
 .astronaut-popup-content {
-    background: #222;
+    background-image: url('/api/images/b5.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     padding: 20px;
     border-radius: 8px;
     max-width: 1200px;
     text-align: center;
     color: white;
-    min-width: 200px;
+    min-width: 250px;
     min-height: 400px;
 }
 
+
+.astronaut-img {
+    padding: 15px;
+    text-align: start;
+}
+
+.astronaut-main-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.score-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
 
 /* Info and stats panels */
 .info-panel, .stats-panel {

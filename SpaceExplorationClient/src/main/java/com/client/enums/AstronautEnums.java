@@ -5,6 +5,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class AstronautEnums {
+
+    @Getter
     public enum HealthStatus {
         FLIGHT_READY("Flight Ready"),
         MEDICAL_REVIEW("Medical Review"),
@@ -17,6 +19,8 @@ public class AstronautEnums {
         }
 
     }
+
+    @Getter
     public enum Specialization {
         PILOT("Pilot"),
         ENGINEER("Engineer"),
@@ -29,6 +33,5 @@ public class AstronautEnums {
         Specialization(String displayName) {
             this.displayName = displayName;
         }
-
     }
 }
