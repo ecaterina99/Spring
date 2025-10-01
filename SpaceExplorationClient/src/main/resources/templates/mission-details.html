@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mission Details</title>
+</head>
+<body>
+<h1>Mission Details</h1>
+
+<p><strong>ID:</strong> <span th:text="${mission.id}"></span></p>
+<p><strong>name:</strong> <span th:text="${mission.name}"></span></p>
+<p><strong>Description:</strong> <span th:text="${mission.description}"></span></p>
+<p><strong>Destination:</strong> <span th:text="${mission.destinationName}"></span></p>
+<p><strong>Image:</strong> <span th:text="${mission.imgUrl}"></span></p>
+
+<a th:href="@{/missions}">Back to list</a>
+</body>
+</html>

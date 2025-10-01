@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{common_fragments :: head}"></head>
+<body>
+<div th:insert="~{common_fragments :: mainHeader}"></div>
+
+<main class="container">
+    <section class="intro container py-5 text-md-start">
+        <h1 class="title-astronauts display-5 fw-bold">ACROSS THE UNIVERSE: MISSIONS AWAIT</h1>
+        <br>
+        <h6 class="title-astronauts display-6 fw-bold">Select your next adventure.</h6>
+        <br>
+        <p class="lead">
+            Cosmic missions represent humanity’s bold steps into the vastness of space,
+            each with unique challenges and goals. Some missions aim for nearby asteroids,
+            testing navigation and resource extraction in low-gravity environments,
+            while others venture toward distant stars, demanding advanced technology and long-term planning.
+            Every destination brings its own level of difficulty, from harsh radiation to extreme distances.
+            Together, these missions push the boundaries of exploration and prepare us for the future of interstellar travel.
+        </p>
+    </section>
+
+
+    <section class="container pt-0 pb-5">
+        <div class="row g-6 justify-content-center">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3"
+                 th:each="mission : ${missions}">
+                <div class="card text-center border-0" >
+                    <img th:src="@{${mission.imgUrl}}" class="card-image" alt="image">
+
+                    <div class="mission-card-body">
+                        <h5 class="card-title fw-bold" style="color: #013a9f;"
+                            th:text="${mission.name.toUpperCase()}"></h5><br>
+                        <p class="d-flex justify-content-between card-text">
+                            <strong>Code:</strong>
+                            <span th:text="${mission.code}" class="text-muted"></span>
+                        </p>
+                        <p class="d-flex justify-content-between card-text">
+                            <strong>Difficulty level:</strong>
+                            <span th:text="${mission.difficultyLevel}" class="text-muted"></span>
+                        </p>
+                        <p class="d-flex justify-content-between card-text">
+                            <strong>Destination:</strong>
+                            <span th:text="${mission.destinationName}" class="text-muted"></span>
+                        </p>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<div th:insert="~{common_fragments :: mainFooter}"></div>
+
+</body>
+</html>

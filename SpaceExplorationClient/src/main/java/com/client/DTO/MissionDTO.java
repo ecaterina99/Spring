@@ -22,7 +22,7 @@ public class MissionDTO {
     private Integer crewSize;
     private Integer scoreValue;
     private String potentialIssues;
-    private String imageUrl;
+    private String imgUrl;
     private String destinationName;
     private Integer paymentAmount;
     private MissionEnums.DifficultyLevel difficultyLevel;
