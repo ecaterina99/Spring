@@ -6,7 +6,7 @@
 
 <main class="container">
     <section class="intro container py-5 text-md-start">
-        <h1 class="title-astronauts display-5 fw-bold">ACROSS THE UNIVERSE: MISSIONS AWAIT</h1>
+        <h1 class="title-astronauts display-5 fw-bold text-glow">ACROSS THE UNIVERSE: MISSIONS AWAIT</h1>
         <br>
         <h6 class="title-astronauts display-6 fw-bold">Select your next adventure.</h6>
         <br>
@@ -16,42 +16,84 @@
             testing navigation and resource extraction in low-gravity environments,
             while others venture toward distant stars, demanding advanced technology and long-term planning.
             Every destination brings its own level of difficulty, from harsh radiation to extreme distances.
-            Together, these missions push the boundaries of exploration and prepare us for the future of interstellar travel.
+            Together, these missions push the boundaries of exploration and prepare us for the future of interstellar
+            travel.
         </p>
     </section>
 
 
     <section class="container pt-0 pb-5">
-        <div class="row g-6 justify-content-center">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3"
+        <div class="row g-4 justify-content-center mb-10">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4"
                  th:each="mission : ${missions}">
-                <div class="card text-center border-0" >
-                    <img th:src="@{${mission.imgUrl}}" class="card-image" alt="image">
+                <div class="card text-center space-card">
+                    <div class="card-title-level">
+                        <h5 class="card-title fw-bold text-warning"
+                            th:text="${mission.name.toUpperCase()}"></h5>
+                        <p class="card-level"
+                           th:data-level="${mission.difficultyLevel.name()}">
+                            <span th:text="${mission.difficultyLevel.getDisplayName()}"></span>
+                        </p>
+                    </div>
+
+                    <div class="card-header">
+                        <img th:src="@{${mission.imgUrl}}" class="card-image" alt="image">
+                        <div class="card-main-info">
+                            <p class="mission-card-text d-flex justify-content-sm-between card-text">
+                                <strong>Code: </strong>
+                                <span th:text="${mission.code}"></span>
+                            </p>
+                            <p class="mission-card-text d-flex justify-content-sm-between card-text">
+                                <strong>Destination:</strong>
+                                <span th:text="${mission.destinationName}"></span>
+                            </p>
+                            <p class="mission-card-text d-flex justify-content-sm-between card-text">
+                                <strong>Crew members:</strong>
+                                <span th:text="${mission.crewSize}"></span>
+                            </p>
+                        </div>
+                    </div>
 
                     <div class="mission-card-body">
-                        <h5 class="card-title fw-bold" style="color: #013a9f;"
-                            th:text="${mission.name.toUpperCase()}"></h5><br>
-                        <p class="d-flex justify-content-between card-text">
-                            <strong>Code:</strong>
-                            <span th:text="${mission.code}" class="text-muted"></span>
+                        <h4 class="card-title fw-bold">Mission Brief</h4>
+                        <p class="mission-card-text d-flex justify-content-between card-text">
+                            <span th:text="${mission.shortDescription}"></span>
                         </p>
-                        <p class="d-flex justify-content-between card-text">
-                            <strong>Difficulty level:</strong>
-                            <span th:text="${mission.difficultyLevel}" class="text-muted"></span>
-                        </p>
-                        <p class="d-flex justify-content-between card-text">
-                            <strong>Destination:</strong>
-                            <span th:text="${mission.destinationName}" class="text-muted"></span>
-                        </p>
-
-
                     </div>
+                   <button class="btn hero-btn" id="btn-view-mission">
+                       <strong> VIEW MISSION</strong>
+                   </button>
+                    <br>
                 </div>
             </div>
         </div>
     </section>
 
 </main>
+<script>
+    const getDifficultyColor = (level) => {
+        switch(level) {
+            case 'LOW': return 'bg-success text-white';
+            case 'MEDIUM': return 'bg-warning text-dark';
+            case 'HIGH': return 'bg-orange text-white';
+            case 'EXTREME': return 'bg-danger text-white';
+            default: return 'bg-secondary text-white';
+        }
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('.card-level').forEach(el => {
+            const level = el.dataset.level;
+            el.classList.add(getDifficultyColor(level));
+        });
+        document.querySelectorAll('.mission-btn').forEach(btn => {
+            const level = btn.dataset.level;
+            btn.classList.add(getDifficultyColor(level));
+        });
+    });
+</script>
+
+
 
 <div th:insert="~{common_fragments :: mainFooter}"></div>
 
