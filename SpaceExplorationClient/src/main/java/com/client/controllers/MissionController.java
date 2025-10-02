@@ -28,8 +28,7 @@ public class MissionController {
             @RequestParam(required = false) Integer destinationId,
             Model model) {
 
-        List<MissionDTO> missions = missionService
-                .getMissionsByFilters(difficultyLevel, destinationId);
+        List<MissionDTO> missions = missionService.getMissionsByFilters(difficultyLevel, destinationId);
 
         Map<Integer, String> uniqueDestinations = missions.stream()
                 .collect(Collectors.toMap(
@@ -41,8 +40,7 @@ public class MissionController {
 
         model.addAttribute("missions", missions);
         model.addAttribute("destinations", uniqueDestinations);
-        model.addAttribute("filterCriteria",
-                new FilterCriteriaDTO(difficultyLevel, destinationId));
+        model.addAttribute("filterCriteria", new FilterCriteriaDTO(difficultyLevel, destinationId));
         model.addAttribute("pageTitle", "All missions");
         model.addAttribute("totalCount", missions.size());
 
@@ -52,15 +50,13 @@ public class MissionController {
     @GetMapping("/filter-fragment")
     public String filterMissionsFragment(
             @RequestParam(required = false) String difficultyLevel,
-            @RequestParam(required = false) Integer destinationId,
-            Model model) {
+            @RequestParam(required = false) Integer destinationId, Model model) {
 
         log.info("Filter fragment requested: difficulty={}, destination={}",
                 difficultyLevel, destinationId);
 
         List<MissionDTO> missions = missionService.getMissionsByFilters(difficultyLevel, destinationId);
         model.addAttribute("missions", missions);
-
         return "mission-cards :: missionCards";
     }
 

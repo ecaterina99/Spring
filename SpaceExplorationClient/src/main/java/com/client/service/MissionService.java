@@ -22,7 +22,6 @@ public class MissionService {
     public List<MissionDTO> getMissionsByFilters(
             String difficultyLevel,
             Integer destinationId) {
-
         StringBuilder url = new StringBuilder(apiUrl);
         List<String> params = new ArrayList<>();
 
@@ -32,11 +31,9 @@ public class MissionService {
         if (destinationId != null && destinationId > 0) {
             params.add("destinationId=" + destinationId);
         }
-
         if (!params.isEmpty()) {
             url.append("?").append(String.join("&", params));
         }
-
         return restUtil.getList(url.toString(), MissionDTO[].class);
     }
 

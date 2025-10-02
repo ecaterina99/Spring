@@ -186,7 +186,7 @@ nav.navbar,
     margin-top: 15px;
 }
 
-.astronaut-popup {
+.astronaut-popup, .mission-popup {
     display: none;
     position: fixed;
     justify-content: center;
@@ -203,7 +203,7 @@ nav.navbar,
     transition: all 0.3s ease;
 }
 
-.astronaut-popup-content {
+.astronaut-popup-content, .mission-popup-content {
     background-image: url('/api/images/b5.jpg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -279,7 +279,7 @@ nav.navbar,
 
 .text-glow {
     color: #fff;
-    text-shadow: 0 0 10px #00d4ff, 0 0 20px #00aaff, 0 0 40px #0077ff;
+    text-shadow: 0 0 10px #00d4ff, 0 0 15px #00aaff, 0 0 35px #0077ff;
 }
 
 .space-card {

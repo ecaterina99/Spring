@@ -36,14 +36,28 @@
                 </div>
 
                 <div class="card-footer">
-                    <button class="btn hero-btn w-100" id="btn-view-mission"><strong>VIEW MISSION
-                        DETAILS</strong></button>
+                    <button class="btn hero-btn w-100"  style="color: white" id="btn-view"
+                            th:attr="data-id=${mission.id},
+                                                 data-image=@{${mission.imgUrl}},
+                                                 data-name=${mission.name.toUpperCase()},
+                                                 data-code=${mission.code},
+                                                 data-description=${mission.description},
+                                                 data-destination=${mission.destinationName},
+                                                 data-difficulty=${mission.difficultyLevel},
+                                                 data-issues=${mission.potentialIssues},
+                                                 data-score=${mission.scoreValue},
+                                                 data-crew=${mission.crewSize},
+                                                 data-duration=${mission.durationDays},
+                                                 data-payment=${mission.paymentAmount},
+                                                 data-specializations=${#strings.arrayJoin(
+                      mission.specializations.![specialization.displayName + ' - ' + quantity],
+                      ', '
+                 )}" onclick="showPopup(this)">
+                        <strong>VIEW MISSION DETAILS</strong></button>
                 </div>
                 <br>
             </div>
         </div>
-
-
     </div>
 </div>
 </body>

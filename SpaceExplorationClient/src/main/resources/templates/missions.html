@@ -5,21 +5,20 @@
 <div th:insert="~{common_fragments :: mainHeader}"></div>
 
 <main class="container">
-    <section class="intro container py-5 pb-2 text-md-start">
+    <section class="intro container py-5 pb-0 text-md-start">
         <h1 class="title-astronauts display-5 fw-bold text-glow">ACROSS THE UNIVERSE: MISSIONS AWAIT</h1>
-        <br>
         <h6 class="title-astronauts display-6 fw-bold " style="color: #005bb6">Select your next adventure.</h6>
         <br>
-        <p class="lead">
+        <p class="lead pb-0" style="font-size: 17px; line-height: 1.8;">
             Cosmic missions represent humanity’s bold steps into the vastness of space,
-            each with unique challenges and goals. Every destination brings its own level of difficulty, from harsh
+            each with unique challenges and goals.<br>Together, these missions push the boundaries of exploration and prepare us for the future of interstellar
+            travel.<br>Every destination brings its own level of difficulty, from harsh
             radiation to extreme distances.
-            Together, these missions push the boundaries of exploration and prepare us for the future of interstellar
-            travel.
         </p>
     </section>
+
     <section class="container pt-0 pb-5">
-        <div class="filter-card">
+        <div class="filter-card d-flex justify-content-end align-items-end">
             <form th:action="@{/missions}" method="get">
                 <div class="form-grid">
                     <div class="form-group">
@@ -57,12 +56,88 @@
     </section>
 
     <section class="container pt-0 pb-5">
-        <div id="missions-container" th:replace="~{mission-cards :: missionCards}"></div>
+        <div id="missions-container" th:insert="~{mission-cards :: missionCards}"></div>
     </section>
-
 </main>
-<script>
-    const mapLevelToClass = {
+
+<!-- Popup -->
+<div id="mission-popup" class="mission-popup" style="display:none;">
+    <div class="mission-popup-content">
+        <span id="popup-close">&times;</span>
+
+        <br>
+        <h3 id="popup-name" class="popup-name"></h3>
+        <div class="astronaut-top d-flex">
+            <div class="astronaut-image">
+                <img id="astronaut-img" class="astronaut-img rounded" alt="astronaut">
+            </div>
+            <div class="astronaut-main-info">
+                <p><strong>Code:</strong><span id="popup-code"></span></p>
+                <p><strong><span id="popup-description"></span></strong></p>
+            </div>
+        </div>
+        <div class="astronaut-info row mt-4">
+            <div class="col-md-6 score-info">
+                <p><strong>Destination:</strong> <span id="popup-destination"></span></p>
+                <p><strong>Difficulty Level:</strong><span id="popup-difficulty"></span></p>
+                <p><strong>Payment Amount:</strong><span id="popup-payment"></span></p>
+                <p><strong>Potential Issues:</strong><span id="popup-issues"></span></p>
+            </div>
+
+            <div class="col-md-6 score-info">
+                <p><strong>Crew size:</strong> <span id="popup-crew"></span></p>
+                <p><strong>Score value:</strong> <span id="popup-score"></span></p>
+                <p><strong>Mission Duration:</strong><span id="popup-duration"></span></p>
+                <p><strong>Required Specializations:</strong><span id="popup-specializations"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <script>
+
+            function showPopup(button) {
+                const name = button.getAttribute("data-name");
+                const code = button.getAttribute("data-code");
+                const description = button.getAttribute("data-description");
+                const destination = button.getAttribute("data-destination");
+                const difficulty = button.getAttribute("data-difficulty");
+                const score = button.getAttribute("data-score");
+                const crew = button.getAttribute("data-crew");
+                const issues = button.getAttribute("data-issues");
+                const duration = button.getAttribute("data-duration");
+                const payment = button.getAttribute("data-payment");
+                const specializations = button.getAttribute("data-specializations");
+
+                const image = button.getAttribute("data-image");
+                const img = document.getElementById("astronaut-img");
+                img.src = image || "";
+
+                document.getElementById("popup-name").textContent = name || "_";
+                document.getElementById("popup-code").textContent = code || "_";
+                document.getElementById("popup-description").textContent = description || "_";
+                document.getElementById("popup-destination").textContent = destination || "_";
+                document.getElementById("popup-crew").textContent = crew || "_";
+                document.getElementById("popup-issues").textContent = issues || "_";
+                document.getElementById("popup-duration").textContent = duration || "_";
+                document.getElementById("popup-payment").textContent = payment || "_";
+                document.getElementById("popup-specializations").textContent = specializations || "_";
+                document.getElementById("popup-difficulty").textContent = difficulty || "_";
+                document.getElementById("popup-score").textContent = score || "_";
+
+                const popup = document.getElementById("mission-popup");
+                popup.style.display = "flex";
+
+                document.getElementById("popup-close").onclick = () => popup.style.display = "none";
+                popup.onclick = (e) => {
+                    if (e.target.id === "mission-popup") popup.style.display = "none";
+                };
+                document.onkeydown = (e) => {
+                    if (e.key === "Escape") popup.style.display = "none";
+                };
+            }
+
+            const mapLevelToClass = {
         'LOW': 'level-low',
         'MEDIUM': 'level-medium',
         'HIGH': 'level-high',
@@ -110,7 +185,6 @@
         destinationSelect.addEventListener("change", fetchMissions);
     });
 </script>
-
 
 <div th:insert="~{common_fragments :: mainFooter}"></div>
 
