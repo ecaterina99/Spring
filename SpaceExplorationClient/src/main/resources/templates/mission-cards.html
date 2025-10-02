@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div id="missions-container" th:fragment="missionCards">
+    <div class="row g-4 justify-content-center mb-10">
+
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-4 d-flex align-items-stretch"
+             th:each="mission : ${missions}">
+            <div class="card space-card mission-card w-100">
+                <div class="card-title-level">
+                    <h5 class="card-title fw-bold text-warning" th:text="${mission.name.toUpperCase()}"></h5>
+
+                    <p class="card-level" th:data-level="${mission.difficultyLevel.name()}">
+                        <span th:text="${mission.difficultyLevel.getDisplayName()}"></span>
+                    </p>
+                </div>
+
+                <div class="card-header">
+                    <img th:src="@{${mission.imgUrl}}" class="card-image" alt="image">
+                    <div class="card-main-info">
+                        <p class="mission-card-text"><strong>Code:</strong> <span
+                                th:text="${mission.code}"></span></p>
+                        <p class="mission-card-text"><strong>Destination:</strong> <span
+                                th:text="${mission.destinationName}"></span></p>
+                        <p class="mission-card-text"><strong>Crew:</strong> <span
+                                th:text="${mission.crewSize}"></span></p>
+                        <p class="mission-card-text"><strong>Payment:</strong> <span
+                                th:text="${mission.paymentAmount}"></span>$</p>
+                    </div>
+                </div>
+
+                <div class="mission-card-body">
+                    <h4 class="card-title fw-bold">Mission Brief</h4>
+                    <p class="mission-card-text"><span th:text="${mission.shortDescription}"></span></p>
+                </div>
+
+                <div class="card-footer">
+                    <button class="btn hero-btn w-100" id="btn-view-mission"><strong>VIEW MISSION
+                        DETAILS</strong></button>
+                </div>
+                <br>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+</body>
+</html>

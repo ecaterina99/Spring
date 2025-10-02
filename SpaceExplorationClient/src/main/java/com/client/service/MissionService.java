@@ -6,6 +6,7 @@ import com.client.helpers.RestClientUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,8 +19,25 @@ public class MissionService {
         this.restUtil = restUtil;
     }
 
-    public List<MissionDTO> getAllMissions() {
-        return restUtil.getList(apiUrl, MissionDTO[].class);
+    public List<MissionDTO> getMissionsByFilters(
+            String difficultyLevel,
+            Integer destinationId) {
+
+        StringBuilder url = new StringBuilder(apiUrl);
+        List<String> params = new ArrayList<>();
+
+        if (difficultyLevel != null && !difficultyLevel.isEmpty()) {
+            params.add("difficultyLevel=" + difficultyLevel);
+        }
+        if (destinationId != null && destinationId > 0) {
+            params.add("destinationId=" + destinationId);
+        }
+
+        if (!params.isEmpty()) {
+            url.append("?").append(String.join("&", params));
+        }
+
+        return restUtil.getList(url.toString(), MissionDTO[].class);
     }
 
     public MissionDTO getMissionById(int id) {

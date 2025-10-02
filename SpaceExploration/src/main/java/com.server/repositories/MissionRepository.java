@@ -13,6 +13,13 @@ public interface MissionRepository extends JpaRepository <Mission, Integer> {
 
         boolean existsByCode(String code);
         List <Mission> findByDestinationId(Integer destinationId);
+
+        List<Mission> findByDifficultyLevel(Mission.DifficultyLevel difficultyLevel);
+        List<Mission> findByDifficultyLevelAndDestinationId(
+                Mission.DifficultyLevel difficultyLevel,
+                Integer destinationId
+        );
+
 }
 
 

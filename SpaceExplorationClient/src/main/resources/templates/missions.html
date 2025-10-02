@@ -5,81 +5,110 @@
 <div th:insert="~{common_fragments :: mainHeader}"></div>
 
 <main class="container">
-    <section class="intro container py-5 text-md-start">
+    <section class="intro container py-5 pb-2 text-md-start">
         <h1 class="title-astronauts display-5 fw-bold text-glow">ACROSS THE UNIVERSE: MISSIONS AWAIT</h1>
         <br>
         <h6 class="title-astronauts display-6 fw-bold " style="color: #005bb6">Select your next adventure.</h6>
         <br>
         <p class="lead">
             Cosmic missions represent humanity’s bold steps into the vastness of space,
-            each with unique challenges and goals. Every destination brings its own level of difficulty, from harsh radiation to extreme distances.
+            each with unique challenges and goals. Every destination brings its own level of difficulty, from harsh
+            radiation to extreme distances.
             Together, these missions push the boundaries of exploration and prepare us for the future of interstellar
             travel.
         </p>
     </section>
-
     <section class="container pt-0 pb-5">
-        <div class="row g-4 justify-content-center mb-10">
-
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4 d-flex align-items-stretch"
-                 th:each="mission : ${missions}">
-                <div class="card space-card mission-card w-100">
-                    <div class="card-title-level">
-                        <h5 class="card-title fw-bold text-warning" th:text="${mission.name.toUpperCase()}"></h5>
-
-                        <p class="card-level" th:data-level="${mission.difficultyLevel.name()}">
-                            <span th:text="${mission.difficultyLevel.getDisplayName()}"></span>
-                        </p>
-                    </div>
-
-                    <div class="card-header">
-                        <img th:src="@{${mission.imgUrl}}" class="card-image" alt="image">
-                        <div class="card-main-info">
-                            <p class="mission-card-text"><strong>Code:</strong> <span th:text="${mission.code}"></span></p>
-                            <p class="mission-card-text"><strong>Destination:</strong> <span th:text="${mission.destinationName}"></span></p>
-                            <p class="mission-card-text"><strong>Crew:</strong> <span th:text="${mission.crewSize}"></span></p>
-                            <p class="mission-card-text"><strong>Payment:</strong> <span th:text="${mission.paymentAmount}"></span>$</p>
+        <div class="filter-card">
+            <form th:action="@{/missions}" method="get">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <div class="form-check">
+                            <select class="form-select" name="difficultyLevel" id="select-difficulty">
+                                <option value="">All Levels</option>
+                                <option value="LOW"
+                                        th:selected="${filterCriteria?.difficultyLevel == 'LOW'}">Low
+                                </option>
+                                <option value="MEDIUM"
+                                        th:selected="${filterCriteria?.difficultyLevel == 'MEDIUM'}">Medium
+                                </option>
+                                <option value="HIGH"
+                                        th:selected="${filterCriteria?.difficultyLevel == 'HIGH'}">High
+                                </option>
+                                <option value="EXTREME"
+                                        th:selected="${filterCriteria?.difficultyLevel == 'EXTREME'}">Extreme
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-check">
+                            <select class="form-select" name="destinationId" id="select-destination">
+                                <option value="">All Destinations</option>
+                                <option th:each="dest : ${destinations}"
+                                        th:value="${dest.key}"
+                                        th:text="${dest.value}"
+                                        th:selected="${filterCriteria?.destinationId == dest.key}">
+                                </option>
+                            </select>
                         </div>
                     </div>
-
-                    <div class="mission-card-body">
-                        <h4 class="card-title fw-bold">Mission Brief</h4>
-                        <p class="mission-card-text"><span th:text="${mission.shortDescription}"></span></p>
-                    </div>
-
-                    <div class="card-footer">
-                        <button class="btn hero-btn w-100" id="btn-view-mission"><strong>VIEW MISSION DETAILS</strong></button>
-                    </div>
-                    <br>
                 </div>
-            </div>
+            </form>
+        </div>
+    </section>
 
+    <section class="container pt-0 pb-5">
+        <div id="missions-container" th:replace="~{mission-cards :: missionCards}"></div>
     </section>
 
 </main>
 <script>
-    (function(){
-        const mapLevelToClass = {
-            'LOW': 'level-low',
-            'MEDIUM': 'level-medium',
-            'HIGH': 'level-high',
-            'EXTREME': 'level-extreme'
-        };
+    const mapLevelToClass = {
+        'LOW': 'level-low',
+        'MEDIUM': 'level-medium',
+        'HIGH': 'level-high',
+        'EXTREME': 'level-extreme'
+    };
 
-        function applyLevelBadges() {
-            document.querySelectorAll('.card-level').forEach(el => {
-                const raw = el.dataset.level || '';
-                const level = raw.trim().toUpperCase();
-                el.classList.remove('level-low','level-medium','level-high','level-extreme','level-default');
-                const cls = mapLevelToClass[level] || 'level-default';
-                el.classList.add(cls);
-                // debug -> если надо раскомментируй:
-                // console.log('badge', el, 'level=', level, 'class=', cls);
-            });
+    function applyLevelBadges() {
+        document.querySelectorAll('.card-level').forEach(el => {
+            const raw = el.dataset.level || '';
+            const level = raw.trim().toUpperCase();
+            el.classList.remove('level-low', 'level-medium', 'level-high', 'level-extreme', 'level-default');
+            const cls = mapLevelToClass[level] || 'level-default';
+            el.classList.add(cls);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        applyLevelBadges();
+
+        const difficultySelect = document.querySelector("[name='difficultyLevel']");
+        const destinationSelect = document.querySelector("[name='destinationId']");
+        let missionsContainer = document.getElementById("missions-container");
+
+        async function fetchMissions() {
+            const params = new URLSearchParams();
+            if (difficultySelect.value) params.append("difficultyLevel", difficultySelect.value);
+            if (destinationSelect.value) params.append("destinationId", destinationSelect.value);
+
+            try {
+                const response = await fetch(`/api/missions/filter-fragment?${params.toString()}`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                missionsContainer.innerHTML = await response.text();
+                applyLevelBadges();
+
+            } catch (error) {
+                console.error("Error fetching missions:", error);
+            }
         }
 
-        document.addEventListener('DOMContentLoaded', applyLevelBadges);
-    })();
+        difficultySelect.addEventListener("change", fetchMissions);
+        destinationSelect.addEventListener("change", fetchMissions);
+    });
 </script>
 
 

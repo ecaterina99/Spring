@@ -483,6 +483,21 @@ nav.navbar,
     min-height: 480px;
 }
 
+.form-group{
+    display: flex;
+    flex-direction: row;
+}
+.form-check{
+    display: flex;
+    flex-direction: column;
+}
+#select-difficulty, #select-destination {
+    box-shadow: 0 0 10px rgb(67, 106, 253),
+    0 0 20px rgb(1, 58, 159),
+    0 0 40px rgb(0, 29, 140),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
 /* Responsive design */
 @media (max-width: 768px) {
     .info-panel, .stats-panel {

@@ -25,6 +25,7 @@ public class MissionDTO {
     private String potentialIssues;
     private String imgUrl;
     private String destinationName;
+    private Integer destinationId;
     private Integer paymentAmount;
     private MissionEnums.DifficultyLevel difficultyLevel;
     private List<MissionSpecializationsDTO> specializations = new ArrayList<>();
