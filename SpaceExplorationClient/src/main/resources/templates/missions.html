@@ -8,30 +8,26 @@
     <section class="intro container py-5 text-md-start">
         <h1 class="title-astronauts display-5 fw-bold text-glow">ACROSS THE UNIVERSE: MISSIONS AWAIT</h1>
         <br>
-        <h6 class="title-astronauts display-6 fw-bold">Select your next adventure.</h6>
+        <h6 class="title-astronauts display-6 fw-bold " style="color: #005bb6">Select your next adventure.</h6>
         <br>
         <p class="lead">
             Cosmic missions represent humanity’s bold steps into the vastness of space,
-            each with unique challenges and goals. Some missions aim for nearby asteroids,
-            testing navigation and resource extraction in low-gravity environments,
-            while others venture toward distant stars, demanding advanced technology and long-term planning.
-            Every destination brings its own level of difficulty, from harsh radiation to extreme distances.
+            each with unique challenges and goals. Every destination brings its own level of difficulty, from harsh radiation to extreme distances.
             Together, these missions push the boundaries of exploration and prepare us for the future of interstellar
             travel.
         </p>
     </section>
 
-
     <section class="container pt-0 pb-5">
         <div class="row g-4 justify-content-center mb-10">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4"
+
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4 d-flex align-items-stretch"
                  th:each="mission : ${missions}">
-                <div class="card text-center space-card">
+                <div class="card space-card mission-card w-100">
                     <div class="card-title-level">
-                        <h5 class="card-title fw-bold text-warning"
-                            th:text="${mission.name.toUpperCase()}"></h5>
-                        <p class="card-level"
-                           th:data-level="${mission.difficultyLevel.name()}">
+                        <h5 class="card-title fw-bold text-warning" th:text="${mission.name.toUpperCase()}"></h5>
+
+                        <p class="card-level" th:data-level="${mission.difficultyLevel.name()}">
                             <span th:text="${mission.difficultyLevel.getDisplayName()}"></span>
                         </p>
                     </div>
@@ -39,60 +35,52 @@
                     <div class="card-header">
                         <img th:src="@{${mission.imgUrl}}" class="card-image" alt="image">
                         <div class="card-main-info">
-                            <p class="mission-card-text d-flex justify-content-sm-between card-text">
-                                <strong>Code: </strong>
-                                <span th:text="${mission.code}"></span>
-                            </p>
-                            <p class="mission-card-text d-flex justify-content-sm-between card-text">
-                                <strong>Destination:</strong>
-                                <span th:text="${mission.destinationName}"></span>
-                            </p>
-                            <p class="mission-card-text d-flex justify-content-sm-between card-text">
-                                <strong>Crew members:</strong>
-                                <span th:text="${mission.crewSize}"></span>
-                            </p>
+                            <p class="mission-card-text"><strong>Code:</strong> <span th:text="${mission.code}"></span></p>
+                            <p class="mission-card-text"><strong>Destination:</strong> <span th:text="${mission.destinationName}"></span></p>
+                            <p class="mission-card-text"><strong>Crew:</strong> <span th:text="${mission.crewSize}"></span></p>
+                            <p class="mission-card-text"><strong>Payment:</strong> <span th:text="${mission.paymentAmount}"></span>$</p>
                         </div>
                     </div>
 
                     <div class="mission-card-body">
                         <h4 class="card-title fw-bold">Mission Brief</h4>
-                        <p class="mission-card-text d-flex justify-content-between card-text">
-                            <span th:text="${mission.shortDescription}"></span>
-                        </p>
+                        <p class="mission-card-text"><span th:text="${mission.shortDescription}"></span></p>
                     </div>
-                   <button class="btn hero-btn" id="btn-view-mission">
-                       <strong> VIEW MISSION</strong>
-                   </button>
+
+                    <div class="card-footer">
+                        <button class="btn hero-btn w-100" id="btn-view-mission"><strong>VIEW MISSION DETAILS</strong></button>
+                    </div>
                     <br>
                 </div>
             </div>
-        </div>
+
     </section>
 
 </main>
 <script>
-    const getDifficultyColor = (level) => {
-        switch(level) {
-            case 'LOW': return 'bg-success text-white';
-            case 'MEDIUM': return 'bg-warning text-dark';
-            case 'HIGH': return 'bg-orange text-white';
-            case 'EXTREME': return 'bg-danger text-white';
-            default: return 'bg-secondary text-white';
+    (function(){
+        const mapLevelToClass = {
+            'LOW': 'level-low',
+            'MEDIUM': 'level-medium',
+            'HIGH': 'level-high',
+            'EXTREME': 'level-extreme'
+        };
+
+        function applyLevelBadges() {
+            document.querySelectorAll('.card-level').forEach(el => {
+                const raw = el.dataset.level || '';
+                const level = raw.trim().toUpperCase();
+                el.classList.remove('level-low','level-medium','level-high','level-extreme','level-default');
+                const cls = mapLevelToClass[level] || 'level-default';
+                el.classList.add(cls);
+                // debug -> если надо раскомментируй:
+                // console.log('badge', el, 'level=', level, 'class=', cls);
+            });
         }
-    };
 
-    document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll('.card-level').forEach(el => {
-            const level = el.dataset.level;
-            el.classList.add(getDifficultyColor(level));
-        });
-        document.querySelectorAll('.mission-btn').forEach(btn => {
-            const level = btn.dataset.level;
-            btn.classList.add(getDifficultyColor(level));
-        });
-    });
+        document.addEventListener('DOMContentLoaded', applyLevelBadges);
+    })();
 </script>
-
 
 
 <div th:insert="~{common_fragments :: mainFooter}"></div>
