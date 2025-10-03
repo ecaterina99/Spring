@@ -1,5 +1,6 @@
 package com.client.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,11 +14,11 @@ public class DestinationEnums {
         PLANET("Planet"),
         STAR("Star"),
         ASTEROID("Asteroid");
-
         private final String displayName;
 
         EntityType(String displayName) {
             this.displayName = displayName;
         }
     }
+
 }

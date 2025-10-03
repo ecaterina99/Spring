@@ -55,7 +55,7 @@ function setupLighting() {
     console.log('Lighting added');
 }
 
-function createStars(){
+function createStars() {
     const canvas = document.getElementById('three-canvas');
     if (!canvas) {
         throw new Error('Canvas not found!');
@@ -147,16 +147,16 @@ function createEntity(destination, index) {
             texturePath = '/api/images/mars.jpg';
             break;
         case 'earth':
-            texturePath= '/api/images/earth2.jpg';
+            texturePath = '/api/images/earth2.jpg';
             break;
         case 'aurelia':
-            texturePath= '/api/images/aurelia.jpg';
+            texturePath = '/api/images/aurelia.jpg';
             break;
         case 'proxima centauri':
-            texturePath= '/api/images/proxima.jpg';
+            texturePath = '/api/images/proxima.jpg';
             break;
         case 'eros':
-            texturePath= '/api/images/asteroid.jpg';
+            texturePath = '/api/images/asteroid.jpg';
             break;
         default:
             texturePath = '/api/images/default.jpg';
@@ -225,7 +225,7 @@ function setupControls() {
 
         targetRotationY += deltaX * 0.005;
         targetRotationX += deltaY * 0.005;
-        targetRotationX = Math.max(-Math.PI/3, Math.min(Math.PI/3, targetRotationX));
+        targetRotationX = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, targetRotationX));
 
         mouseX = event.clientX;
         mouseY = event.clientY;
@@ -328,9 +328,155 @@ function selectSpaceEntity(entity) {
     updateStats();
 
     if (destination) {
-        showPopup(destination);
+        showPlanetPopup(destination);
     } else {
         console.warn("No destination data found for", entity.name);
+    }
+}
+
+
+function showPlanetPopup(destination) {
+    document.getElementById("popup-title").textContent = `${destination.destinationName}`;
+    document.getElementById("popup-description").textContent = destination.description || "No description";
+    document.getElementById("popup-distance").textContent = destination.distanceFromEarth || "Unknown";
+    document.getElementById("popup-gravity").textContent = destination.gravity || "No gravity";
+
+    const popup = document.getElementById("planet-popup");
+    popup.style.display = "flex";
+
+    // ИСПРАВЛЕНО: правильный ID кнопки
+    const viewMissionsBtn = document.getElementById("btn-view-mission");
+    const newBtn = viewMissionsBtn.cloneNode(true);
+    viewMissionsBtn.parentNode.replaceChild(newBtn, viewMissionsBtn);
+
+    newBtn.addEventListener('click', () => {
+        loadAndShowMissions(destination.id, destination.destinationName);
+    });
+
+    document.getElementById("popup-close").onclick = () => {
+        popup.style.display = "none";
+    };
+
+    popup.onclick = (e) => {
+        if (e.target.id === "planet-popup") {
+            popup.style.display = "none";
+        }
+    };
+
+    document.onkeydown = (e) => {
+        if (e.key === "Escape") {
+            popup.style.display = "none";
+        }
+    };
+}
+
+async function loadAndShowMissions(destinationId, destinationName) {
+    try {
+        const response = await fetch(`/api/destinations/missions/${destinationId}`);
+        if (!response.ok) throw new Error('Failed to fetch missions');
+
+        const missions = await response.json();
+        console.log('Loaded missions:', missions);
+
+        document.getElementById("planet-popup").style.display = "none";
+
+
+        const missionsPopup = document.getElementById("missions-list-popup");
+        const missionsTitle = document.getElementById("missions-popup-title");
+        const missionsContainer = document.getElementById("missions-list-container");
+
+        missionsTitle.textContent = `Missions for ${destinationName}`;
+
+        if (missions.length === 0) {
+            missionsContainer.innerHTML = '<p class="text-warning">No missions available for this destination.</p>';
+        } else {
+            let missionsHTML = '<div class="missions-grid" style="display: grid; gap: 15px;">';
+
+            missions.forEach(mission => {
+                let specializationsStr = '';
+                if (mission.specializations && Array.isArray(mission.specializations)) {
+                    specializationsStr = mission.specializations
+                        .map(spec => {
+                            const specName = spec.displayName || '';
+                            const qty = spec.quantity || '';
+                            return `${specName} - ${qty}`;
+                        })
+                        .join(', ');
+                }
+
+                const difficultyDisplay = typeof mission.difficultyLevel === 'string'
+                    ? mission.difficultyLevel
+                    : (mission.difficultyLevel.getDisplayName() || mission.difficultyLevel || '');
+
+                const missionData = {
+                    id: mission.id || '',
+                    name: (mission.name || 'Unnamed Mission').toUpperCase(),
+                    code: mission.code || '',
+                    description: mission.description || 'No description',
+                    destination: mission.destinationName || destinationName,
+                    difficulty: difficultyDisplay,
+                    score: mission.scoreValue || '',
+                    crew: mission.crewSize || '',
+                    issues: mission.potentialIssues || '',
+                    duration: mission.durationDays || '',
+                    payment: mission.paymentAmount || '',
+                    specializations: specializationsStr,
+                    image: mission.imgUrl || ''
+                };
+
+                console.log('Processed mission:', missionData);
+
+                missionsHTML += `
+                    <div class="mission-card p-3 border border-info rounded" style="background: rgba(0,0,0,0.3);">
+                        <h5 class="text-warning">${missionData.name}</h5>
+                        <p class="small text-muted">Code: ${missionData.code}</p>
+                        <p class="small">${missionData.description.substring(0, 100)}${missionData.description.length > 100 ? '...' : ''}</p>
+                        <button class="btn btn-outline-info btn-sm btn-view-mission"
+                             data-id="${missionData.id}"
+                             data-name="${missionData.name}"
+                             data-code="${missionData.code}"
+                             data-description="${missionData.description}"
+                             data-destination="${missionData.destination}"
+                             data-difficulty="${missionData.difficulty}"
+                             data-score="${missionData.score}"
+                             data-crew="${missionData.crew}"
+                             data-issues="${missionData.issues}"
+                             data-duration="${missionData.duration}"
+                             data-payment="${missionData.payment}"
+                             data-specializations="${missionData.specializations}"
+                             data-image="/api${mission.imgUrl}"
+                             onclick="window.showPopup(this)">
+                            VIEW DETAILS
+                        </button>
+                    </div>
+                `;
+            });
+
+            missionsHTML += '</div>';
+            missionsContainer.innerHTML = missionsHTML;
+        }
+
+        missionsPopup.style.display = "flex";
+
+        document.getElementById("missions-popup-close").onclick = () => {
+            missionsPopup.style.display = "none";
+        };
+
+        missionsPopup.onclick = (e) => {
+            if (e.target.id === "missions-list-popup") {
+                missionsPopup.style.display = "none";
+            }
+        };
+
+        document.onkeydown = (e) => {
+            if (e.key === "Escape") {
+                missionsPopup.style.display = "none";
+            }
+        };
+
+    } catch (error) {
+        console.error('Error loading missions:', error);
+        alert('Failed to load missions. Please try again.');
     }
 }
 
@@ -351,22 +497,6 @@ function updateInfoPanel(destination) {
     }
 }
 
-function showPopup(destination) {
-    document.getElementById("popup-title").textContent =
-        `${destination.destinationName}`;
-    document.getElementById("popup-description").textContent = destination.description || "No description";
-    document.getElementById("popup-distance").textContent = destination.distanceFromEarth;
-    document.getElementById("popup-gravity").textContent = destination.gravity || "No gravity";
-
-    const popup = document.getElementById("planet-popup");
-    popup.style.display = "flex";
-
-    document.getElementById("popup-close").onclick = closePopup;
-
-    function closePopup() {
-        popup.style.display = "none";
-    }
-}
 
 function animate() {
     requestAnimationFrame(animate);
@@ -396,6 +526,7 @@ function updateStats() {
     if (destCount) destCount.textContent = destinationsData.length;
     if (selectedName) selectedName.textContent = selectedSpaceEntity ? selectedSpaceEntity.name : 'None';
 }
+
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {

@@ -61,161 +61,58 @@
     </section>
 </main>
 
-<!-- Popup -->
-<div id="mission-popup" class="mission-popup" style="display:none;">
-    <div class="mission-popup-content">
-        <span id="popup-close">&times;</span>
-        <h3 id="popup-name" class="popup-name"></h3>
+<div th:insert="~{popup-mission :: mission-popup}"></div>
+<div th:insert="~{popup-mission :: mission-popup-script}"></div>
 
-        <p style="padding: 0;"><strong>Code:</strong> <span id="popup-code"></span></p>
-        <div class="mission-top d-flex">
-            <div class="mission-image">
-                <img id="mission-img" class="mission-img rounded" alt="mission">
-            </div>
-            <div class="col-md-6 score-info ">
-                <p><strong>Destination:</strong> <span id="popup-destination"></span></p>
-                <p><strong>Difficulty lever:</strong> <span id="popup-difficulty"></span></p>
-                <p><strong>Payment Amount:</strong> <span id="popup-payment"></span></p>
-                <p><strong>Crew size:</strong> <span id="popup-crew"></span></p>
-                <p><strong>Score value:</strong> <span id="popup-score"></span></p>
-                <p><strong>Mission Duration:</strong> <span id="popup-duration"></span></p>
-            </div>
-        </div>
-        <div class="mission-info row mt-3 pt-0">
-            <div class="mission-main-info">
-                <p id="popup-description"></p>
-                <p><strong>Potential Issues:</strong> <span id="popup-issues"></span></p>
-                <p><strong>Required Specializations:</strong> <span id="popup-specializations"></span></p>
-            </div>
-        </div>
-
-        <div class="text-center mt-2" style="gap: 20px">
-            <button id="viewDestinationBtn" class="btn btn-outline-info btn-sm">
-                VIEW DESTINATION
-            </button>
-            <button id="addAstronautBtn" class="btn btn-outline-info btn-sm">
-                ADD ASTRONAUTS TO MISSION
-            </button>
-        </div>
-        <div class="text-center mt-3">
-            <button id="startMissionBtn" class="start-btn">
-                START MISSION
-            </button>
-        </div>
-
-        <div class="popup-navigation text-center mt-3">
-            <button id="prevMissionBtn" class="btn btn-outline-light btn-sm">⬅ Prev</button>
-            <button id="nextMissionBtn" class="btn btn-outline-light btn-sm">Next ➡</button>
-        </div>
-
-    </div>
-</div>
 
 <script>
-    let missionButtons = [];
-    let currentMissionIndex = -1;
+    const mapLevelToClass = {
+        'LOW': 'level-low',
+        'MEDIUM': 'level-medium',
+        'HIGH': 'level-high',
+        'EXTREME': 'level-extreme'
+    };
 
-    function showPopup(button) {
-        missionButtons = Array.from(document.querySelectorAll(".btn-view-mission"));
-        currentMissionIndex = missionButtons.indexOf(button);
-
-        const name = button.getAttribute("data-name");
-        const code = button.getAttribute("data-code");
-        const description = button.getAttribute("data-description");
-        const destination = button.getAttribute("data-destination");
-        const difficulty = button.getAttribute("data-difficulty");
-        const score = button.getAttribute("data-score");
-        const crew = button.getAttribute("data-crew");
-        const issues = button.getAttribute("data-issues");
-        const duration = button.getAttribute("data-duration");
-        const payment = button.getAttribute("data-payment");
-        const specializations = button.getAttribute("data-specializations");
-
-        const image = button.getAttribute("data-image");
-        const img = document.getElementById("mission-img");
-        img.src = image || "";
-
-        document.getElementById("popup-name").textContent = name || "_";
-        document.getElementById("popup-code").textContent = code || "_";
-        document.getElementById("popup-description").textContent = description || "_";
-        document.getElementById("popup-destination").textContent = destination || "_";
-        document.getElementById("popup-crew").textContent = crew || "_";
-        document.getElementById("popup-issues").textContent = issues || "_";
-        document.getElementById("popup-duration").textContent = duration || "_";
-        document.getElementById("popup-payment").textContent = payment || "_";
-        document.getElementById("popup-specializations").textContent = specializations || "_";
-        document.getElementById("popup-difficulty").textContent = difficulty || "_";
-        document.getElementById("popup-score").textContent = score || "_";
-
-        const popup = document.getElementById("mission-popup");
-        popup.style.display = "flex";
-
-        document.getElementById("prevMissionBtn").onclick = () => {
-            if (currentMissionIndex > 0) {
-                showPopup(missionButtons[currentMissionIndex - 1]);
-            }
-        };
-        document.getElementById("nextMissionBtn").onclick = () => {
-            if (currentMissionIndex < missionButtons.length - 1) {
-                showPopup(missionButtons[currentMissionIndex + 1]);
-            }
-        }
-        document.getElementById("popup-close").onclick = () => popup.style.display = "none";
-            popup.onclick = (e) => {
-                if (e.target.id === "mission-popup") popup.style.display = "none";
-            };
-        document.onkeydown = (e) => {
-                if (e.key === "Escape") popup.style.display = "none";
-            };
-        }
-
-        const mapLevelToClass = {
-            'LOW': 'level-low',
-            'MEDIUM': 'level-medium',
-            'HIGH': 'level-high',
-            'EXTREME': 'level-extreme'
-        };
-
-        function applyLevelBadges() {
-            document.querySelectorAll('.card-level').forEach(el => {
-                const raw = el.dataset.level || '';
-                const level = raw.trim().toUpperCase();
-                el.classList.remove('level-low', 'level-medium', 'level-high', 'level-extreme', 'level-default');
-                const cls = mapLevelToClass[level] || 'level-default';
-                el.classList.add(cls);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            applyLevelBadges();
-
-            const difficultySelect = document.querySelector("[name='difficultyLevel']");
-            const destinationSelect = document.querySelector("[name='destinationId']");
-            let missionsContainer = document.getElementById("missions-container");
-
-            async function fetchMissions() {
-                const params = new URLSearchParams();
-                if (difficultySelect.value) params.append("difficultyLevel", difficultySelect.value);
-                if (destinationSelect.value) params.append("destinationId", destinationSelect.value);
-
-                try {
-                    const response = await fetch(`/api/missions/filter-fragment?${params.toString()}`);
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    missionsContainer.innerHTML = await response.text();
-                    applyLevelBadges();
-
-                } catch (error) {
-                    console.error("Error fetching missions:", error);
-                }
-            }
-
-            difficultySelect.addEventListener("change", fetchMissions);
-            destinationSelect.addEventListener("change", fetchMissions);
+    function applyLevelBadges() {
+        document.querySelectorAll('.card-level').forEach(el => {
+            const raw = el.dataset.level || '';
+            const level = raw.trim().toUpperCase();
+            el.classList.remove('level-low', 'level-medium', 'level-high', 'level-extreme', 'level-default');
+            const cls = mapLevelToClass[level] || 'level-default';
+            el.classList.add(cls);
         });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        applyLevelBadges();
+
+        const difficultySelect = document.querySelector("[name='difficultyLevel']");
+        const destinationSelect = document.querySelector("[name='destinationId']");
+        let missionsContainer = document.getElementById("missions-container");
+
+        async function fetchMissions() {
+            const params = new URLSearchParams();
+            if (difficultySelect.value) params.append("difficultyLevel", difficultySelect.value);
+            if (destinationSelect.value) params.append("destinationId", destinationSelect.value);
+
+            try {
+                const response = await fetch(`/api/missions/filter-fragment?${params.toString()}`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                missionsContainer.innerHTML = await response.text();
+                applyLevelBadges();
+
+            } catch (error) {
+                console.error("Error fetching missions:", error);
+            }
+        }
+
+        difficultySelect.addEventListener("change", fetchMissions);
+        destinationSelect.addEventListener("change", fetchMissions);
+    });
 </script>
 
 <div th:insert="~{common_fragments :: mainFooter}"></div>

@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 @Service
 public class AstronautService {
     private final ModelMapper modelMapper;
@@ -72,6 +71,8 @@ public class AstronautService {
         Optional.ofNullable(dto.getSpecialization()).ifPresent(entity::setSpecialization);
         Optional.ofNullable(dto.getHealthStatus()).ifPresent(entity::setHealthStatus);
     }
+
+
 
     @Transactional
     public void deleteAstronaut(int id) {

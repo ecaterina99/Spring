@@ -29,6 +29,11 @@ public class DestinationService {
         validateId(id, "Destination");
         return restUtil.getObject(apiUrl + "/" + id, DestinationDTO.class);
     }
+    public DestinationDTO getDestinationByIdWithMission(int id) {
+
+        validateId(id, "Destination");
+        return restUtil.getObject(apiUrl  + "/missions/"+ id, DestinationDTO.class );
+    }
 
     private void validateId(int id, String entityType) {
         if (id <= 0) {

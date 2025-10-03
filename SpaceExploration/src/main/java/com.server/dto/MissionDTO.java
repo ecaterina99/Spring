@@ -42,7 +42,7 @@ public class MissionDTO {
     private Integer scoreValue;
     @NotBlank(message = "Potential issues description is required")
     private String potentialIssues;
-    private String imageUrl;
+    private String imgUrl;
     @NotNull(message = "Difficulty level is required")
     private Mission.DifficultyLevel difficultyLevel;
     private Integer destinationId;
@@ -66,6 +66,7 @@ public class MissionDTO {
                 .destinationId(mission.getDestination().getId())
                 .destinationName(mission.getDestination().getDestinationName())
                 .scoreValue(mission.getScoreValue())
+                .imgUrl(mission.getImgUrl())
                 .specializations(
                         mission.getMissionSpecializations().stream()
                                 .map(mrs -> MissionSpecializationDTO.builder()

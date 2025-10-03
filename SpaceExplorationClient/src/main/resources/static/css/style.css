@@ -1,3 +1,5 @@
+
+
 body {
     background: #000011;
     overflow-x: hidden;
@@ -5,6 +7,14 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100vh;
 }
+
+
+#missions-list-popup .popup-content {
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
 
 .col-12.col-sm-6.col-md-4.col-lg-4.d-flex {
     display: flex;
@@ -223,9 +233,9 @@ nav.navbar,
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    padding: 20px;
+    padding: 30px;
     border-radius: 8px;
-    max-width: 550px;
+    max-width: 700px;
     text-align: left;
     color: white;
     max-height: 95vh;
@@ -239,6 +249,33 @@ nav.navbar,
 .mission-popup-content p:first-of-type {
     margin-top: 0;
     padding-top: 0;
+}
+
+.change-popup{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.popup-navigation{
+    display: flex;
+    margin-left: 10px!important;
+    margin-right: 20px;
+    justify-content: space-between !important;
+    gap: 10px;
+    border: none;
+}
+.btn-change {
+    background: none;
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+.btn-change:hover {
+    transform: scale(1.02);
+    color: #ffeb3b;
 }
 
 .score-info p {
@@ -275,7 +312,6 @@ nav.navbar,
     text-align: left;
 }
 
-
 .astronaut-main-info p {
     margin-bottom: 0.5em;
 }
@@ -291,7 +327,6 @@ nav.navbar,
     align-items: start;
 }
 
-
 .score-info p {
     text-align: left;
     width: 100%;
@@ -305,27 +340,6 @@ nav.navbar,
 .astronaut-main-info p:last-child {
     margin-bottom: 0;
 
-}
-.start-btn {
-    background-color: #ffd500;
-    font-family: 'Orbitron', monospace;
-    font-weight: bold;
-    width: 100%;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    color: #000;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-    letter-spacing: 1px;
-}
-
-.start-btn:hover {
-    background-color: #ffeb3b;
-    box-shadow: 0 0 20px rgba(255, 213, 0, 0.8);
-    transform: scale(1.02);
 }
 
 .btn-outline-info {
@@ -348,16 +362,11 @@ nav.navbar,
     gap: 20px;
     flex-wrap: wrap;
 }
-
 .btn-outline-info:hover {
     background: #00d4ff;
     color: #000;
     box-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
     transform: translateY(-2px);
-}
-
-.text-center.mt-3 {
-    margin-top: 1rem !important;
 }
 
 

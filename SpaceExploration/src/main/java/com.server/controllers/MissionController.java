@@ -3,6 +3,7 @@ package com.server.controllers;
 import com.server.dto.AstronautDTO;
 import com.server.dto.MissionDTO;
 import com.server.dto.MissionSpecializationDTO;
+import com.server.models.Mission;
 import com.server.models.MissionSpecialization;
 import com.server.services.MissionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,20 +51,21 @@ public class MissionController {
         MissionDTO mission = missionService.getMissionById(id);
         return ResponseEntity.ok(mission);
     }
-
     @GetMapping()
-    @Operation(summary = "Retrieve all missions")
+    @Operation(summary = "Retrieve all missions with optional filtering")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved all missions",
                     content = @Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = MissionDTO.class)))),
             @ApiResponse(responseCode = "500", description = "Internal server error"),
-
     })
-    public ResponseEntity<List<MissionDTO>> getAllMissions() {
-        return ResponseEntity.ok(missionService.getAllMissions());
+    public ResponseEntity<List<MissionDTO>> getAllMissions(
+            @RequestParam(required = false) Mission.DifficultyLevel difficultyLevel,
+            @RequestParam(required = false) Integer destinationId) {
+        return ResponseEntity.ok(
+                missionService.getMissionsByFilters(difficultyLevel, destinationId)
+        );
     }
-
     @GetMapping("/by-destination/{id}")
     @Operation(summary = "Retrieve all missions by destination id")
     @ApiResponses(value = {
@@ -171,6 +173,8 @@ public class MissionController {
         missionService.removeSpecialization(missionId, MissionSpecialization.Specialization.valueOf(request.getSpecialization()));
         return ResponseEntity.noContent().build();
     }
+
+
 }
 
 

@@ -1,13 +1,23 @@
 package com.client.controllers;
 
 import com.client.DTO.DestinationDTO;
+import com.client.DTO.MissionDTO;
 import com.client.service.DestinationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -21,47 +31,49 @@ public class DestinationController {
         this.destinationService = destinationService;
     }
 
-    @GetMapping
-    public String getAllDestinations(Model model) {
-        log.debug("Handling request to display all destinations");
 
-        List<DestinationDTO> destinations = destinationService.getAllDestinations();
-        model.addAttribute("destinations", destinations);
-        model.addAttribute("pageTitle", "All destinations");
-        model.addAttribute("totalCount", destinations.size());
-        log.debug("Rendering destination.html list view with {} destinations", destinations.size());
-        return "destinations-list";
-    }
-    @GetMapping("/{id}")
-    public String getDestination(@PathVariable int id, Model model) {
-        log.debug("Handling request to display destination.html details for ID: {}", id);
 
-        DestinationDTO destination = destinationService.getDestinationById(id);
-
-        model.addAttribute("destination", destination);
-        model.addAttribute("pageTitle", "Destination Details - " + destination.getDestinationName());
-
-        log.debug("Rendering astronaut details view for:{}",
-                destination.getDestinationName());
-        return "destination";
-    }
     @GetMapping("/interactive-map")
     public String getInteractiveMap(Model model) {
         log.debug("Handling request for interactive space map");
 
         List<DestinationDTO> destinations = destinationService.getAllDestinations();
 
-        // DEBUG: Add this logging
-        log.info("DEBUG: Retrieved {} destinations from database", destinations.size());
-        destinations.forEach(dest ->
-                log.info("DEBUG: Destination - ID: {}, Name: {}, Type: {}",
-                        dest.getId(), dest.getDestinationName(), dest.getEntityType())
-        );
-
         model.addAttribute("destinations", destinations);
         model.addAttribute("pageTitle", "Interactive Space Map");
 
         log.debug("Rendering interactive map with {} destinations", destinations.size());
         return "space";
+    }
+
+    @GetMapping("/missions/{id}")
+    @ResponseBody
+    public List<MissionDTO> getMissionsByDestination(@PathVariable int id) {
+        log.debug("Fetching missions for destination ID: {}", id);
+        DestinationDTO destination = destinationService.getDestinationByIdWithMission(id);
+
+        List<MissionDTO> missions = destination.getMissions();
+
+        if (!missions.isEmpty()) {
+            MissionDTO first = missions.get(0);
+            log.debug("BEFORE JSON: id={}, name={}, code='{}', description='{}'",
+                    first.getId(), first.getName(), first.getCode(), first.getDescription());
+        }
+
+        return missions;
+    }
+
+    @GetMapping("/{id}")
+    public String getDestination(@PathVariable int id, Model model) {
+        log.debug("Handling request to display space.html details for ID: {}", id);
+
+        DestinationDTO destination = destinationService.getDestinationById(id);
+
+        model.addAttribute("destination", destination);
+        model.addAttribute("pageTitle", "Destination Details - " + destination.getDestinationName());
+
+        log.debug("Rendering destination details view for:{}",
+                destination.getDestinationName());
+        return "destination";
     }
 }

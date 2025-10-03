@@ -41,10 +41,31 @@ public class MissionService {
     @Transactional(readOnly = true)
     public List<MissionDTO> getAllMissions() {
         List<Mission> missions = missionRepository.findAll();
+        return missions.stream().map(MissionDTO::missionWithDetails).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<MissionDTO> getMissionsByFilters(
+            Mission.DifficultyLevel difficultyLevel,
+            Integer destinationId) {
+
+        List<Mission> missions;
+
+        if (difficultyLevel != null && destinationId != null) {
+            missions = missionRepository.findByDifficultyLevelAndDestinationId(difficultyLevel, destinationId);
+        } else if (difficultyLevel != null) {
+            missions = missionRepository.findByDifficultyLevel(difficultyLevel);
+        } else if (destinationId != null) {
+            missions = missionRepository.findByDestinationId(destinationId);
+        } else {
+            missions = missionRepository.findAll();
+        }
         return missions.stream()
-                .map(mission -> modelMapper.map(mission, MissionDTO.class))
+                .map(MissionDTO::missionWithDetails)
                 .toList();
     }
+
+
     @Transactional
     public MissionDTO addMission(MissionDTO missionDTO) {
         if (missionRepository.existsByCode(missionDTO.getCode())) {
@@ -127,7 +148,7 @@ public class MissionService {
         Optional.ofNullable(dto.getDurationDays()).ifPresent(entity::setDurationDays);
         Optional.ofNullable(dto.getCrewSize()).ifPresent(entity::setCrewSize);
         Optional.ofNullable(dto.getScoreValue()).ifPresent(entity::setScoreValue);
-        Optional.ofNullable(dto.getImageUrl()).ifPresent(entity::setImageUrl);
+        Optional.ofNullable(dto.getImageUrl()).ifPresent(entity::setImgUrl);
         Optional.ofNullable(dto.getPotentialIssues()).ifPresent(entity::setPotentialIssues);
         Optional.ofNullable(dto.getDifficultyLevel()).ifPresent(entity::setDifficultyLevel);
         Optional.ofNullable(dto.getPaymentAmount()).ifPresent(entity::setPaymentAmount);
@@ -161,7 +182,6 @@ public class MissionService {
             return dto;
         }).toList();
     }
-
 
     private Mission findMissionById(Integer missionId) {
         return missionRepository.findById(missionId)

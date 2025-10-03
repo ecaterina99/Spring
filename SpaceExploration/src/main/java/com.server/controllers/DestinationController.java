@@ -59,8 +59,8 @@ public class DestinationController {
         return ResponseEntity.ok(destinationService.getAllDestinations());
     }
 
-    @GetMapping("/withMissions/{id}")
-    @Operation(summary = "Get destination with all missions by ID")
+    @GetMapping("/missions/{id}")
+    @Operation(summary = "Get destination with all missions by destinationID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Destination found", content = @Content(mediaType = "application/json",
                     array = @ArraySchema(schema = @Schema(implementation = DestinationDTO.class)))),

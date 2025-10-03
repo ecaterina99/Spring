@@ -29,7 +29,7 @@ public class Mission {
     private String code;
 
     @NotBlank(message = "Mission description is required")
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false,columnDefinition = "TEXT")
     private String description;
 
     @Min(value = 1)
@@ -56,8 +56,8 @@ public class Mission {
     @Column(name = "potential_issues", nullable = false)
     private String potentialIssues;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "img_url")
+    private String imgUrl;
 
 
     public enum DifficultyLevel {

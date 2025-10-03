@@ -6,16 +6,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class DestinationDTO {
-    private int id;
+    private Integer id;
     private String destinationName;
     private String distanceFromEarth;
     private String description;
     private Integer gravity;
     private String image;
+    private List<MissionDTO> missions = new ArrayList<>();
+
     private DestinationEnums.EntityType entityType;
 }
