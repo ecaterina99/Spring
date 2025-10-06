@@ -9,13 +9,6 @@ body {
 }
 
 
-#missions-list-popup .popup-content {
-    max-width: 800px;
-    max-height: 80vh;
-    overflow-y: auto;
-}
-
-
 .col-12.col-sm-6.col-md-4.col-lg-4.d-flex {
     display: flex;
 }
@@ -130,17 +123,7 @@ nav.navbar,
     font-family: 'Orbitron', monospace !important;
 }
 
-#popup-close {
-    float: right;
-    font-size: 22px;
-    cursor: pointer;
-    color: #00d4ff;
-    margin-bottom: 0;
-}
 
-#popup-close:hover, #popup-close:focus {
-    color: #00ff88;
-}
 
 .astronaut-popup:hover, #astronaut-popup:focus, #mission-popup:hover, #mission-popup:focus {
     border-color: #00ff88;
@@ -229,6 +212,7 @@ nav.navbar,
 }
 
 .mission-popup-content {
+    position: relative;
     background-image: url('/api/images/b5.jpg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -241,7 +225,28 @@ nav.navbar,
     max-height: 95vh;
     overflow-y: auto;
 }
+#popup-close{
+    position: absolute;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #00d4ff;
+    z-index: 10;
+}
 
+#mission-popup-close {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #00d4ff;
+    z-index: 10;
+}
+
+#popup-close:hover, #popup-close:focus, #mission-popup-close:hover {
+    color: #00ff88;
+}
 .mission-popup-content p {
     margin: 8px 0;
     padding: 0;

@@ -2,7 +2,7 @@
 <div th:fragment="mission-popup">
 <div id="mission-popup" class="mission-popup" style="display:none;">
     <div class="mission-popup-content">
-        <span id="popup-close">&times;</span>
+        <span id="mission-popup-close">&times;</span>
         <div class="change-popup">
             <h3 id="popup-name" class="popup-name"></h3>
             <div class="popup-navigation">
@@ -94,7 +94,7 @@
                 showPopup(missionButtons[currentMissionIndex + 1]);
             }
         }
-        document.getElementById("popup-close").onclick = () => popup.style.display = "none";
+        document.getElementById("mission-popup-close").onclick = () => popup.style.display = "none";
         popup.onclick = (e) => {
             if (e.target.id === "mission-popup") popup.style.display = "none";
         };

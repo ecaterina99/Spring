@@ -337,22 +337,21 @@ function selectSpaceEntity(entity) {
 
 function showPlanetPopup(destination) {
     document.getElementById("popup-title").textContent = `${destination.destinationName}`;
-    document.getElementById("popup-description").textContent = destination.description || "No description";
+    document.getElementById("popup-entity-description").textContent = destination.description || "No description";
     document.getElementById("popup-distance").textContent = destination.distanceFromEarth || "Unknown";
     document.getElementById("popup-gravity").textContent = destination.gravity || "No gravity";
 
     const popup = document.getElementById("planet-popup");
     popup.style.display = "flex";
 
-    // ИСПРАВЛЕНО: правильный ID кнопки
     const viewMissionsBtn = document.getElementById("btn-view-mission");
     const newBtn = viewMissionsBtn.cloneNode(true);
     viewMissionsBtn.parentNode.replaceChild(newBtn, viewMissionsBtn);
 
     newBtn.addEventListener('click', () => {
+        popup.style.display = "none";
         loadAndShowMissions(destination.id, destination.destinationName);
     });
-
     document.getElementById("popup-close").onclick = () => {
         popup.style.display = "none";
     };
@@ -379,42 +378,30 @@ async function loadAndShowMissions(destinationId, destinationName) {
         console.log('Loaded missions:', missions);
 
         document.getElementById("planet-popup").style.display = "none";
-
-
-        const missionsPopup = document.getElementById("missions-list-popup");
-        const missionsTitle = document.getElementById("missions-popup-title");
-        const missionsContainer = document.getElementById("missions-list-container");
-
-        missionsTitle.textContent = `Missions for ${destinationName}`;
-
         if (missions.length === 0) {
-            missionsContainer.innerHTML = '<p class="text-warning">No missions available for this destination.</p>';
-        } else {
-            let missionsHTML = '<div class="missions-grid" style="display: grid; gap: 15px;">';
+            alert('No missions available for this destination.');
+            return;
+        }
 
-            missions.forEach(mission => {
-                let specializationsStr = '';
-                if (mission.specializations && Array.isArray(mission.specializations)) {
-                    specializationsStr = mission.specializations
-                        .map(spec => {
-                            const specName = spec.displayName || '';
-                            const qty = spec.quantity || '';
-                            return `${specName} - ${qty}`;
-                        })
-                        .join(', ');
-                }
-
-                const difficultyDisplay = typeof mission.difficultyLevel === 'string'
-                    ? mission.difficultyLevel
-                    : (mission.difficultyLevel.getDisplayName() || mission.difficultyLevel || '');
-
+        let missionsHTML = '';
+        missions.forEach(mission => {
+            let specializationsStr = '';
+            if (mission.specializations && Array.isArray(mission.specializations)) {
+                specializationsStr = mission.specializations
+                    .map(spec => {
+                        const specName = spec.specialization || '';
+                        const qty = spec.quantity || '';
+                        return `${specName.toLowerCase()} - ${qty}`;
+                    })
+                    .join(', ');
+            }
                 const missionData = {
                     id: mission.id || '',
-                    name: (mission.name || 'Unnamed Mission').toUpperCase(),
+                    name: (mission.name).toUpperCase(),
                     code: mission.code || '',
-                    description: mission.description || 'No description',
+                    description: mission.description,
                     destination: mission.destinationName || destinationName,
-                    difficulty: difficultyDisplay,
+                    difficulty: mission.difficultyLevel.toLowerCase(),
                     score: mission.scoreValue || '',
                     crew: mission.crewSize || '',
                     issues: mission.potentialIssues || '',
@@ -423,15 +410,8 @@ async function loadAndShowMissions(destinationId, destinationName) {
                     specializations: specializationsStr,
                     image: mission.imgUrl || ''
                 };
-
-                console.log('Processed mission:', missionData);
-
                 missionsHTML += `
-                    <div class="mission-card p-3 border border-info rounded" style="background: rgba(0,0,0,0.3);">
-                        <h5 class="text-warning">${missionData.name}</h5>
-                        <p class="small text-muted">Code: ${missionData.code}</p>
-                        <p class="small">${missionData.description.substring(0, 100)}${missionData.description.length > 100 ? '...' : ''}</p>
-                        <button class="btn btn-outline-info btn-sm btn-view-mission"
+    <div class="btn-view-mission mission-destinations p-3 border border-info rounded" style="background: rgba(0,0,0,0.3);"
                              data-id="${missionData.id}"
                              data-name="${missionData.name}"
                              data-code="${missionData.code}"
@@ -444,35 +424,19 @@ async function loadAndShowMissions(destinationId, destinationName) {
                              data-duration="${missionData.duration}"
                              data-payment="${missionData.payment}"
                              data-specializations="${missionData.specializations}"
-                             data-image="/api${mission.imgUrl}"
-                             onclick="window.showPopup(this)">
-                            VIEW DETAILS
-                        </button>
+                             data-image="/api${mission.imgUrl}">
                     </div>
                 `;
             });
 
-            missionsHTML += '</div>';
-            missionsContainer.innerHTML = missionsHTML;
+        const missionsContainer = document.createElement('div');
+        missionsContainer.innerHTML = missionsHTML;
+        document.body.appendChild(missionsContainer);
+
+        const missionButtons = Array.from(missionsContainer.querySelectorAll('.btn-view-mission'));
+        if (missionButtons.length > 0) {
+            window.showPopup(missionButtons[0]);
         }
-
-        missionsPopup.style.display = "flex";
-
-        document.getElementById("missions-popup-close").onclick = () => {
-            missionsPopup.style.display = "none";
-        };
-
-        missionsPopup.onclick = (e) => {
-            if (e.target.id === "missions-list-popup") {
-                missionsPopup.style.display = "none";
-            }
-        };
-
-        document.onkeydown = (e) => {
-            if (e.key === "Escape") {
-                missionsPopup.style.display = "none";
-            }
-        };
 
     } catch (error) {
         console.error('Error loading missions:', error);
