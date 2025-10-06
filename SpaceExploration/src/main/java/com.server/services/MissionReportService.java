@@ -37,11 +37,3 @@ public class MissionReportService {
     }
 }
 
-
-
- /*   public MissionReportDTO getMissionReportByMissionIdWithDetails(int missionId) {
-        MissionReport missionReport = missionReportRepository.getMissionReportByMission_Id(missionId)
-                .orElseThrow(() -> new RuntimeException("Mission report not found with mission id"+missionId));
-        return  MissionReportDTO.(missionReport);    }
-
-  */

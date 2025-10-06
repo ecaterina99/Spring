@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{common_fragments :: head}"></head>
+<body>
+<div th:insert="~{common_fragments :: mainHeader}"></div>
+
+<main class="container py-4">
+
+    <section class="intro text-md-start mb-4">
+        <h1 class="display-5 fw-bold">
+            MISSION PREPARATION FOR
+            <span th:text="${mission.name}" class="text-info"></span>
+        </h1>
+        <p class="lead mt-3" style="font-size: 18px;">
+            Prepare for your upcoming space mission! Below is the list of crew members and mission details.
+        </p>
+    </section>
+
+    <!--  Mission details -->
+    <section class="mission-details mb-5">
+        <p><strong>Code:</strong> <span th:text="${mission.code}"></span></p>
+        <p><strong>Destination:</strong> <span th:text="${mission.destinationName}"></span></p>
+        <p><strong>Difficulty:</strong> <span th:text="${mission.difficultyLevel.displayName}"></span></p>
+        <p><strong>Duration:</strong> <span th:text="${mission.durationDays}"></span> days</p>
+    </section>
+
+    <!-- Crew list -->
+    <section class="participants">
+        <h2 class="h4 mb-3">Mission Crew</h2>
+
+        <div th:if="${#lists.isEmpty(participants)}">
+            <p>No participants assigned yet.</p>
+        </div>
+
+        <div th:if="${!#lists.isEmpty(participants)}" th:each="p : ${participants}" class="card mb-3 p-3 shadow-sm rounded">
+            <p><strong>First name:</strong>
+                <span th:text="${p.astronaut.firstName != null ? p.astronaut.firstName : '—'}"></span></p>
+
+            <p><strong>Last name:</strong>
+                <span th:text="${p.astronaut.lastName != null ? p.astronaut.lastName : '—'}"></span></p>
+
+            <p><strong>Specialization:</strong>
+                <span th:text="${p.astronaut != null && p.astronaut.specialization != null ? p.astronaut.specialization.displayName : '—'}"></span></p>
+        </div>
+    </section>
+
+    <!--  Back button -->
+    <div class="mt-4">
+        <a href="/missions" class="btn btn-outline-secondary">← Back to Missions</a>
+    </div>
+</main>
+
+<div th:insert="~{common_fragments :: mainFooter}"></div>
+
+</body>
+</html>

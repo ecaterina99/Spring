@@ -180,7 +180,7 @@ nav.navbar,
     margin-top: 15px;
 }
 
-.astronaut-popup, .mission-popup {
+.astronaut-popup, .mission-popup, .crew-popup {
     display: none;
     position: fixed;
     justify-content: center;
@@ -234,7 +234,7 @@ nav.navbar,
     z-index: 10;
 }
 
-#mission-popup-close {
+#mission-popup-close, #crew-popup-close {
     position: absolute;
     right: 5px;
     top: 5px;
