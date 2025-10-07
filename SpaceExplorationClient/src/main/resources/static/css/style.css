@@ -1,5 +1,3 @@
-
-
 body {
     background: #000011;
     overflow-x: hidden;
@@ -8,9 +6,61 @@ body {
     min-height: 100vh;
 }
 
+.scroll-container {
+    scroll-behavior: smooth;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
 
-.col-12.col-sm-6.col-md-4.col-lg-4.d-flex {
-    display: flex;
+.scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-btn {
+    background-color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.card-participants {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: #a3a3a3;
+    max-width: 200px;
+    min-height: 200px;
+    border-radius: 5px;
+}
+
+.card-participants:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 1),
+    0 0 20px rgba(255, 215, 0, 0.8),
+    0 0 40px rgba(255, 215, 0, 0.5);
+}
+
+.mission-participants-card-img-top{
+    object-fit: cover;
+    max-height: 180px;
+    max-width: 180px;
+}
+
+.mission-participants-text{
+    color: white !important;
+}
+
+#btn-view-participants, #btn-add-participants{
+    transition: all 0.3s ease-in-out;
+    color: #000000;
+    background: transparent;
+    border: none;
+    font-size: 12px;
+}
+#btn-view-participants:hover, #btn-add-participants:hover {
+    color: #ffd500;
+    transform: scale(1.1);
+}
+.text-specialization{
+    color: #000000;
 }
 
 /* Cosmo-trail image section */
@@ -453,31 +503,9 @@ nav.navbar,
 }
 
 
-.neon-green {
-    box-shadow: 0 0 15px #00ff88;
-}
-
-.neon-yellow {
-    box-shadow: 0 0 15px #ffeb3b;
-}
-
-.neon-orange {
-    background: #ff9800 !important;
-    box-shadow: 0 0 15px #ff9800;
-}
-
-.neon-red {
-    box-shadow: 0 0 15px #ff1744;
-}
-
-.neon-blue {
-    box-shadow: 0 0 15px #00d4ff;
-}
-
 .row.g-4 {
     row-gap: 40px;
 }
-
 .mission-card-body {
     display: flex;
     flex-direction: column;
@@ -650,6 +678,9 @@ nav.navbar,
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
 }
+
+
+
 /* Responsive design */
 @media (max-width: 768px) {
     .info-panel, .stats-panel {

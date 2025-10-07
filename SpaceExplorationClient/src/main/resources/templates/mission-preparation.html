@@ -6,51 +6,222 @@
 
 <main class="container py-4">
 
-    <section class="intro text-md-start mb-4">
+    <section class="mission-participants-text text-md-start mb-4">
         <h1 class="display-5 fw-bold">
             MISSION PREPARATION FOR
-            <span th:text="${mission.name}" class="text-info"></span>
+            <span th:text="${mission.name.toUpperCase()}" style="color: #ffd500"></span><br>
         </h1>
+        <h2 class="display-7 fw-bold">DESTINATION: <span th:text="${ mission.destinationName.toUpperCase()}"
+                                                        style="color: #ffd500"></span></h2>
         <p class="lead mt-3" style="font-size: 18px;">
+            Prepare for your upcoming space mission! Below is the list of crew members and mission details. Prepare for
+            your upcoming space mission! Below is the list of crew members and mission details. Prepare for your
+            upcoming space mission! Below is the list of crew members and mission details.
             Prepare for your upcoming space mission! Below is the list of crew members and mission details.
+
         </p>
     </section>
 
     <!--  Mission details -->
-    <section class="mission-details mb-5">
-        <p><strong>Code:</strong> <span th:text="${mission.code}"></span></p>
-        <p><strong>Destination:</strong> <span th:text="${mission.destinationName}"></span></p>
-        <p><strong>Difficulty:</strong> <span th:text="${mission.difficultyLevel.displayName}"></span></p>
-        <p><strong>Duration:</strong> <span th:text="${mission.durationDays}"></span> days</p>
+    <section class="mission-participants-container pt-0 pb-5">
+
+        <div class="mission-participants-text text-start mb-4">
+            <h2 class="display-7 fw-bold text-glow">CREATE MISSION CREW</h2>
+            <p><strong>Required specializations:</strong> <span th:text="${#strings.arrayJoin( mission.specializations.![specialization.displayName + ' - ' + quantity],
+    ', ' )}"></span></p>
+        </div>
+
+        <div class="d-flex align-items-center position-relative">
+
+            <button class="btn btn-light shadow position-absolute start-0 z-3 scroll-btn" id="scrollLeft">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+
+            <div class="scroll-container d-flex overflow-hidden" id="astronautsScroll">
+                <div class="d-flex flex-nowrap gap-4 p-2">
+
+                    <div class="card-participants text-center border-0 flex-shrink-0"
+                         style="width: 180px; height: 320px;"
+                         th:each="astronaut : ${astronauts}">
+
+                        <div class="card-participants-img text-center border-0 pb-2">
+                            <img th:src="@{${astronaut.imageUrl}}" class="mission-participants-card-img-top rounded"
+                                 alt="image">
+                        </div>
+
+                        <div class="card-participants-body text-center">
+                            <h6 class="card-participants-title fw-bold" style="color: #162271;"
+                                th:text="${astronaut.firstName.toUpperCase() + astronaut.lastName.toUpperCase()}"></h6>
+                            <p class="text-muted"><strong><span th:text="${astronaut.specialization.getDisplayName()}"
+                                                                class="text-specialization"></span></strong>
+                            </p>
+                            <button class="btn hero-btn pt-0 " id="btn-view-participants"
+                                    th:attr="data-id=${astronaut.id},
+                     data-firstname=${astronaut.firstName},
+                     data-lastname=${astronaut.lastName},
+                     data-specialization=${astronaut.specialization.getDisplayName().toUpperCase()},
+                     data-image=@{${astronaut.imageUrl}},
+                     data-experience=${astronaut.yearsOfExperience},
+                     data-birthdate=${astronaut.dateOfBirth},
+                     data-phone=${astronaut.phone},
+                     data-health=${astronaut.healthStatus.getDisplayName()},
+                     data-fitness=${astronaut.fitnessScore},
+                     data-education=${astronaut.educationScore},
+                     data-psychological=${astronaut.psychologicalScore},
+                     data-overall=${astronaut.overallScore},
+                     data-rate=${astronaut.dailyRate}"
+                                    onclick="showPopup(this)">
+                                <strong>VIEW DETAILS</strong>
+                            </button>
+                            <button class="btn hero-btn pt-0" id="btn-add-participants">
+                                <strong>ADD TO CREW</strong>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <button class="btn btn-light shadow position-absolute end-0 z-3 scroll-btn" id="scrollRight">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+
+        </div>
     </section>
+
 
     <!-- Crew list -->
     <section class="participants">
-        <h2 class="h4 mb-3">Mission Crew</h2>
+        <h2 class="mission-participants-text h4 mb-3">Mission Crew</h2>
 
         <div th:if="${#lists.isEmpty(participants)}">
             <p>No participants assigned yet.</p>
         </div>
 
-        <div th:if="${!#lists.isEmpty(participants)}" th:each="p : ${participants}" class="card mb-3 p-3 shadow-sm rounded">
-            <p><strong>First name:</strong>
-                <span th:text="${p.astronaut.firstName != null ? p.astronaut.firstName : '—'}"></span></p>
+        <div th:if="${!#lists.isEmpty(participants)}">
+            <div th:each="p : ${participants}" class="card mb-3 p-3 shadow-sm rounded">
+                <p><strong>Astronaut:</strong>
+                    <span th:text="${p.astronautName}"></span>
+                </p>
 
-            <p><strong>Last name:</strong>
-                <span th:text="${p.astronaut.lastName != null ? p.astronaut.lastName : '—'}"></span></p>
+                <p><strong>Specialization:</strong>
+                    <span th:text="${p.specialization}"></span>
+                </p>
 
-            <p><strong>Specialization:</strong>
-                <span th:text="${p.astronaut != null && p.astronaut.specialization != null ? p.astronaut.specialization.displayName : '—'}"></span></p>
+                <p><strong>Overall score:</strong>
+                    <span th:text="${p.overallScore}"></span>
+                </p>
+            </div>
         </div>
     </section>
 
     <!--  Back button -->
     <div class="mt-4">
-        <a href="/missions" class="btn btn-outline-secondary">← Back to Missions</a>
+        <a href="/api/missions" class="btn btn-outline-secondary">← Back to Missions</a>
+    </div>
+
+    <!-- Popup -->
+    <div id="astronaut-popup" class="astronaut-popup" style="display:none;">
+        <div class="astronaut-popup-content">
+            <span id="popup-close">&times;</span>
+
+            <br>
+            <h3 id="popup-title" class="popup-header"><strong>ASTRONAUT BIOGRAPHY</strong></h3>
+
+
+            <div class="astronaut-top d-flex">
+                <div class="astronaut-image">
+                    <img id="astronaut-img" class="astronaut-img rounded" alt="astronaut">
+                </div>
+                <div class="astronaut-main-info">
+                    <h3 id="popup-name" class="popup-name"></h3>
+                    <p><strong><span id="popup-specialization"></span></strong></p>
+                </div>
+            </div>
+
+            <div class="astronaut-info row mt-2">
+                <div class="col-md-6 score-info-astronaut">
+                    <h5 class="popup-subtitle"><strong>MAIN INFO</strong></h5>
+                    <p><strong>Date of birth:</strong><span id="popup-birthDate"></span></p>
+                    <p><strong>Years of experience:</strong> <span id="popup-experience"></span></p>
+                    <p><strong>Phone:</strong> <span id="popup-phone"></span></p>
+                    <p><strong>Status:</strong> <span id="popup-status"></span></p>
+                    <p><strong>Daily rate:</strong> <span id="popup-rate"></span></p>
+                </div>
+
+                <div class="col-md-6 score-info-astronaut">
+                    <h5 class="popup-subtitle"><strong>ASTRONAUT SCORE</strong></h5>
+                    <p><strong>Fitness score:</strong> <span id="popup-fitness"></span></p>
+                    <p><strong>Education score:</strong> <span id="popup-education"></span></p>
+                    <p><strong>Psychological score:</strong> <span id="popup-psychological"></span></p>
+                    <p><strong>Overall score:</strong> <span id="popup-overall"></span></p>
+                </div>
+            </div>
+
+            <div class="text-center mt-1">
+                <button id="downloadBtn" class="btn btn-outline-info btn-sm">
+                    DOWNLOAD BIOGRAPHY
+                </button>
+
+            </div>
+        </div>
     </div>
 </main>
-
 <div th:insert="~{common_fragments :: mainFooter}"></div>
+
+<script>
+    document.getElementById('scrollLeft').addEventListener('click', function () {
+        const container = document.getElementById('astronautsScroll');
+        container.scrollBy({left: -250, behavior: 'smooth'});
+    });
+
+    document.getElementById('scrollRight').addEventListener('click', function () {
+        const container = document.getElementById('astronautsScroll');
+        container.scrollBy({left: 250, behavior: 'smooth'});
+    });
+
+    function showPopup(button) {
+        const firstname = button.getAttribute("data-firstname");
+        const lastname = button.getAttribute("data-lastname");
+        const specialization = button.getAttribute("data-specialization");
+        const image = button.getAttribute("data-image");
+        const experience = button.getAttribute("data-experience");
+        const birthDate = button.getAttribute("data-birthdate");
+        const phone = button.getAttribute("data-phone");
+        const health = button.getAttribute("data-health");
+        const fitness = button.getAttribute("data-fitness");
+        const education = button.getAttribute("data-education");
+        const psychological = button.getAttribute("data-psychological");
+        const overall = button.getAttribute("data-overall");
+        const rate = button.getAttribute("data-rate");
+
+        const img = document.getElementById("astronaut-img");
+        img.src = image || "";
+
+        document.getElementById("popup-name").textContent = `${firstname || ""} ${lastname || ""}`.trim();
+        document.getElementById("popup-specialization").textContent = specialization || "—";
+        document.getElementById("popup-birthDate").textContent = birthDate || "—";
+        document.getElementById("popup-experience").textContent = experience || "0";
+        document.getElementById("popup-phone").textContent = phone || "—";
+        document.getElementById("popup-status").textContent = health || "—";
+        document.getElementById("popup-fitness").textContent = fitness || "—";
+        document.getElementById("popup-education").textContent = education || "—";
+        document.getElementById("popup-psychological").textContent = psychological || "—";
+        document.getElementById("popup-overall").textContent = overall || "—";
+        document.getElementById("popup-rate").textContent = rate || "—";
+
+        const popup = document.getElementById("astronaut-popup");
+        popup.style.display = "flex";
+
+        document.getElementById("popup-close").onclick = () => popup.style.display = "none";
+        popup.onclick = (e) => {
+            if (e.target.id === "astronaut-popup") popup.style.display = "none";
+        };
+        document.onkeydown = (e) => {
+            if (e.key === "Escape") popup.style.display = "none";
+        };
+    }
+</script>
 
 </body>
 </html>
