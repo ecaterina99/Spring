@@ -56,6 +56,10 @@ public class RestClientUtil {
         }
     }
 
+    public <T> T postForObject(String url, Object request, Class<T> responseType) {
+        return restTemplate.postForObject(url, request, responseType);
+    }
+
     // Convenience methods for common operations
     public <T> List<T> getList(String url, Class<T[]> responseType) {
         return executeRequest("GET List", () -> {

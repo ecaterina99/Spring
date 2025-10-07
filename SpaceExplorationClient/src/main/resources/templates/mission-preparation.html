@@ -12,11 +12,12 @@
             <span th:text="${mission.name.toUpperCase()}" style="color: #ffd500"></span><br>
         </h1>
         <h2 class="display-7 fw-bold">DESTINATION: <span th:text="${ mission.destinationName.toUpperCase()}"
-                                                        style="color: #ffd500"></span></h2>
+                                                         style="color: #ffd500"></span></h2>
+        <p class="lead mt-3"><span th:text="${mission.code}"></span></p>
         <p class="lead mt-3" style="font-size: 18px;">
             Prepare for your upcoming space mission! Below is the list of crew members and mission details. Prepare for
             your upcoming space mission! Below is the list of crew members and mission details. Prepare for your
-            upcoming space mission! Below is the list of crew members and mission details.
+            upcoming space mission! Below is the list of crew members and mission details.<br>
             Prepare for your upcoming space mission! Below is the list of crew members and mission details.
 
         </p>
@@ -27,7 +28,7 @@
 
         <div class="mission-participants-text text-start mb-4">
             <h2 class="display-7 fw-bold text-glow">CREATE MISSION CREW</h2>
-            <p><strong>Required specializations:</strong> <span th:text="${#strings.arrayJoin( mission.specializations.![specialization.displayName + ' - ' + quantity],
+            <p class="lead mt-3"><strong>Required specializations:</strong> <span th:text="${#strings.arrayJoin( mission.specializations.![specialization.displayName + ' - ' + quantity],
     ', ' )}"></span></p>
         </div>
 
@@ -73,7 +74,8 @@
                                     onclick="showPopup(this)">
                                 <strong>VIEW DETAILS</strong>
                             </button>
-                            <button class="btn hero-btn pt-0" id="btn-add-participants">
+                            <button class="btn hero-btn pt-0 btn-add-participants"
+                                    th:attr="data-astronaut-id=${astronaut.id}, data-mission-id=${mission.id}">
                                 <strong>ADD TO CREW</strong>
                             </button>
                         </div>
@@ -221,7 +223,34 @@
             if (e.key === "Escape") popup.style.display = "none";
         };
     }
-</script>
 
+    document.querySelectorAll(".btn-add-participants").forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const astronautId = btn.getAttribute("data-astronaut-id");
+            const missionId = btn.getAttribute("data-mission-id");
+
+            if (!missionId || !astronautId) {
+                alert("Missing mission or astronaut ID!");
+                return;
+            }
+
+            const url = `/api/mission-participants/add/${missionId}/${astronautId}`;
+
+            try {
+                const response = await fetch(url, {method: "POST"});
+                if (response.ok) {
+                    alert("Astronaut added to crew!");
+                    location.reload();
+                } else {
+                    const msg = await response.text();
+                    alert("Error: " + msg);
+                }
+            } catch (err) {
+                console.error("Error adding astronaut:", err);
+                alert("Something went wrong while adding astronaut.");
+            }
+        });
+    });
+</script>
 </body>
 </html>

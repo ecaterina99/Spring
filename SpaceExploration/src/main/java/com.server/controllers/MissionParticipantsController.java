@@ -42,7 +42,6 @@ public class MissionParticipantsController {
         return ResponseEntity.ok(participants);
     }
 
-
     @PostMapping("/add/{missionId}/{astronautId}")
     @Operation(summary = "Add participant to mission")
     @ApiResponses(value={

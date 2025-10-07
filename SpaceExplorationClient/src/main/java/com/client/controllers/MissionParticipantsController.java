@@ -6,12 +6,18 @@ import com.client.DTO.MissionParticipantsDTO;
 import com.client.service.AstronautService;
 import com.client.service.MissionParticipantsService;
 import com.client.service.MissionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.ErrorResponse;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,4 +59,16 @@ public class MissionParticipantsController {
 
         return "mission-preparation";
     }
+
+
+    @PostMapping ("/add/{missionId}/{astronautId}")
+    public String addAstronautToMission(
+            @PathVariable Integer missionId,
+            @PathVariable Integer astronautId) {
+
+        missionParticipantsService.addParticipants(missionId, astronautId);
+
+        return "redirect:/mission-participants?missionId=" + missionId;
+    }
+
 }

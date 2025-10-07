@@ -27,6 +27,7 @@ public class MissionParticipantsDTO {
     private Integer astronautId;
     private Astronaut.Specialization specialization;
     private Integer overallScore;
+    private Integer crewSize;
 
     public static MissionParticipantsDTO missionParticipantsDetails(MissionParticipants missionParticipants) {
         return MissionParticipantsDTO.builder()
