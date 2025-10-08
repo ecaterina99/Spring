@@ -2,6 +2,7 @@ package com.server.services;
 
 import com.server.dto.MissionParticipantsDTO;
 import com.server.dto.MissionSpecializationDTO;
+import com.server.exception.CrewOverflowException;
 import com.server.models.Astronaut;
 import com.server.models.Mission;
 import com.server.models.MissionParticipants;
@@ -57,14 +58,15 @@ public class MissionParticipantsService {
                 .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + astronautId));
 
         if (missionParticipantsRepository.existsByMissionIdAndAstronautId(missionId, astronautId)) {
-            throw new IllegalStateException("Astronaut is already assigned to this mission");
+            throw new IllegalStateException(astronaut.getFirstName()+ " "+ astronaut.getLastName() + " is already assigned to this mission!");
         }
 
         int currentCrewSize = missionParticipantsRepository.findByMissionId(missionId).size();
         int maxCrewSize = mission.getCrewSize();
 
         if (currentCrewSize >= maxCrewSize) {
-            throw new IllegalStateException("The crew for this mission is already full (" + maxCrewSize + " members).");
+            System.out.println("Throwing CrewOverflowException!");
+            throw new CrewOverflowException(currentCrewSize, maxCrewSize);
         }
 
         Set<MissionSpecialization> requiredSpecs = mission.getMissionSpecializations();
@@ -82,8 +84,7 @@ public class MissionParticipantsService {
         MissionSpecialization required = requiredSpecs.stream()
                 .filter(r -> r.getSpecialization().name().equals(astronautSpec.name()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException(
-                        "This mission does not require specialization: " + astronautSpec));
+                .orElseThrow(() -> new IllegalStateException("This mission does not require " + astronautSpec.name().toLowerCase() + " specialization"));
 
         int alreadyHave = currentSpecCount.getOrDefault(astronautSpec, 0);
         int requiredQty = required.getQuantity();

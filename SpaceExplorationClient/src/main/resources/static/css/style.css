@@ -11,6 +11,109 @@ body {
     overflow-x: auto;
     scrollbar-width: none;
 }
+/*
+.participants-and-risks{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.participants, .risks{
+    display: flex;
+    flex-direction: column;
+}
+.participants-and-risks-text{
+    color: white;
+}
+////////////////////////////////////////
+
+.participants-and-risks {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    background: radial-gradient(circle at center, #0b0f2b 0%, #050717 80%);
+    border: 2px solid rgba(255, 213, 0, 0.2);
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(255, 213, 0, 0.2), inset 0 0 40px rgba(255, 213, 0, 0.05);
+    overflow: hidden;
+    color: white;
+    height: 70vh;
+}
+
+.participants, .risks {
+    width: 50%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ffd500 #0b0f2b;
+}
+
+.participants-and-risks-text {
+    color: #ffd500;
+    text-shadow: 0 0 10px #ffd500, 0 0 20px #ffd500;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+
+.participants {
+    border-right: 2px solid rgba(255, 213, 0, 0.3);
+}
+
+.participants .card {
+    background: rgba(22, 34, 113, 0.2);
+    border: 1px solid rgba(255, 213, 0, 0.2);
+    box-shadow: 0 0 15px rgba(255, 213, 0, 0.1);
+    color: #fff;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.participants .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 213, 0, 0.4);
+}
+
+.risks {
+    background: linear-gradient(160deg, rgba(22, 34, 113, 0.15), rgba(255, 213, 0, 0.05));
+}
+
+.risks p, .risks span {
+    font-size: 1.1rem;
+}
+
+.btn-check-risks {
+    background: transparent;
+    color: #ffd500;
+    border: 2px solid #ffd500;
+    text-shadow: 0 0 10px #ffd500;
+    box-shadow: 0 0 20px rgba(255, 213, 0, 0.3);
+    transition: all 0.3s ease;
+    align-self: flex-start;
+    margin-top: 2rem;
+}
+
+.btn-check-risks:hover {
+    background: #ffd500;
+    color: #0b0f2b;
+    box-shadow: 0 0 30px #ffd500, 0 0 60px #ffd500;
+}
+
+
+
+.participants::-webkit-scrollbar,
+.risks::-webkit-scrollbar {
+    width: 8px;
+}
+
+.participants::-webkit-scrollbar-thumb,
+.risks::-webkit-scrollbar-thumb {
+    background: #ffd500;
+    border-radius: 4px;
+}
 
 .scroll-container::-webkit-scrollbar {
     display: none;
@@ -22,7 +125,7 @@ body {
     width: 40px;
     height: 40px;
 }
-
+ */
 .card-participants {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     background: #a3a3a3;
@@ -37,6 +140,8 @@ body {
     0 0 20px rgba(255, 215, 0, 0.8),
     0 0 40px rgba(255, 215, 0, 0.5);
 }
+
+
 
 .mission-participants-card-img-top{
     object-fit: cover;
@@ -61,6 +166,243 @@ body {
 }
 .text-specialization{
     color: #000000;
+}
+
+
+.text-glow {
+    text-shadow: 0 0 10px #ffd500, 0 0 20px #ffd500;
+}
+
+.participants-and-risks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 40px;
+    min-height: 600px;
+}
+
+.participants, .risks {
+    position: relative;
+    padding: 30px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* Participants Section - Left Side */
+.participants {
+    background: linear-gradient(135deg, rgba(0, 29, 140, 0.3) 0%, rgba(1, 58, 159, 0.4) 100%);
+    border: 2px solid #00d4ff;
+    box-shadow:
+            0 0 30px rgba(0, 212, 255, 0.5),
+            inset 0 0 60px rgba(0, 212, 255, 0.1);
+}
+
+.participants::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* Risks Section - Right Side */
+.risks {
+    background: linear-gradient(135deg, rgba(140, 29, 0, 0.3) 0%, rgba(159, 58, 1, 0.4) 100%);
+    border: 2px solid #ffd500;
+    box-shadow:
+            0 0 30px rgba(255, 213, 0, 0.5),
+            inset 0 0 60px rgba(255, 213, 0, 0.1);
+}
+
+.risks::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 213, 0, 0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+    animation-delay: 2s;
+    pointer-events: none;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.1); opacity: 0.6; }
+}
+
+/* Section Headers */
+.section-header {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 2px;
+}
+
+.participants .section-header {
+    color: #00d4ff;
+    text-shadow:
+            0 0 10px rgba(0, 212, 255, 0.8),
+            0 0 20px rgba(0, 212, 255, 0.6),
+            0 0 30px rgba(0, 212, 255, 0.4);
+}
+
+.risks .section-header {
+    color: #ffd500;
+    text-shadow:
+            0 0 10px rgba(255, 213, 0, 0.8),
+            0 0 20px rgba(255, 213, 0, 0.6),
+            0 0 30px rgba(255, 213, 0, 0.4);
+}
+
+/* Crew Cards */
+.added-crew-card {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.added-crew-card:hover {
+    transform: translateX(10px);
+    border-color: #00d4ff;
+    box-shadow:
+            0 0 20px rgba(0, 212, 255, 0.6),
+            inset 0 0 20px rgba(0, 212, 255, 0.1);
+}
+
+.added-crew-card strong {
+    color: #00d4ff;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.added-crew-card p {
+    margin: 8px 0;
+    color: #b0e0ff;
+}
+
+.added-crew-card .score {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(0, 212, 255, 0.2);
+    border: 1px solid #00d4ff;
+    border-radius: 20px;
+    font-weight: bold;
+    color: #00d4ff;
+    margin-top: 8px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+    position: relative;
+    z-index: 1;
+}
+
+/* Risk Info */
+.risk-info {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 213, 0, 0.4);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(10px);
+}
+
+.risk-info p {
+    margin: 15px 0;
+    font-size: 1.05rem;
+    color: #ffe680;
+}
+
+.risk-info strong {
+    color: #ffd500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.difficulty-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: linear-gradient(135deg, #dc2f63 0%, #7e249c 100%);
+    border-radius: 25px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px rgba(220, 47, 99, 0.6);
+    margin-left: 10px;
+}
+
+/* Buttons */
+.btn-check-risks {
+    font-family: 'Orbitron', monospace;
+    background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+    border: 2px solid #ffd500;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 2px;
+    box-shadow:
+            0 0 20px rgba(255, 68, 68, 0.5),
+            inset 0 0 20px rgba(255, 213, 0, 0.2);
+}
+
+.btn-check-risks:hover {
+    transform: scale(1.05);
+    box-shadow:
+            0 0 30px rgba(255, 213, 0, 0.8),
+            0 0 40px rgba(255, 68, 68, 0.6);
+    background: linear-gradient(135deg, #ff5555 0%, #dd0000 100%);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .participants-and-risks {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+}
+
+/* Decorative elements */
+.cosmic-dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+    z-index: 0;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
 }
 
 /* Cosmo-trail image section */
