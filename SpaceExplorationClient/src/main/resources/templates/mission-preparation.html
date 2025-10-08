@@ -235,6 +235,7 @@
             }
 
             const url = `/api/mission-participants/add/${missionId}/${astronautId}`;
+            console.log("URL:", url);
 
             try {
                 const response = await fetch(url, {method: "POST"});

@@ -29,15 +29,15 @@ public class MissionParticipantsService {
         return restUtil.getList(url, MissionParticipantsDTO[].class);
     }
 
-    public MissionParticipantsDTO addParticipants(Integer missionId, Integer participantId) {
+    public void addParticipants(Integer missionId, Integer participantId) {
         if (missionId == null || missionId <= 0) {
             throw new IllegalArgumentException("Mission ID must be provided and greater than 0");
         }
         if (participantId == null || participantId <= 0) {
             throw new IllegalArgumentException("Participant ID must be provided and greater than 0");
         }
-        String url = apiUrl + "/" + missionId + "/" + participantId;
-        return restUtil.postForObject(url, null, MissionParticipantsDTO.class);
+        String url = apiUrl + "/add/" + missionId + "/" + participantId;
+        restUtil.postForObject(url, null, MissionParticipantsDTO.class);
     }
 
 }

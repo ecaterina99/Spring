@@ -1,6 +1,7 @@
 package com.server.services;
 
 import com.server.dto.MissionParticipantsDTO;
+import com.server.dto.MissionSpecializationDTO;
 import com.server.models.Astronaut;
 import com.server.models.Mission;
 import com.server.models.MissionParticipants;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,25 +66,31 @@ public class MissionParticipantsService {
         if (currentCrewSize >= maxCrewSize) {
             throw new IllegalStateException("The crew for this mission is already full (" + maxCrewSize + " members).");
         }
-        List<MissionSpecialization> requiredSpecs = (List<MissionSpecialization>) mission.getMissionSpecializations();
-        Map<Astronaut.Specialization, Long> currentSpecCount = missionParticipantsRepository.findByMissionId(missionId)
-                .stream()
-                .collect(Collectors.groupingBy(
-                        mp -> mp.getAstronaut().getSpecialization(),
-                        Collectors.counting()
-                ));
+
+        Set<MissionSpecialization> requiredSpecs = mission.getMissionSpecializations();
+        Map<Astronaut.Specialization, Integer> currentSpecCount =
+                missionParticipantsRepository.findByMissionId(missionId)
+                        .stream()
+                        .collect(Collectors.toMap(
+                                missionParticipants -> missionParticipants.getAstronaut().getSpecialization(),
+                                missionParticipants -> 1,
+                                Integer::sum
+                        ));
+
         Astronaut.Specialization astronautSpec = astronaut.getSpecialization();
-        Optional<MissionSpecialization> required = requiredSpecs.stream()
+
+        MissionSpecialization required = requiredSpecs.stream()
                 .filter(r -> r.getSpecialization().name().equals(astronautSpec.name()))
-                .findFirst();
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(
+                        "This mission does not require specialization: " + astronautSpec));
 
-        if (required.isEmpty()) {
-            throw new IllegalStateException("This mission does not require specialization: " + astronautSpec);
-        }
+        int alreadyHave = currentSpecCount.getOrDefault(astronautSpec, 0);
+        int requiredQty = required.getQuantity();
 
-        long alreadyHave = currentSpecCount.getOrDefault(astronautSpec, 0L);
-        if (alreadyHave >= required.get().getQuantity()) {
-            throw new IllegalStateException("Mission already has enough " + astronautSpec + " specialists (" + required.get().getQuantity() + ").");
+        if (alreadyHave >= requiredQty) {
+            throw new IllegalStateException(
+                    "Mission already has enough " + astronautSpec + " specialists (" + requiredQty + ").");
         }
 
         MissionParticipants missionParticipants = new MissionParticipants();
@@ -91,11 +98,17 @@ public class MissionParticipantsService {
         missionParticipants.setAstronaut(astronaut);
         missionParticipantsRepository.save(missionParticipants);
 
-        boolean allFilled = true;
+        return modelMapper.map(missionParticipants, MissionParticipantsDTO.class);
+    }
+}
 
+
+
+     /*
+        boolean allFilled = true;
         for (MissionSpecialization req : requiredSpecs) {
-            long currentCount = currentSpecCount.getOrDefault(req.getSpecialization(), 0L);
-            long updatedCount = currentCount;
+            int currentCount = currentSpecCount.getOrDefault(req.getSpecialization(), 0);
+            int updatedCount = currentCount;
             if (req.getSpecialization().name().equals(astronautSpec.name())) {
                 updatedCount++;
             }
@@ -104,13 +117,9 @@ public class MissionParticipantsService {
                 break;
             }
         }
-
         if (!allFilled) {
             throw new IllegalStateException("Not all required specializations are yet filled for this mission.");
         }
-
-        return modelMapper.map(missionParticipants, MissionParticipantsDTO.class);
-    }
-}
+         */
 
 
