@@ -40,7 +40,7 @@ public class MissionParticipantsService {
     @Transactional(readOnly = true)
     public List<MissionParticipantsDTO> showMissionCrew(int missionId) {
         if (!missionRepository.existsById(missionId)) {
-            throw new EntityNotFoundException("Mission not found with id: " + missionId);
+            throw new EntityNotFoundException("Mission with id: " + missionId+ " not found");
         }
         List<MissionParticipants> participants = missionParticipantsRepository.findByMissionId(missionId);
         return participants.stream()
@@ -102,6 +102,26 @@ public class MissionParticipantsService {
         return modelMapper.map(missionParticipants, MissionParticipantsDTO.class);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
