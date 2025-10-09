@@ -62,18 +62,4 @@ public class DestinationController {
 
         return missions;
     }
-
-    @GetMapping("/{id}")
-    public String getDestination(@PathVariable int id, Model model) {
-        log.debug("Handling request to display space.html details for ID: {}", id);
-
-        DestinationDTO destination = destinationService.getDestinationById(id);
-
-        model.addAttribute("destination", destination);
-        model.addAttribute("pageTitle", "Destination Details - " + destination.getDestinationName());
-
-        log.debug("Rendering destination details view for:{}",
-                destination.getDestinationName());
-        return "destination";
-    }
 }

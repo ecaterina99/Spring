@@ -42,6 +42,7 @@ public class MissionParticipantsService {
         }
 
         String url = apiUrl + "/add/" + missionId + "/" + participantId;
+
         try {
             return restUtil.postForObject(url, null, MissionParticipantsDTO.class);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
@@ -51,7 +52,6 @@ public class MissionParticipantsService {
             );
         }
     }
-
-    
-
 }
+
+

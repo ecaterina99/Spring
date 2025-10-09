@@ -144,22 +144,22 @@ function createEntity(destination, index) {
     let texturePath;
     switch (entityName) {
         case 'mars':
-            texturePath = '/api/images/mars.jpg';
+            texturePath = '/images/mars.jpg';
             break;
         case 'earth':
-            texturePath = '/api/images/earth2.jpg';
+            texturePath = '/images/earth2.jpg';
             break;
         case 'aurelia':
-            texturePath = '/api/images/aurelia.jpg';
+            texturePath = '/images/aurelia.jpg';
             break;
         case 'proxima centauri':
-            texturePath = '/api/images/proxima.jpg';
+            texturePath = '/images/proxima.jpg';
             break;
         case 'eros':
-            texturePath = '/api/images/asteroid.jpg';
+            texturePath = '/images/asteroid.jpg';
             break;
         default:
-            texturePath = '/api/images/default.jpg';
+            texturePath = '/images/default.jpg';
     }
 
     const material = new THREE.MeshLambertMaterial({
@@ -178,7 +178,7 @@ function createEntity(destination, index) {
 
     if (entityName === 'proxima centauri') {
         const spriteMaterial = new THREE.SpriteMaterial({
-            map: new THREE.TextureLoader().load('/api/images/glow.png'),
+            map: new THREE.TextureLoader().load('/images/glow.png'),
             color: 0xffaa00,
             transparent: true,
             blending: THREE.AdditiveBlending
@@ -371,7 +371,7 @@ function showPlanetPopup(destination) {
 
 async function loadAndShowMissions(destinationId, destinationName) {
     try {
-        const response = await fetch(`/api/destinations/missions/${destinationId}`);
+        const response = await fetch(`/destinations/missions/${destinationId}`);
         if (!response.ok) throw new Error('Failed to fetch missions');
 
         const missions = await response.json();
@@ -424,7 +424,7 @@ async function loadAndShowMissions(destinationId, destinationName) {
                              data-duration="${missionData.duration}"
                              data-payment="${missionData.payment}"
                              data-specializations="${missionData.specializations}"
-                             data-image="/api${mission.imgUrl}">
+                             data-image="${mission.imgUrl}">
                     </div>
                 `;
             });

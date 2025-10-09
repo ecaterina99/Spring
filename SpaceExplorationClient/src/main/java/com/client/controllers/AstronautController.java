@@ -1,7 +1,9 @@
 package com.client.controllers;
 
 import com.client.DTO.AstronautDTO;
+import com.client.service.ApiClient;
 import com.client.service.AstronautService;
+import com.client.service.TokenStorage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +25,10 @@ public class AstronautController {
 
     private final AstronautService astronautService;
 
-    public AstronautController(AstronautService astronautService) {
+
+    public AstronautController(AstronautService astronautService, ApiClient apiClient, TokenStorage tokenStorage) {
         this.astronautService = astronautService;
+
     }
 
     @GetMapping
@@ -40,19 +44,4 @@ public class AstronautController {
         log.debug("Rendering astronauts list view with {} astronauts", astronauts.size());
         return "astronauts-list";
     }
-
-    @GetMapping("/{id}")
-    public String getAstronaut(@PathVariable int id, Model model) {
-        log.debug("Handling request to display astronaut details for ID: {}", id);
-
-        AstronautDTO astronaut = astronautService.getAstronautById(id);
-
-        model.addAttribute("astronaut", astronaut);
-        model.addAttribute("pageTitle", "Astronaut Details - " + astronaut.getFirstName() + " " + astronaut.getLastName());
-
-        log.debug("Rendering astronaut details view for: {} {}",
-                astronaut.getFirstName(), astronaut.getLastName());
-        return "astronaut-details";
-    }
-
 }

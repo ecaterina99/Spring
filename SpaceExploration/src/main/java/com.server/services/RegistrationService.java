@@ -26,5 +26,4 @@ public class RegistrationService {
         person.setPassword(password);
         peopleRepository.save(person);
     }
-
 }

@@ -96,7 +96,7 @@
             if (destinationSelect.value) params.append("destinationId", destinationSelect.value);
 
             try {
-                const response = await fetch(`/api/missions/filter-fragment?${params.toString()}`);
+                const response = await fetch(`/missions/filter-fragment?${params.toString()}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);

@@ -84,5 +84,4 @@ public class GlobalClientExceptionHandler {
 
         return "error/general-error.html";
     }
-
 }

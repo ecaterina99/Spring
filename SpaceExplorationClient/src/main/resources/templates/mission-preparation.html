@@ -262,10 +262,9 @@
         alert.role = 'alert';
         alert.innerHTML = `
         <strong>${type === 'success' ? 'Success!' : ''}</strong> ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     `;
         container.appendChild(alert);
-        setTimeout(() => alert.remove(), 5000);
+        setTimeout(() => alert.remove(), 2000);
     }
 
     document.querySelectorAll(".btn-add-participants").forEach(btn => {
@@ -277,7 +276,7 @@
                 showAlert("Missing mission or astronaut ID!", "danger");
                 return;
             }
-            const url = `/api/mission-participants/api/add/${missionId}/${astronautId}`;
+            const url = `/mission-participants/api/add/${missionId}/${astronautId}`;
             try {
                 const response = await fetch(url, {
                     method: "POST",

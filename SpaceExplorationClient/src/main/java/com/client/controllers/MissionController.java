@@ -60,18 +60,4 @@ public class MissionController {
         return "mission-cards :: missionCards";
     }
 
-    @GetMapping("/{id}")
-    public String getAstronaut(@PathVariable int id, Model model) {
-        log.debug("Handling request to display mission details for ID: {}", id);
-
-        MissionDTO mission = missionService.getMissionById(id);
-
-        model.addAttribute("mission", mission);
-        model.addAttribute("pageTitle", "Mission Details - " + mission.getName());
-
-        log.debug("Rendering mission details view for: {}",
-                mission.getName());
-        return "mission-details";
-    }
-
-}
+  }
