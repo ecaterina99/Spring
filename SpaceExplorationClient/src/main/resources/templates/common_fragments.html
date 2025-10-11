@@ -14,39 +14,49 @@
 
 
 <div th:fragment="mainHeader">
-<header>
-    <!-- Cosmo-trail image FIRST -->
-    <div id="cosmo-trail" class="cosmo-trail">
-        <img th:src="@{/images/1.jpg}" alt="cosmo-trail" class="img-fluid">
-    </div>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav d-flex justify-content-center gap-4">
-                    <li class="nav-item">
-                        <a th:href="@{/home}" class="nav-link">HOME</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/astronauts}" class="nav-link">ASTRONAUTS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/destinations/interactive-map}" class="nav-link">EXPLORE SPACE</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/missions}" class="nav-link">MISSIONS</a>
-                    </li>
-                </ul>
-            </div>
+    <header>
+        <!-- Cosmo-trail image FIRST -->
+        <div id="cosmo-trail" class="cosmo-trail">
+            <img th:src="@{/images/1.jpg}" alt="cosmo-trail" class="img-fluid">
         </div>
-    </nav>
-</header>
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto gap-4">
+                        <li class="nav-item">
+                            <a th:href="@{/home}" class="nav-link">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/astronauts}" class="nav-link">ASTRONAUTS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/destinations/interactive-map}" class="nav-link">EXPLORE SPACE</a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/missions}" class="nav-link">MISSIONS</a>
+                        </li>
+                    </ul>
+
+                    <div class="logout d-flex align-items-center ms-auto">
+        <span th:if="${currentUser != null}">
+            Welcome, <span th:text="${currentUser.firstName}"></span>! |
+            <a th:href="@{/login}">Logout</a>
+        </span>
+                        <span th:if="${currentUser == null}">
+            <a th:href="@{/login}">Login</a>
+        </span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
 </div>
 
 

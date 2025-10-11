@@ -5,10 +5,38 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100vh;
 }
-.card-participants-title{
+
+.info-contact h3, fieldset .mb-3 {
+    font-family: 'Playfair Display', sans-serif;
+    font-size: 18px;
+    line-height: 1.6em;
+}
+
+.title-cosmo-trail{
     font-family: 'Orbitron', monospace;
 }
 
+.card-participants-title{
+    font-family: 'Orbitron', monospace;
+}
+.navbar-collapse {
+    display: flex !important;
+    justify-content: center;
+    position: relative;
+}
+
+.navbar-nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.logout {
+    margin-left: auto;
+    color: black;
+    font-family: 'Orbitron', monospace;
+    font-weight: bold;
+}
 .scroll-container {
     scroll-behavior: smooth;
     overflow-x: auto;
@@ -349,6 +377,19 @@ body {
     box-shadow: 0 0 30px rgba(255, 215, 0, 0.3),
     inset 0 0 50px rgba(138, 43, 226, 0.1);
 }
+
+.navbar-collapse {
+    display: flex !important;
+    justify-content: center;
+    position: relative;
+}
+
+.navbar-nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 
 nav.navbar,
 .navbar.navbar-expand-lg {

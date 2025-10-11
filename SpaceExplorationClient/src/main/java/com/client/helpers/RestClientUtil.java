@@ -29,6 +29,11 @@ public class RestClientUtil {
         this.restTemplate = restTemplate;
         this.tokenStorage = tokenStorage;
     }
+    public <T> T getObjectWithHeaders(String url, HttpHeaders headers, Class<T> type) {
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+        ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.GET, entity, type);
+        return response.getBody();
+    }
 
     // Generic method for all REST operations
     public <T> T executeRequest(String operation, Supplier<T> restCall) {

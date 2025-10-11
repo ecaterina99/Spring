@@ -267,21 +267,32 @@
         setTimeout(() => alert.remove(), 2000);
     }
 
+
+
+
     document.querySelectorAll(".btn-add-participants").forEach(btn => {
         btn.addEventListener("click", async () => {
             const astronautId = btn.getAttribute("data-astronaut-id");
             const missionId = btn.getAttribute("data-mission-id");
-
+            const token = sessionStorage.getItem('accessToken');
+            /*<![CDATA[*/
+            const accessToken = /*[[${accessToken}]]*/ '';
+            if (accessToken) {
+                sessionStorage.setItem('accessToken', accessToken);
+            }
+            /*]]>*/
             if (!missionId || !astronautId) {
                 showAlert("Missing mission or astronaut ID!", "danger");
                 return;
             }
-            const url = `/mission-participants/api/add/${missionId}/${astronautId}`;
             try {
-                const response = await fetch(url, {
+                const serverUrl = "http://localhost:8080/api";
+                const response = await fetch(`${serverUrl}/mission-participants/add/${missionId}/${astronautId}`, {
                     method: "POST",
                     headers: {
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
                     }
                 });
 

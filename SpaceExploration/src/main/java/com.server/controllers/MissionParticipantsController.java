@@ -19,7 +19,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/mission-participants")
-@CrossOrigin(origins = "*")
 
 @Tag(name = "Mission participants", description = "Missions participants details")
 public class MissionParticipantsController {

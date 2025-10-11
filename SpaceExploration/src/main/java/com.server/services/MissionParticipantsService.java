@@ -69,31 +69,6 @@ public class MissionParticipantsService {
             throw new CrewOverflowException(currentCrewSize, maxCrewSize);
         }
 
-        Set<MissionSpecialization> requiredSpecs = mission.getMissionSpecializations();
-        Map<Astronaut.Specialization, Integer> currentSpecCount =
-                missionParticipantsRepository.findByMissionId(missionId)
-                        .stream()
-                        .collect(Collectors.toMap(
-                                missionParticipants -> missionParticipants.getAstronaut().getSpecialization(),
-                                missionParticipants -> 1,
-                                Integer::sum
-                        ));
-
-        Astronaut.Specialization astronautSpec = astronaut.getSpecialization();
-
-        MissionSpecialization required = requiredSpecs.stream()
-                .filter(r -> r.getSpecialization().name().equals(astronautSpec.name()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("This mission does not require " + astronautSpec.name().toLowerCase() + " specialization"));
-
-        int alreadyHave = currentSpecCount.getOrDefault(astronautSpec, 0);
-        int requiredQty = required.getQuantity();
-
-        if (alreadyHave >= requiredQty) {
-            throw new IllegalStateException(
-                    "Mission already has enough " + astronautSpec + " specialists (" + requiredQty + ").");
-        }
-
         MissionParticipants missionParticipants = new MissionParticipants();
         missionParticipants.setMission(mission);
         missionParticipants.setAstronaut(astronaut);
@@ -126,6 +101,31 @@ public class MissionParticipantsService {
 
 
      /*
+             Set<MissionSpecialization> requiredSpecs = mission.getMissionSpecializations();
+        Map<Astronaut.Specialization, Integer> currentSpecCount =
+                missionParticipantsRepository.findByMissionId(missionId)
+                        .stream()
+                        .collect(Collectors.toMap(
+                                missionParticipants -> missionParticipants.getAstronaut().getSpecialization(),
+                                missionParticipants -> 1,
+                                Integer::sum
+                        ));
+
+        Astronaut.Specialization astronautSpec = astronaut.getSpecialization();
+
+        MissionSpecialization required = requiredSpecs.stream()
+                .filter(r -> r.getSpecialization().name().equals(astronautSpec.name()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("This mission does not require " + astronautSpec.name().toLowerCase() + " specialization"));
+
+        int alreadyHave = currentSpecCount.getOrDefault(astronautSpec, 0);
+        int requiredQty = required.getQuantity();
+
+        if (alreadyHave >= requiredQty) {
+            throw new IllegalStateException(
+                    "Mission already has enough " + astronautSpec + " specialists (" + requiredQty + ").");
+        }
+
         boolean allFilled = true;
         for (MissionSpecialization req : requiredSpecs) {
             int currentCount = currentSpecCount.getOrDefault(req.getSpecialization(), 0);

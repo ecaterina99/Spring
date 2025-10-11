@@ -1,6 +1,7 @@
 package com.client.controllers;
 
 import com.client.DTO.AstronautDTO;
+import com.client.DTO.UserDTO;
 import com.client.service.ApiClient;
 import com.client.service.AstronautService;
 import com.client.service.TokenStorage;
@@ -36,7 +37,6 @@ public class AstronautController {
         log.debug("Handling request to display all astronauts");
 
         List<AstronautDTO> astronauts = astronautService.getAllAstronauts();
-
         model.addAttribute("astronauts", astronauts);
         model.addAttribute("pageTitle", "All Astronauts");
         model.addAttribute("totalCount", astronauts.size());

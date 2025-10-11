@@ -1,0 +1,280 @@
+body {
+    background: #000011;
+    background-image:
+            radial-gradient(circle at 20% 30%, rgba(0, 40, 120, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(20, 20, 80, 0.4) 0%, transparent 50%);
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    background-image:
+            radial-gradient(circle, white 1px, transparent 1px),
+            radial-gradient(circle, white 1px, transparent 1px),
+            radial-gradient(circle, white 2px, transparent 2px),
+            radial-gradient(circle, rgba(200, 200, 255, 0.9) 1px, transparent 1px),
+            radial-gradient(circle, white 1px, transparent 1px);
+    background-size: 200px 200px, 300px 250px, 400px 350px, 250px 280px, 350px 320px;
+    background-position: 0 0, 40px 60px, 130px 270px, 70px 100px, 180px 50px;
+    animation: stars 120s linear infinite;
+    opacity: 1;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    background-image:
+            radial-gradient(circle, white 1px, transparent 1px),
+            radial-gradient(circle, rgba(180, 180, 255, 0.8) 1px, transparent 1px),
+            radial-gradient(circle, white 1px, transparent 1px);
+    background-size: 150px 150px, 220px 200px, 180px 170px;
+    background-position: 20px 30px, 80px 120px, 150px 80px;
+    animation: starsAlt 90s linear infinite;
+    opacity: 0.9;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.stars-layer-3 {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    background-image:
+            radial-gradient(circle, white 1px, transparent 1px),
+            radial-gradient(circle, white 1px, transparent 1px),
+            radial-gradient(circle, rgba(255, 255, 255, 0.7) 1px, transparent 1px);
+    background-size: 100px 100px, 140px 130px, 120px 110px;
+    background-position: 10px 15px, 60px 80px, 100px 40px;
+    animation: starsLayer3 150s linear infinite;
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes stars {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-50%, -50%); }
+}
+
+@keyframes starsAlt {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-30%, -40%); }
+}
+
+@keyframes starsLayer3 {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-60%, -30%); }
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+
+.login-card {
+    max-width: 480px;
+    margin: 4rem auto;
+    background: rgba(15, 10, 35, 0.85);
+    border: 2px solid rgba(180, 100, 255, 0.4);
+}
+
+
+.card-body {
+    padding: 2.5rem;
+}
+
+/* Title */
+.title-cosmo-trail {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ffffff, #71f4f0, #06d6dd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem;
+    letter-spacing: 3px;
+    animation: titlePulse 2s ease-in-out infinite;
+}
+.title-explore{
+    font-family: 'Orbitron', monospace;
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, #71f4f0, #06d6dd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem;
+    letter-spacing: 3px;
+    animation: titlePulse 2s ease-in-out infinite;
+}
+.text-glow {
+    text-shadow: 0 0 30px #0077ff;
+}
+@keyframes titlePulse {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.3); }
+}
+
+/* Fieldset */
+fieldset {
+    border: 2px solid rgba(160, 100, 255, 0.5) !important;
+    background: linear-gradient(135deg, rgba(30, 10, 60, 0.4) 0%, rgba(10, 20, 60, 0.3) 100%);
+    box-shadow:
+            inset 0 0 25px rgba(130, 70, 220, 0.25),
+            0 0 20px rgba(160, 100, 255, 0.15);
+}
+
+
+
+legend {
+    color: #FFD700 !important;
+    width: auto !important;
+}
+
+/* Labels */
+label {
+    color: #ffffff !important;
+    text-shadow: 0 0 8px rgb(35, 184, 216);
+    font-size: 0.95rem;
+}
+
+/* Input Fields */
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    background: rgba(0, 20, 50, 0.6);
+    border: 2px solid rgba(77, 166, 255, 0.4);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 10px rgba(0, 40, 120, 0.3);
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: #FFD700;
+    background: rgba(0, 30, 70, 0.7);
+    box-shadow:
+            0 0 15px rgba(255, 215, 0, 0.4),
+            inset 0 0 15px rgba(0, 60, 180, 0.4);
+}
+
+input::placeholder {
+    color: rgba(77, 166, 255, 0.5);
+}
+
+/* Submit Button */
+button[type="submit"] {
+    width: 100%;
+    padding: 0.7rem;
+    background: linear-gradient(135deg, #33979f 0%, #8446d3 100%);
+    border: 2px solid #FFD700;
+    border-radius: 8px;
+    color: #FFD700;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow:
+            0 0 20px rgba(255, 215, 0, 0.3),
+            0 4px 15px rgba(0, 100, 255, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+button[type="submit"]::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 215, 0, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(135deg, #33979f 0%, #8446d3 100%);
+    border-color: #FFA500;
+    box-shadow:
+            0 0 30px rgba(255, 215, 0, 0.5),
+            0 0 50px rgba(0, 100, 255, 0.4),
+            0 6px 20px rgba(0, 100, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+button[type="submit"]:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+}
+
+/* Alerts */
+.alert-danger {
+    background: rgba(150, 20, 20, 0.3);
+    border: 1px solid rgba(255, 100, 100, 0.5);
+    color: #ff6b6b;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+}
+
+.alert-info {
+    background: rgba(0, 80, 150, 0.3);
+    border: 1px solid rgba(77, 166, 255, 0.5);
+    color: #4da6ff;
+    box-shadow: 0 0 15px rgba(77, 166, 255, 0.2);
+}
+
+/* Links */
+a {
+    color: #FFD700 !important;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+a:hover {
+    color: #FFA500 !important;
+    text-shadow: 0 0 12px rgba(255, 165, 0, 0.6);
+    text-decoration: underline !important;
+}
+
+.text-secondary {
+    color: #6b9bd1 !important;
+}
+
+h6 {
+    color: #7ba8d9;
+}

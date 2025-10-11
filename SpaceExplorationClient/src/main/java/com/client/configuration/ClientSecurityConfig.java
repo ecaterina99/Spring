@@ -1,4 +1,6 @@
 package com.client.configuration;
+import com.client.helpers.ApiAuthProvider;
+import com.client.service.TokenStorage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,9 +12,11 @@ import org.springframework.security.web.SecurityFilterChain;
 public class ClientSecurityConfig {
 
     private final ApiAuthProvider authProvider;
+    private final TokenStorage tokenStorage;
 
-    public ClientSecurityConfig(ApiAuthProvider authProvider) {
+    public ClientSecurityConfig(ApiAuthProvider authProvider, TokenStorage tokenStorage) {
         this.authProvider = authProvider;
+        this.tokenStorage = tokenStorage;
     }
 
     @Bean
@@ -28,7 +32,8 @@ public class ClientSecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/login")
+                        .addLogoutHandler((request, response, auth) -> tokenStorage.clear())
                         .permitAll()
                 )
                 .authenticationProvider(authProvider);
