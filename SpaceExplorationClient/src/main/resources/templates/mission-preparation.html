@@ -14,10 +14,11 @@
         <h2 class="display-7 fw-bold">DESTINATION: <span th:text="${ mission.destinationName.toUpperCase()}"
                                                          style="color: #ffd500"></span></h2>
         <p><span th:text="${mission.code}"></span></p>
-        <p  style="font-size: 18px;">
+        <p style="font-size: 18px;">
             Prepare for your upcoming space mission! Below is the list of crew members and mission details.
         </p>
-        <p  style="font-size: 18px;"><strong>Required specializations:</strong> <strong><span style="color: #ffd500" th:text="${#strings.arrayJoin( mission.specializations.![specialization.displayName + ' - ' + quantity],
+        <p style="font-size: 18px;"><strong>Required specializations:</strong> <strong><span style="color: #ffd500"
+                                                                                             th:text="${#strings.arrayJoin( mission.specializations.![specialization.displayName + ' - ' + quantity],
     ', ' )}"></span></strong></p>
     </section>
 
@@ -72,7 +73,7 @@
                                 <strong>VIEW DETAILS</strong>
                             </button>
                             <button class="btn hero-btn pt-0 btn-add-participants"
-                                    th:attr="data-astronaut-id=${astronaut.id}, data-mission-id=${mission.id}">
+                                    th:attr="data-astronaut-id=${astronaut.id}, data-mission-id=${mission.id}, data-crew-size=${mission.crewSize}">
                                 <strong>ADD TO CREW</strong>
                             </button>
                         </div>
@@ -100,20 +101,23 @@
 
                 <h2 class="section-header">⚡ MISSION CREW</h2>
 
-                <!-- Example with crew members -->
                 <div th:if="${#lists.isEmpty(participants)}">
                     <p class="lead mt-4">No participants assigned yet.<br>
-                  Add crew members to begin mission preparation.</p>
+                        Add crew members to begin mission preparation.</p>
 
                 </div>
 
-                <div th:if="${!#lists.isEmpty(participants)}" class="added-crew-card d-flex flex-wrap gap-3">
+             <!--   <div th:if="${!#lists.isEmpty(participants)}" class="added-crew-card d-flex flex-wrap gap-3">
                     <div th:each="p : ${participants}" class="added-crew-card  p-3 flex-fill text-center">
                         <h5 class="fw-bold" style="color:#ffd500;" th:text="${p.astronautName}"></h5>
-                        <p><span style="color: #00d4ff;">▸</span> Specialization: <span style="color: white;" th:text="${p.specialization.toLowerCase()}"></span></p>
+                        <p><span style="color: #00d4ff;">▸</span> Specialization: <span style="color: white;"
+                                                                                        th:text="${p.specialization.toLowerCase()}"></span>
+                        </p>
                         <span class="score">Overall score: <span th:text="${p.overallScore}"></span></span>
+
                     </div>
-                </div>
+
+                </div> -->
             </div>
 
             <!-- RISKS SECTION -->
@@ -122,21 +126,21 @@
 
                 <div class="risk-info">
                     <div class="risk-info-header d-flex gap-3 justify-content-start pb-0">
-                    <img th:src="@{${mission.imgUrl}}" class="card-image" alt="image">
+                        <img th:src="@{${mission.imgUrl}}" class="card-image" alt="image">
                     </div>
                     <p style="margin-top: 25px;">
                         <strong>Potential Issues:</strong>
                     </p>
 
                     <p style="color: #ffcc80; line-height: 1.8; margin-top: 10px;">
-                        ⚡  <span th:text="${mission.getPotentialIssues()}" style="color:#ffd500;"></span>
+                        ⚡ <span th:text="${mission.getPotentialIssues()}" style="color:#ffd500;"></span>
                     </p>
 
                 </div>
 
                 <div style="text-align: center; margin-top: 40px;">
                     <button class="btn-check-risks">
-                       ANALYZE RISKS
+                        ANALYZE RISKS
                     </button>
                 </div>
             </div>
@@ -146,7 +150,7 @@
     <!--  Back button -->
     <div class="start-mission d-flex flex-wrap gap-3 justify-content-center ">
         <button class="btn-start-mission ">
-                START MISSION
+            START MISSION
         </button>
     </div>
 
@@ -202,7 +206,229 @@
 
 <div th:insert="~{common_fragments :: mainFooter}"></div>
 
-<script>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+        /*<![CDATA[*/
+        const accessToken = /*[[${accessToken}]]*/ '';
+        /*]]>*/
+
+        if (accessToken) {
+            sessionStorage.setItem('accessToken', accessToken);
+        }
+        if (!sessionStorage.getItem('allMissionCrews')) {
+            sessionStorage.setItem('allMissionCrews', JSON.stringify({}));
+        }
+
+        displayCurrentCrew();
+        displayCrewMembers();
+    });
+
+
+    document.querySelectorAll(".btn-add-participants").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const astronautId = btn.getAttribute("data-astronaut-id");
+            const missionId = btn.getAttribute("data-mission-id");
+            const crewSize = btn.getAttribute("data-crew-size");
+
+            let allCrews = JSON.parse(sessionStorage.getItem('allMissionCrews') || '{}');
+            let currentMissionCrew = allCrews[missionId] || [];
+
+            if (currentMissionCrew.some(member => member.astronautId === astronautId)) {
+                showAlert("This astronaut is already in the crew!", "warning");
+                return;
+            }
+
+            if (currentMissionCrew.length >= crewSize) {
+                showAlert("Mission crew is full!", "warning");
+                return;
+            }
+
+            const viewBtn = btn.previousElementSibling;
+
+            currentMissionCrew.push({
+                astronautId: astronautId,
+                missionId: missionId,
+                firstName: viewBtn.getAttribute('data-firstname') || '',
+                lastName: viewBtn.getAttribute('data-lastname') || '',
+                specialization: viewBtn.getAttribute('data-specialization') || '',
+                imageUrl: viewBtn.getAttribute('data-image') || '',
+                overallScore: viewBtn.getAttribute('data-overall') || '0'
+            });
+
+            allCrews[missionId] = currentMissionCrew;
+            sessionStorage.setItem('allMissionCrews', JSON.stringify(allCrews));
+
+            btn.textContent = "ADDED ✓";
+            btn.disabled = true;
+            btn.classList.add('btn-success');
+
+            showAlert("Astronaut added to crew!", "success");
+            displayCurrentCrew();
+            displayCrewMembers();
+
+        });
+    });
+
+
+    function displayCurrentCrew() {
+        const missionId = document.querySelector('.btn-add-participants')?.getAttribute('data-mission-id');
+        if (!missionId) {
+            console.warn('Mission ID not found');
+            return;
+        }
+        let allCrews = JSON.parse(sessionStorage.getItem('allMissionCrews') || '{}');
+        const currentMissionCrew = allCrews[missionId] || [];
+
+        console.log('Current mission crew:', currentMissionCrew);
+        console.log('Mission ID:', missionId);
+
+        const crewCount = document.getElementById('crew-count');
+        if (crewCount) {
+            crewCount.textContent = `Crew members: ${currentMissionCrew.length}`;
+        }
+        document.querySelectorAll(".btn-add-participants").forEach(btn => {
+            const astronautId = btn.getAttribute("data-astronaut-id");
+            const isAdded = currentMissionCrew.some(member => member.astronautId === astronautId);
+
+            if (isAdded) {
+                btn.textContent = "ADDED ✓";
+                btn.disabled = true;
+                btn.classList.add('btn-success');
+            }
+        });
+    }
+
+    function displayCrewMembers() {
+        const missionId = document.querySelector('.btn-add-participants')?.getAttribute('data-mission-id');
+        if (!missionId) return;
+
+        const crew = getMissionCrew(missionId);
+        const participantsDiv = document.querySelector('.participants');
+
+        // find containers
+        let emptyMessageDiv = participantsDiv.querySelector('div[th\\:if]') ||
+            participantsDiv.querySelector('.lead')?.parentElement;
+        let crewCardsContainer = participantsDiv.querySelector('.added-crew-card');
+
+        if (crew.length === 0) {
+            //show message "No participants"
+            if (crewCardsContainer) {
+                crewCardsContainer.style.display = 'none';
+            }
+            if (emptyMessageDiv) {
+                emptyMessageDiv.style.display = 'block';
+            }
+            return;
+        }
+
+        // hide message "No participants"
+        if (emptyMessageDiv) {
+            emptyMessageDiv.style.display = 'none';
+        }
+
+        //cards container
+        if (!crewCardsContainer) {
+            const header = participantsDiv.querySelector('.section-header');
+            crewCardsContainer = document.createElement('div');
+            crewCardsContainer.className = 'added-crew-card d-flex flex-wrap gap-3';
+            header.after(crewCardsContainer);
+        } else {
+            crewCardsContainer.style.display = 'flex';
+        }
+        const clearBtnContainer = document.getElementById('clear-crew-btn-container');
+        if (clearBtnContainer) {
+            clearBtnContainer.style.display = crew.length > 0 ? 'block' : 'none';
+        }
+
+        //html
+        crewCardsContainer.innerHTML = crew.map(member => `
+        <div class="added-crew-card p-3 flex-fill text-center position-relative">
+            <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
+                    onclick="removeFromCrew('${member.astronautId}', '${missionId}')"
+                    style="padding: 2px 8px; font-size: 12px; z-index: 10;">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <h5 class="fw-bold" style="color:#ffd500;">
+                ${member.firstName.toUpperCase()} ${member.lastName.toUpperCase()}
+            </h5>
+            <p>
+                <span style="color: #00d4ff;">▸</span>
+                Specialization:
+                <span style="color: white;">${member.specialization.toLowerCase()}</span>
+            </p>
+            <span class="score">Overall score: <span>${member.overallScore}</span></span>
+        </div>
+          <div class="text-center mb-3" style="display: none;" id="clear-crew-btn-container">
+                            <button class="btn btn-outline-danger btn-sm" onclick="clearCurrentMissionCrew()">
+                                <i class="bi bi-trash"></i> Clear All Crew
+                            </button>
+                        </div>
+    `).join('');
+    }
+
+
+    function getMissionCrew(missionId) {
+        let allCrews = JSON.parse(sessionStorage.getItem('allMissionCrews') || '{}');
+        return allCrews[missionId] || [];
+    }
+
+    function clearCurrentMissionCrew() {
+        const missionId = document.querySelector('.btn-add-participants')?.getAttribute('data-mission-id');
+        if (!missionId) {
+            showAlert("Mission ID not found!", "danger");
+            return;
+        }
+
+        if (confirm('Are you sure you want to clear the entire crew?')) {
+            clearMissionCrew(missionId);
+
+            // unblock all buttons
+            document.querySelectorAll(".btn-add-participants").forEach(btn => {
+                btn.textContent = "ADD TO CREW";
+                btn.disabled = false;
+                btn.classList.remove('btn-success');
+            });
+
+            showAlert("Crew cleared successfully!", "info");
+        }
+    }
+    function clearMissionCrew(missionId) {
+        let allCrews = JSON.parse(sessionStorage.getItem('allMissionCrews') || '{}');
+        delete allCrews[missionId];
+        sessionStorage.setItem('allMissionCrews', JSON.stringify(allCrews));
+        displayCurrentCrew();
+        displayCrewMembers();
+    }
+
+    function removeFromCrew(astronautId, missionId) {
+        let allCrews = JSON.parse(sessionStorage.getItem('allMissionCrews') || '{}');
+        let currentMissionCrew = allCrews[missionId] || [];
+
+        currentMissionCrew = currentMissionCrew.filter(member => member.astronautId !== astronautId);
+        allCrews[missionId] = currentMissionCrew;
+
+        sessionStorage.setItem('allMissionCrews', JSON.stringify(allCrews));
+
+        displayCurrentCrew();
+        displayCrewMembers(); 
+        showAlert("Astronaut removed from crew", "info");
+
+        // Снимаем блокировку с кнопки
+        document.querySelectorAll(".btn-add-participants").forEach(btn => {
+            if (btn.getAttribute("data-astronaut-id") === astronautId &&
+                btn.getAttribute("data-mission-id") === missionId) {
+                btn.textContent = "ADD TO CREW";
+                btn.disabled = false;
+                btn.classList.remove('btn-success');
+            }
+        });
+    }
+
+    function logout() {
+        sessionStorage.removeItem('accessToken');
+        sessionStorage.removeItem('allMissionCrews');
+    }
+
     document.getElementById('scrollLeft').addEventListener('click', function () {
         const container = document.getElementById('astronautsScroll');
         container.scrollBy({left: -250, behavior: 'smooth'});
@@ -267,64 +493,82 @@
         setTimeout(() => alert.remove(), 2000);
     }
 
-
-
-
-    document.querySelectorAll(".btn-add-participants").forEach(btn => {
-        btn.addEventListener("click", async () => {
-            const astronautId = btn.getAttribute("data-astronaut-id");
-            const missionId = btn.getAttribute("data-mission-id");
-            const token = sessionStorage.getItem('accessToken');
-            /*<![CDATA[*/
-            const accessToken = /*[[${accessToken}]]*/ '';
-            if (accessToken) {
-                sessionStorage.setItem('accessToken', accessToken);
-            }
-            /*]]>*/
-            if (!missionId || !astronautId) {
-                showAlert("Missing mission or astronaut ID!", "danger");
-                return;
-            }
-            try {
-                const serverUrl = "http://localhost:8080/api";
-                const response = await fetch(`${serverUrl}/mission-participants/add/${missionId}/${astronautId}`, {
-                    method: "POST",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    showAlert("Astronaut added to crew successfully!", "success");
-                    setTimeout(() => location.reload(), 1500);
-                } else {
-                    let errorData;
-                    try {
-                        errorData = await response.json();
-                    } catch {
-                        const text = await response.text();
-                        errorData = {message: text};
-                    }
-
-                    if (errorData.error === "CREW_OVERFLOW") {
-                        showAlert(`Mission crew is full!`, "warning");
-                    } else if (errorData.error === "VALIDATION_ERROR") {
-                        showAlert(errorData.message, "warning");
-                    } else if (errorData.error === "Resource not found") {
-                        showAlert(errorData.message, "warning");
-                    } else {
-                        showAlert(errorData.message || "An unknown error occurred.", "warning");
-                    }
-                }
-            } catch (err) {
-                console.error("Error adding astronaut:", err);
-                showAlert("Network error. Please try again.", "danger");
-            }
-        });
-    });
-
 </script>
 </body>
 </html>
+
+
+<!--
+console.log('Access token from Thymeleaf:', accessToken);
+console.log('Token length:', accessToken.length);
+
+if (accessToken) {
+sessionStorage.setItem('accessToken', accessToken);
+console.log('Token initialized successfully');
+} else {
+console.warn('Access token is empty!');
+}
+});
+*/
+/*
+document.querySelectorAll(".btn-add-participants").forEach(btn => {
+btn.addEventListener("click", async () => {
+const astronautId = btn.getAttribute("data-astronaut-id");
+const missionId = btn.getAttribute("data-mission-id");
+
+const token = sessionStorage.getItem('accessToken');
+
+if (!token) {
+showAlert("Authorization token is missing!", "danger");
+console.error('Token not found in sessionStorage');
+return;
+}
+
+if (!missionId || !astronautId) {
+showAlert("Missing mission or astronaut ID!", "danger");
+console.error('Missing IDs:', {missionId, astronautId});
+return;
+}
+
+try {
+const serverUrl = "http://localhost:8080/api";
+const response = await fetch(`${serverUrl}/mission-participants/add/${missionId}/${astronautId}`, {
+method: "POST",
+headers: {
+'Accept': 'application/json',
+'Authorization': `Bearer ${token}`,
+'Content-Type': 'application/json'
+}
+});
+
+if (response.ok) {
+showAlert("Astronaut added to crew successfully!", "success");
+setTimeout(() => location.reload(), 1500);
+} else {
+let errorData;
+try {
+errorData = await response.json();
+} catch {
+const text = await response.text();
+errorData = {message: text};
+}
+
+console.error('Server error:', errorData);
+
+if (errorData.error === "CREW_OVERFLOW") {
+showAlert(`Mission crew is full!`, "warning");
+} else if (errorData.error === "VALIDATION_ERROR") {
+showAlert(errorData.message, "warning");
+} else if (errorData.error === "Resource not found") {
+showAlert(errorData.message, "warning");
+} else {
+showAlert(errorData.message || "An unknown error occurred.", "warning");
+}
+}
+} catch (err) {
+console.error("Error adding astronaut:", err);
+showAlert("Network error. Please try again.", "danger");
+}
+});
+});
+-->

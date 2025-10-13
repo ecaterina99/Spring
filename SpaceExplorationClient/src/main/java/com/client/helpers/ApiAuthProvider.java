@@ -1,4 +1,4 @@
-package com.client.configuration;
+package com.client.helpers;
 
 import com.client.service.ApiClient;
 import com.client.service.TokenStorage;

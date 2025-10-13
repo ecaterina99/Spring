@@ -1,11 +1,16 @@
 package com.client.configuration;
 import com.client.helpers.ApiAuthProvider;
 import com.client.service.TokenStorage;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -14,7 +19,7 @@ public class ClientSecurityConfig {
     private final ApiAuthProvider authProvider;
     private final TokenStorage tokenStorage;
 
-    public ClientSecurityConfig(ApiAuthProvider authProvider, TokenStorage tokenStorage) {
+    public ClientSecurityConfig(ApiAuthProvider authProvider,  @Lazy TokenStorage tokenStorage) {
         this.authProvider = authProvider;
         this.tokenStorage = tokenStorage;
     }
@@ -33,7 +38,12 @@ public class ClientSecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login")
-                        .addLogoutHandler((request, response, auth) -> tokenStorage.clear())
+                        .addLogoutHandler(new LogoutHandler() {
+                            @Override
+                            public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+                                tokenStorage.clear();
+                            }
+                        })
                         .permitAll()
                 )
                 .authenticationProvider(authProvider);

@@ -30,9 +30,10 @@ public class GlobalControllerAdvice {
         return null;
     }
 
-    @ModelAttribute("accessToken")
+ @ModelAttribute("accessToken")
     public String addTokenToModel() {
         String token = tokenStorage.getToken();
         return token != null ? token : "";
     }
+
 }
