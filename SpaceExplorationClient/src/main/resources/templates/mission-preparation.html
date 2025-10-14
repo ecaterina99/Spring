@@ -14,12 +14,17 @@
         <h2 class="display-7 fw-bold">DESTINATION: <span th:text="${ mission.destinationName.toUpperCase()}"
                                                          style="color: #ffd500"></span></h2>
         <p><span th:text="${mission.code}"></span></p>
-        <p style="font-size: 18px;">
-            Prepare for your upcoming space mission! Below is the list of crew members and mission details.
+
+        <p  style="color: #ffffff; line-height: 1.8; margin-top: 10px; font-size: 18px;">
+            ❗ Please pay attention to the specializations required for this mission and crew number.<br>
+            Meeting all the required specialization and crew requirements greatly
+            increases your chances of success.<br>Otherwise, the risk of mission failure will rise.
         </p>
-        <p style="font-size: 18px;"><strong>Required specializations:</strong> <strong><span style="color: #ffd500"
-                                                                                             th:text="${#strings.arrayJoin( mission.specializations.![specialization.displayName + ' - ' + quantity],
-    ', ' )}"></span></strong></p>
+        <p style="font-size: 20px; color: #d9534f"><strong>Required specializations: </strong>
+            <strong><span style="color: #ffd500"
+        th:text="${#strings.arrayJoin( mission.specializations.![specialization.displayName + ' - ' + quantity],
+    ', ' )}"></span></strong>
+        </p>
     </section>
 
     <!--  Mission details -->
@@ -100,14 +105,16 @@
 
                 <h2 class="section-header">⚡ MISSION CREW</h2>
 
-                <div th:if="${#lists.isEmpty(participants)}">
-                    <p class="lead mt-4">No participants assigned yet.<br>
-                        Add crew members to begin mission preparation.</p>
-                </div>
 
+                <div th:if="${#lists.isEmpty(participants)}">
+                    <p class="lead" style="color: #fafafa; line-height: 1.8; margin-top: 10px;">
+                        No participants assigned yet.<br>
+                        Add crew members to begin mission preparation.</p>
+                <br>
+                </div>
                 <div class="text-center mb-3" id="clear-crew-btn-container" style="display:none;">
-                    <button class="btn btn-outline-danger btn-sm" onclick="clearCurrentMissionCrew()">
-                        <i class="bi bi-trash"></i> Clear All Crew
+                    <button class="btn-clear" onclick="clearCurrentMissionCrew()">
+                        <i class="bi bi-trash"></i> Clear All
                     </button>
                 </div>
             </div>
@@ -125,7 +132,7 @@
                     </p>
 
                     <p style="color: #ffcc80; line-height: 1.8; margin-top: 10px;">
-                        ⚡ <span th:text="${mission.getPotentialIssues()}" style="color:#ffd500;"></span>
+                        ⚡ <span th:text="${mission.getPotentialIssues()}" class="lead" style="color:#ffd500;"></span>
                     </p>
                 </div>
 
@@ -202,20 +209,53 @@
     document.addEventListener('DOMContentLoaded', () => {
         /*<![CDATA[*/
         const accessToken = /*[[${accessToken}]]*/ '';
+        const userId = /*[[${userId}]]*/ '';
         /*]]>*/
+        const storedUserId = sessionStorage.getItem('currentUserId');
 
+        if (storedUserId && storedUserId !== userId.toString()) {
+            console.log('Different user detected, clearing session data');
+            Object.keys(sessionStorage).forEach(key => {
+                if (key.startsWith('user_')) {
+                    sessionStorage.removeItem(key);
+                }
+            });
+        }
+
+        if (userId) {
+            sessionStorage.setItem('currentUserId', userId);
+        }
         if (accessToken) {
             sessionStorage.setItem('accessToken', accessToken);
         }
         if (!sessionStorage.getItem('allMissionCrews')) {
             sessionStorage.setItem('allMissionCrews', JSON.stringify({}));
         }
+        initializeUserMissionData(userId);
 
         displayCurrentCrew();
         displayCrewMembers();
 
     });
 
+    function initializeUserMissionData(userId) {
+        const userDataKey = `user_${userId}_missions`;
+        if (!sessionStorage.getItem(userDataKey)) {
+            sessionStorage.setItem(userDataKey, JSON.stringify({}));
+        }
+    }
+
+    function getUserMissionData() {
+        const userId = sessionStorage.getItem('currentUserId');
+        const userDataKey = `user_${userId}_missions`;
+        return JSON.parse(sessionStorage.getItem(userDataKey) || '{}');
+    }
+
+    function saveUserMissionData(data) {
+        const userId = sessionStorage.getItem('currentUserId');
+        const userDataKey = `user_${userId}_missions`;
+        sessionStorage.setItem(userDataKey, JSON.stringify(data));
+    }
 
     document.querySelectorAll(".btn-add-participants").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -223,8 +263,8 @@
             const missionId = btn.getAttribute("data-mission-id");
             const crewSize = btn.getAttribute("data-crew-size");
 
-            let allCrews = JSON.parse(sessionStorage.getItem('allMissionCrews') || '{}');
-            let currentMissionCrew = allCrews[missionId] || [];
+            let userMissions = getUserMissionData();
+            let currentMissionCrew = userMissions[`mission_${missionId}_crew`] || [];
 
             if (currentMissionCrew.some(member => member.astronautId === astronautId)) {
                 showAlert("This astronaut is already in the crew!", "warning");
@@ -238,20 +278,17 @@
 
             const viewBtn = btn.previousElementSibling;
 
-            const clearBtnContainer = document.getElementById('clear-crew-btn-container');
-            clearBtnContainer.style.display = currentMissionCrew.length > 0 ? 'block' : 'none';
-
             currentMissionCrew.push({
                 astronautId: astronautId,
                 missionId: missionId,
                 firstName: viewBtn.getAttribute('data-firstname') || '',
                 lastName: viewBtn.getAttribute('data-lastname') || '',
                 specialization: viewBtn.getAttribute('data-specialization') || '',
-                overallScore: viewBtn.getAttribute('data-overall') || '0'
+                overallScore: viewBtn.getAttribute('data-overall') || '0',
             });
 
-            allCrews[missionId] = currentMissionCrew;
-            sessionStorage.setItem('allMissionCrews', JSON.stringify(allCrews));
+            userMissions[`mission_${missionId}_crew`] = currentMissionCrew;
+            saveUserMissionData(userMissions);
 
             btn.textContent = "ADDED ✓";
             btn.disabled = true;
@@ -264,23 +301,20 @@
         });
     });
 
-
     function displayCurrentCrew() {
         const missionId = document.querySelector('.btn-add-participants')?.getAttribute('data-mission-id');
         if (!missionId) {
             console.warn('Mission ID not found');
             return;
         }
-        let allCrews = JSON.parse(sessionStorage.getItem('allMissionCrews') || '{}');
-        const currentMissionCrew = allCrews[missionId] || [];
 
-        console.log('Current mission crew:', currentMissionCrew);
-        console.log('Mission ID:', missionId);
+        const currentMissionCrew = getMissionCrew(missionId);
 
         const crewCount = document.getElementById('crew-count');
         if (crewCount) {
             crewCount.textContent = `Crew members: ${currentMissionCrew.length}`;
         }
+
         document.querySelectorAll(".btn-add-participants").forEach(btn => {
             const astronautId = btn.getAttribute("data-astronaut-id");
             const isAdded = currentMissionCrew.some(member => member.astronautId === astronautId);
@@ -289,38 +323,44 @@
                 btn.textContent = "ADDED ✓";
                 btn.disabled = true;
                 btn.classList.add('btn-success');
+            } else {
+                btn.textContent = "ADD TO CREW";
+                btn.disabled = false;
+                btn.classList.remove('btn-success');
             }
         });
     }
-
     function displayCrewMembers() {
         const missionId = document.querySelector('.btn-add-participants')?.getAttribute('data-mission-id');
         if (!missionId) return;
 
         const crew = getMissionCrew(missionId);
         const participantsDiv = document.querySelector('.participants');
+        const clearBtnContainer = document.getElementById('clear-crew-btn-container');
 
-        // find containers
         let emptyMessageDiv = participantsDiv.querySelector('div[th\\:if]') ||
             participantsDiv.querySelector('.lead')?.parentElement;
         let crewCardsContainer = participantsDiv.querySelector('.added-crew-card');
 
         if (crew.length === 0) {
             if (crewCardsContainer) {
-                crewCardsContainer.style.display = 'none';
+                crewCardsContainer.remove();
             }
+
             if (emptyMessageDiv) {
                 emptyMessageDiv.style.display = 'block';
+            }
+
+            if (clearBtnContainer) {
+                clearBtnContainer.style.display = 'none';
             }
             return;
         }
 
-        // hide message "No participants"
         if (emptyMessageDiv) {
             emptyMessageDiv.style.display = 'none';
         }
 
-        //cards container
         if (!crewCardsContainer) {
             const header = participantsDiv.querySelector('.section-header');
             crewCardsContainer = document.createElement('div');
@@ -330,12 +370,10 @@
             crewCardsContainer.style.display = 'flex';
         }
 
-        const clearBtnContainer = document.getElementById('clear-crew-btn-container');
         if (clearBtnContainer) {
             clearBtnContainer.style.display = crew.length > 0 ? 'block' : 'none';
         }
 
-        //html
         crewCardsContainer.innerHTML = crew.map(member => `
         <div class="added-crew-card p-3 flex-fill text-center position-relative">
             <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
@@ -358,8 +396,8 @@
 
 
     function getMissionCrew(missionId) {
-        let allCrews = JSON.parse(sessionStorage.getItem('allMissionCrews') || '{}');
-        return allCrews[missionId] || [];
+        let userMissions = getUserMissionData();
+        return userMissions[`mission_${missionId}_crew`] || [];
     }
 
     function clearCurrentMissionCrew() {
@@ -368,31 +406,44 @@
             showAlert("Mission ID not found!", "danger");
             return;
         }
-            clearMissionCrew(missionId);
-            // unblock all buttons
-            document.querySelectorAll(".btn-add-participants").forEach(btn => {
-                btn.textContent = "ADD TO CREW";
-                btn.disabled = false;
-                btn.classList.remove('btn-success');
-            });
+
+        clearMissionCrew(missionId);
+
+        document.querySelectorAll(".btn-add-participants").forEach(btn => {
+            btn.textContent = "ADD TO CREW";
+            btn.disabled = false;
+            btn.classList.remove('btn-success');
+        });
     }
 
     function clearMissionCrew(missionId) {
-        let allCrews = JSON.parse(sessionStorage.getItem('allMissionCrews') || '{}');
-        delete allCrews[missionId];
-        sessionStorage.setItem('allMissionCrews', JSON.stringify(allCrews));
+        let userMissions = getUserMissionData();
+        delete userMissions[`mission_${missionId}_crew`];
+        saveUserMissionData(userMissions);
         displayCurrentCrew();
         displayCrewMembers();
+        const crewCardsContainer = document.querySelector('.added-crew-card');
+        if (crewCardsContainer) {
+            crewCardsContainer.remove();
+        }
+        const emptyMessageDiv = document.querySelector('.participants .lead')?.parentElement;
+        if (emptyMessageDiv) {
+            emptyMessageDiv.style.display = 'block';
+        }
+        const clearBtnContainer = document.getElementById('clear-crew-btn-container');
+        if (clearBtnContainer) {
+            clearBtnContainer.style.display = 'none';
+        }
+        document.getElementById('btn-clear')?.style.setProperty('display', 'none', 'important');
     }
 
     function removeFromCrew(astronautId, missionId) {
-        let allCrews = JSON.parse(sessionStorage.getItem('allMissionCrews') || '{}');
-        let currentMissionCrew = allCrews[missionId] || [];
+        let userMissions = getUserMissionData();
+        let currentMissionCrew = userMissions[`mission_${missionId}_crew`] || [];
 
         currentMissionCrew = currentMissionCrew.filter(member => member.astronautId !== astronautId);
-        allCrews[missionId] = currentMissionCrew;
-
-        sessionStorage.setItem('allMissionCrews', JSON.stringify(allCrews));
+        userMissions[`mission_${missionId}_crew`] = currentMissionCrew;
+        saveUserMissionData(userMissions);
 
         displayCurrentCrew();
         displayCrewMembers();
@@ -406,11 +457,7 @@
                 btn.classList.remove('btn-success');
             }
         });
-    }
-
-    function logout() {
-        sessionStorage.removeItem('accessToken');
-        sessionStorage.removeItem('allMissionCrews');
+        document.getElementById('btn-clear')?.style.setProperty('display', 'none', 'important');
     }
 
     document.getElementById('scrollLeft').addEventListener('click', function () {
@@ -480,3 +527,26 @@
 </script>
 </body>
 </html>
+
+
+
+
+
+
+<!--
+// save progress for mission
+function saveMissionProgress(missionId, progressData) {
+    let userMissions = getUserMissionData();
+    userMissions[`mission_${missionId}_progress`] = {
+        ...progressData,
+        lastUpdated: new Date().toISOString()
+    };
+    saveUserMissionData(userMissions);
+}
+
+/// get progress for mission
+function getMissionProgress(missionId) {
+    let userMissions = getUserMissionData();
+    return userMissions[`mission_${missionId}_progress`] || null;
+}
+-->

@@ -33,7 +33,7 @@ public class MissionParticipantsService {
         return restUtil.getList(url, MissionParticipantsDTO[].class);
     }
 
-    public MissionParticipantsDTO addParticipants(Integer missionId, Integer participantId) {
+   /* public MissionParticipantsDTO addParticipants(Integer missionId, Integer participantId) {
         if (missionId == null || missionId <= 0) {
             throw new IllegalArgumentException("Mission ID must be provided and greater than 0");
         }
@@ -51,7 +51,9 @@ public class MissionParticipantsService {
                     e.getResponseBodyAsString()
             );
         }
+
     }
+    */
 }
 
 

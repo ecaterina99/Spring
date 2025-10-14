@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
+    <script th:src="@{/js/auth.js}"></script>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
@@ -47,7 +49,7 @@
                     <div class="logout d-flex align-items-center ms-auto">
         <span th:if="${currentUser != null}">
             Welcome, <span th:text="${currentUser.firstName}"></span>! |
-            <a th:href="@{/login}">Logout</a>
+        <a id="logout" th:href="@{/login}" onclick="logout()">Logout</a>
         </span>
                         <span th:if="${currentUser == null}">
             <a th:href="@{/login}">Login</a>

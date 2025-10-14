@@ -35,5 +35,17 @@ public class GlobalControllerAdvice {
         String token = tokenStorage.getToken();
         return token != null ? token : "";
     }
-
+    @ModelAttribute("userId")
+    public Integer addUserIdToModel() {
+        String token = tokenStorage.getToken();
+        if (token != null && !token.isEmpty()) {
+            try {
+                UserDTO user = apiClient.getCurrentUser();
+                return user != null ? user.getId() : null;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return null;
+    }
 }

@@ -3,6 +3,7 @@ package com.client.controllers;
 import com.client.DTO.AstronautDTO;
 import com.client.DTO.MissionDTO;
 import com.client.DTO.MissionParticipantsDTO;
+import com.client.DTO.UserDTO;
 import com.client.exceptions.ApiProxyException;
 import com.client.service.AstronautService;
 import com.client.service.MissionParticipantsService;
@@ -10,6 +11,9 @@ import com.client.service.MissionService;
 import com.client.service.TokenStorage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +40,7 @@ public class MissionParticipantsController {
     @GetMapping
     public String getAllParticipants(
             @RequestParam(required = false) Integer missionId,
-            Model model) {
+            Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
         if (missionId == null) {
             return "redirect:/missions";

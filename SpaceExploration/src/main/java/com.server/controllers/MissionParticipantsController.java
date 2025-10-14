@@ -2,7 +2,11 @@ package com.server.controllers;
 
 import com.server.dto.MissionDTO;
 import com.server.dto.MissionParticipantsDTO;
+import com.server.dto.UserDTO;
+import com.server.models.User;
 import com.server.services.MissionParticipantsService;
+import com.server.services.UserDetailsService;
+import com.server.util.UserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +29,10 @@ import java.util.List;
 public class MissionParticipantsController {
 
         private final MissionParticipantsService missionParticipantsService;
-
-        public MissionParticipantsController(MissionParticipantsService missionParticipantsService) {
+        private final UserDetailsService userDetailsService;
+        public MissionParticipantsController(MissionParticipantsService missionParticipantsService, UserDetailsService userDetailsService) {
             this.missionParticipantsService = missionParticipantsService;
+            this.userDetailsService = userDetailsService;
         }
 
     @GetMapping("/{missionId}")
@@ -39,6 +45,7 @@ public class MissionParticipantsController {
     })
     public ResponseEntity<List<MissionParticipantsDTO>> getAllParticipantsByMissionId(
             @PathVariable @Min(1) int missionId) {
+
         List<MissionParticipantsDTO> participants = missionParticipantsService.showMissionCrew(missionId);
         return ResponseEntity.ok(participants);
     }
