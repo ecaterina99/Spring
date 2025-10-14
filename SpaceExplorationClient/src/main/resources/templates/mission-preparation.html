@@ -27,7 +27,6 @@
 
         <div class="mission-participants-text text-start mb-4">
             <h2 class="display-7 fw-bold text-glow">CREATE MISSION CREW</h2>
-
         </div>
 
         <div class="d-flex align-items-center position-relative">
@@ -104,20 +103,13 @@
                 <div th:if="${#lists.isEmpty(participants)}">
                     <p class="lead mt-4">No participants assigned yet.<br>
                         Add crew members to begin mission preparation.</p>
-
                 </div>
 
-             <!--   <div th:if="${!#lists.isEmpty(participants)}" class="added-crew-card d-flex flex-wrap gap-3">
-                    <div th:each="p : ${participants}" class="added-crew-card  p-3 flex-fill text-center">
-                        <h5 class="fw-bold" style="color:#ffd500;" th:text="${p.astronautName}"></h5>
-                        <p><span style="color: #00d4ff;">▸</span> Specialization: <span style="color: white;"
-                                                                                        th:text="${p.specialization.toLowerCase()}"></span>
-                        </p>
-                        <span class="score">Overall score: <span th:text="${p.overallScore}"></span></span>
-
-                    </div>
-
-                </div> -->
+                <div class="text-center mb-3" id="clear-crew-btn-container" style="display:none;">
+                    <button class="btn btn-outline-danger btn-sm" onclick="clearCurrentMissionCrew()">
+                        <i class="bi bi-trash"></i> Clear All Crew
+                    </button>
+                </div>
             </div>
 
             <!-- RISKS SECTION -->
@@ -135,7 +127,6 @@
                     <p style="color: #ffcc80; line-height: 1.8; margin-top: 10px;">
                         ⚡ <span th:text="${mission.getPotentialIssues()}" style="color:#ffd500;"></span>
                     </p>
-
                 </div>
 
                 <div style="text-align: center; margin-top: 40px;">
@@ -206,6 +197,7 @@
 
 <div th:insert="~{common_fragments :: mainFooter}"></div>
 
+
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', () => {
         /*<![CDATA[*/
@@ -221,6 +213,7 @@
 
         displayCurrentCrew();
         displayCrewMembers();
+
     });
 
 
@@ -245,13 +238,15 @@
 
             const viewBtn = btn.previousElementSibling;
 
+            const clearBtnContainer = document.getElementById('clear-crew-btn-container');
+            clearBtnContainer.style.display = currentMissionCrew.length > 0 ? 'block' : 'none';
+
             currentMissionCrew.push({
                 astronautId: astronautId,
                 missionId: missionId,
                 firstName: viewBtn.getAttribute('data-firstname') || '',
                 lastName: viewBtn.getAttribute('data-lastname') || '',
                 specialization: viewBtn.getAttribute('data-specialization') || '',
-                imageUrl: viewBtn.getAttribute('data-image') || '',
                 overallScore: viewBtn.getAttribute('data-overall') || '0'
             });
 
@@ -311,7 +306,6 @@
         let crewCardsContainer = participantsDiv.querySelector('.added-crew-card');
 
         if (crew.length === 0) {
-            //show message "No participants"
             if (crewCardsContainer) {
                 crewCardsContainer.style.display = 'none';
             }
@@ -335,6 +329,7 @@
         } else {
             crewCardsContainer.style.display = 'flex';
         }
+
         const clearBtnContainer = document.getElementById('clear-crew-btn-container');
         if (clearBtnContainer) {
             clearBtnContainer.style.display = crew.length > 0 ? 'block' : 'none';
@@ -358,11 +353,6 @@
             </p>
             <span class="score">Overall score: <span>${member.overallScore}</span></span>
         </div>
-          <div class="text-center mb-3" style="display: none;" id="clear-crew-btn-container">
-                            <button class="btn btn-outline-danger btn-sm" onclick="clearCurrentMissionCrew()">
-                                <i class="bi bi-trash"></i> Clear All Crew
-                            </button>
-                        </div>
     `).join('');
     }
 
@@ -378,20 +368,15 @@
             showAlert("Mission ID not found!", "danger");
             return;
         }
-
-        if (confirm('Are you sure you want to clear the entire crew?')) {
             clearMissionCrew(missionId);
-
             // unblock all buttons
             document.querySelectorAll(".btn-add-participants").forEach(btn => {
                 btn.textContent = "ADD TO CREW";
                 btn.disabled = false;
                 btn.classList.remove('btn-success');
             });
-
-            showAlert("Crew cleared successfully!", "info");
-        }
     }
+
     function clearMissionCrew(missionId) {
         let allCrews = JSON.parse(sessionStorage.getItem('allMissionCrews') || '{}');
         delete allCrews[missionId];
@@ -410,10 +395,9 @@
         sessionStorage.setItem('allMissionCrews', JSON.stringify(allCrews));
 
         displayCurrentCrew();
-        displayCrewMembers(); 
+        displayCrewMembers();
         showAlert("Astronaut removed from crew", "info");
 
-        // Снимаем блокировку с кнопки
         document.querySelectorAll(".btn-add-participants").forEach(btn => {
             if (btn.getAttribute("data-astronaut-id") === astronautId &&
                 btn.getAttribute("data-mission-id") === missionId) {
@@ -496,79 +480,3 @@
 </script>
 </body>
 </html>
-
-
-<!--
-console.log('Access token from Thymeleaf:', accessToken);
-console.log('Token length:', accessToken.length);
-
-if (accessToken) {
-sessionStorage.setItem('accessToken', accessToken);
-console.log('Token initialized successfully');
-} else {
-console.warn('Access token is empty!');
-}
-});
-*/
-/*
-document.querySelectorAll(".btn-add-participants").forEach(btn => {
-btn.addEventListener("click", async () => {
-const astronautId = btn.getAttribute("data-astronaut-id");
-const missionId = btn.getAttribute("data-mission-id");
-
-const token = sessionStorage.getItem('accessToken');
-
-if (!token) {
-showAlert("Authorization token is missing!", "danger");
-console.error('Token not found in sessionStorage');
-return;
-}
-
-if (!missionId || !astronautId) {
-showAlert("Missing mission or astronaut ID!", "danger");
-console.error('Missing IDs:', {missionId, astronautId});
-return;
-}
-
-try {
-const serverUrl = "http://localhost:8080/api";
-const response = await fetch(`${serverUrl}/mission-participants/add/${missionId}/${astronautId}`, {
-method: "POST",
-headers: {
-'Accept': 'application/json',
-'Authorization': `Bearer ${token}`,
-'Content-Type': 'application/json'
-}
-});
-
-if (response.ok) {
-showAlert("Astronaut added to crew successfully!", "success");
-setTimeout(() => location.reload(), 1500);
-} else {
-let errorData;
-try {
-errorData = await response.json();
-} catch {
-const text = await response.text();
-errorData = {message: text};
-}
-
-console.error('Server error:', errorData);
-
-if (errorData.error === "CREW_OVERFLOW") {
-showAlert(`Mission crew is full!`, "warning");
-} else if (errorData.error === "VALIDATION_ERROR") {
-showAlert(errorData.message, "warning");
-} else if (errorData.error === "Resource not found") {
-showAlert(errorData.message, "warning");
-} else {
-showAlert(errorData.message || "An unknown error occurred.", "warning");
-}
-}
-} catch (err) {
-console.error("Error adding astronaut:", err);
-showAlert("Network error. Please try again.", "danger");
-}
-});
-});
--->
