@@ -7,7 +7,7 @@
 <main class="container py-4">
 
     <section class="mission-participants-text text-md-start mb-4">
-        <h1 class="display-5 fw-bold">
+        <h1 class="display-5 fw-bold pt-3">
             MISSION PREPARATION FOR
             <span th:text="${mission.name.toUpperCase()}" style="color: #ffd500"></span><br>
         </h1>
@@ -15,7 +15,7 @@
                                                          style="color: #ffd500"></span></h2>
         <p><span th:text="${mission.code}"></span></p>
 
-        <p  style="color: #ffffff; line-height: 1.8; margin-top: 10px; font-size: 18px;">
+        <p  class="d-flex pb-3" style="color: #ffffff; line-height: 1.8; margin-top: 10px; font-size: 18px;">
             ❗ Please pay attention to the specializations required for this mission and crew number.<br>
             Meeting all the required specialization and crew requirements greatly
             increases your chances of success.<br>Otherwise, the risk of mission failure will rise.
@@ -124,19 +124,21 @@
                 <h2 class="section-header">⚠️ CHECK MISSION RISKS</h2>
 
                 <div class="risk-info">
-                    <div class="risk-info-header d-flex gap-3 justify-content-start pb-0">
-                        <img th:src="@{${mission.imgUrl}}" class="card-image" alt="image">
-                    </div>
-                    <p style="margin-top: 25px;">
+                    <div class="risk-info-header d-flex gap-5 justify-content-start align-items-end">
+                        <img th:src="@{${mission.imgUrl}}" class="card-image" style="max-height: 170px" alt="image">
+
+                        <div class="risk-issues d-flex justify-content-center">
+                    <p style="font-size: 22px">
                         <strong>Potential Issues:</strong>
                     </p>
-
-                    <p style="color: #ffcc80; line-height: 1.8; margin-top: 10px;">
+                        </div>
+                    </div>
+                    <p style="color: #ffcc80; line-height: 1.8; margin-top: 10px; text-align: justify;">
                         ⚡ <span th:text="${mission.getPotentialIssues()}" class="lead" style="color:#ffd500;"></span>
                     </p>
                 </div>
 
-                <div style="text-align: center; margin-top: 40px;">
+                <div style="text-align: center; margin-top: 25px;">
                     <button class="btn-check-risks">
                         ANALYZE RISKS
                     </button>
@@ -146,10 +148,13 @@
     </div>
 
     <!--  Back button -->
+
     <div class="start-mission d-flex flex-wrap gap-3 justify-content-center ">
+        <br>
         <button class="btn-start-mission ">
-            START MISSION
+        <span>START MISSION</span>
         </button>
+        <br>
     </div>
 
 
