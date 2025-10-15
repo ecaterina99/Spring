@@ -77,7 +77,7 @@
                                 <strong>VIEW DETAILS</strong>
                             </button>
                             <button class="btn hero-btn pt-0 btn-add-participants"
-                                    th:attr="data-astronaut-id=${astronaut.id}, data-mission-id=${mission.id}, data-crew-size=${mission.crewSize}">
+                                    th:attr="data-astronaut-id=${astronaut.id}, data-mission-id=${mission.id}, data-crew-size=${mission.crewSize} ">
                                 <strong>ADD TO CREW</strong>
                             </button>
                         </div>
@@ -139,13 +139,18 @@
                 </div>
 
                 <div style="text-align: center; margin-top: 25px;">
-                    <button class="btn-check-risks">
+                    <button class="btn-check-risks"
+                            th:attr="data-mission-id=${mission.id},
+                 data-crew-size=${mission.crewSize}
+                           "
+                            onclick="showRisksPopup(this)">
                         ANALYZE RISKS
                     </button>
                 </div>
             </div>
         </section>
     </div>
+
 
     <!--  Back button -->
 
@@ -155,6 +160,28 @@
         <span>START MISSION</span>
         </button>
         <br>
+    </div>
+
+
+    <!-- Popup risks-->
+    <div  id="popup-risks" class="astronaut-popup" style="display:none; height: 700px">
+        <div class="popup-content" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+         border-radius: 15px; padding: 30px; max-width: 700px; height: 700px; color: white;
+         box-shadow: 0 10px 50px rgba(0, 212, 255, 0.3); overflow-y: auto;">
+
+            <div class="popup-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #ffd500; margin: 0;">🛸 MISSION RISK ANALYSIS</h3>
+                <button id="popup-risks-close" style="background: transparent; border: none;
+                    color: #ff6b6b; font-size: 28px; cursor: pointer; line-height: 1;">
+                    ×
+                </button>
+            </div>
+
+            <div id="risk-analysis-content">
+
+
+            </div>
+        </div>
     </div>
 
 
@@ -290,6 +317,7 @@
                 lastName: viewBtn.getAttribute('data-lastname') || '',
                 specialization: viewBtn.getAttribute('data-specialization') || '',
                 overallScore: viewBtn.getAttribute('data-overall') || '0',
+                healthStatus: (btn.getAttribute('data-health') || 'UNKNOWN').trim().toUpperCase()
             });
 
             userMissions[`mission_${missionId}_crew`] = currentMissionCrew;
@@ -383,7 +411,7 @@
         <div class="added-crew-card p-3 flex-fill text-center position-relative">
             <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
                     onclick="removeFromCrew('${member.astronautId}', '${missionId}')"
-                    style="padding: 2px 8px; font-size: 12px; z-index: 10;">
+                    style="padding: 2px 6px; font-size: 12px; z-index: 10;">
                 <i class="bi bi-x-lg"></i>
             </button>
             <h5 class="fw-bold" style="color:#ffd500;">
@@ -465,6 +493,203 @@
         document.getElementById('btn-clear')?.style.setProperty('display', 'none', 'important');
     }
 
+    function showRisksPopup(button) {
+        const missionId = button.getAttribute('data-mission-id');
+        const crewSize = parseInt(button.getAttribute('data-crew-size'));
+
+        const viewBtn = button.previousElementSibling;
+
+        if (!missionId) return;
+
+        const crew = getMissionCrew(missionId);
+        const requiredSpecializations = getRequiredSpecializations();
+
+        const risks = analyzeCrewRisks(crew, crewSize, requiredSpecializations );
+        displayRisksPopup(risks, crew, crewSize);
+    }
+
+
+    function getRequiredSpecializations() {
+        const specsText = document.querySelector('p[style*="font-size: 20px"] strong span')?.textContent || '';
+        const specs = {};
+
+        if (specsText) {
+            specsText.split(',').forEach(item => {
+                const match = item.trim().match(/(.+?)\s*-\s*(\d+)/);
+                if (match) {
+                    const specName = match[1].trim().toLowerCase();
+                    const quantity = parseInt(match[2]);
+                    specs[specName] = quantity;
+                }
+            });
+        }
+
+        return specs;
+    }
+
+
+    function analyzeCrewRisks(crew, requiredCrewSize, requiredSpecializations ) {
+        const risks = {
+            crewSizeMatch: crew.length === requiredCrewSize,
+            crewCount: crew.length,
+            requiredCount: requiredCrewSize,
+            specializations: {},
+            requiredSpecializations: requiredSpecializations,
+            specializationsMismatch: [],
+            flightReadiness: [],
+            hasErrors: false
+
+        };
+
+        crew.forEach(member => {
+            const spec = member.specialization.toLowerCase();
+            risks.specializations[spec] = (risks.specializations[spec] || 0) + 1;
+        });
+        Object.entries(requiredSpecializations).forEach(([spec, required]) => {
+            const current = risks.specializations[spec] || 0;
+            if (current !== required) {
+                risks.specializationsMismatch.push({
+                    specialization: spec,
+                    required: required,
+                    current: current,
+                    status: current < required ? 'missing' : 'excess'
+                });
+            }
+        });
+
+        if (!risks.crewSizeMatch ||
+            risks.specializationsMismatch.length > 0 ||
+            risks.flightReadiness.length > 0) {
+            risks.hasErrors = true;
+        }
+
+        return risks;
+    }
+    function displayRisksPopup(risks, crew, requiredCrewSize) {
+        const popup = document.getElementById("popup-risks");
+
+        if (!popup) {
+            console.error("Popup element not found!");
+            return;
+        }
+        const contentContainer = document.getElementById("risk-analysis-content");
+
+        let content = `
+        <div class="risk-analysis">
+            <!-- CREW STATUS -->
+            <h5 style="color: #00d4ff; margin-bottom: 15px;">👥 CREW STATUS</h5>
+            <div style="background: rgba(0, 212, 255, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <p style="margin: 5px 0;">
+                    <span style="color: #ffd500;">▸</span>
+                    Required crew size: <strong>${requiredCrewSize}</strong>
+                </p>
+                <p style="margin: 5px 0;">
+                    <span style="color: #ffd500;">▸</span>
+                    Current crew size: <strong style="color: ${risks.crewSizeMatch ? '#00ff88' : '#ff6b6b'}">${risks.crewCount}</strong>
+                </p>
+                ${!risks.crewSizeMatch ?
+            `<p style="color: #ff6b6b; margin-top: 10px;">
+                        ⚠️ Crew size mismatch! ${risks.crewCount < requiredCrewSize ?
+                `Need ${requiredCrewSize - risks.crewCount} more astronaut(s)` :
+                `${risks.crewCount - requiredCrewSize} astronaut(s) over limit`}
+                    </p>` :
+            `<p style="color: #00ff88; margin-top: 10px;">✓ Crew size is correct!</p>`
+        }
+            </div>
+
+            <!-- SPECIALIZATIONS -->
+            <h5 style="color: #00d4ff; margin-bottom: 15px;">🔬 SPECIALIZATIONS</h5>
+            <div style="background: rgba(0, 212, 255, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                ${Object.keys(risks.requiredSpecializations).length > 0 ?
+            Object.entries(risks.requiredSpecializations).map(([spec, required]) => {
+                const current = risks.specializations[spec] || 0;
+                const isCorrect = current === required;
+                return `
+                            <p style="margin: 5px 0; color: ${isCorrect ? '#00ff88' : '#ff6b6b'};">
+                                <span style="color: #ffd500;">▸</span>
+                                ${spec.charAt(0).toUpperCase() + spec.slice(1)}:
+                                <strong>${current}/${required}</strong>
+                                ${isCorrect ? ' ✓' : ` ${current < required ? '(need ' + (required - current) + ' more)' : '(excess: ' + (current - required) + ')'}`}
+                            </p>
+                        `;
+            }).join('') :
+            '<p style="color: #ff6b6b;">⚠️ No required specializations defined!</p>'
+        }
+
+                ${risks.specializationsMismatch.length > 0 ?
+            `<p style="color: #ff6b6b; margin-top: 10px; font-weight: bold;">
+                        ⚠️ Specialization requirements not met!
+                    </p>` :
+            Object.keys(risks.requiredSpecializations).length > 0 ?
+                `<p style="color: #00ff88; margin-top: 10px; font-weight: bold;">
+                            ✓ All specializations matched!
+                        </p>` : ''
+        }
+            </div>
+
+            <!-- CURRENT CREW MEMBERS -->
+            <h5 style="color: #00d4ff; margin-bottom: 15px;">👨‍🚀 CURRENT CREW MEMBERS</h5>
+            <div style="max-height: 250px; overflow-y: auto;">
+                ${crew.length > 0 ?
+            crew.map(member => `
+                        <div style="background: rgba(255, 213, 0, 0.1); padding: 12px;
+                             border-radius: 8px; margin-bottom: 10px; border-left: 3px solid #ffd500;">
+                            <p style="margin: 3px 0; color: #ffd500; font-weight: bold; font-size: 14px;">
+                                ${member.firstName.toUpperCase()} ${member.lastName.toUpperCase()}
+                            </p>
+                            <p style="margin: 3px 0; font-size: 13px;">
+                                <span style="color: #00d4ff;">Specialization:</span> ${member.specialization}
+                            </p>
+                            <p style="margin: 3px 0; font-size: 13px;">
+                                <span style="color: #00d4ff;">Health Status:</span>
+                                <span style="color: ${(member.healthStatus || '').trim().toUpperCase() === 'FLIGHT READY' ? '#00ff88' : '#ff6b6b'};">
+                                    ${member.healthStatus}
+                                </span>
+                            </p>
+                            <p style="margin: 3px 0; font-size: 13px;">
+                                <span style="color: #00d4ff;">Overall Score:</span> ${member.overallScore}
+                            </p>
+                        </div>
+                    `).join('') :
+            '<p style="color: #ff6b6b; text-align: center; padding: 20px;">No crew members added yet!</p>'
+        }
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="popup-footer" style="margin-top: 25px; text-align: center; padding-top: 20px; border-top: 1px solid rgba(255, 213, 0, 0.3);">
+            ${!risks.hasErrors && crew.length > 0 ?
+            `<p style="color: #00ff88; font-size: 18px; font-weight: bold;">
+                    ✓ Mission is ready for launch!
+                </p>` :
+            `<p style="color: #ff6b6b; font-size: 18px; font-weight: bold;">
+                    ⚠️ Mission has critical issues that need to be resolved!
+                </p>`
+        }
+        </div>
+    `;
+
+        contentContainer.innerHTML = content;
+        popup.style.display = "flex";
+
+        const closeBtn = document.getElementById("popup-risks-close");
+        if (closeBtn) {
+            closeBtn.onclick = () => popup.style.display = "none";
+        }
+
+        popup.onclick = (e) => {
+            if (e.target.id === "popup-risks") {
+                popup.style.display = "none";
+            }
+        };
+
+        document.onkeydown = (e) => {
+            if (e.key === "Escape") {
+                popup.style.display = "none";
+            }
+        };
+    }
+
     document.getElementById('scrollLeft').addEventListener('click', function () {
         const container = document.getElementById('astronautsScroll');
         container.scrollBy({left: -250, behavior: 'smooth'});
@@ -474,6 +699,7 @@
         const container = document.getElementById('astronautsScroll');
         container.scrollBy({left: 250, behavior: 'smooth'});
     });
+
 
     function showPopup(button) {
         const firstname = button.getAttribute("data-firstname");

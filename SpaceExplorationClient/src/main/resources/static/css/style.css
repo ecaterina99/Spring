@@ -110,7 +110,7 @@ body {
     padding: 30px;
     border-radius: 20px;
     overflow: hidden;
-    height: 580px;
+    height: 600px;
 }
 
 .lead{
@@ -246,7 +246,31 @@ body {
     position: relative;
     z-index: 1;
 }
+.added-crew-card{
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 15px;
+    border-radius: 10px;
+}
 
+.added-crew-card::-webkit-scrollbar {
+    width: 8px;
+}
+
+.added-crew-card::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.added-crew-card::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ffd500, #ff8032);
+    border-radius: 4px;
+}
+
+.added-crew-card::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ffb300, #ff6600);
+}
 /* Risk Info */
 .risk-info {
     background: rgba(0, 0, 0, 0.6);
