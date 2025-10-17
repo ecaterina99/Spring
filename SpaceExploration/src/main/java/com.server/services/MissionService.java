@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -210,21 +211,51 @@ public class MissionService {
             System.out.println("Mission crew size is accepted");
         }
 
+        Set<MissionSpecialization> requiredSpecs = mission.getMissionSpecializations();
+        if (requiredSpecs != null && !requiredSpecs.isEmpty()) {
+            List<String> crewSpecs = participants.stream()
+                    .map(p -> p.getSpecialization().name())
+                    .distinct()
+                    .toList();
+
+            List<String> requiredSpecNames = requiredSpecs.stream()
+                    .map(req -> req.getSpecialization().name())
+                    .toList();
+
+            List<String> missingSpecs = requiredSpecNames.stream()
+                    .filter(req -> !crewSpecs.contains(req))
+                    .toList();
+
+            if (!missingSpecs.isEmpty()) {
+                int specPenalty = missingSpecs.size() * 10;
+                successChance -= specPenalty;
+                System.out.println("Missing specializations: " + missingSpecs + ", -" + specPenalty + "% to success chance");
+            } else {
+                System.out.println("All required specializations are present in the crew.");
+            }
+        } else {
+            System.out.println("No required specializations defined for this mission.");
+        }
+
+
+
+
         for(MissionParticipantsDTO p : participants ){
-            if(!p.getHealthStatus().toString().equalsIgnoreCase("FLIGHT READY")){
+            if(p.getHealthStatus().toString().equalsIgnoreCase("RETIRED")||p.getHealthStatus().toString().equalsIgnoreCase("MEDICAL_REVIEW")){
                 successChance -= 10;
                 System.out.println("Astronaut "+p.getAstronautName()+ " is not ready to flight!");
 
             }
         }
 
+
         if (successChance < 0) successChance = 0;
         if (successChance > 100) successChance = 100;
         System.out.println("The final success chance is " + successChance);
 
         int alienChance = ThreadLocalRandom.current().nextInt(0, 100);
-        if (alienChance < 10) {
-            System.out.println("Oh nooooo.....The alien chance! The mission is failed");
+        if (alienChance < 20) {
+            System.out.println("Oh nooooo.....The aliens attacked! The mission is failed");
             return false;
         }
         int roll = ThreadLocalRandom.current().nextInt(0, 100);

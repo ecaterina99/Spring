@@ -146,9 +146,12 @@ public class MissionController {
 
 
     @PostMapping("/{missionId}/start")
-    public ResponseEntity<MissionReportDTO> startMission(
+    public ResponseEntity<?> startMission(
           @Valid  @PathVariable Integer missionId,
     @RequestBody MissionDTO missionDTO){
+        missionParticipantsService.clearMissionCrew(missionId);
+
+
         missionDTO.getParticipants().forEach(participant -> {
             missionParticipantsService.addParticipantsToMission(missionId, participant.getAstronautId());
         });

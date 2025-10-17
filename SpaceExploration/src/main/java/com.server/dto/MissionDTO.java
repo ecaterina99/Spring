@@ -22,7 +22,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Builder
 public class MissionDTO {
-    private int id;
+    private Integer id;
     @NotBlank(message = "Mission name is required")
     @Size(min = 2, max = 100, message = "Mission name must be between 2 and 100 characters")
     private String name;

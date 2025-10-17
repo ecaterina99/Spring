@@ -77,6 +77,9 @@ public class Astronaut {
     @Column(name = "image_url")
     private String imageUrl;
 
+
+
+
     public enum HealthStatus {
         FLIGHT_READY("Flight Ready"),
         MEDICAL_REVIEW("Medical Review"),
@@ -112,6 +115,7 @@ public class Astronaut {
     @Column(name = "health_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private HealthStatus healthStatus = HealthStatus.FLIGHT_READY;
+
 
     public enum Specialization {
         PILOT("Pilot"),

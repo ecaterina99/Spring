@@ -40,12 +40,24 @@ public class MissionParticipantsService {
     @Transactional(readOnly = true)
     public List<MissionParticipantsDTO> showMissionCrew(int missionId) {
         if (!missionRepository.existsById(missionId)) {
-            throw new EntityNotFoundException("Mission with id: " + missionId+ " not found");
+            throw new EntityNotFoundException("Mission with id: " + missionId + " not found");
         }
         List<MissionParticipants> participants = missionParticipantsRepository.findByMissionId(missionId);
         return participants.stream()
                 .map(MissionParticipantsDTO::missionParticipantsDetails)
                 .collect(Collectors.toList());
+    }
+
+
+    public void clearMissionCrew(int missionId) {
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow(() -> new EntityNotFoundException("Mission not found with id: " + missionId));
+
+        List<MissionParticipants> existingParticipants = missionParticipantsRepository.findByMissionId(missionId);
+
+        if (!existingParticipants.isEmpty()) {
+            missionParticipantsRepository.deleteAll(existingParticipants);
+        }
     }
 
     @Transactional
@@ -58,7 +70,7 @@ public class MissionParticipantsService {
                 .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + astronautId));
 
         if (missionParticipantsRepository.existsByMissionIdAndAstronautId(missionId, astronautId)) {
-            throw new IllegalStateException(astronaut.getFirstName()+ " "+ astronaut.getLastName() + " is already assigned to this mission!");
+            throw new IllegalStateException(astronaut.getFirstName() + " " + astronaut.getLastName() + " is already assigned to this mission!");
         }
 
         int currentCrewSize = missionParticipantsRepository.findByMissionId(missionId).size();

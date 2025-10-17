@@ -262,11 +262,27 @@
             sessionStorage.setItem('allMissionCrews', JSON.stringify({}));
         }
         initializeUserMissionData(userId);
-
+        const missionId = document.querySelector('.btn-add-participants')?.getAttribute('data-mission-id');
+        if (missionId) {
+            checkAndClearStartedMission(missionId);
+        }
         displayCurrentCrew();
         displayCrewMembers();
 
     });
+
+
+    function checkAndClearStartedMission(missionId) {
+        const startedMissionsKey = 'startedMissions';
+        let startedMissions = JSON.parse(sessionStorage.getItem(startedMissionsKey) || '[]');
+
+        if (startedMissions.includes(missionId)) {
+            console.log(`Mission ${missionId} was already started, clearing crew data`);
+            let userMissions = getUserMissionData();
+            delete userMissions[`mission_${missionId}_crew`];
+            saveUserMissionData(userMissions);
+        }
+    }
 
     function initializeUserMissionData(userId) {
         const userDataKey = `user_${userId}_missions`;
@@ -765,57 +781,113 @@
 
 
     document.querySelector('.btn-start-mission').addEventListener('click', async () => {
+
+        const button = event.currentTarget;
+        if (button.disabled) return;
+
+
         const missionId = document.querySelector('.btn-add-participants')?.getAttribute('data-mission-id');
         if (!missionId) {
             showAlert("Mission ID not found!", "danger");
             return;
         }
 
-        const crew = getMissionCrew(missionId);
-        if (crew.length === 0) {
-            showAlert("No crew selected!", "warning");
-            return;
+        function normalizeHealthStatus(status) {
+            if (!status) return 'FLIGHT_READY';
+            return status.trim().toUpperCase().replace(/\s+/g, '_');
         }
-        const mission = {
-            id: missionId,
-            crew: crew
-        };
-
-        /*<![CDATA[*/
-        const accessToken = /*[[${accessToken}]]*/ '';
-        const userId = /*[[${userId}]]*/ '';
-        /*]]>*/
 
 
-        if (accessToken) sessionStorage.setItem('accessToken', accessToken);
+            const crew = getMissionCrew(missionId);
+            if (crew.length === 0) {
+                showAlert("No crew selected!", "warning");
+                return;
+            }
 
-        const token = sessionStorage.getItem('accessToken');
-        if (!token) {
-            console.error("No token found in sessionStorage!");
-            showAlert("Authentication token missing. Please log in again.", "danger");
-            return;
-        }
-        fetch(`http://localhost:8080/api/missions/${missionId}/start`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(mission)
-        })
-            .then(response => {
+            const mission = {
+                id: missionId,
+                participants: crew.map(member => ({
+                    missionId: parseInt(missionId),
+                    astronautId: parseInt(member.astronautId ?? member.id),
+                    astronautName: `${member.firstName} ${member.lastName}`,
+                    healthStatus: normalizeHealthStatus(member.healthStatus),
+                    specialization: member.specialization?.toUpperCase(),
+                    overallScore: member.overallScore ?? 0
+                }))
+            };
+
+            /*<![CDATA[*/
+            const accessToken = /*[[${accessToken}]]*/ '';
+            const userId = /*[[${userId}]]*/ '';
+            /*]]>*/
+
+
+            if (accessToken) sessionStorage.setItem('accessToken', accessToken);
+
+            const token = sessionStorage.getItem('accessToken');
+            if (!token) {
+                console.error("No token found in sessionStorage!");
+                showAlert("Authentication token missing. Please log in again.", "danger");
+                return;
+            }
+
+        button.disabled = true;
+        const originalText = button.textContent;
+
+            try {
+                const response = await fetch(`http://localhost:8080/api/missions/${missionId}/start`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(mission)
+                });
+
                 if (!response.ok) {
-                    throw new Error(`Error starting mission: ${response.statusText}`);
+                    const errorText = await response.text();
+                    throw new Error(`Error starting mission: ${response.status} - ${errorText}`);
                 }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Mission started:", data);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    });
+
+                const data = await response.json();
+                console.log("Mission started successfully:", data);
+
+                const startedMissionsKey = 'startedMissions';
+                let startedMissions = JSON.parse(sessionStorage.getItem(startedMissionsKey) || '[]');
+                if (!startedMissions.includes(missionId)) {
+                    startedMissions.push(missionId);
+                    sessionStorage.setItem(startedMissionsKey, JSON.stringify(startedMissions));
+                }
+
+                let userMissions = getUserMissionData();
+                delete userMissions[`mission_${missionId}_crew`];
+                saveUserMissionData(userMissions);
+
+                displayCurrentCrew();
+                displayCrewMembers();
+
+                document.querySelectorAll(".btn-add-participants").forEach(btn => {
+                    if (btn.getAttribute("data-mission-id") === missionId) {
+                        btn.textContent = "ADD TO CREW";
+                        btn.disabled = false;
+                        btn.classList.remove('btn-success');
+                    }
+                });
+
+                showAlert("Mission started successfully!", "success");
+
+                // optional:
+                // window.location.href = `/missions/${missionId}/report`;
+
+
+            } catch (error) {
+                console.error("Failed to start mission:", error);
+                showAlert(`Failed to start mission: ${error.message}`, "danger");
+                button.disabled = false;
+                button.textContent = originalText;
+            }
+        });
+
 
 </script>
 </body>
