@@ -1,19 +1,25 @@
 package com.server.services;
 
-import com.server.dto.MissionDTO;
-import com.server.dto.MissionSpecializationDTO;
+
+import com.server.dto.*;
 import com.server.models.Destination;
 import com.server.models.Mission;
+import com.server.models.MissionParticipants;
 import com.server.models.MissionSpecialization;
 import com.server.repositories.DestinationRepository;
+import com.server.repositories.MissionParticipantsRepository;
+import com.server.repositories.MissionReportRepository;
 import com.server.repositories.MissionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class MissionService {
@@ -24,11 +30,11 @@ public class MissionService {
 
     public MissionService(ModelMapper modelMapper,
                           MissionRepository missionRepository,
-                          DestinationRepository destinationRepository
-                         ) {
+                          DestinationRepository destinationRepository) {
         this.missionRepository = missionRepository;
         this.destinationRepository = destinationRepository;
         this.modelMapper = modelMapper;
+
     }
 
     @Transactional(readOnly = true)
@@ -121,6 +127,7 @@ public class MissionService {
             );
         }
     }
+
     @Transactional
     public MissionDTO updateMission(MissionDTO.@Valid MissionUpdateDTO missionDTO, int id) {
         Mission existingMission = missionRepository.findById(id)
@@ -186,6 +193,51 @@ public class MissionService {
     private Mission findMissionById(Integer missionId) {
         return missionRepository.findById(missionId)
                 .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " not found"));
+    }
+
+
+    public boolean startMission(Integer missionId, List<MissionParticipantsDTO> participants) {
+        int successChance = 100;
+
+        Mission mission = findMissionById(missionId);
+        int missing = Math.max(0, mission.getCrewSize() - participants.size());
+
+        if (missing > 0) {
+            int penalty = missing * 10;
+            successChance -= penalty;
+            System.out.println("Missing "+ missing + " persons, -" + penalty + "% to success chance");
+        } else {
+            System.out.println("Mission crew size is accepted");
+        }
+
+        for(MissionParticipantsDTO p : participants ){
+            if(!p.getHealthStatus().toString().equalsIgnoreCase("FLIGHT READY")){
+                successChance -= 10;
+                System.out.println("Astronaut "+p.getAstronautName()+ " is not ready to flight!");
+
+            }
+        }
+
+        if (successChance < 0) successChance = 0;
+        if (successChance > 100) successChance = 100;
+        System.out.println("The final success chance is " + successChance);
+
+        int alienChance = ThreadLocalRandom.current().nextInt(0, 100);
+        if (alienChance < 10) {
+            System.out.println("Oh nooooo.....The alien chance! The mission is failed");
+            return false;
+        }
+        int roll = ThreadLocalRandom.current().nextInt(0, 100);
+
+        boolean success = roll < successChance;
+        if (success) {
+
+            System.out.println("Congratulations! You have successfully completed the mission!");
+        } else {
+            System.out.println("Sorry, but the mission was not successful!");
+        }
+
+        return success;
     }
 
 }

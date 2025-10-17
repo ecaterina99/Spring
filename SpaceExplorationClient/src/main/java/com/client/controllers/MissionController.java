@@ -60,4 +60,10 @@ public class MissionController {
         return "mission-cards :: missionCards";
     }
 
+@PostMapping("/{missionId}/start")
+    public String startMission(@PathVariable Integer missionId, Model model) {
+        missionService.startMission(missionId);
+        model.addAttribute("missionId", missionId);
+    return "redirect:/mission-preparation?missionId=" + missionId;}
+
   }

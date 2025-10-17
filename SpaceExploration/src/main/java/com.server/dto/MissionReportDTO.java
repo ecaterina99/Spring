@@ -25,9 +25,6 @@ import java.util.List;
 public class MissionReportDTO {
     private int id;
     private boolean isSuccessful;
-    @NotBlank(message = "Results description is required")
-    @Size(min = 2, message = "Results description must be longer")
-    private String resultsDescription;
     @NotNull
     private int missionId;
     @NotBlank
@@ -40,11 +37,16 @@ public class MissionReportDTO {
     @NotNull
     private Integer paymentAmount;
 
+    private Integer crewSize;
+
+    private List<MissionSpecializationDTO> specializations = new ArrayList<>();
+
+
+
     public static MissionReportDTO fromMissionReport(MissionReport missionReport) {
         return MissionReportDTO.builder()
                 .id(missionReport.getId())
                 .isSuccessful(missionReport.isSuccessful())
-                .resultsDescription(missionReport.getResultsDescription())
                 .missionId(missionReport.getMission().getId())
                 .missionName(missionReport.getMission().getName())
                 .destinationName(missionReport.getMission().getDestination().getDestinationName())

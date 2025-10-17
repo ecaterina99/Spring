@@ -20,11 +20,6 @@ public class MissionReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank(message = "Results description is required")
-    @Size(min = 2,  message = "Results description must be longer")
-    @Column(name = "results_description", nullable = false)
-    private String resultsDescription;
-
     @Column(name="is_successful", nullable = false)
     private boolean isSuccessful;
 

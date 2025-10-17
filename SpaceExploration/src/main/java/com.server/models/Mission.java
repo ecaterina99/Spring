@@ -60,6 +60,7 @@ public class Mission {
     private String imgUrl;
 
 
+
     public enum DifficultyLevel {
         LOW("low"),
         MEDIUM("medium"),

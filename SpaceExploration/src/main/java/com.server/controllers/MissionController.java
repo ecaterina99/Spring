@@ -2,9 +2,12 @@ package com.server.controllers;
 
 import com.server.dto.AstronautDTO;
 import com.server.dto.MissionDTO;
+import com.server.dto.MissionReportDTO;
 import com.server.dto.MissionSpecializationDTO;
 import com.server.models.Mission;
 import com.server.models.MissionSpecialization;
+import com.server.services.MissionParticipantsService;
+import com.server.services.MissionReportService;
 import com.server.services.MissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,9 +32,13 @@ import java.util.List;
 
 public class MissionController {
     private final MissionService missionService;
+    private final MissionParticipantsService missionParticipantsService;
+    private final MissionReportService missionReportService;
 
-    public MissionController(MissionService missionService) {
+    public MissionController(MissionService missionService, MissionParticipantsService missionParticipantsService, MissionReportService missionReportService) {
         this.missionService = missionService;
+        this.missionParticipantsService = missionParticipantsService;
+        this.missionReportService = missionReportService;
     }
 
     @GetMapping("/{id}")
@@ -137,6 +144,22 @@ public class MissionController {
         return ResponseEntity.noContent().build();
     }
 
+
+    @PostMapping("/{missionId}/start")
+    public ResponseEntity<MissionReportDTO> startMission(
+          @Valid  @PathVariable Integer missionId,
+    @RequestBody MissionDTO missionDTO){
+        missionDTO.getParticipants().forEach(participant -> {
+            missionParticipantsService.addParticipantsToMission(missionId, participant.getAstronautId());
+        });
+        boolean success = missionService.startMission(missionId, missionDTO.getParticipants());
+
+        MissionReportDTO report = missionReportService.createReport(missionId,success);
+        return ResponseEntity.ok(report);
+    }
+
+
+
     @PatchMapping("/{missionId}/specializations")
     @Operation(summary = "Add or update  mission specializations",
             description = "Use quantity > 0 to add/update specializations")
@@ -160,6 +183,7 @@ public class MissionController {
     }
 
 
+
     @DeleteMapping("/{missionId}/delete-specialization")
     @Operation(summary = "Delete specialization")
     @ApiResponses(value = {
@@ -173,7 +197,6 @@ public class MissionController {
         missionService.removeSpecialization(missionId, MissionSpecialization.Specialization.valueOf(request.getSpecialization()));
         return ResponseEntity.noContent().build();
     }
-
 
 }
 

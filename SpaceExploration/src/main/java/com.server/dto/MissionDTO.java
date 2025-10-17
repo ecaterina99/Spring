@@ -51,6 +51,7 @@ public class MissionDTO {
     @NotNull
     private Integer paymentAmount;
     private List<MissionSpecializationDTO> specializations = new ArrayList<>();
+    private List<MissionParticipantsDTO> participants = new ArrayList<>();
 
     public static MissionDTO missionWithDetails(Mission mission) {
         return MissionDTO.builder()

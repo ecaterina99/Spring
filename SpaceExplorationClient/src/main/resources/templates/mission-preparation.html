@@ -164,15 +164,13 @@
 
 
     <!-- Popup risks-->
-    <div  id="popup-risks" class="astronaut-popup" style="display:none; height: 700px">
-        <div class="popup-content" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-         border-radius: 15px; padding: 30px; max-width: 700px; height: 700px; color: white;
-         box-shadow: 0 10px 50px rgba(0, 212, 255, 0.3); overflow-y: auto;">
-
+    <div  id="popup-risks" class="astronaut-popup" style="display:none; width:600px; height: 700px">
+        <div class="popup-risks-content" >
             <div class="popup-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="color: #ffd500; margin: 0;">🛸 MISSION RISK ANALYSIS</h3>
+                <h3 style="color: #0b43b5; margin: 0;">
+                    <strong>🛸 MISSION RISK ANALYSIS</strong></h3>
                 <button id="popup-risks-close" style="background: transparent; border: none;
-                    color: #ff6b6b; font-size: 28px; cursor: pointer; line-height: 1;">
+                    color: #ff0000; font-size: 30px; cursor: pointer; line-height: 1;">
                     ×
                 </button>
             </div>
@@ -317,7 +315,7 @@
                 lastName: viewBtn.getAttribute('data-lastname') || '',
                 specialization: viewBtn.getAttribute('data-specialization') || '',
                 overallScore: viewBtn.getAttribute('data-overall') || '0',
-                healthStatus: (btn.getAttribute('data-health') || 'UNKNOWN').trim().toUpperCase()
+                healthStatus:  viewBtn.getAttribute('data-health') || 'UNKNOWN'
             });
 
             userMissions[`mission_${missionId}_crew`] = currentMissionCrew;
@@ -497,8 +495,6 @@
         const missionId = button.getAttribute('data-mission-id');
         const crewSize = parseInt(button.getAttribute('data-crew-size'));
 
-        const viewBtn = button.previousElementSibling;
-
         if (!missionId) return;
 
         const crew = getMissionCrew(missionId);
@@ -577,18 +573,18 @@
         let content = `
         <div class="risk-analysis">
             <!-- CREW STATUS -->
-            <h5 style="color: #00d4ff; margin-bottom: 15px;">👥 CREW STATUS</h5>
-            <div style="background: rgba(0, 212, 255, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <h5 style="color: #0b43b5; margin-bottom: 15px;">👥 CREW STATUS</h5>
+            <div style="background: rgba(189,83,4,0.56); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                 <p style="margin: 5px 0;">
                     <span style="color: #ffd500;">▸</span>
                     Required crew size: <strong>${requiredCrewSize}</strong>
                 </p>
                 <p style="margin: 5px 0;">
                     <span style="color: #ffd500;">▸</span>
-                    Current crew size: <strong style="color: ${risks.crewSizeMatch ? '#00ff88' : '#ff6b6b'}">${risks.crewCount}</strong>
+                    Current crew size: <strong style="color: ${risks.crewSizeMatch ? '#00ff88' : '#ffffff'}">${risks.crewCount}</strong>
                 </p>
                 ${!risks.crewSizeMatch ?
-            `<p style="color: #ff6b6b; margin-top: 10px;">
+            `<p style="color: #a30101; margin-top: 10px;">
                         ⚠️ Crew size mismatch! ${risks.crewCount < requiredCrewSize ?
                 `Need ${requiredCrewSize - risks.crewCount} more astronaut(s)` :
                 `${risks.crewCount - requiredCrewSize} astronaut(s) over limit`}
@@ -598,14 +594,14 @@
             </div>
 
             <!-- SPECIALIZATIONS -->
-            <h5 style="color: #00d4ff; margin-bottom: 15px;">🔬 SPECIALIZATIONS</h5>
-            <div style="background: rgba(0, 212, 255, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <h5 style="color: #0b43b5; margin-bottom: 15px;">🔬 SPECIALIZATIONS</h5>
+            <div style="background: rgba(189,83,4,0.56); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                 ${Object.keys(risks.requiredSpecializations).length > 0 ?
             Object.entries(risks.requiredSpecializations).map(([spec, required]) => {
                 const current = risks.specializations[spec] || 0;
                 const isCorrect = current === required;
                 return `
-                            <p style="margin: 5px 0; color: ${isCorrect ? '#00ff88' : '#ff6b6b'};">
+                            <p style="margin: 5px 0; color: ${isCorrect ? '#00ff88' : '#ffffff'};">
                                 <span style="color: #ffd500;">▸</span>
                                 ${spec.charAt(0).toUpperCase() + spec.slice(1)}:
                                 <strong>${current}/${required}</strong>
@@ -613,11 +609,11 @@
                             </p>
                         `;
             }).join('') :
-            '<p style="color: #ff6b6b;">⚠️ No required specializations defined!</p>'
+            '<p style="color: #8a0909;">⚠️ No required specializations defined!</p>'
         }
 
                 ${risks.specializationsMismatch.length > 0 ?
-            `<p style="color: #ff6b6b; margin-top: 10px; font-weight: bold;">
+            `<p style="color: #830a0a; margin-top: 10px; font-weight: bold;">
                         ⚠️ Specialization requirements not met!
                     </p>` :
             Object.keys(risks.requiredSpecializations).length > 0 ?
@@ -627,43 +623,55 @@
         }
             </div>
 
-            <!-- CURRENT CREW MEMBERS -->
-            <h5 style="color: #00d4ff; margin-bottom: 15px;">👨‍🚀 CURRENT CREW MEMBERS</h5>
-            <div style="max-height: 250px; overflow-y: auto;">
-                ${crew.length > 0 ?
-            crew.map(member => `
-                        <div style="background: rgba(255, 213, 0, 0.1); padding: 12px;
-                             border-radius: 8px; margin-bottom: 10px; border-left: 3px solid #ffd500;">
-                            <p style="margin: 3px 0; color: #ffd500; font-weight: bold; font-size: 14px;">
-                                ${member.firstName.toUpperCase()} ${member.lastName.toUpperCase()}
+           <!-- CURRENT CREW MEMBERS -->
+<h5 style="color: #0b43b5; margin-bottom: 15px;">👨‍🚀 CURRENT CREW MEMBERS</h5>
+<div class="current-crew-popup" style="max-height: 250px; overflow-y: auto;">
+    ${crew.length > 0 ?
+            (() => {
+                const cardsHTML = crew.map(member => `
+                <div style="background: rgba(189,83,4,0.56); padding: 12px;
+                     border-radius: 8px; margin-bottom: 10px; border-left: 3px; color: #ffffff;">
+                    <p style="margin: 3px 0; color: #0b43b5; font-weight: bold; font-size: 14px;">
+                        ${member.firstName.toUpperCase()} ${member.lastName.toUpperCase()}
+                    </p>
+                    <p style="margin: 3px 0; font-size: 13px;">
+                        <span style="color: #ffffff;">Specialization:</span> ${member.specialization}
+                    </p>
+                    <p style="margin: 3px 0; font-size: 13px;">
+                        <span style="color: #ffffff;">Health Status:</span> ${member.healthStatus}
+                    </p>
+                    <p style="margin: 3px 0; font-size: 13px;">
+                        <span style="color: #fbfbfb;">Overall Score:</span> ${member.overallScore}
+                    </p>
+                </div>
+            `).join('');
+                const notReadyMembers = crew.filter(m => m.healthStatus !== 'Flight Ready');
+                const warningsHTML = notReadyMembers.length > 0
+                    ? `<div style="margin-top: 15px; padding: 10px; border: 2px solid #970d0d;
+                              border-radius: 8px; background: rgba(255, 107, 107, 0.1);">
+                        ${notReadyMembers.map(m => `
+                            <p style="color: #8e0808; font-weight: bold; margin: 5px 0;">
+                                ⚠️ Attention! Astronaut ${m.firstName} ${m.lastName}  has status: ${m.healthStatus}
                             </p>
-                            <p style="margin: 3px 0; font-size: 13px;">
-                                <span style="color: #00d4ff;">Specialization:</span> ${member.specialization}
-                            </p>
-                            <p style="margin: 3px 0; font-size: 13px;">
-                                <span style="color: #00d4ff;">Health Status:</span>
-                                <span style="color: ${(member.healthStatus || '').trim().toUpperCase() === 'FLIGHT READY' ? '#00ff88' : '#ff6b6b'};">
-                                    ${member.healthStatus}
-                                </span>
-                            </p>
-                            <p style="margin: 3px 0; font-size: 13px;">
-                                <span style="color: #00d4ff;">Overall Score:</span> ${member.overallScore}
-                            </p>
-                        </div>
-                    `).join('') :
-            '<p style="color: #ff6b6b; text-align: center; padding: 20px;">No crew members added yet!</p>'
+                        `).join('')}
+                   </div>`
+                    : '';
+
+                return cardsHTML + warningsHTML;
+            })()
+            :
+            '<p style="color: #8c0909; text-align: center; padding: 20px;">No crew members added yet!</p>'
         }
-            </div>
-        </div>
+</div>
 
         <!-- FOOTER -->
-        <div class="popup-footer" style="margin-top: 25px; text-align: center; padding-top: 20px; border-top: 1px solid rgba(255, 213, 0, 0.3);">
+        <div class="popup-footer" style="margin-top: 25px; text-align: center; padding-top: 20px; border-top: 1px solid rgb(11,66,180);">
             ${!risks.hasErrors && crew.length > 0 ?
             `<p style="color: #00ff88; font-size: 18px; font-weight: bold;">
                     ✓ Mission is ready for launch!
                 </p>` :
-            `<p style="color: #ff6b6b; font-size: 18px; font-weight: bold;">
-                    ⚠️ Mission has critical issues that need to be resolved!
+            `<p style="color: #8b0909; font-size: 20px; font-weight: bold;">
+                   Mission has critical issues that need to be resolved!
                 </p>`
         }
         </div>
@@ -754,6 +762,60 @@
         container.appendChild(alert);
         setTimeout(() => alert.remove(), 2000);
     }
+
+
+    document.querySelector('.btn-start-mission').addEventListener('click', async () => {
+        const missionId = document.querySelector('.btn-add-participants')?.getAttribute('data-mission-id');
+        if (!missionId) {
+            showAlert("Mission ID not found!", "danger");
+            return;
+        }
+
+        const crew = getMissionCrew(missionId);
+        if (crew.length === 0) {
+            showAlert("No crew selected!", "warning");
+            return;
+        }
+        const mission = {
+            id: missionId,
+            crew: crew
+        };
+
+        /*<![CDATA[*/
+        const accessToken = /*[[${accessToken}]]*/ '';
+        const userId = /*[[${userId}]]*/ '';
+        /*]]>*/
+
+
+        if (accessToken) sessionStorage.setItem('accessToken', accessToken);
+
+        const token = sessionStorage.getItem('accessToken');
+        if (!token) {
+            console.error("No token found in sessionStorage!");
+            showAlert("Authentication token missing. Please log in again.", "danger");
+            return;
+        }
+        fetch(`http://localhost:8080/api/missions/${missionId}/start`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(mission)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error starting mission: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Mission started:", data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    });
 
 </script>
 </body>

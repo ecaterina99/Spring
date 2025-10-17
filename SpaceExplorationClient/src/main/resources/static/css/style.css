@@ -548,6 +548,37 @@ nav.navbar,
     min-width: 200px;
 }
 
+.popup-risks-content{
+    background: linear-gradient(135deg, #ffee76 0%, #ff5900 100%);
+    border-radius: 15px;
+    padding: 30px;
+    width: 600px;
+    height: 700px;
+    color: white;
+    box-shadow: 0 20px 50px rgb(255, 221, 0); overflow-y: auto;"
+}
+
+
+
+.current-crew-popup::-webkit-scrollbar, .popup-risks-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.current-crew-popup::-webkit-scrollbar-track, .popup-risks-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.current-crew-popup::-webkit-scrollbar-thumb, .popup-risks-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #82a1f8, #3337fd);
+    border-radius: 4px;
+}
+
+.current-crew-popup::-webkit-scrollbar-thumb:hover, .popup-risks-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #aa00ff, #3c0085);
+}
+
+
 #popup-title, .card-title {
     font-family: 'Orbitron', monospace !important;
 }
