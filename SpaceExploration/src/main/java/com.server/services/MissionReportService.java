@@ -7,6 +7,7 @@ import com.server.models.MissionReport;
 import com.server.repositories.MissionParticipantsRepository;
 import com.server.repositories.MissionReportRepository;
 import com.server.repositories.MissionRepository;
+import com.server.util.MissionResult;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -43,13 +44,49 @@ public class MissionReportService {
                 .toList();
     }
 
-    public MissionReportDTO createReport(Integer missionId, boolean success) {
+
+    public MissionReportDTO createReport(Integer missionId, MissionResult missionResult) {
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " not found"));
+
         MissionReport report = new MissionReport();
-        Optional<Mission> mission = missionRepository.findById(missionId);
-        report.setMission(mission.get());
-        report.setSuccessful(success);
+        report.setMission(mission);
+        report.setSuccessful(missionResult.isSuccess());
         missionReportRepository.save(report);
-        return modelMapper.map(report, MissionReportDTO.class);
+
+        System.out.println("=== Creating Mission Report ===");
+        System.out.println("Mission ID: " + missionId);
+        System.out.println("Is Successful: " + missionResult.isSuccess());
+        System.out.println("Success Chance: " + missionResult.getSuccessChance());
+        System.out.println("Issues: " + missionResult.getIssues());
+        System.out.println("Alien Attack: " + missionResult.isAlienAttack());
+        System.out.println("===============================");
+
+        MissionReportDTO dto = MissionReportDTO.builder()
+                .id(report.getId())
+                .isSuccessful(missionResult.isSuccess())
+                .missionId(mission.getId())
+                .missionName(mission.getName())
+                .destinationName(mission.getDestination().getDestinationName())
+                .difficultyLevel(mission.getDifficultyLevel())
+                .paymentAmount(mission.getPaymentAmount())
+                .crewSize(mission.getCrewSize())
+                .successChance(missionResult.getSuccessChance())
+                .issues(missionResult.getIssues())
+                .alienAttack(missionResult.isAlienAttack())
+                .crewSizeDeficit(missionResult.getCrewSizeDeficit())
+                .missingSpecializations(missionResult.getMissingSpecializations())
+                .notReadyAstronauts(missionResult.getNotReadyAstronauts())
+                .build();
+
+        System.out.println("=== Mission Report DTO ===");
+        System.out.println("DTO isSuccessful: " + dto.isSuccessful());
+        System.out.println("DTO successChance: " + dto.getSuccessChance());
+        System.out.println("DTO issues size: " + (dto.getIssues() != null ? dto.getIssues().size() : "null"));
+        System.out.println("==========================");
+
+        return dto;
     }
+
 }
 

@@ -41,6 +41,13 @@ public class MissionReportDTO {
 
     private List<MissionSpecializationDTO> specializations = new ArrayList<>();
 
+    private Integer successChance;
+    private List<String> issues = new ArrayList<>();
+    private Boolean alienAttack;
+    private Integer crewSizeDeficit;
+    private List<String> missingSpecializations = new ArrayList<>();
+    private List<String> notReadyAstronauts = new ArrayList<>();
+
 
 
     public static MissionReportDTO fromMissionReport(MissionReport missionReport) {

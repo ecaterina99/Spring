@@ -156,7 +156,10 @@
 
     <div class="start-mission d-flex flex-wrap gap-3 justify-content-center ">
         <br>
-        <button class="btn-start-mission ">
+        <button class="btn-start-mission "
+                    th:attr="data-mission-id=${mission.id},
+                 data-crew-size=${mission.crewSize}"
+                    onclick="showMissionPopup(this)">
         <span>START MISSION</span>
         </button>
         <br>
@@ -176,12 +179,25 @@
             </div>
 
             <div id="risk-analysis-content">
-
-
             </div>
         </div>
     </div>
 
+
+    <!-- Popup start mission-->
+    <div  id="popup-start-mission" class="start-mission-popup" style="display:none; width:650px; height: 650px">
+        <div class="popup-start-mission-content" style=" width:650px; height: 650px" >
+            <div class="d-flex justify-content-end">
+                <button id="popup-mission-close"
+                        style="background: transparent; border: none; color: #ff0000;
+                     font-size: 30px; cursor: pointer; line-height: 1;">
+                    ×
+                </button>
+            </div>
+            <div id="mission-results-content">
+            </div>
+        </div>
+    </div>
 
     <!-- Popup -->
     <div id="astronaut-popup" class="astronaut-popup" style="display:none;">
@@ -779,12 +795,206 @@
         setTimeout(() => alert.remove(), 2000);
     }
 
+    function showMissionPopup(button) {
+        const missionId = button.getAttribute('data-mission-id');
+        const crewSize = button.getAttribute('data-crew-size');
+        if (!missionId) return;
+
+        const crew = getMissionCrew(missionId);
+        const requiredSpecializations = getRequiredSpecializations();
+
+        displayResultsPopup(crew, crewSize, requiredSpecializations );
+    }
+
+    function displayResultsPopup(missionReport, crew, crewSize) {
+
+        console.log("displayResultsPopup called");
+        console.log("missionReport:", missionReport);
+        console.log("crew:", crew);
+        console.log("crewSize:", crewSize);
+
+
+        const popup = document.getElementById("popup-start-mission");
+        const contentContainer = document.getElementById("mission-results-content");
+
+        if (!popup) {
+            console.error("Popup element not found!");
+            return;
+        }
+        if (!missionReport) {
+            console.error("missionReport is null or undefined!");
+            showAlert("Failed to get mission report", "danger");
+            return;
+        }
+
+        const isSuccess = missionReport.isSuccessful ?? missionReport.successful;
+        console.log("✅ isSuccess value:", isSuccess);
+        console.log("✅ isSuccess type:", typeof isSuccess);
+        if (isSuccess === undefined || isSuccess === null) {
+            console.error("❌ isSuccessful field is missing in missionReport!");
+            console.error("Available fields:", Object.keys(missionReport));
+            showAlert("Mission report is incomplete", "danger");
+            return;
+        }
+
+        let content = '';
+
+        if (isSuccess) {
+            console.log("🎉 Displaying SUCCESS popup");
+
+            content = `
+        <div class="mission-results-success" style="text-align: center;">
+             <h2 class="text-glow" style="color: #00ff88; font-size: 32px; margin-bottom: 15px;">
+                ✓ MISSION SUCCESSFUL!
+            </h2>
+            <div style="font-size: 80px; margin-bottom: 20px; animation: celebrate 1s ease-in-out;">
+                🎉
+            </div>
+
+            <p style="color: #ffd500; font-size: 20px; margin-bottom: 30px;">
+                Congratulations! The mission has been completed successfully!
+            </p>
+
+            <!-- missionReport -->
+            <div style="background: rgba(11, 67, 181, 0.3); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h4 style="color: #76fffb; margin-bottom: 15px;">📊 MISSION STATISTICS</h4>
+
+                <div style="text-align: left; margin: 0 auto; max-width: 400px;">
+                    <p style="margin: 8px 0;">
+                        <span style="color: #ffd500;">▸</span>
+                        Mission: <strong>${missionReport.missionName}</strong>
+                    </p>
+                    <p style="margin: 8px 0;">
+                        <span style="color: #ffd500;">▸</span>
+                        Destination: <strong>${missionReport.destinationName}</strong>
+                    </p>
+                    <p style="margin: 8px 0;">
+                        <span style="color: #ffd500;">▸</span>
+                        Success Probability: <strong style="color: #00ff88;">${missionReport.successChance}%</strong>
+                    </p>
+                    <p style="margin: 8px 0;">
+                        <span style="color: #ffd500;">▸</span>
+                        Crew Size: <strong>${crew.length}/${crewSize}</strong>
+                    </p>
+                    <p style="margin: 8px 0;">
+                        <span style="color: #ffd500;">▸</span>
+                        Payment: <strong style="color: #00ff88;">$${missionReport.paymentAmount?.toLocaleString()}</strong>
+                    </p>
+                </div>
+            </div>
+
+            <div style="background: rgba(189, 83, 4, 0.3); padding: 15px; border-radius: 10px;">
+                <h5 style="color: #ffd500; margin-bottom: 10px;">👨‍🚀 CREW PERFORMANCE</h5>
+                <div style="max-height: 200px; overflow-y: auto;">
+                    ${crew.map(member => `
+                        <div style="background: rgba(0, 255, 136, 0.1); padding: 8px; border-radius: 5px; margin-bottom: 8px;">
+                            <p style="margin: 2px 0; color: #ffffff; font-weight: bold;">
+                                ${member.firstName.toUpperCase()} ${member.lastName.toUpperCase()}
+                            </p>
+                            <p style="margin: 2px 0; font-size: 12px;">
+                                <span style="color: #ffd500;">Specialization:</span> ${member.specialization}
+                            </p>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>`;
+
+        } else {
+            console.log("❌ Displaying FAILURE popup");
+
+            content = `
+        <div class="mission-results-failure" style="text-align: center;">
+            <div class="text-glow" style="font-size: 80px; margin-bottom: 20px; animation: shake 0.5s ease-in-out;">
+                ⚠️
+            </div>
+
+            <h2 style="color: #ffd500; font-size: 32px; margin-bottom: 15px;">
+                ✗ MISSION FAILED!
+            </h2>
+
+            <p style="color: #e8d77a; font-size: 18px; margin-bottom: 30px;">
+                Unfortunately, the mission was not successful...
+            </p>
+
+            <div style="background: rgba(139, 0, 0, 0.3); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h4 style="color: #ffffff; margin-bottom: 15px;">🔍 FAILURE ANALYSIS</h4>
+
+                <div style="text-align: left; margin: 0 auto; max-width: 500px;">
+                    ${missionReport.issues && missionReport.issues.length > 0 ? `
+                        <div style="margin-bottom: 15px;">
+                            <p style="color: #fafafa; font-weight: bold; margin-bottom: 10px; font-size: 16px;">
+                                ⚠️ Critical Issues Detected:
+                            </p>
+                            ${missionReport.issues.map(issue => `
+                                <p style="margin: 8px 0; padding: 8px 12px; background: rgba(255, 68, 68, 0.1);
+                                          border-radius: 5px; border-left: 3px solid #faf6f6; font-size: 13px;">
+                                    <span style="color: #ffd500;">▸</span> ${issue}
+                                </p>
+                            `).join('')}
+                        </div>
+                    ` : `
+                        <p style="color: #ffd500; font-size: 14px;">
+                            Mission failed due to unforeseen circumstances.
+                        </p>
+                    `}
+
+                    <div style="background: rgba(255, 68, 68, 0.1); padding: 12px; border-radius: 5px; margin-top: 15px;">
+                        <p style="margin: 5px 0;">
+                            <span style="color: #ffd500;">▸</span>
+                            Success Probability: <strong style="color: #f3f1f1;">${missionReport.successChance}%</strong>
+                        </p>
+                        <p style="margin: 5px 0;">
+                            <span style="color: #ffd500;">▸</span>
+                            Crew Size: <strong>${crew.length}/${crewSize}</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            ${missionReport.alienAttack ? `
+                <div style="margin-top: 20px; padding: 15px; background: rgba(139, 0, 0, 0.5);
+                            border-radius: 10px; border: 2px solid #faf8f8;">
+                    <p style="color: #f4f3f3; font-size: 18px; font-weight: bold; margin-bottom: 10px;">
+                        👽 ALIEN ATTACK DETECTED! 👽
+                    </p>
+                    <p style="color: #ffffff; font-size: 14px;">
+                        The mission was compromised by an unexpected alien encounter!
+                    </p>
+                </div>
+            ` : ''}
+        </div>`;
+        }
+
+        contentContainer.innerHTML = content;
+        popup.style.display = "flex";
+
+        const closeBtn = document.getElementById("popup-mission-close");
+        if (closeBtn) {
+            closeBtn.onclick = () => {
+                popup.style.display = "none";
+                window.location.reload();
+            };
+        }
+        popup.onclick = (e) => {
+            if (e.target.id === "popup-start-mission") {
+                popup.style.display = "none";
+                window.location.reload();
+            }
+        };
+
+        document.onkeydown = (e) => {
+            if (e.key === "Escape") {
+                popup.style.display = "none";
+                window.location.reload();
+            }
+        };
+    }
 
     document.querySelector('.btn-start-mission').addEventListener('click', async () => {
 
         const button = event.currentTarget;
         if (button.disabled) return;
-
 
         const missionId = document.querySelector('.btn-add-participants')?.getAttribute('data-mission-id');
         if (!missionId) {
@@ -797,13 +1007,11 @@
             return status.trim().toUpperCase().replace(/\s+/g, '_');
         }
 
-
-            const crew = getMissionCrew(missionId);
+        const crew = getMissionCrew(missionId);
             if (crew.length === 0) {
                 showAlert("No crew selected!", "warning");
                 return;
             }
-
             const mission = {
                 id: missionId,
                 participants: crew.map(member => ({
@@ -820,10 +1028,7 @@
             const accessToken = /*[[${accessToken}]]*/ '';
             const userId = /*[[${userId}]]*/ '';
             /*]]>*/
-
-
             if (accessToken) sessionStorage.setItem('accessToken', accessToken);
-
             const token = sessionStorage.getItem('accessToken');
             if (!token) {
                 console.error("No token found in sessionStorage!");
@@ -832,9 +1037,11 @@
             }
 
         button.disabled = true;
+        button.textContent = "🚀 LAUNCHING...";
         const originalText = button.textContent;
 
-            try {
+
+        try {
                 const response = await fetch(`http://localhost:8080/api/missions/${missionId}/start`, {
                     method: 'POST',
                     headers: {
@@ -844,13 +1051,34 @@
                     body: JSON.stringify(mission)
                 });
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Error starting mission: ${response.status} - ${errorText}`);
-                }
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("Error response:", errorText);
+                throw new Error(`Error starting mission: ${response.status} - ${errorText}`);
+            }
 
-                const data = await response.json();
-                console.log("Mission started successfully:", data);
+            const missionReport = await response.json();
+
+            console.log("📊 Full mission report received:");
+            console.log(missionReport);
+            console.log("Success status:", missionReport.isSuccessful);
+            console.log("Success chance:", missionReport.successChance);
+            console.log("Issues:", missionReport.issues);
+            console.log("Alien attack:", missionReport.alienAttack);
+
+            if (!missionReport || typeof missionReport !== 'object') {
+                console.error("❌ Invalid mission report:", missionReport);
+                throw new Error("Invalid mission report received from server");
+            }
+
+            const crewSize = parseInt(document.querySelector('.btn-add-participants')?.getAttribute('data-crew-size')) || crew.length;
+
+            console.log("Calling displayResultsPopup with:");
+            console.log("- missionReport:", missionReport);
+            console.log("- crew:", crew);
+            console.log("- crewSize:", crewSize);
+
+            displayResultsPopup(missionReport, crew, crewSize);
 
                 const startedMissionsKey = 'startedMissions';
                 let startedMissions = JSON.parse(sessionStorage.getItem(startedMissionsKey) || '[]');
@@ -874,20 +1102,13 @@
                     }
                 });
 
-                showAlert("Mission started successfully!", "success");
-
-                // optional:
-                // window.location.href = `/missions/${missionId}/report`;
-
-
             } catch (error) {
                 console.error("Failed to start mission:", error);
                 showAlert(`Failed to start mission: ${error.message}`, "danger");
                 button.disabled = false;
-                button.textContent = originalText;
+                button.textContent = "START MISSION";
             }
         });
-
 
 </script>
 </body>

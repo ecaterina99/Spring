@@ -9,6 +9,7 @@ import com.server.models.MissionSpecialization;
 import com.server.services.MissionParticipantsService;
 import com.server.services.MissionReportService;
 import com.server.services.MissionService;
+import com.server.util.MissionResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -155,10 +156,11 @@ public class MissionController {
         missionDTO.getParticipants().forEach(participant -> {
             missionParticipantsService.addParticipantsToMission(missionId, participant.getAstronautId());
         });
-        boolean success = missionService.startMission(missionId, missionDTO.getParticipants());
 
-        MissionReportDTO report = missionReportService.createReport(missionId,success);
-        return ResponseEntity.ok(report);
+        MissionResult missionResult = missionService.startMission(missionId, missionDTO.getParticipants());
+
+        MissionReportDTO missionReport = missionReportService.createReport(missionId, missionResult);
+        return ResponseEntity.ok(missionReport);
     }
 
 

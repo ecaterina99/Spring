@@ -557,24 +557,32 @@ nav.navbar,
     color: white;
     box-shadow: 0 20px 50px rgb(255, 221, 0); overflow-y: auto;"
 }
+.popup-start-mission-content{
+    background: linear-gradient(135deg, #42005c 0%, #2873bf 100%);
+    border-radius: 15px;
+    padding: 30px;
+    width: 600px;
+    height: 700px;
+    color: white;
+    box-shadow: 0 20px 50px rgb(15, 176, 176); overflow-y: auto;"
+}
 
 
-
-.current-crew-popup::-webkit-scrollbar, .popup-risks-content::-webkit-scrollbar {
+.current-crew-popup::-webkit-scrollbar, .popup-risks-content::-webkit-scrollbar, .popup-start-mission-content::-webkit-scrollbar{
     width: 8px;
 }
 
-.current-crew-popup::-webkit-scrollbar-track, .popup-risks-content::-webkit-scrollbar-track {
+.current-crew-popup::-webkit-scrollbar-track, .popup-risks-content::-webkit-scrollbar-track,  .popup-start-mission-content::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
 }
 
-.current-crew-popup::-webkit-scrollbar-thumb, .popup-risks-content::-webkit-scrollbar-thumb {
+.current-crew-popup::-webkit-scrollbar-thumb, .popup-risks-content::-webkit-scrollbar-thumb,.popup-start-mission-content::-webkit-scrollbar-thumb {
     background: linear-gradient(180deg, #82a1f8, #3337fd);
     border-radius: 4px;
 }
 
-.current-crew-popup::-webkit-scrollbar-thumb:hover, .popup-risks-content::-webkit-scrollbar-thumb:hover {
+.current-crew-popup::-webkit-scrollbar-thumb:hover, .popup-risks-content::-webkit-scrollbar-thumb:hover, .popup-start-mission-content::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(180deg, #aa00ff, #3c0085);
 }
 
@@ -655,7 +663,22 @@ nav.navbar,
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
 }
-
+.start-mission-popup {
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #00d4ff;
+    border-radius: 15px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
 .astronaut-popup-content {
     background-image: url('/api/images/b5.jpg');
     background-size: cover;
@@ -704,7 +727,7 @@ nav.navbar,
     z-index: 10;
 }
 
-#popup-close:hover, #popup-close:focus, #mission-popup-close:hover {
+#popup-close:hover, #popup-close:focus, #mission-popup-close:hover, #popup-start-mission:hover{
     color: #00ff88;
 }
 

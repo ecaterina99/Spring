@@ -10,6 +10,7 @@ import com.server.repositories.DestinationRepository;
 import com.server.repositories.MissionParticipantsRepository;
 import com.server.repositories.MissionReportRepository;
 import com.server.repositories.MissionRepository;
+import com.server.util.MissionResult;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -197,18 +198,26 @@ public class MissionService {
     }
 
 
-    public boolean startMission(Integer missionId, List<MissionParticipantsDTO> participants) {
+    public MissionResult startMission(Integer missionId, List<MissionParticipantsDTO> participants) {
         int successChance = 100;
+        List<String> issues = new ArrayList<>();
+        int crewSizeDeficit = 0;
+        List<String> missingSpecs = new ArrayList<>();
+        List<String> notReadyAstronauts = new ArrayList<>();
+
 
         Mission mission = findMissionById(missionId);
-        int missing = Math.max(0, mission.getCrewSize() - participants.size());
 
+        int missing = Math.max(0, mission.getCrewSize() - participants.size());
         if (missing > 0) {
             int penalty = missing * 10;
             successChance -= penalty;
+            crewSizeDeficit = missing;
+            issues.add("Crew size deficit: missing " + missing + " member(s) (-" + penalty + "% from success)");
             System.out.println("Missing "+ missing + " persons, -" + penalty + "% to success chance");
         } else {
-            System.out.println("Mission crew size is accepted");
+            issues.add("Mission crew size is accepted!");
+            System.out.println("Mission crew size is accepted!");
         }
 
         Set<MissionSpecialization> requiredSpecs = mission.getMissionSpecializations();
@@ -222,7 +231,7 @@ public class MissionService {
                     .map(req -> req.getSpecialization().name())
                     .toList();
 
-            List<String> missingSpecs = requiredSpecNames.stream()
+             missingSpecs = requiredSpecNames.stream()
                     .filter(req -> !crewSpecs.contains(req))
                     .toList();
 
@@ -230,48 +239,64 @@ public class MissionService {
                 int specPenalty = missingSpecs.size() * 10;
                 successChance -= specPenalty;
                 System.out.println("Missing specializations: " + missingSpecs + ", -" + specPenalty + "% to success chance");
+                issues.add("Missing specializations: " + missingSpecs.toString().toLowerCase() + ", -" + specPenalty + "% to success chance");
+
             } else {
+                issues.add("All required specializations are present in the crew.");
                 System.out.println("All required specializations are present in the crew.");
             }
         } else {
             System.out.println("No required specializations defined for this mission.");
         }
 
-
-
-
         for(MissionParticipantsDTO p : participants ){
             if(p.getHealthStatus().toString().equalsIgnoreCase("RETIRED")||p.getHealthStatus().toString().equalsIgnoreCase("MEDICAL_REVIEW")){
                 successChance -= 10;
                 System.out.println("Astronaut "+p.getAstronautName()+ " is not ready to flight!");
-
+                String astronautName = p.getAstronautName();
+                issues.add("Astronaut " + astronautName + " is not flight ready (Status: " + p.getHealthStatus() + ") (-10%)");
+                notReadyAstronauts.add(astronautName + " (" + p.getHealthStatus() + ")");
             }
         }
-
-
         if (successChance < 0) successChance = 0;
         if (successChance > 100) successChance = 100;
         System.out.println("The final success chance is " + successChance);
 
         int alienChance = ThreadLocalRandom.current().nextInt(0, 100);
-        if (alienChance < 20) {
-            System.out.println("Oh nooooo.....The aliens attacked! The mission is failed");
-            return false;
+        boolean alienAttack = alienChance < 20;
+
+        if (alienAttack) {
+            issues.add("CRITICAL: Alien attack encountered during mission!");
+            return MissionResult.builder()
+                    .success(false)
+                    .successChance(successChance)
+                    .issues(issues)
+                    .alienAttack(true)
+                    .crewSizeDeficit(crewSizeDeficit)
+                    .missingSpecializations(missingSpecs)
+                    .notReadyAstronauts(notReadyAstronauts)
+                    .build();
         }
+
         int roll = ThreadLocalRandom.current().nextInt(0, 100);
 
         boolean success = roll < successChance;
-        if (success) {
 
-            System.out.println("Congratulations! You have successfully completed the mission!");
-        } else {
-            System.out.println("Sorry, but the mission was not successful!");
-        }
 
-        return success;
+        return MissionResult.builder()
+                .success(success)
+                .successChance(successChance)
+                .issues(issues)
+                .alienAttack(false)
+                .crewSizeDeficit(crewSizeDeficit)
+                .missingSpecializations(missingSpecs)
+                .notReadyAstronauts(notReadyAstronauts)
+                .build();
     }
-
 }
+
+
+
 
 
 
