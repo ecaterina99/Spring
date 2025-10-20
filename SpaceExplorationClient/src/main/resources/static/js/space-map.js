@@ -371,6 +371,8 @@ function showPlanetPopup(destination) {
 
 async function loadAndShowMissions(destinationId, destinationName) {
     try {
+
+
         const response = await fetch(`/destinations/missions/${destinationId}`);
         if (!response.ok) throw new Error('Failed to fetch missions');
 
@@ -435,6 +437,14 @@ async function loadAndShowMissions(destinationId, destinationName) {
 
         const missionButtons = Array.from(missionsContainer.querySelectorAll('.btn-view-mission'));
         if (missionButtons.length > 0) {
+            const startMissionBtn = document.getElementById("startMissionBtn");
+            const newStartBtn = startMissionBtn.cloneNode(true);
+            startMissionBtn.parentNode.replaceChild(newStartBtn, startMissionBtn);
+
+            newStartBtn.addEventListener("click", () => {
+                window.location.href = `/mission-participants?missionId=${document.getElementById("mission-popup").querySelector("#popup-name").closest(".mission-popup-content").dataset.currentMissionId || missionButtons[0].getAttribute("data-id")}`;
+            });
+
             window.showPopup(missionButtons[0]);
         }
 
