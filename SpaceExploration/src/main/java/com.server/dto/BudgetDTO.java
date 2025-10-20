@@ -13,9 +13,7 @@ import lombok.NoArgsConstructor;
 public class BudgetDTO {
     private int id;
     @NotNull(message = "Initial budget is required")
-    private Integer initialBudget;
-    @NotNull(message = "Final budget is required")
-    private Integer finalBudget;
-    @NotNull(message = "Mission is is required")
-    private Integer missionId;
+    private Integer currentBudget  = 1000000;
+    @NotNull(message = "User id is required")
+    private Integer userId;
 }

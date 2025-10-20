@@ -1,15 +1,16 @@
 package com.server.controllers;
 
-import com.server.dto.AstronautDTO;
-import com.server.dto.MissionDTO;
-import com.server.dto.MissionReportDTO;
-import com.server.dto.MissionSpecializationDTO;
+import com.server.dto.*;
 import com.server.models.Mission;
 import com.server.models.MissionSpecialization;
+import com.server.models.User;
+import com.server.repositories.UserRepository;
+import com.server.services.BudgetService;
 import com.server.services.MissionParticipantsService;
 import com.server.services.MissionReportService;
 import com.server.services.MissionService;
 import com.server.util.MissionResult;
+import com.server.util.UserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -18,10 +19,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,11 +40,15 @@ public class MissionController {
     private final MissionService missionService;
     private final MissionParticipantsService missionParticipantsService;
     private final MissionReportService missionReportService;
+    private final BudgetService budgetService;
+    private final UserRepository userRepository;
 
-    public MissionController(MissionService missionService, MissionParticipantsService missionParticipantsService, MissionReportService missionReportService) {
+    public MissionController(MissionService missionService, MissionParticipantsService missionParticipantsService, MissionReportService missionReportService, BudgetService budgetService, UserRepository userRepository) {
         this.missionService = missionService;
         this.missionParticipantsService = missionParticipantsService;
         this.missionReportService = missionReportService;
+        this.budgetService = budgetService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/{id}")
@@ -149,9 +158,14 @@ public class MissionController {
     @PostMapping("/{missionId}/start")
     public ResponseEntity<?> startMission(
           @Valid  @PathVariable Integer missionId,
-    @RequestBody MissionDTO missionDTO){
-        missionParticipantsService.clearMissionCrew(missionId);
+    @RequestBody MissionDTO missionDTO,
+          @AuthenticationPrincipal Jwt jwt){
+        String email = jwt.getSubject();
+        User currentUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
+
+        missionParticipantsService.clearMissionCrew(missionId);
 
         missionDTO.getParticipants().forEach(participant -> {
             missionParticipantsService.addParticipantsToMission(missionId, participant.getAstronautId());
@@ -160,9 +174,16 @@ public class MissionController {
         MissionResult missionResult = missionService.startMission(missionId, missionDTO.getParticipants());
 
         MissionReportDTO missionReport = missionReportService.createReport(missionId, missionResult);
-        return ResponseEntity.ok(missionReport);
-    }
 
+        BudgetDTO updatedBudget = budgetService.updateBudget(
+                currentUser.getId(),
+                missionId,
+                missionResult
+        );
+
+        return ResponseEntity.ok(missionReport);
+
+    }
 
 
     @PatchMapping("/{missionId}/specializations")

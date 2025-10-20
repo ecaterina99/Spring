@@ -12,19 +12,19 @@ import java.util.Optional;
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    private final UserRepository usersRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserDetailsService(UserRepository usersRepository) {
-        this.usersRepository = usersRepository;
+    public UserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
-    public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> person = Optional.ofNullable(usersRepository.findByEmail(email));
-        if (person.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return new UserDetails(person.get());
+    public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String email)
+            throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        return new com.server.util.UserDetails(user);
     }
 }

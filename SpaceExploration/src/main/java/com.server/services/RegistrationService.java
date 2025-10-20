@@ -11,19 +11,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RegistrationService {
 
- private final UserRepository peopleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+
 
     @Autowired
-    public RegistrationService(UserRepository peopleRepository, PasswordEncoder passwordEncoder) {
-        this.peopleRepository = peopleRepository;
+    public RegistrationService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
     @Transactional
-    public void register(User person) {
-        String password = passwordEncoder.encode(person.getPassword());
-        person.setRole("ROLE_USER");
-        person.setPassword(password);
-        peopleRepository.save(person);
+    public User  register(User user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("User with this email already exists");
+        }
+        String password = passwordEncoder.encode(user.getPassword());
+        user.setRole("ROLE_USER");
+        user.setPassword(password);
+        return userRepository.save(user);
+
     }
 }

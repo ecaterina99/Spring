@@ -26,12 +26,7 @@ public class User {
     private String email;
     @NotEmpty(message = "Password is required")
     @Size(min = 6, max = 64, message = "Password must be between 6 and 64 characters")
-   /* @Pattern(
-            regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).+$",
-            message = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-    )
 
-    */
     @Column(name="password", nullable = false)
     private String password;
     @Column(name = "role", nullable = false, columnDefinition = "VARCHAR(100) DEFAULT 'USER'")

@@ -17,16 +17,11 @@ public class Budget {
 
     @NotNull(message = "Initial budget is required")
     @Min(value = 0, message = "Initial budget cannot be negative")
-    @Column(name="initial_budget", nullable = false)
-    private int initialBudget;
+    @Column(name="current_budget", nullable = false)
+    private int currentBudget=1000000;
 
-    @NotNull(message = "Final budget is required")
-    @Column(name="final_budget", nullable = false)
-    private int finalBudget;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mission_id", nullable = false, unique = true)
-    @JsonBackReference("mission-payment")
-    private Mission mission;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @JsonBackReference("id")
+    private User user;
 }

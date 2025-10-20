@@ -2,6 +2,7 @@ package com.server.controllers;
 
 import com.server.dto.UserDTO;
 import com.server.models.User;
+import com.server.services.BudgetService;
 import com.server.services.RegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class AuthController {
     private final RegistrationService registrationService;
     private final AuthenticationManager authenticationManager;
     private final JwtEncoder jwtEncoder;
+    private final BudgetService budgetService;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,7 +36,9 @@ public class AuthController {
         u.setLastName(dto.getLastName());
         u.setEmail(dto.getEmail());
         u.setPassword(dto.getPassword());
-        registrationService.register(u);
+
+        User savedUser = registrationService.register(u);
+        budgetService.createInitialBudget(savedUser.getId());
     }
 
     @PostMapping("/login")

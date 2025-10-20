@@ -32,28 +32,6 @@ public class MissionParticipantsService {
         String url = apiUrl + "/" + missionId;
         return restUtil.getList(url, MissionParticipantsDTO[].class);
     }
-
-   /* public MissionParticipantsDTO addParticipants(Integer missionId, Integer participantId) {
-        if (missionId == null || missionId <= 0) {
-            throw new IllegalArgumentException("Mission ID must be provided and greater than 0");
-        }
-        if (participantId == null || participantId <= 0) {
-            throw new IllegalArgumentException("Participant ID must be provided and greater than 0");
-        }
-
-        String url = apiUrl + "/add/" + missionId + "/" + participantId;
-
-        try {
-            return restUtil.postForObject(url, null, MissionParticipantsDTO.class);
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            throw new ApiProxyException(
-                    e.getStatusCode().value(),
-                    e.getResponseBodyAsString()
-            );
-        }
-
-    }
-    */
 }
 
 

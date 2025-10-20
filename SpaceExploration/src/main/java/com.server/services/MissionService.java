@@ -282,7 +282,6 @@ public class MissionService {
 
         boolean success = roll < successChance;
 
-
         return MissionResult.builder()
                 .success(success)
                 .successChance(successChance)
