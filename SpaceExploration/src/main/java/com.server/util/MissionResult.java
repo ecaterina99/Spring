@@ -19,4 +19,5 @@ public class MissionResult {
     private int crewSizeDeficit;
     private List<String> missingSpecializations = new ArrayList<>();
     private List<String> notReadyAstronauts = new ArrayList<>();
+    private int totalSalary;
 }

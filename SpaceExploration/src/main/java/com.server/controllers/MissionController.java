@@ -171,14 +171,17 @@ public class MissionController {
             missionParticipantsService.addParticipantsToMission(missionId, participant.getAstronautId());
         });
 
+        List <MissionParticipantsDTO> missionParticipantsDTO = missionParticipantsService.showMissionCrew(missionId);
+
         MissionResult missionResult = missionService.startMission(missionId, missionDTO.getParticipants());
 
-        MissionReportDTO missionReport = missionReportService.createReport(missionId, missionResult);
+        MissionReportDTO missionReport = missionReportService.createReport(missionId, missionResult, missionParticipantsDTO);
 
         BudgetDTO updatedBudget = budgetService.updateBudget(
                 currentUser.getId(),
                 missionId,
-                missionResult
+                missionResult,
+                missionParticipantsDTO
         );
 
         return ResponseEntity.ok(missionReport);

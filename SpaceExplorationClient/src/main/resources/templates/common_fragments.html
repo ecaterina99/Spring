@@ -51,7 +51,7 @@
             Welcome, <span th:text="${currentUser.firstName}"></span>! |
         <a id="logout" th:href="@{/login}" onclick="logout()">Logout</a>
         </span>
-                        <span th:if="${currentUser == null}">
+       <span th:if="${currentUser == null}">
             <a th:href="@{/login}">Login</a>
         </span>
                     </div>

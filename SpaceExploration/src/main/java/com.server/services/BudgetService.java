@@ -35,7 +35,7 @@ public class BudgetService {
 
     public BudgetDTO createInitialBudget(Integer userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+                .orElseThrow(() -> new EntityNotFoundException("User with id: " + userId+ " is not found"));
 
         Optional<Budget> existingBudget = budgetRepository.findByUserId(userId);
         if (existingBudget.isPresent()) {
@@ -54,13 +54,13 @@ public class BudgetService {
     public BudgetDTO getBudgetById(int id) {
         return budgetRepository.findById(id)
                 .map(budget -> modelMapper.map(budget, BudgetDTO.class))
-                .orElseThrow(() -> new EntityNotFoundException("Budget with id: " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Budget with id: " + id + "is not found"));
     }
 
     @Transactional(readOnly = true)
     public BudgetDTO getUserBudget(Integer userId) {
         Budget budget = budgetRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Budget not found for user: " + userId));
+                .orElseThrow(() -> new EntityNotFoundException("Budget not found for user with id: " + userId));
         return modelMapper.map(budget, BudgetDTO.class);
     }
 
@@ -76,7 +76,7 @@ public class BudgetService {
         Budget budget = budgetRepository.findByUserId(userId)
                 .orElseGet(() -> {
                     User user = userRepository.findById(userId)
-                            .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+                            .orElseThrow(() -> new EntityNotFoundException("User with id: " + userId+ " is not found"));
                     Budget newBudget = new Budget();
                     newBudget.setUser(user);
                     newBudget.setCurrentBudget(1000000);
@@ -84,7 +84,7 @@ public class BudgetService {
                 });
 
         Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(() -> new EntityNotFoundException("Mission not found with id: " + missionId));
+                .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " is not found"));
 
         int salary = calculateTotalSalary(missionId, participants);
         int paymentForMission = mission.getPaymentAmount();
@@ -118,11 +118,9 @@ public class BudgetService {
     }
 
 
-    private int calculateTotalSalary(Integer missionId, List<MissionParticipantsDTO> participants) {
+    protected int calculateTotalSalary(Integer missionId, List<MissionParticipantsDTO> participants) {
         Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(() -> new EntityNotFoundException("Mission not found with id: " + missionId));
-
-
+                .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " is not found"));
 
         int totalSalary = 0;
         for (MissionParticipantsDTO participant : participants) {

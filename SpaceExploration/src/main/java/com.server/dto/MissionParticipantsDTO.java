@@ -29,6 +29,7 @@ public class MissionParticipantsDTO {
     private Integer overallScore;
     private Integer crewSize;
     private Astronaut.HealthStatus healthStatus;
+    private Integer dailyRate;
 
     public static MissionParticipantsDTO missionParticipantsDetails(MissionParticipants missionParticipants) {
         return MissionParticipantsDTO.builder()
@@ -36,6 +37,7 @@ public class MissionParticipantsDTO {
                 .astronautName(missionParticipants.getAstronaut().getFirstName()+" "+missionParticipants.getAstronaut().getLastName())
                 .specialization(missionParticipants.getAstronaut().getSpecialization())
                 .overallScore(missionParticipants.getAstronaut().getOverallScore())
+                .dailyRate(missionParticipants.getAstronaut().getDailyRate())
                 .build();
     }
 }

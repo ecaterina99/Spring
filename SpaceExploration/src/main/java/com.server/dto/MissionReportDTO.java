@@ -47,7 +47,7 @@ public class MissionReportDTO {
     private Integer crewSizeDeficit;
     private List<String> missingSpecializations = new ArrayList<>();
     private List<String> notReadyAstronauts = new ArrayList<>();
-
+    private int totalSalary;
 
 
     public static MissionReportDTO fromMissionReport(MissionReport missionReport) {

@@ -43,10 +43,10 @@ public class Astronaut {
     private LocalDate dateOfBirth;
 
     @NotNull(message = "Daily rate is required")
-    @DecimalMin(value = "200.0", message = "Daily rate must be at least 200")
-    @DecimalMax(value = "2000.0", message = "Daily rate cannot exceed 2000")
+    @Min(value = 150, message = "Daily rate must be at least 150")
+    @Max(value = 2000, message = "Daily rate cannot exceed 2000")
     @Column(name = "daily_rate", nullable = false)
-    private Double dailyRate;
+    private Integer dailyRate;
 
     @Min(value = 0, message = "Fitness score must be between 0 and 100")
     @Max(value = 100, message = "Fitness score must be between 0 and 100")

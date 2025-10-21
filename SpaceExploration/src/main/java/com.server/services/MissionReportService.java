@@ -1,6 +1,7 @@
 package com.server.services;
 
 import com.server.dto.MissionDTO;
+import com.server.dto.MissionParticipantsDTO;
 import com.server.dto.MissionReportDTO;
 import com.server.models.Mission;
 import com.server.models.MissionReport;
@@ -21,11 +22,13 @@ public class MissionReportService {
     private final MissionReportRepository missionReportRepository;
     private final ModelMapper modelMapper;
     private final MissionService missionService;
+    private final BudgetService budgetService;
     private final MissionRepository missionRepository;
 
-    public MissionReportService(MissionReportRepository missionReportRepository, MissionService missionService, MissionRepository missionRepository) {
+    public MissionReportService(MissionReportRepository missionReportRepository, MissionService missionService, BudgetService budgetService, MissionRepository missionRepository) {
         this.missionReportRepository = missionReportRepository;
         this.missionService = missionService;
+        this.budgetService = budgetService;
         this.missionRepository = missionRepository;
         this.modelMapper = new ModelMapper();
     }
@@ -45,7 +48,7 @@ public class MissionReportService {
     }
 
 
-    public MissionReportDTO createReport(Integer missionId, MissionResult missionResult) {
+    public MissionReportDTO createReport(Integer missionId, MissionResult missionResult, List<MissionParticipantsDTO> participants) {
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " not found"));
 
@@ -61,6 +64,7 @@ public class MissionReportService {
         System.out.println("Issues: " + missionResult.getIssues());
         System.out.println("Alien Attack: " + missionResult.isAlienAttack());
         System.out.println("===============================");
+        int totalSalary = budgetService.calculateTotalSalary(missionId,participants );
 
         MissionReportDTO dto = MissionReportDTO.builder()
                 .id(report.getId())
@@ -77,6 +81,7 @@ public class MissionReportService {
                 .crewSizeDeficit(missionResult.getCrewSizeDeficit())
                 .missingSpecializations(missionResult.getMissingSpecializations())
                 .notReadyAstronauts(missionResult.getNotReadyAstronauts())
+                .totalSalary(totalSalary)
                 .build();
 
         System.out.println("=== Mission Report DTO ===");

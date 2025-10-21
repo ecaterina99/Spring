@@ -38,9 +38,9 @@ public class AstronautDTO {
     @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
     @NotNull(message = "Daily rate is required")
-    @DecimalMin(value = "200.0", message = "Daily rate must be at least 200")
-    @DecimalMax(value = "2000.0", message = "Daily rate cannot exceed 2000")
-    private Double dailyRate;
+    @Min(value = 150, message = "Daily rate must be at least 150")
+    @Max(value = 2000, message = "Daily rate cannot exceed 2000")
+    private Integer dailyRate;
     @Min(value = 0, message = "Fitness score must be between 0 and 100")
     @Max(value = 100, message = "Fitness score must be between 0 and 100")
     private Integer fitnessScore;
@@ -78,9 +78,9 @@ public class AstronautDTO {
         private String phone;
         @Past(message = "Date of birth must be in the past")
         private LocalDate dateOfBirth;
-        @DecimalMin(value = "200.0", message = "Daily rate must be at least 200")
-        @DecimalMax(value = "2000.0", message = "Daily rate cannot exceed 2000")
-        private Double dailyRate;
+        @Min(value = 150, message = "Daily rate must be at least 200")
+        @Max(value = 2000, message = "Daily rate cannot exceed 2000")
+        private Integer dailyRate;
         @Min(value = 0, message = "Fitness score must be between 0 and 100")
         @Max(value = 100, message = "Fitness score must be between 0 and 100")
         private Integer fitnessScore;

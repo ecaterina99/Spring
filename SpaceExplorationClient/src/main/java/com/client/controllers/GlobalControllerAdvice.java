@@ -1,5 +1,7 @@
 package com.client.controllers;
+import com.client.DTO.BudgetDTO;
 import com.client.DTO.UserDTO;
+import com.client.service.BudgetService;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import com.client.service.ApiClient;
@@ -10,10 +12,31 @@ public class GlobalControllerAdvice {
 
     private final ApiClient apiClient;
     private final TokenStorage tokenStorage;
+    private final BudgetService budgetService;
 
-    public GlobalControllerAdvice(ApiClient apiClient, TokenStorage tokenStorage) {
+    public GlobalControllerAdvice(ApiClient apiClient, TokenStorage tokenStorage, BudgetService budgetService) {
         this.apiClient = apiClient;
         this.tokenStorage = tokenStorage;
+        this.budgetService = budgetService;
+    }
+
+
+    @ModelAttribute("userBudget")
+    public BudgetDTO getUserBudget() {
+        String token = tokenStorage.getToken();
+
+        if (token != null && !token.isEmpty()) {
+            try {
+                UserDTO currentUser = apiClient.getCurrentUser();
+                if (currentUser != null) {
+                    return budgetService.getUserBudget(currentUser.getId());
+                }
+            } catch (Exception e) {
+                System.err.println("Error fetching user budget: " + e.getMessage());
+                return null;
+            }
+        }
+        return null;
     }
 
     @ModelAttribute("currentUser")

@@ -684,6 +684,9 @@ function displayFinalResults(contentContainer, isSuccess, missionReport, crew, c
     if (isSuccess) {
         console.log("🎉 Displaying SUCCESS popup");
 
+        const payment = missionReport.paymentAmount?.toLocaleString() || "0";
+        const salary = missionReport.totalSalary?.toLocaleString() || "0";
+
         content = `
         <div class="mission-results-success">
             <div class="space-background-result">
@@ -732,9 +735,14 @@ function displayFinalResults(contentContainer, isSuccess, missionReport, crew, c
                             <span class="stat-value">${crew.length}/${crewSize}</span>
                         </div>
                         <div class="stat-item highlight-stat payment-stat">
-                            <span class="stat-label">Payment</span>
-                            <span class="stat-value payment-value">${missionReport.paymentAmount?.toLocaleString()}</span>
+                            <span class="stat-label">Payment for mission</span>
+                            <span class="stat-value payment-value">${payment} $</span>
                         </div>
+                        <div class="stat-item highlight-stat salary-stat">
+                            <span class="stat-label">Crew' total salary</span>
+                            <span class="stat-value salary-value">${salary} $</span>
+                        </div>
+           
                     </div>
                 </div>
 
