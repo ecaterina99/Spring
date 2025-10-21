@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <title>Cosmo-Trail</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <script th:src="@{/js/auth.js}"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/home-style.css}">
+
+</head>
+
+<body>
+<div th:insert="~{common_fragments :: mainHeader}"></div>
+<div class="space-background-result">
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+    <div class="shooting-star" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+    <div class="shooting-star" style="top: 40%; left: 60%; animation-delay: 2s;"></div>
+    <div class="shooting-star" style="top: 70%; left: 30%; animation-delay: 4s;"></div>
+</div>
+<main class="main">
+    <!-- Hero Section -->
+    <section class="intro container">
+        <h1 class="title-astronauts">WELCOME TO COSMO TRAIL</h1>
+        <h2 class="subtitle">START YOUR FIRST SPACE EXPEDITION RIGHT NOW!</h2>
+    </section>
+
+    <!-- About Us & Budget Management - Two Columns -->
+    <section class="container">
+        <div class="two-column-grid">
+            <!-- About Us -->
+            <div class="neon-section">
+                <h2 class="section-title">🌌 About Us</h2>
+                <p class="section-content">
+                    Cosmo Trail is a revolutionary space exploration platform where you manage your own space agency.
+                    Recruit a team of experienced astronauts, plan missions to distant planets and stars, and earn resources to expand your cosmic empire.
+                </p>
+                <p class="section-content">
+                    Every decision matters: from choosing your crew to selecting destinations. Successful missions will bring you prestige and funding,
+                    while failures can be costly. Are you ready to become a legendary space explorer?
+                </p>
+            </div>
+
+            <!-- Budget Management -->
+            <div class="neon-section purple">
+                <h2 class="section-title">💰 Budget Management</h2>
+                <div class="budget-display">
+                    <div class="budget-icon">💎</div>
+                    <p style="color: #00D4FF; font-size: 1.3rem; margin-bottom: 10px; font-weight: 600;">YOUR CURRENT BUDGET</p>
+                    <div class="budget-value">$ 1,000,000</div>
+                </div>
+                <div class="section-content">
+                    <p><strong style="color: #FFD700;">⚠️ Important:</strong> Astronauts receive their daily salary for each day of the expedition regardless of mission outcome. Plan your budget in advance!</p>
+                    <p><strong style="color: #00D4FF;">💡 Tip:</strong> Successful missions can earn you significantly more money than you spent, but failure will result in loss of investment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Rules Section -->
+    <section class="container rules-container">
+        <div class="neon-section">
+            <h2 class="section-title">📋 Main Rules</h2>
+            <div class="rules-grid">
+                <div class="rule-item">
+                    <span class="rule-number">01</span>
+                    <div class="rule-title">Choose astronauts wisely</div>
+                    <p class="section-content">
+                        Pay attention to astronaut status - not all of them are ready for flight! Check their specialization and make sure it matches the requirements of your chosen mission.
+                    </p>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-number">02</span>
+                    <div class="rule-title">Astronaut salaries</div>
+                    <p class="section-content">
+                        Astronauts receive their daily salary multiplied by the number of expedition days, regardless of mission success. Budget is deducted automatically!
+                    </p>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-number">03</span>
+                    <div class="rule-title">Mission outcomes</div>
+                    <p class="section-content">
+                        Mission success depends on various conditions: crew skills, destination difficulty, and random events. Sometimes alien invasions can occur! Victory brings money, defeat takes it away.
+                    </p>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-number">04</span>
+                    <div class="rule-title">Budget management</div>
+                    <p class="section-content">
+                        Keep track of your budget! If you don't have enough funds to pay the crew, you won't be able to launch the mission.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advice Section -->
+    <section class="container">
+        <div class="neon-section purple">
+            <h2 class="section-title">🎯 Tips for Successful Expeditions</h2>
+            <div class="advice-grid">
+                <div class="advice-card">
+                    <div class="advice-icon">👨‍🚀</div>
+                    <div class="advice-title">Study astronauts</div>
+                    <p class="section-content">
+                        Check the skills, status, and experience of each astronaut before adding them to the crew.
+                    </p>
+                </div>
+                <div class="advice-card">
+                    <div class="advice-icon">🌍</div>
+                    <div class="advice-title">Choose destinations</div>
+                    <p class="section-content">
+                        Start with simpler planets and gradually progress to more challenging missions.
+                    </p>
+                </div>
+                <div class="advice-card">
+                    <div class="advice-icon">💵</div>
+                    <div class="advice-title">Calculate expenses</div>
+                    <p class="section-content">
+                        Calculate crew cost in advance: salary × days × number of astronauts.
+                    </p>
+                </div>
+                <div class="advice-card">
+                    <div class="advice-icon">⚖️</div>
+                    <div class="advice-title">Balance risk</div>
+                    <p class="section-content">
+                        High-risk missions bring more money, but the chance of failure is higher.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Cards -->
+    <section class="container navigation-section">
+        <h2 class="section-title" style="font-size: 3rem; margin-bottom: 20px;">
+            Ready to Conquer the Stars?
+        </h2>
+        <p class="nav-subtitle">
+            Your space adventure begins here. Become a legendary explorer, discover new worlds, and write your story in the stars!
+        </p>
+        <div class="navigation-grid">
+            <a th:href="@{/astronauts}"   class="nav-card blue">
+                <div class="nav-icon">👨‍🚀</div>
+                <h3 class="nav-title">Astronauts</h3>
+                <p class="nav-description">
+                    View the list of all available astronauts, their skills, experience, and salaries. Choose the best for your missions!                </p>
+                <button class="cta-button">Study Astronauts</button>
+            </a>
+
+            <a th:href="@{/destinations/interactive-map}"  class="nav-card purple">
+                <div class="nav-icon">🌍</div>
+                <h3 class="nav-title">Destinations</h3>
+                <p class="nav-description">
+                    Explore an interactive 3D map of space with planets, stars, and asteroids. Each location is unique!
+                </p>
+                <button class="cta-button">Explore Space</button>
+            </a>
+
+            <a th:href="@{/missions}"  class="nav-card blue">
+                <div class="nav-icon">🚀</div>
+                <h3 class="nav-title">Missions</h3>
+                <p class="nav-description">
+                    Plan and launch missions. Assemble your crew, send them to space, and wait for the results!
+                </p>
+                <button class="cta-button">View Missions</button>
+            </a>
+
+        </div>
+    </section>
+
+</main>
+
+<div class="rocket-animation" onclick="scrollToTop()">🚀</div>
+
+<script>
+    // Smooth scroll to top
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    // Create floating particles
+    function createParticles() {
+        const particleCount = 20;
+        const background = document.querySelector('.space-background-result');
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.width = (Math.random() * 4 + 2) + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            particle.style.animationDuration = (Math.random() * 6 + 6) + 's';
+            background.appendChild(particle);
+        }
+    }
+
+    // Parallax effect on scroll
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const stars1 = document.querySelector('.stars');
+        const stars2 = document.querySelector('.stars2');
+        const stars3 = document.querySelector('.stars3');
+
+        if (stars1) stars1.style.transform = `translateY(${scrolled * 0.5}px)`;
+        if (stars2) stars2.style.transform = `translateY(${scrolled * 0.3}px)`;
+        if (stars3) stars3.style.transform = `translateY(${scrolled * 0.1}px)`;
+    });
+
+    // Animate elements on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        createParticles();
+
+        // Animate sections on scroll
+        document.querySelectorAll('.neon-section, .nav-card, .rule-item, .advice-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(50px)';
+            el.style.transition = 'all 0.8s ease';
+            observer.observe(el);
+        });
+
+        // Add random shooting stars periodically
+        setInterval(() => {
+            const shootingStar = document.createElement('div');
+            shootingStar.className = 'shooting-star';
+            shootingStar.style.top = Math.random() * 50 + '%';
+            shootingStar.style.left = Math.random() * 50 + '%';
+            shootingStar.style.animationDelay = '0s';
+            document.querySelector('.space-background-result').appendChild(shootingStar);
+
+            setTimeout(() => shootingStar.remove(), 3000);
+        }, 5000);
+    });
+
+    // Enhanced hover effects
+    document.querySelectorAll('.nav-card, .cta-button').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            el.style.transition = 'all 0.3s ease';
+        });
+    });
+
+    // Add floating animation to cards
+    const cards = document.querySelectorAll('.neon-section, .nav-card');
+    cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+    });
+</script>
+</body>
+
+</html>
