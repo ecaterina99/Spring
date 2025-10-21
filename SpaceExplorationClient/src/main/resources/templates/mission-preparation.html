@@ -4,18 +4,29 @@
 <body>
 <div th:insert="~{common_fragments :: mainHeader}"></div>
 
-<main class="container py-4">
+<div class="budget-container mt-4" >
+    <div class="budget d-flex justify-content-end align-items-center">
+        <h5 class="me-2" style="color: #d6d4d4">CURRENT BUDGET:</h5>
+        <p style="color: #ffd500" th:if="${userBudget != null}" >
+            <span id="currentBudget" style="color: #ffd500"
+                  th:text="${userBudget.currentBudget}">0</span> $
+        </p>
+        <p th:if="${userBudget == null}">
+            <span>Not available</span>
+        </p>
+    </div>
+
+    <div id="budgetChangeNotification" class="budget-notification"></div>
+
+    <div class="budget-bar">
+        <div id="budgetProgress" class="budget-progress"></div>
+    </div>
+</div>
+
+
+<main class="container py-4 pt-0">
 
     <section class="mission-participants-text text-md-start mb-4">
-        <div class="budget d-flex justify-content-end">
-            <h5>CURRENT BUDGET: </h5>
-            <p th:if="${userBudget != null}">
-                <span th:text="${#numbers.formatDecimal(userBudget.currentBudget, 1, 'COMMA', 0, 'POINT')}">0</span> $
-            </p>
-            <p th:if="${userBudget == null}">
-                <span> Not available</span>
-            </p>
-        </div>
         <h1 class="display-5 fw-bold pt-3">
             MISSION PREPARATION FOR
             <span th:text="${mission.name.toUpperCase()}" style="color: #ffd500"></span><br>

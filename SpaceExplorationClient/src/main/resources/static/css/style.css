@@ -1590,6 +1590,48 @@ issue-icon {
     animation: starsMove 120s linear infinite;
 }
 
+.budget-container {
+    position: relative;
+    text-align: right;
+    margin-right: 20px;
+}
+
+.budget-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 15px 25px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    z-index: 999999;
+    pointer-events: none;
+}
+
+.budget-notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.budget-bar {
+    width: 100%;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.budget-progress {
+    height: 100%;
+    width: 100%;
+    transition: background-color 0.5s ease;
+}
+
 
 /* ===== BUTTONS ===== */
 #btn-view:hover {

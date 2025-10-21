@@ -739,7 +739,7 @@ function displayFinalResults(contentContainer, isSuccess, missionReport, crew, c
                             <span class="stat-value payment-value">${payment} $</span>
                         </div>
                         <div class="stat-item highlight-stat salary-stat">
-                            <span class="stat-label">Crew' total salary</span>
+                            <span class="stat-label">Total crew salary you've paid:</span>
                             <span class="stat-value salary-value">${salary} $</span>
                         </div>
            
@@ -775,7 +775,8 @@ function displayFinalResults(contentContainer, isSuccess, missionReport, crew, c
 
     } else {
         console.log("❌ Displaying FAILURE popup");
-
+        const payment = missionReport.paymentAmount?.toLocaleString() || "0";
+        const salary = missionReport.totalSalary?.toLocaleString() || "0";
         content = `
         <div class="mission-results-failure">
             <div class="space-background-result failure-bg">
@@ -791,8 +792,10 @@ function displayFinalResults(contentContainer, isSuccess, missionReport, crew, c
                 </div>
                 <h3 class="result-title failure-title">MISSION FAILED !</h3>
              <p class="result-subtitle">Critical system failure detected</p>
+              <span class="stat-label">Total crew salary you've paid:</span>
+                            <span class="stat-value salary-value">${salary} $</span>
             </div>
-
+                           
             <div class="mission-stats-container">
 
                        ${missionReport.alienAttack ? `
@@ -874,7 +877,7 @@ document.querySelector('.btn-start-mission').addEventListener('click', async () 
         return;
     }
 
-    const mission = {
+        const mission = {
         id: missionId,
         participants: crew.map(member => ({
             missionId: parseInt(missionId),
@@ -914,28 +917,27 @@ document.querySelector('.btn-start-mission').addEventListener('click', async () 
             throw new Error(`Error starting mission: ${response.status} - ${errorText}`);
         }
 
-        const missionReport = await response.json();
-
-        console.log("📊 Full mission report received:");
-        console.log(missionReport);
-        console.log("Success status:", missionReport.isSuccessful);
-        console.log("Success chance:", missionReport.successChance);
-        console.log("Issues:", missionReport.issues);
-        console.log("Alien attack:", missionReport.alienAttack);
-
-        if (!missionReport || typeof missionReport !== 'object') {
-            console.error("❌ Invalid mission report:", missionReport);
-            throw new Error("Invalid mission report received from server");
-        }
-
+        const result = await response.json();
+        const missionReport = result.missionReport;
+        const updatedBudget = result.updatedBudget;
         const crewSize = parseInt(document.querySelector('.btn-add-participants')?.getAttribute('data-crew-size')) || crew.length;
 
-        console.log("Calling displayResultsPopup with:");
-        console.log("- missionReport:", missionReport);
-        console.log("- crew:", crew);
-        console.log("- crewSize:", crewSize);
+        if (missionReport.totalSalary && updatedBudget.currentBudget < 6000) {
+            showAlert("Unfortunately, your budget is too low for any mission! ","danger");
+            button.disabled = false;
+            button.textContent = "START MISSION";
+            return;
+        }else if (missionReport.totalSalary && updatedBudget.currentBudget < missionReport.totalSalary) {
+            showAlert("⚠️ Budget too low to pay this crew.\nTry reducing the crew size or attempting an easier mission.", "warning");
+            button.disabled = false;
+            button.textContent = "START MISSION";
+            return;
+        }
 
         displayResultsPopup(missionReport, crew, crewSize);
+
+        updateBudgetUI(updatedBudget.currentBudget, missionReport.totalSalary);
+
 
         const startedMissionsKey = 'startedMissions';
         let startedMissions = JSON.parse(sessionStorage.getItem(startedMissionsKey) || '[]');
@@ -965,4 +967,61 @@ document.querySelector('.btn-start-mission').addEventListener('click', async () 
         button.disabled = false;
         button.textContent = "START MISSION";
     }
+});
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const budgetElement = document.getElementById("currentBudget");
+    const progressBar = document.getElementById("budgetProgress");
+    const notification = document.getElementById("budgetChangeNotification");
+
+    if (!budgetElement) return;
+
+    let previousBudget = parseInt(budgetElement.textContent.replace(/,/g, '')) || 0;
+    updateBudgetColor(previousBudget);
+
+
+
+    function updateBudgetColor(budget) {
+        if (budget > 1000000) {
+            budgetElement.style.color = "#38aa8c";
+            progressBar.style.backgroundColor = "#38a97e";
+        } else if (budget >= 500000) {
+            budgetElement.style.color = "#ffd500";
+            progressBar.style.backgroundColor = "#ffd500";
+        } else if (budget >= 100000) {
+            budgetElement.style.color = "#ff9500";
+            progressBar.style.backgroundColor = "#ff9500";
+        } else {
+            budgetElement.style.color = "#ff0000";
+            progressBar.style.backgroundColor = "#ff0000";
+        }
+    }
+
+    window.updateBudgetUI = function (newBudget, totalSalary = null) {
+        const change = newBudget - previousBudget;
+
+        budgetElement.textContent = newBudget.toLocaleString();
+
+        updateBudgetColor(newBudget);
+
+        if (change !== 0) {
+            setTimeout(() => {
+                notification.textContent = (change > 0 ? "+ " : "− ") + Math.abs(change).toLocaleString() + " $";
+                notification.style.color = change > 0 ? "#38a86b" : "#ff0000";
+                notification.classList.add("show");
+
+                setTimeout(() => {
+                    notification.classList.remove("show");
+                }, 50000);
+            }, 5000);
+        }
+
+        if (totalSalary && newBudget < totalSalary) {
+            showAlert("⚠️ Budget too low to pay this crew.\nTry reducing the crew size or attempting an easier mission.", "danger");
+        }
+
+        previousBudget = newBudget;
+    };
 });

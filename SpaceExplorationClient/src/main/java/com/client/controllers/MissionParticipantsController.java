@@ -58,27 +58,4 @@ public class MissionParticipantsController {
 
         return "mission-preparation";
     }
-
-/*
-    @PostMapping ("/add/{missionId}/{astronautId}")
-    public String addAstronautToMission(
-            @PathVariable Integer missionId,
-            @PathVariable Integer astronautId,
-     RedirectAttributes redirectAttributes) {
-
-        try {
-            missionParticipantsService.addParticipants(missionId, astronautId);
-            redirectAttributes.addFlashAttribute("successMessage",
-                    "Astronaut added successfully!");
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "Failed to add astronaut. Please try again.");
-        }
-        return "redirect:/mission-participants?missionId=" + missionId;
-    }
-
- */
-
 }

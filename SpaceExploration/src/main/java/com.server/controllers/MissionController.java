@@ -10,6 +10,7 @@ import com.server.services.MissionParticipantsService;
 import com.server.services.MissionReportService;
 import com.server.services.MissionService;
 import com.server.util.MissionResult;
+import com.server.util.MissionStartResponse;
 import com.server.util.UserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -183,9 +184,8 @@ public class MissionController {
                 missionResult,
                 missionParticipantsDTO
         );
-
-        return ResponseEntity.ok(missionReport);
-
+        MissionStartResponse response = new MissionStartResponse(missionReport, updatedBudget);
+        return ResponseEntity.ok(response);
     }
 
 
