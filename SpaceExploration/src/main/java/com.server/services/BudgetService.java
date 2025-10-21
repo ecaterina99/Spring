@@ -32,6 +32,7 @@ public class BudgetService {
         this.userRepository = userRepository;
         this.modelMapper = new ModelMapper();
     }
+
     public BudgetDTO createInitialBudget(Integer userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
@@ -71,7 +72,7 @@ public class BudgetService {
                 .toList();
     }
 
-    public BudgetDTO updateBudget(Integer userId, Integer missionId, MissionResult missionResult) {
+    public BudgetDTO updateBudget(Integer userId, Integer missionId, MissionResult missionResult , List<MissionParticipantsDTO> participants) {
         Budget budget = budgetRepository.findByUserId(userId)
                 .orElseGet(() -> {
                     User user = userRepository.findById(userId)
@@ -85,28 +86,51 @@ public class BudgetService {
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(() -> new EntityNotFoundException("Mission not found with id: " + missionId));
 
-        int salary = mission.getPaymentAmount();
+        int salary = calculateTotalSalary(missionId, participants);
+        int paymentForMission = mission.getPaymentAmount();
+
         int previousBalance = budget.getCurrentBudget();
         int newBalance;
 
-        if (missionResult.isSuccess()) {
-            newBalance = previousBalance + salary;
-            System.out.println("Mission SUCCESS! User " + userId +
-                    " - Previous balance: " + previousBalance +
-                    ", Earned: +" + salary +
-                    ", New balance: " + newBalance);
+        if (previousBalance < salary) {
+            System.out.println("Unfortunately, you don't have enough money to pay for this mission. Current budget: "
+                    + previousBalance + "; Payment for mission: " + salary);
+            newBalance = previousBalance;
         } else {
-            newBalance = previousBalance - salary;
-            System.out.println("Mission FAILED! User " + userId +
-                    " - Previous balance: " + previousBalance +
-                    ", Lost: -" + salary +
-                    ", New balance: " + newBalance);
-        }
+            if (missionResult.isSuccess()) {
+                newBalance = previousBalance + paymentForMission - salary;
+                System.out.println("Mission SUCCESS! User " + userId +
+                        " - Previous balance: " + previousBalance +
+                        ", Earned: +" + salary +
+                        ", New balance: " + newBalance);
+            } else {
+                newBalance = previousBalance - salary;
+                System.out.println("Mission FAILED! User " + userId +
+                        " - Previous balance: " + previousBalance +
+                        ", Lost: -" + salary +
+                        ", New balance: " + newBalance);
 
+            }
+        }
         budget.setCurrentBudget(newBalance);
         budgetRepository.save(budget);
-
         return modelMapper.map(budget, BudgetDTO.class);
     }
 
+
+    private int calculateTotalSalary(Integer missionId, List<MissionParticipantsDTO> participants) {
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow(() -> new EntityNotFoundException("Mission not found with id: " + missionId));
+
+
+
+        int totalSalary = 0;
+        for (MissionParticipantsDTO participant : participants) {
+            System.out.println("Daily rate:"+participant.getDailyRate());
+            System.out.println("Duration:"+mission.getDurationDays());
+            totalSalary = participant.getDailyRate() * mission.getDurationDays();
+            totalSalary++;
+        }
+        return totalSalary;
+    }
 }
