@@ -7,21 +7,21 @@
 <!-- Intro -->
 <main class="container">
     <section class="intro container py-5 text-md-start">
-        <h1 class="title-astronauts display-4 fw-bold">WHO IS IN SPACE?</h1>
+        <h1 class="title-astronauts display-5 fw-bold text-glow">WHO IS IN SPACE?</h1>
         <br>
         <p class="lead" style="font-size: 18px;">
-            The term “astronaut” derives from the Greek words meaning “star sailor,”
-            and refers to all who have been launched as crew members aboard NASA spacecraft bound
-            for orbit. The term “astronaut” has been maintained as the title for those
-            selected to join the NASA corps of astronauts who make “star sailing” their career profession.
+            Our astronauts are highly skilled professionals, each with their own unique specialization including pilots, engineers, doctors and geologists.
+            They possess exceptional psychological and physical preparation, having undergone rigorous training programs.
+            With years of experience in space exploration, they are equipped to handle the most challenging missions.
+            Each astronaut brings invaluable expertise to the crew, making them essential assets for mission success.
         </p>
     </section>
 
     <section class="container pt-0 pb-5">
         <div class="row g-4 justify-content-center">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3"
+            <div class="col-10 col-sm-6 col-md-4 col-lg-3 mx-auto"
                  th:each="astronaut : ${astronauts}">
-                <div class="card  h-80 text-center border-0">
+                <div class="card  h-80 text-center border-0" style="background-color: #cccbcb">
                     <img th:src="@{${astronaut.imageUrl}}" class="card-img-top rounded" alt="image">
 
                     <div class="card-body">
@@ -64,14 +64,19 @@
             </div>
         </div>
     </section>
+
     <!-- Popup -->
     <div id="astronaut-popup" class="astronaut-popup" style="display:none;">
         <div class="astronaut-popup-content">
             <span id="popup-close">&times;</span>
-
+            <div class="change-popup">
+                <div class="popup-navigation">
+                    <button id="prevMissionBtn" class="btn-change">⬅ Prev</button>
+                    <button id="nextMissionBtn" class="btn-change">Next ➡</button>
+                </div>
+            </div>
             <br>
             <h3 id="popup-title" class="popup-header"><strong>ASTRONAUT BIOGRAPHY</strong></h3>
-
 
             <div class="astronaut-top d-flex">
                 <div class="astronaut-image">
@@ -88,7 +93,6 @@
                     <h5 class="popup-subtitle"><strong>MAIN INFO</strong></h5>
                     <p><strong>Date of birth:</strong><span id="popup-birthDate"></span></p>
                     <p><strong>Years of experience:</strong> <span id="popup-experience"></span></p>
-                    <p><strong>Phone:</strong> <span id="popup-phone"></span></p>
                     <p><strong>Status:</strong> <span id="popup-status"></span></p>
                     <p><strong>Daily rate:</strong> <span id="popup-rate"></span></p>
                 </div>
@@ -110,15 +114,30 @@
         </div>
     </div>
 </main>
+<br>
+
 <script>
     function showPopup(button) {
+
+        let astronautButtons = [];
+        let currentAstronautIndex = -1;
+
+        astronautButtons = Array.from(document.querySelectorAll("#btn-view"));
+        currentAstronautIndex = astronautButtons.indexOf(button);
+
+        document.getElementById("prevMissionBtn").onclick = () => {
+            if (currentAstronautIndex > 0) showPopup(astronautButtons[currentAstronautIndex - 1]);
+        };
+        document.getElementById("nextMissionBtn").onclick = () => {
+            if (currentAstronautIndex < astronautButtons.length - 1) showPopup(astronautButtons[currentAstronautIndex + 1]);
+        };
+
         const firstname = button.getAttribute("data-firstname");
         const lastname = button.getAttribute("data-lastname");
         const specialization = button.getAttribute("data-specialization");
         const image = button.getAttribute("data-image");
         const experience = button.getAttribute("data-experience");
         const birthDate = button.getAttribute("data-birthdate");
-        const phone = button.getAttribute("data-phone");
         const health = button.getAttribute("data-health");
         const fitness = button.getAttribute("data-fitness");
         const education = button.getAttribute("data-education");
@@ -133,7 +152,6 @@
         document.getElementById("popup-specialization").textContent = specialization || "—";
         document.getElementById("popup-birthDate").textContent = birthDate || "—";
         document.getElementById("popup-experience").textContent = experience || "0";
-        document.getElementById("popup-phone").textContent = phone || "—";
         document.getElementById("popup-status").textContent = health || "—";
         document.getElementById("popup-fitness").textContent = fitness || "—";
         document.getElementById("popup-education").textContent = education || "—";

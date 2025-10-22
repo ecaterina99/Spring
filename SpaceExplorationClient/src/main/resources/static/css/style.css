@@ -384,6 +384,11 @@ nav.navbar,
     min-width: 200px;
 }
 
+.astronaut-popup-content{
+    text-align: center;
+    justify-content: center;
+}
+
 .popup-risks-content{
     background: linear-gradient(135deg, #ffee76 0%, #ff5900 100%);
     border-radius: 15px;
@@ -448,7 +453,7 @@ nav.navbar,
 }
 
 .astronaut-info p {
-    margin: 4px 0;
+    margin: 4px 4px;
     color: #dcdcdc;
 }
 
@@ -510,17 +515,16 @@ nav.navbar,
 }
 
 .astronaut-popup-content {
-    background-image: url('/api/images/b5.jpg');
+    background-image: url('/images/b5.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     padding: 20px;
     border-radius: 8px;
-    max-width: 1200px;
+    width: 600px;
     text-align: center;
     color: white;
-    min-width: 250px;
-    min-height: 400px;
+    height: 650px;
 }
 
 .popup-start-mission-content::before {
@@ -1873,6 +1877,123 @@ issue-icon {
     .failure-stats {
         grid-template-columns: 1fr;
     }
+
+/*=====ASTRONAUT & POPUP SECTION=====*/
+        .card {
+            width: 100%;
+        }
+        .card-title {
+            font-size: 0.95rem;
+        }
+        .card-text {
+            font-size: 0.8rem;
+        }
+
+        .popup-subtitle{
+            font-size: 0.2rem;
+            margin-top: 2px;
+            margin-bottom: 2px;
+        }
+
+    .astronaut-info {
+        align-items: center;
+        display: flex !important;
+        flex-direction: row !important;
+        margin: 0!important;
+        gap: 0!important;
+    }
+
+    .score-info-astronaut {
+        width: 100%;
+        text-align: left;
+        gap: 0;
+        padding: 0;
+        margin: 0;
+
+    }
+
+    .score-info-astronaut h5 {
+        text-align: center;
+        margin-top: 2px;
+    }
+    .astronaut-popup-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 240px;
+        height: 480px;
+        padding: 10px;
+        border-radius: 12px;
+    }
+
+    .astronaut-top {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .astronaut-image img {
+        width: 100%;
+        max-width: 150px;
+        padding: 0;
+        margin: 0;
+    }
+
+
+    .astronaut-main-info h3,
+    .astronaut-main-info p {
+        margin: 0;
+        line-height: 1.2;
+        padding: 0;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .astronaut-main-info {
+        padding: 0;
+        margin: 0 0 5px;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .popup-name {
+        font-size: 1.1rem;
+    }
+
+    .popup-header {
+        display: none;
+    }
+
+    .popup-subtitle {
+        display: none;
+    }
+
+    .astronaut-info p {
+        font-size: 0.85rem;
+    }
+
+    #downloadBtn {
+        display: none;
+    }
+    #popup-close {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        font-size: 1.5rem;
+        color: #29fff8;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    #popup-close:hover {
+        color: #25bf20;
+        transform: scale(1.1);
+    }
+
 }
 
 

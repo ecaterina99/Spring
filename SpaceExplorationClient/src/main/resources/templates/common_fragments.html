@@ -48,7 +48,7 @@
 
                     <div class="logout d-flex align-items-center ms-auto">
         <span th:if="${currentUser != null}">
-            Welcome, <span th:text="${currentUser.firstName}"></span>! |
+           <span th:text="${currentUser.firstName}"></span>  <span th:text="${currentUser.lastName}"></span> |
         <a id="logout" th:href="@{/login}" onclick="logout()">Logout</a>
         </span>
        <span th:if="${currentUser == null}">

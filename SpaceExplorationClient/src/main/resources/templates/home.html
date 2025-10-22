@@ -39,7 +39,7 @@
         <div class="two-column-grid">
             <!-- About Us -->
             <div class="neon-section">
-                <h2 class="section-title">🌌 About Us</h2>
+                <h2 class="section-title">About Us</h2>
                 <p class="section-content">
                     Cosmo Trail is a revolutionary space exploration platform where you manage your own space agency.
                     Recruit a team of experienced astronauts, plan missions to distant planets and stars, and earn resources to expand your cosmic empire.
@@ -52,15 +52,15 @@
 
             <!-- Budget Management -->
             <div class="neon-section purple">
-                <h2 class="section-title">💰 Budget Management</h2>
+                <h2 class="section-title">Budget Management</h2>
                 <div class="budget-display">
                     <div class="budget-icon">💎</div>
-                    <p style="color: #00D4FF; font-size: 1.3rem; margin-bottom: 10px; font-weight: 600;">YOUR CURRENT BUDGET</p>
+                    <p style="color: #00D4FF; font-size: 1.3rem; margin-bottom: 10px; font-weight: 600;">YOUR START BUDGET</p>
                     <div class="budget-value">$ 1,000,000</div>
                 </div>
                 <div class="section-content">
-                    <p><strong style="color: #FFD700;">⚠️ Important:</strong> Astronauts receive their daily salary for each day of the expedition regardless of mission outcome. Plan your budget in advance!</p>
-                    <p><strong style="color: #00D4FF;">💡 Tip:</strong> Successful missions can earn you significantly more money than you spent, but failure will result in loss of investment.</p>
+                    <p><strong style="color: #FFD700;">Important:</strong> Astronauts receive their daily salary for each day of the expedition regardless of mission outcome. Plan your budget in advance!</p>
+                    <p><strong style="color: #00D4FF;">Tip:</strong> Successful missions can earn you significantly more money than you spent, but failure will result in loss of investment.</p>
                 </div>
             </div>
         </div>
@@ -68,8 +68,8 @@
 
     <!-- Main Rules Section -->
     <section class="container rules-container">
-        <div class="neon-section">
-            <h2 class="section-title">📋 Main Rules</h2>
+        <div class="neon-section-transparent">
+            <h2 class="section-title">Main Rules</h2>
             <div class="rules-grid">
                 <div class="rule-item">
                     <span class="rule-number">01</span>
@@ -102,11 +102,10 @@
             </div>
         </div>
     </section>
-
     <!-- Advice Section -->
-    <section class="container">
+    <section class="container advice-section">
         <div class="neon-section purple">
-            <h2 class="section-title">🎯 Tips for Successful Expeditions</h2>
+            <h2 class="section-title">Tips for Successful Expeditions</h2>
             <div class="advice-grid">
                 <div class="advice-card">
                     <div class="advice-icon">👨‍🚀</div>
@@ -154,7 +153,7 @@
                 <h3 class="nav-title">Astronauts</h3>
                 <p class="nav-description">
                     View the list of all available astronauts, their skills, experience, and salaries. Choose the best for your missions!                </p>
-                <button class="cta-button">Study Astronauts</button>
+                <button class="cta-button">View Astronauts</button>
             </a>
 
             <a th:href="@{/destinations/interactive-map}"  class="nav-card purple">
@@ -170,13 +169,16 @@
                 <div class="nav-icon">🚀</div>
                 <h3 class="nav-title">Missions</h3>
                 <p class="nav-description">
-                    Plan and launch missions. Assemble your crew, send them to space, and wait for the results!
+                    Plan and launch missions. <br> Assemble your crew, send them to space, and wait for the results!
                 </p>
                 <button class="cta-button">View Missions</button>
             </a>
 
         </div>
     </section>
+    <br>
+
+
 
 </main>
 
@@ -271,6 +273,8 @@
         card.style.animationDelay = `${index * 0.1}s`;
     });
 </script>
+
 </body>
+<div th:insert="~{common_fragments :: mainFooter}"></div>
 
 </html>
