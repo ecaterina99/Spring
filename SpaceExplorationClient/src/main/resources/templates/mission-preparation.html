@@ -187,14 +187,17 @@
 
 
     <!-- Popup risks-->
-    <div id="popup-risks" class="astronaut-popup" style="display:none; width:600px; height: 700px">
+    <div id="popup-risks" class="astronaut-popup" style="display:none;">
         <div class="popup-risks-content">
-            <div class="popup-header"
-                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="color: #0b43b5; margin: 0;">
-                    <strong>🛸 MISSION RISK ANALYSIS</strong></h3>
+            <h3 style="color: #29fff8; margin: 0; padding: 0; font-family: 'Orbitron', monospace; font-weight: normal;">
+                <strong>MISSION RISK ANALYSIS</strong>
+            </h3>
+            <div class="popup-header" style="position: sticky; top: 0; background: inherit; z-index: 10;
+             display: flex; justify-content: end; align-items:end;
+             margin-bottom: 10px; padding-bottom: 10px;">
+
                 <button id="popup-risks-close" style="background: transparent; border: none;
-                    color: #ff0000; font-size: 30px; cursor: pointer; line-height: 1;">
+                color: #29fff8; font-size: 30px; cursor: pointer; line-height: 1;">
                     ×
                 </button>
             </div>
@@ -203,7 +206,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- Popup start mission-->
     <div id="popup-start-mission" class="start-mission-popup">

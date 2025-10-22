@@ -344,9 +344,16 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
 
     let content = `
         <div class="risk-analysis">
+               <div class="space-background-result">
+                <div class="stars"></div>
+                <div class="stars2"></div>
+                <div class="stars3"></div>
+                <div class="success-particles"></div>
+            </div>
+
             <!-- CREW STATUS -->
-            <h5 style="color: #0b43b5; margin-bottom: 15px;">CREW STATUS</h5>
-            <div style="background: rgba(189,83,4,0.56); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <h5 style="color: rgb(67,106,253); margin-bottom: 15px;">CREW STATUS</h5>
+            <div style="background: rgba(67,82,253,0.53); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                 <p style="margin: 5px 0;">
                     <span style="color: #ffd500;">▸</span>
                     Required crew size: <strong>${requiredCrewSize}</strong>
@@ -356,7 +363,7 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
                     Current crew size: <strong style="color: ${risks.crewSizeMatch ? '#00ff88' : '#ffffff'}">${risks.crewCount}</strong>
                 </p>
                 ${!risks.crewSizeMatch ?
-        `<p style="color: #a30101; margin-top: 10px;">
+        `<p style="color: #436afd; margin-top: 10px;">
                         ⚠️ Crew size mismatch! ${risks.crewCount < requiredCrewSize ?
             `Need ${requiredCrewSize - risks.crewCount} more astronaut(s)` :
             `${risks.crewCount - requiredCrewSize} astronaut(s) over limit`}
@@ -366,8 +373,8 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
             </div>
 
             <!-- SPECIALIZATIONS -->
-            <h5 style="color: #0b43b5; margin-bottom: 15px;">SPECIALIZATIONS</h5>
-            <div style="background: rgba(189,83,4,0.56); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <h5 style="color: #436afd; margin-bottom: 15px;">SPECIALIZATIONS</h5>
+            <div style="background: rgb(48,57,146); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                 ${Object.keys(risks.requiredSpecializations).length > 0 ?
         Object.entries(risks.requiredSpecializations).map(([spec, required]) => {
             const current = risks.specializations[spec] || 0;
@@ -381,11 +388,11 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
                             </p>
                         `;
         }).join('') :
-        '<p style="color: #8a0909;">⚠️ No required specializations defined!</p>'
+        '<p style="color: #e4b600;">⚠️ No required specializations defined!</p>'
     }
 
                 ${risks.specializationsMismatch.length > 0 ?
-        `<p style="color: #830a0a; margin-top: 10px; font-weight: bold;">
+        `<p style="color: #e4b600; margin-top: 10px; font-weight: bold;">
                         ⚠️ Specialization requirements not met!
                     </p>` :
         Object.keys(risks.requiredSpecializations).length > 0 ?
@@ -401,9 +408,9 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
     ${crew.length > 0 ?
         (() => {
             const cardsHTML = crew.map(member => `
-                <div style="background: rgba(189,83,4,0.56); padding: 12px;
+                <div style="background: rgba(48,57,146,0.45);padding: 12px;
                      border-radius: 8px; margin-bottom: 10px; border-left: 3px; color: #ffffff;">
-                    <p style="margin: 3px 0; color: #0b43b5; font-weight: bold; font-size: 14px;">
+                    <p style="margin: 3px 0; color: #436afd; font-weight: bold; font-size: 14px;">
                         ${member.firstName.toUpperCase()} ${member.lastName.toUpperCase()}
                     </p>
                     <p style="margin: 3px 0; font-size: 13px;">
@@ -419,10 +426,10 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
             `).join('');
             const notReadyMembers = crew.filter(m => m.healthStatus !== 'Flight Ready');
             const warningsHTML = notReadyMembers.length > 0
-                ? `<div style="margin-top: 15px; padding: 10px; border: 2px solid #970d0d;
-                              border-radius: 8px; background: rgba(255, 107, 107, 0.1);">
+                ? `<div style="margin-top: 15px; padding: 10px; border: 2px solid rgba(23,27,156,0.05);
+                              border-radius: 8px; background: rgba(67,106,253,0.09);">
                         ${notReadyMembers.map(m => `
-                            <p style="color: #8e0808; font-weight: bold; margin: 5px 0;">
+                            <p style="color: #e4b600; font-weight: bold; margin: 5px 0;">
                                 ⚠️ Attention! Astronaut ${m.firstName} ${m.lastName}  has status: ${m.healthStatus}
                             </p>
                         `).join('')}
@@ -432,7 +439,7 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
             return cardsHTML + warningsHTML;
         })()
         :
-        '<p style="color: #8c0909; text-align: center; padding: 20px;">No crew members added yet!</p>'
+        '<p style="color: #e4c904; text-align: center; padding: 20px;">No crew members added yet!</p>'
     }
 </div>
 
@@ -442,7 +449,7 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
         `<p style="color: #00ff88; font-size: 18px; font-weight: bold;">
                     ✓ Mission is ready for launch!
                 </p>` :
-        `<p style="color: #8b0909; font-size: 20px; font-weight: bold;">
+        `<p style="color: #e4c904; font-size: 20px; font-weight: bold;">
                    Mission has critical issues that need to be resolved!
                 </p>`
     }
