@@ -31,8 +31,6 @@ public class DestinationController {
         this.destinationService = destinationService;
     }
 
-
-
     @GetMapping("/interactive-map")
     public String getInteractiveMap(Model model) {
         log.debug("Handling request for interactive space map");
@@ -59,7 +57,6 @@ public class DestinationController {
             log.debug("BEFORE JSON: id={}, name={}, code='{}', description='{}'",
                     first.getId(), first.getName(), first.getCode(), first.getDescription());
         }
-
         return missions;
     }
 }

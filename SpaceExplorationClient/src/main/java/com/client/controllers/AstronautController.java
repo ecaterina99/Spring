@@ -26,10 +26,8 @@ public class AstronautController {
 
     private final AstronautService astronautService;
 
-
-    public AstronautController(AstronautService astronautService, ApiClient apiClient, TokenStorage tokenStorage) {
+    public AstronautController(AstronautService astronautService) {
         this.astronautService = astronautService;
-
     }
 
     @GetMapping

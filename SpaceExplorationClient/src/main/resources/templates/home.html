@@ -10,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <script th:src="@{/js/auth.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -178,14 +179,11 @@
     </section>
     <br>
 
-
-
 </main>
 
 <div class="rocket-animation" onclick="scrollToTop()">🚀</div>
 
 <script>
-    // Smooth scroll to top
     function scrollToTop() {
         window.scrollTo({
             top: 0,
@@ -193,7 +191,6 @@
         });
     }
 
-    // Create floating particles
     function createParticles() {
         const particleCount = 20;
         const background = document.querySelector('.space-background-result');
@@ -209,7 +206,6 @@
         }
     }
 
-    // Parallax effect on scroll
     window.addEventListener('scroll', () => {
         const scrolled = window.pageYOffset;
         const stars1 = document.querySelector('.stars');
@@ -221,7 +217,6 @@
         if (stars3) stars3.style.transform = `translateY(${scrolled * 0.1}px)`;
     });
 
-    // Animate elements on scroll
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -100px 0px'
@@ -239,7 +234,6 @@
     document.addEventListener('DOMContentLoaded', () => {
         createParticles();
 
-        // Animate sections on scroll
         document.querySelectorAll('.neon-section, .nav-card, .rule-item, .advice-card').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(50px)';
@@ -247,7 +241,6 @@
             observer.observe(el);
         });
 
-        // Add random shooting stars periodically
         setInterval(() => {
             const shootingStar = document.createElement('div');
             shootingStar.className = 'shooting-star';
@@ -260,14 +253,12 @@
         }, 5000);
     });
 
-    // Enhanced hover effects
     document.querySelectorAll('.nav-card, .cta-button').forEach(el => {
         el.addEventListener('mouseenter', () => {
             el.style.transition = 'all 0.3s ease';
         });
     });
 
-    // Add floating animation to cards
     const cards = document.querySelectorAll('.neon-section, .nav-card');
     cards.forEach((card, index) => {
         card.style.animationDelay = `${index * 0.1}s`;

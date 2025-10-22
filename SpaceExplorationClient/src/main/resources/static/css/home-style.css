@@ -109,12 +109,6 @@ body {
     font-family: 'Orbitron', monospace;
     font-size: 4.5rem;
     color: #fff200;
-    text-shadow:
-            0 0 10px #e8d77a,
-            0 0 20px #ffee76,
-            0 0 40px #e8d77a,
-            0 0 60px #e8d77a,
-            0 0 80px #e8d77a;
     animation: glow 2s ease-in-out infinite alternate;
     margin-bottom: 20px;
     letter-spacing: 8px;
@@ -362,8 +356,7 @@ body {
     margin: 45px 30px
 }
 
-
-                                              .advice-grid {
+.advice-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 25px;

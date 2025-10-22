@@ -4,10 +4,9 @@
 <div id="missions-container" th:fragment="missionCards">
     <div class="row g-4 justify-content-center mb-10">
 
-
-        <div class="col-12 col-sm-6 col-md-4 col-lg-4 d-flex align-items-stretch"
+        <div class="col-10 col-sm-6 col-md-4 col-lg-4  align-items-stretch"
              th:each="mission : ${missions}">
-            <div class="card space-card w-100">
+            <div class="card space-card w-100 h-100">
                 <div class="card-title-level">
                     <h5 class="card-title fw-bold text-warning" th:text="${mission.name.toUpperCase()}"></h5>
 

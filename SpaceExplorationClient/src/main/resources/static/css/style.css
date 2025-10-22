@@ -7,17 +7,11 @@ body {
 }
 
 /* ====NAVBAR==== */
-.navbar-collapse {
-
-    display: flex !important;
-    justify-content: center;
-    position: relative;
-}
 
 .navbar-nav {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    position: static;
+    transform: none;
+    margin: 0 auto;
 }
 
 nav.navbar,
@@ -39,6 +33,16 @@ nav.navbar,
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
 }
+.navbar-nav .nav-link {
+    font-family: 'Orbitron', monospace !important;
+    white-space: nowrap;
+    padding: 10px 20px !important;
+    color: #000 !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
 
 .navbar .container-fluid {
     background-color: transparent !important;
@@ -46,7 +50,6 @@ nav.navbar,
 
 .navbar-nav .nav-link {
     font-family: 'Orbitron', monospace !important;
-
     white-space: nowrap;
     padding: 10px 20px !important;
     color: #000 !important;
@@ -61,20 +64,14 @@ nav.navbar,
     transform: translateY(-2px);
 }
 
-.navbar-toggle {
-    border-color: #000 !important;
+.navbar-toggler {
+    border: none !important;
+    background-color: rgba(255, 215, 0, 0.8);
+    border-radius: 8px;
 }
 
-.navbar-collapse {
-    display: flex !important;
-    justify-content: center;
-    position: relative;
-}
-
-.navbar-nav {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='black' stroke-width='2' stroke-linecap='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
 
 .logout {
@@ -384,11 +381,6 @@ nav.navbar,
     min-width: 200px;
 }
 
-.astronaut-popup-content{
-    text-align: center;
-    justify-content: center;
-}
-
 .popup-risks-content{
     background: linear-gradient(135deg, #ffee76 0%, #ff5900 100%);
     border-radius: 15px;
@@ -441,7 +433,7 @@ nav.navbar,
 .popup-name {
     font-family: 'Orbitron', monospace;
     color: rgba(255, 215, 0, 0.9);
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     text-align: left;
     margin-top: 0;
     margin-bottom: 10px;
@@ -525,7 +517,10 @@ nav.navbar,
     text-align: center;
     color: white;
     height: 650px;
+    justify-content: center;
+    overflow-y: auto;
 }
+
 
 .popup-start-mission-content::before {
     content: '';
@@ -1125,16 +1120,16 @@ issue-icon {
 
 .mission-popup-content {
     position: relative;
-    background-image: url('/api/images/b5.jpg');
+    background-image: url('/images/b5.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    padding: 30px;
+    padding: 25px;
     border-radius: 8px;
-    max-width: 700px;
+    width: 650px;
+    max-height: 650px;
     text-align: left;
     color: white;
-    max-height: 95vh;
     overflow-y: auto;
 }
 
@@ -1258,47 +1253,60 @@ issue-icon {
     flex-wrap: wrap;
 }
 
-/* Info and stats panels */
-.info-panel, .stats-panel {
-    background: rgba(0, 0, 0, 0.9);
-    border: 2px solid #00d4ff;
-    border-radius: 15px;
-    backdrop-filter: blur(15px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
+
+#map-container {
+    position: relative;
+    width: 100%;
+    height: 640px;
+    overflow: hidden;
 }
 
-.info-panel:hover, .stats-panel:hover, .popup:hover {
-    border-color: #00ff88;
-    box-shadow: 0 8px 32px rgba(0, 255, 136, 0.3);
+#space-map {
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
-.info-text {
-    color: gray !important;
-    font-size: 16px;
-    z-index: 9999;
+.info-panel , .planet-info{
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    z-index: 50;
+    max-width: 260px;
+    pointer-events: auto;
+}
+
+.stats-panel {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 50;
+    max-width: 180px;
+    pointer-events: auto;
 }
 
 .panel-content {
-    padding: 20px;
-    color: white;
-    min-width: 200px;
+    background-color: rgba(0,0,0,0.75);
+    border: 1px solid #00bcd4;
+    border-radius: 8px;
+    padding: 10px;
+    color: #fff;
+    box-sizing: border-box;
+    min-width: unset; 
 }
 
-.info-panel .panel-content {
-    max-width: 400px;
-}
-
-.stats-panel .panel-content {
-    min-width: 150px;
+.info-text { color: #ccc; font-size: 14px; }
+.info-panel:hover, .stats-panel:hover {
+    border-color: #00ff88;
+    box-shadow: 0 8px 24px rgba(0,255,136,0.25);
 }
 
 .title-astronauts, .lead {
     color: #d6d4d4;
 }
 
-
 .space-card {
+    word-wrap: break-word;
     background: rgba(20, 20, 30, 0.95);
     border: 2px solid rgba(0, 212, 255, 0.4);
     border-radius: 15px;
@@ -1490,16 +1498,16 @@ issue-icon {
 
 /* ===== SCROLLBAR ===== */
 
-.current-crew-popup::-webkit-scrollbar, .popup-risks-content::-webkit-scrollbar, .crew-list::-webkit-scrollbar {
+.astronaut-popup-content::-webkit-scrollbar  ,.mission-popup-content::-webkit-scrollbar, .current-crew-popup::-webkit-scrollbar, .popup-risks-content::-webkit-scrollbar, .crew-list::-webkit-scrollbar {
     width: 8px;
 }
 
-.current-crew-popup::-webkit-scrollbar-track, .popup-risks-content::-webkit-scrollbar-track, .crew-list::-webkit-scrollbar-track {
+.astronaut-popup-content::-webkit-scrollbar-track, .mission-popup-content::-webkit-scrollbar-track, .current-crew-popup::-webkit-scrollbar-track, .popup-risks-content::-webkit-scrollbar-track, .crew-list::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
 }
 
-.current-crew-popup::-webkit-scrollbar-thumb, .popup-risks-content::-webkit-scrollbar-thumb, .crew-list::-webkit-scrollbar-thumb {
+.astronaut-popup-content::-webkit-scrollbar-thumb, .mission-popup-content::-webkit-scrollbar-thumb, .current-crew-popup::-webkit-scrollbar-thumb, .popup-risks-content::-webkit-scrollbar-thumb, .crew-list::-webkit-scrollbar-thumb {
     background: linear-gradient(180deg, #82a1f8, #3337fd);
     border-radius: 4px;
 }
@@ -1799,45 +1807,24 @@ issue-icon {
 }
 
 #btn-view-mission {
+    text-align: center;
+    font: bold 16px 'Orbitron', monospace;
     transition: all 0.3s ease-in-out;
-    color: white;
+    color: #ffd500;
     background: transparent;
     border: none;
 }
 
 #btn-view-mission:hover {
-    color: #ffd500;
     transform: scale(1.1);
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
-    .info-panel, .stats-panel {
-        position: fixed !important;
-    }
 
     .participants-and-risks {
             grid-template-columns: 1fr !important;
             gap: 40px!important;
-    }
-
-    .info-panel {
-        bottom: 10px !important;
-        left: 10px !important;
-    }
-
-    .stats-panel {
-        top: 250px !important;
-        right: 10px !important;
-    }
-
-    .panel-content {
-        padding: 15px;
-        font-size: 0.9rem;
-    }
-
-    .info-panel .panel-content {
-        max-width: 250px;
     }
 
     #space-container {
@@ -1878,12 +1865,17 @@ issue-icon {
         grid-template-columns: 1fr;
     }
 
+    .info-panel {display: none }
+    .stats-panel { max-width: 110px !important; bottom: 8px !important; right: 8px !important; }
+    .stats-panel .panel-content { padding: 0.45rem 0.6rem !important; }
+
+
 /*=====ASTRONAUT & POPUP SECTION=====*/
         .card {
             width: 100%;
         }
         .card-title {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
         .card-text {
             font-size: 0.8rem;
@@ -1895,6 +1887,33 @@ issue-icon {
             margin-bottom: 2px;
         }
 
+        .mission-img{
+            width: 150px;
+            height: 150px;
+        }
+.mission-top{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.popup-name{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-wrap: nowrap;
+}
+.change-popup{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+}
+.popup-code{
+   display: none;
+}
     .astronaut-info {
         align-items: center;
         display: flex !important;
@@ -1919,26 +1938,26 @@ issue-icon {
     .astronaut-popup-content {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         width: 240px;
-        height: 480px;
+        max-height: 300px;
         padding: 10px;
         border-radius: 12px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
-
     .astronaut-top {
         flex-direction: column;
         align-items: center;
     }
 
     .astronaut-image img {
-        width: 100%;
+height: auto;
         max-width: 150px;
         padding: 0;
         margin: 0;
     }
-
 
     .astronaut-main-info h3,
     .astronaut-main-info p {
@@ -1954,10 +1973,9 @@ issue-icon {
         margin: 0 0 5px;
         display: flex;
         flex-direction: row;
-        gap: 10px;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
+        gap: 5px;
+        font-size: 10px;
+        text-wrap: nowrap !important;
     }
 
     .popup-name {
@@ -1994,8 +2012,69 @@ issue-icon {
         transform: scale(1.1);
     }
 
+    .mission-popup{
+        width: 300px;
+       height: 300px;
+    }
+    .mission-popup-content
+    {
+        width: 300px;
+        height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
 }
 
+@media (max-width: 992px) and (min-width: 576px) {
+    .space-card {
+        min-height: 100%;
+        padding: 1rem;
+    }
+    .mission-card-text {
+        font-size: 0.9rem;
+    }
+    .card-main-info{
+        display: none;
+    }
+}
+@media (max-width: 992px) {
+    #navbarNav {
+        background-color: rgba(255, 230, 90, 0.97);
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+    }
+
+    #navbarNav.show {
+        display: block !important;
+        position: absolute !important;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        z-index: 2000 !important;
+        background-color: rgba(255, 230, 90, 0.97) !important;
+    }
+
+    .logout{
+        margin-top: 10px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+@media (min-width: 992px) {
+    .navbar-nav {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
 
 /* ===== ANIMATIONS ===== */
 @keyframes fadeIn {

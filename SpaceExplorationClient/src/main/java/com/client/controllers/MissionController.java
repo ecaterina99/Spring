@@ -67,5 +67,4 @@ public class MissionController {
         missionService.startMission(missionId);
         model.addAttribute("missionId", missionId);
     return "redirect:/mission-preparation?missionId=" + missionId;}
-
   }

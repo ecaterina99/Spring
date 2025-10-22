@@ -12,14 +12,12 @@
     <div id="planet-popup" class="popup">
         <div class="popup-content">
             <span id="popup-close">&times;</span>
-            <h4 id="popup-title" style=" font-family: 'Orbitron', monospace; color: rgba(255, 215, 0, 0.9)"></h4>
-            <br>
+            <h4 id="popup-title" style="margin-bottom: 7px; font-family: 'Orbitron', monospace; font-weight: bold; color: rgba(255, 215, 0, 0.9)"></h4>
             <p id="popup-entity-description"></p>
-            <br>
             <p><strong>Distance:</strong> <span id="popup-distance"></span></p>
             <p><strong>Gravity:</strong> <span id="popup-gravity"></span></p>
-            <button class="btn btn-outline-info btn-sm" id="btn-view-mission">
-                Show Mission
+            <button class="btn btn-sm" id="btn-view-mission">
+                VIEW MISSION
             </button>
         </div>
     </div>
@@ -28,39 +26,38 @@
     <div th:insert="~{popup-mission :: mission-popup-script}"></div>
 
 
+    <div id="map-container" style="position: relative; display: inline-block;">
+        <canvas id="space-map"></canvas>
 
-    <!-- Info Panel -->
-    <div class="info-panel position-fixed" style="bottom: 20px; left: 20px; z-index: 1000; max-width: 300px;">
-        <div class="panel-content bg-dark bg-opacity-90 p-3 rounded border border-info">
-            <div id="planet-info">
+        <!-- Info Panel -->
+        <div class="info-panel">
+            <div class="panel-content bg-dark bg-opacity-90 p-3 rounded border border-info">
+                <div id="planet-info">
 
                 <h5 class="space-explorer text-info mb-3" style="font-family: 'Orbitron', monospace">
                     3D Space Explorer
                 </h5>
-
                 <div class="info-text small mb-3">
                     <p class="mb-2">Click on any planet to explore its details.</p>
                     <div><strong>Click & drag</strong> - Rotate camera</div>
                     <div><strong>Mouse wheel</strong> - Zoom in/out</div>
                     <div><strong>Click planet</strong> - Select and explore</div>
                 </div>
-
+            </div>
             </div>
         </div>
-    </div>
 
-
-    <!-- Stats Panel -->
-    <div class="stats-panel position-fixed" style="top: 270px; right: 20px; z-index: 1000;">
-        <div class="panel-content bg-dark bg-opacity-90 p-3 rounded border border-info">
-            <div class="small">
-                <div class="mb-1">Destinations: <span class="text-warning" id="destination-count">0</span></div>
-                <div class="mb-1">Selected: <span class="text-success" id="selected-planet">None</span></div>
+        <!-- Stats Panel -->
+        <div class="stats-panel">
+            <div class="panel-content bg-dark bg-opacity-90 p-3 rounded border border-info">
+                <div class="small">
+                    <div class="mb-1">Destinations: <span class="text-warning" id="destination-count">0</span></div>
+                    <div class="mb-1">Selected: <span class="text-success" id="selected-planet">None</span></div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <div th:insert="~{common_fragments :: mainFooter}"></div>
 

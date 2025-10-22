@@ -25,10 +25,6 @@ public class DestinationService {
         return restUtil.getList(apiUrl, DestinationDTO[].class);
     }
 
-    public DestinationDTO getDestinationById(int id) {
-        validateId(id, "Destination");
-        return restUtil.getObject(apiUrl + "/" + id, DestinationDTO.class);
-    }
     public DestinationDTO getDestinationByIdWithMission(int id) {
 
         validateId(id, "Destination");

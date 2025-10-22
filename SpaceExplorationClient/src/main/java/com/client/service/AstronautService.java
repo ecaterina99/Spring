@@ -15,7 +15,6 @@ public class AstronautService {
     private final String apiUrl;
     private final RestClientUtil restUtil;
 
-
     public AstronautService( @Value("${api.url}") String apiUrl, RestClientUtil restUtil) {
         this.apiUrl = apiUrl + "/astronauts";
         this.restUtil = restUtil;
@@ -25,14 +24,4 @@ public class AstronautService {
         return restUtil.getList(apiUrl, AstronautDTO[].class);
     }
 
-    public AstronautDTO getAstronautById(int id) {
-        validateId(id, "Astronaut");
-        return restUtil.getObject(apiUrl + "/" + id, AstronautDTO.class);
-    }
-
-    private void validateId(int id, String entityType) {
-        if (id <= 0) {
-            throw new IllegalArgumentException(entityType + " ID must be positive");
-        }
-    }
 }
