@@ -148,33 +148,18 @@
         <p class="nav-subtitle">
             Your space adventure begins here. Become a legendary explorer, discover new worlds, and write your story in the stars!
         </p>
-        <div class="navigation-grid">
-            <a th:href="@{/astronauts}"   class="nav-card blue">
-                <div class="nav-icon">👨‍🚀</div>
-                <h3 class="nav-title">Astronauts</h3>
-                <p class="nav-description">
-                    View the list of all available astronauts, their skills, experience, and salaries. Choose the best for your missions!                </p>
-                <button class="cta-button">View Astronauts</button>
-            </a>
+        <div class="navigation-grid d-flex justify-content-center">
 
             <a th:href="@{/destinations/interactive-map}"  class="nav-card purple">
-                <div class="nav-icon">🌍</div>
-                <h3 class="nav-title">Destinations</h3>
+                <div class="nav-icon">   ️</div>
+                <br>
+                <br>
+                <h3 class="nav-title" style="font-weight: bold">Destinations</h3>
                 <p class="nav-description">
                     Explore an interactive 3D map of space with planets, stars, and asteroids. Each location is unique!
                 </p>
                 <button class="cta-button">Explore Space</button>
             </a>
-
-            <a th:href="@{/missions}"  class="nav-card blue">
-                <div class="nav-icon">🚀</div>
-                <h3 class="nav-title">Missions</h3>
-                <p class="nav-description">
-                    Plan and launch missions. <br> Assemble your crew, send them to space, and wait for the results!
-                </p>
-                <button class="cta-button">View Missions</button>
-            </a>
-
         </div>
     </section>
     <br>
@@ -213,8 +198,8 @@
         const stars3 = document.querySelector('.stars3');
 
         if (stars1) stars1.style.transform = `translateY(${scrolled * 0.5}px)`;
-        if (stars2) stars2.style.transform = `translateY(${scrolled * 0.3}px)`;
-        if (stars3) stars3.style.transform = `translateY(${scrolled * 0.1}px)`;
+        if (stars2) stars2.style.transform = `translateY(${scrolled * 0.8}px)`;
+        if (stars3) stars3.style.transform = `translateY(${scrolled * 0.9}px)`;
     });
 
     const observerOptions = {

@@ -353,7 +353,7 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
 
             <!-- CREW STATUS -->
             <h5 style="color: rgb(67,106,253); margin-bottom: 15px;">CREW STATUS</h5>
-            <div style="background: rgba(67,82,253,0.53); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <div style="background: rgba(48,57,146,0.29); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                 <p style="margin: 5px 0;">
                     <span style="color: #ffd500;">▸</span>
                     Required crew size: <strong>${requiredCrewSize}</strong>
@@ -374,7 +374,7 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
 
             <!-- SPECIALIZATIONS -->
             <h5 style="color: #436afd; margin-bottom: 15px;">SPECIALIZATIONS</h5>
-            <div style="background: rgb(48,57,146); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <div style="background: rgba(48,57,146,0.29); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                 ${Object.keys(risks.requiredSpecializations).length > 0 ?
         Object.entries(risks.requiredSpecializations).map(([spec, required]) => {
             const current = risks.specializations[spec] || 0;
@@ -408,7 +408,7 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
     ${crew.length > 0 ?
         (() => {
             const cardsHTML = crew.map(member => `
-                <div style="background: rgba(48,57,146,0.45);padding: 12px;
+               <div style="background: rgba(48,57,146,0.29);padding: 12px;
                      border-radius: 8px; margin-bottom: 10px; border-left: 3px; color: #ffffff;">
                     <p style="margin: 3px 0; color: #436afd; font-weight: bold; font-size: 14px;">
                         ${member.firstName.toUpperCase()} ${member.lastName.toUpperCase()}
@@ -860,6 +860,71 @@ function displayFinalResults(contentContainer, isSuccess, missionReport, crew, c
 
     contentContainer.innerHTML = content;
     contentContainer.classList.add('fade-in-result');
+
+    // Add PDF download handler
+    const downloadBtn = contentContainer.querySelector('button');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+            downloadMissionReportPdf(isSuccess, missionReport, crew, crewSize);
+        });
+    }
+}
+
+
+
+    async function downloadMissionReportPdf(isSuccess, missionReport, crew, crewSize) {
+        const reportData = {
+            isSuccessful: isSuccess,
+            missionName: missionReport.missionName,
+            destinationName: missionReport.destinationName,
+            successChance: missionReport.successChance,
+            paymentAmount: missionReport.paymentAmount,
+            totalSalary: missionReport.totalSalary,
+            alienAttack: missionReport.alienAttack,
+            issues: missionReport.issues || [],
+            participants: crew.map(member => ({
+                astronautName: `${member.firstName} ${member.lastName}`,
+                specialization: member.specialization
+            })),
+            crewSize: crewSize
+        };
+        
+
+        const accessToken = window.MISSION_CONFIG?.accessToken || sessionStorage.getItem('accessToken');
+
+    if (!accessToken) {
+        console.error("No token found!");
+        showAlert("Authentication token missing. Please log in again.", "danger");
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:8080/api/missions/export/pdf', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(reportData)
+        });
+
+
+        if (!response.ok) throw new Error('Failed to generate PDF');
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `mission-report-${Date.now()}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    } catch (error) {
+        console.error('Error downloading PDF:', error);
+        alert('Failed to download PDF. Please try again.');
+    }
+
 }
 
 // START MISSION BUTTON HANDLER

@@ -432,7 +432,7 @@ nav.navbar,
 }
 
 .astronaut-image img, .mission-image img {
-    max-height: 220px;
+    max-height: 200px;
     border: 2px solid #00d4ff;
     box-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
 
@@ -521,10 +521,10 @@ nav.navbar,
     background-position: center;
     padding: 20px;
     border-radius: 8px;
-    width: 600px;
+    width: 550px;
     text-align: center;
     color: white;
-    height: 650px;
+    height: 550px;
     justify-content: center;
     overflow-y: auto;
 }
@@ -1275,7 +1275,7 @@ issue-icon {
     display: block;
 }
 
-.info-panel , .planet-info{
+.info-panel ,  .planet-info{
     position: absolute;
     left: 20px;
     bottom: 20px;
@@ -1961,7 +1961,7 @@ issue-icon {
     }
 
     .astronaut-image img {
-height: auto;
+      height: auto;
         max-width: 150px;
         padding: 0;
         margin: 0;
@@ -2002,9 +2002,6 @@ height: auto;
         font-size: 0.85rem;
     }
 
-    #downloadBtn {
-        display: none;
-    }
     #popup-close {
         position: absolute;
         top: 5px;
