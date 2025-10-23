@@ -1,9 +1,31 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" >
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:insert="~{common_fragments :: head}"></head>
 <body>
 <div th:insert="~{common_fragments :: mainHeader}"></div>
 
+<div class="cosmic-loader-overlay" id="cosmicLoader">
+    <div class="stars" id="starsContainer"></div>
+    <div class="loader-content-space">
+        <div class="orbit-system">
+            <div class="sun"></div>
+            <div class="orbit orbit-1">
+                <div class="planet planet-1"></div>
+            </div>
+            <div class="orbit orbit-2">
+                <div class="planet planet-2"></div>
+            </div>
+            <div class="orbit orbit-3">
+                <div class="planet planet-3"></div>
+            </div>
+        </div>
+        <div class="loading-text">Exploring Space...</div>
+        <div class="progress-container-loader">
+            <div class="progress-bar-loader" id="progressBar"></div>
+        </div>
+        <div class="loading-percentage" id="loadingPercentage">0%</div>
+    </div>
+</div>
 
 <!-- 3D Canvas Container -->
 <div id="space-container" class="position-relative">
@@ -12,7 +34,8 @@
     <div id="planet-popup" class="popup">
         <div class="popup-content">
             <span id="popup-close">&times;</span>
-            <h4 id="popup-title" style="margin-bottom: 7px; font-family: 'Orbitron', monospace; font-weight: bold; color: rgba(255, 215, 0, 0.9)"></h4>
+            <h4 id="popup-title"
+                style="margin-bottom: 7px; font-family: 'Orbitron', monospace; font-weight: bold; color: rgba(255, 215, 0, 0.9)"></h4>
             <p id="popup-entity-description"></p>
             <p><strong>Distance:</strong> <span id="popup-distance"></span></p>
             <p><strong>Gravity:</strong> <span id="popup-gravity"></span></p>
@@ -34,16 +57,16 @@
             <div class="panel-content bg-dark bg-opacity-90 p-3 rounded border border-info">
                 <div id="planet-info">
 
-                <h5 class="space-explorer text-info mb-3" style="font-family: 'Orbitron', monospace">
-                    3D Space Explorer
-                </h5>
-                <div class="info-text small mb-3">
-                    <p class="mb-2">Click on any planet to explore its details.</p>
-                    <div><strong>Click & drag</strong> - Rotate camera</div>
-                    <div><strong>Mouse wheel</strong> - Zoom in/out</div>
-                    <div><strong>Click planet</strong> - Select and explore</div>
+                    <h5 class="space-explorer text-info mb-3" style="font-family: 'Orbitron', monospace">
+                        3D Space Explorer
+                    </h5>
+                    <div class="info-text small mb-3">
+                        <p class="mb-2">Click on any planet to explore its details.</p>
+                        <div><strong>Click & drag</strong> - Rotate camera</div>
+                        <div><strong>Mouse wheel</strong> - Zoom in/out</div>
+                        <div><strong>Click planet</strong> - Select and explore</div>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
 
@@ -60,6 +83,75 @@
 </div>
 
 <div th:insert="~{common_fragments :: mainFooter}"></div>
+<script>
+    function createStars() {
+        const starsContainer = document.getElementById('starsContainer');
+        const starCount = 100;
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.cssText = `
+            width: ${Math.random() * 3}px;
+            height: ${Math.random() * 3}px;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation-delay: ${Math.random() * 3}s;
+        `;
+            fragment.appendChild(star);
+        }
+
+        for (let i = 0; i < 3; i++) {
+            const shootingStar = document.createElement('div');
+            shootingStar.className = 'shooting-star';
+            shootingStar.style.cssText = `
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 50}%;
+            animation-delay: ${Math.random() * 5}s;
+        `;
+            fragment.appendChild(shootingStar);
+        }
+
+        starsContainer.appendChild(fragment);
+    }
+
+    // Simulate loading progress
+    function simulateLoading() {
+        const progressBar = document.getElementById('progressBar');
+        const loadingPercentage = document.getElementById('loadingPercentage');
+        const loader = document.getElementById('cosmicLoader');
+
+        let progress = 0;
+        const duration = 2000;
+        const interval = 50;
+        const increment = (interval / duration) * 100;
+
+        const progressInterval = setInterval(() => {
+            progress += increment;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(progressInterval);
+
+                // Fade out loader after completion
+                setTimeout(() => {
+                    loader.classList.add('fade-out');
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 500);
+                }, 300);
+            }
+
+            progressBar.style.width = progress + '%';
+            loadingPercentage.textContent = Math.floor(progress) + '%';
+        }, interval);
+    }
+
+    // Initialize
+    createStars();
+    simulateLoading();
+</script>
+
 
 <!-- 1. INLINE DATA (comes straight from Thymeleaf) -->
 <script th:inline="javascript">

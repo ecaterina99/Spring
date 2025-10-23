@@ -351,92 +351,80 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
                 <div class="success-particles"></div>
             </div>
 
-            <!-- CREW STATUS -->
-            <h5 style="color: rgb(67,106,253); margin-bottom: 15px;">CREW STATUS</h5>
-            <div style="background: rgba(48,57,146,0.29); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <p style="margin: 5px 0;">
-                    <span style="color: #ffd500;">▸</span>
-                    Required crew size: <strong>${requiredCrewSize}</strong>
-                </p>
-                <p style="margin: 5px 0;">
-                    <span style="color: #ffd500;">▸</span>
-                    Current crew size: <strong style="color: ${risks.crewSizeMatch ? '#00ff88' : '#ffffff'}">${risks.crewCount}</strong>
-                </p>
-                ${!risks.crewSizeMatch ?
-        `<p style="color: #436afd; margin-top: 10px;">
-                        ⚠️ Crew size mismatch! ${risks.crewCount < requiredCrewSize ?
+<div class="risk-analysis-content d-flex justify-content-center flex-row gap-3 mt-0" >
+    <!-- CREW STATUS -->
+    <div class="crew-status d-flex justify-content-start flex-column" style="flex: 1; max-width: 400px;">
+        <h6 style="color: rgb(41,255,248); margin-bottom: 5px; font-weight: 600;">CREW STATUS</h6>
+        <div style="background: rgba(48,57,146,0.29); padding: 10px; border-radius: 8px; margin-bottom: 10px; height: 100%;">
+            <p style="margin: 8px 0;">
+                <span style="color: #ffd500;">▸</span>
+                Required crew size: <strong>${requiredCrewSize}</strong>
+            </p>
+            <p style="margin: 8px 0;">
+                <span style="color: #ffd500;">▸</span>
+                Current crew size: <strong style="color: ${risks.crewSizeMatch ? '#00ff88' : '#ffffff'}">${risks.crewCount}</strong>
+            </p>
+            ${!risks.crewSizeMatch ?
+        `<p style="color: #e4b600; font-weight: bold; margin-top: 15px; padding: 10px;">
+                    ⚠️ Crew size mismatch! ${risks.crewCount < requiredCrewSize ?
             `Need ${requiredCrewSize - risks.crewCount} more astronaut(s)` :
-            `${risks.crewCount - requiredCrewSize} astronaut(s) over limit`}
-                    </p>` :
-        `<p style="color: #00ff88; margin-top: 10px;">✓ Crew size is correct!</p>`
+            `${risks.crewCount - requiredCrewSize} astronaut(s) over limit`}<br>
+               The mission’s success chance will be reduced! </p>` :
+        `<p style="color: #00ff88; margin-top: 15px; padding: 10px; background: rgba(0,255,136,0.1); border-radius: 5px; font-weight: 600;">✓ Crew size is correct!</p>`
     }
-            </div>
+        </div>
+    </div>
 
-            <!-- SPECIALIZATIONS -->
-            <h5 style="color: #436afd; margin-bottom: 15px;">SPECIALIZATIONS</h5>
-            <div style="background: rgba(48,57,146,0.29); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                ${Object.keys(risks.requiredSpecializations).length > 0 ?
+    <!-- SPECIALIZATIONS -->
+    <div class="specializations-status d-flex justify-content-start flex-column" style="flex: 1; max-width: 400px;">
+        <h6 style="color: #29fff8; margin-bottom: 10px; font-weight: 600;">SPECIALIZATIONS</h6>
+        <div style="background: rgba(48,57,146,0.29); padding: 10px; border-radius: 8px; margin-bottom: 10px; height: 100%;">
+            ${Object.keys(risks.requiredSpecializations).length > 0 ?
         Object.entries(risks.requiredSpecializations).map(([spec, required]) => {
             const current = risks.specializations[spec] || 0;
             const isCorrect = current === required;
             return `
-                            <p style="margin: 5px 0; color: ${isCorrect ? '#00ff88' : '#ffffff'};">
-                                <span style="color: #ffd500;">▸</span>
-                                ${spec.charAt(0).toUpperCase() + spec.slice(1)}:
-                                <strong>${current}/${required}</strong>
-                                ${isCorrect ? ' ✓' : ` ${current < required ? '(need ' + (required - current) + ' more)' : '(excess: ' + (current - required) + ')'}`}
-                            </p>
-                        `;
+                        <p style="margin: 8px 0; color: ${isCorrect ? '#00ff88' : '#ffffff'};">
+                            <span style="color: #ffd500;">▸</span>
+                            ${spec.charAt(0).toUpperCase() + spec.slice(1)}:
+                            <strong>${current}/${required}</strong>
+                            ${isCorrect ? ' ✓' : ` ${current < required ? '(need ' + (required - current) + ' more)' : '(excess: ' + (current - required) + ')'}`}
+                        </p>
+                    `;
         }).join('') :
-        '<p style="color: #e4b600;">⚠️ No required specializations defined!</p>'
+        '<p style="color: #e4b600;">⚠️ No required specializations defined! Mission success reduced!</p>'
     }
 
-                ${risks.specializationsMismatch.length > 0 ?
-        `<p style="color: #e4b600; margin-top: 10px; font-weight: bold;">
-                        ⚠️ Specialization requirements not met!
-                    </p>` :
+            ${risks.specializationsMismatch.length > 0 ?
+        `<p style="color: #ffd500; margin-top: 5px; font-weight: bold; padding: 5px;">
+                   ⚠️ Missing skills! Success chance reduced!
+                </p>` :
         Object.keys(risks.requiredSpecializations).length > 0 ?
-            `<p style="color: #00ff88; margin-top: 10px; font-weight: bold;">
-                            ✓ All specializations matched!
-                        </p>` : ''
+            `<p style="color: #00ff88; margin-top: 5px; font-weight: bold; padding: 5px;">
+                        ✓ All specializations matched!
+                    </p>` : ''
     }
-            </div>
+        </div>
+    </div>
+</div>
 
-           <!-- CURRENT CREW MEMBERS -->
-<h5 style="color: #0b43b5; margin-bottom: 15px;">CURRENT CREW MEMBERS</h5>
+<!-- CURRENT CREW MEMBERS -->
 <div class="current-crew-popup" style="max-height: 250px; overflow-y: auto;">
     ${crew.length > 0 ?
         (() => {
-            const cardsHTML = crew.map(member => `
-               <div style="background: rgba(48,57,146,0.29);padding: 12px;
-                     border-radius: 8px; margin-bottom: 10px; border-left: 3px; color: #ffffff;">
-                    <p style="margin: 3px 0; color: #436afd; font-weight: bold; font-size: 14px;">
-                        ${member.firstName.toUpperCase()} ${member.lastName.toUpperCase()}
-                    </p>
-                    <p style="margin: 3px 0; font-size: 13px;">
-                        <span style="color: #ffffff;">Specialization:</span> ${member.specialization}
-                    </p>
-                    <p style="margin: 3px 0; font-size: 13px;">
-                        <span style="color: #ffffff;">Health Status:</span> ${member.healthStatus}
-                    </p>
-                    <p style="margin: 3px 0; font-size: 13px;">
-                        <span style="color: #fbfbfb;">Overall Score:</span> ${member.overallScore}
-                    </p>
-                </div>
-            `).join('');
             const notReadyMembers = crew.filter(m => m.healthStatus !== 'Flight Ready');
-            const warningsHTML = notReadyMembers.length > 0
-                ? `<div style="margin-top: 15px; padding: 10px; border: 2px solid rgba(23,27,156,0.05);
+            return notReadyMembers.length > 0
+                ? `
+                <div style="margin-top: 5px; padding: 15px; border: 2px solid rgba(228,182,0,0.3);
                               border-radius: 8px; background: rgba(67,106,253,0.09);">
-                        ${notReadyMembers.map(m => `
-                            <p style="color: #e4b600; font-weight: bold; margin: 5px 0;">
-                                ⚠️ Attention! Astronaut ${m.firstName} ${m.lastName}  has status: ${m.healthStatus}
-                            </p>
-                        `).join('')}
-                   </div>`
+                    <p style="color: #ffd500;margin-bottom: 10px; font-weight: 600;">⚠️ Attention! If any crew member is not marked as "Ready for Flight", the mission success rate decreases by 10%.</p>
+                    ${notReadyMembers.map(m => `
+                        <p style="color: #ffffff; font-weight: bold; margin: 8px 0; padding-left: 10px;">
+                            • ${m.firstName} ${m.lastName} has status: ${m.healthStatus} (-10% success rate)
+                        </p>
+                    `).join('')}
+                </div>`
                 : '';
-
-            return cardsHTML + warningsHTML;
         })()
         :
         '<p style="color: #e4c904; text-align: center; padding: 20px;">No crew members added yet!</p>'
@@ -444,9 +432,9 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
 </div>
 
         <!-- FOOTER -->
-        <div class="popup-footer" style="margin-top: 25px; text-align: center; padding-top: 20px; border-top: 1px solid rgb(11,66,180);">
+        <div class="popup-footer" style="margin-top: 5px; margin-bottom: 0; text-align: center; padding-top: 0;padding-bottom: 5px;">
             ${!risks.hasErrors && crew.length > 0 ?
-        `<p style="color: #00ff88; font-size: 18px; font-weight: bold;">
+        `<p style="color: #00ff88; font-size: 20px; font-weight: bold;">
                     ✓ Mission is ready for launch!
                 </p>` :
         `<p style="color: #e4c904; font-size: 20px; font-weight: bold;">
@@ -742,11 +730,11 @@ function displayFinalResults(contentContainer, isSuccess, missionReport, crew, c
                             <span class="stat-value">${crew.length}/${crewSize}</span>
                         </div>
                         <div class="stat-item highlight-stat payment-stat">
-                            <span class="stat-label">Payment for mission</span>
+                            <span class="stat-label">Mission Revenue</span>
                             <span class="stat-value payment-value">${payment} $</span>
                         </div>
                         <div class="stat-item highlight-stat salary-stat">
-                            <span class="stat-label">Total crew salary you've paid:</span>
+                            <span class="stat-label">Total mission expenses:</span>
                             <span class="stat-value salary-value">${salary} $</span>
                         </div>
            
@@ -870,27 +858,25 @@ function displayFinalResults(contentContainer, isSuccess, missionReport, crew, c
     }
 }
 
+async function downloadMissionReportPdf(isSuccess, missionReport, crew, crewSize) {
+    const reportData = {
+        isSuccessful: isSuccess,
+        missionName: missionReport.missionName,
+        destinationName: missionReport.destinationName,
+        successChance: missionReport.successChance,
+        paymentAmount: missionReport.paymentAmount,
+        totalSalary: missionReport.totalSalary,
+        alienAttack: missionReport.alienAttack,
+        issues: missionReport.issues || [],
+        participants: crew.map(member => ({
+            astronautName: `${member.firstName} ${member.lastName}`,
+            specialization: member.specialization
+        })),
+        crewSize: crewSize
+    };
 
 
-    async function downloadMissionReportPdf(isSuccess, missionReport, crew, crewSize) {
-        const reportData = {
-            isSuccessful: isSuccess,
-            missionName: missionReport.missionName,
-            destinationName: missionReport.destinationName,
-            successChance: missionReport.successChance,
-            paymentAmount: missionReport.paymentAmount,
-            totalSalary: missionReport.totalSalary,
-            alienAttack: missionReport.alienAttack,
-            issues: missionReport.issues || [],
-            participants: crew.map(member => ({
-                astronautName: `${member.firstName} ${member.lastName}`,
-                specialization: member.specialization
-            })),
-            crewSize: crewSize
-        };
-        
-
-        const accessToken = window.MISSION_CONFIG?.accessToken || sessionStorage.getItem('accessToken');
+    const accessToken = window.MISSION_CONFIG?.accessToken || sessionStorage.getItem('accessToken');
 
     if (!accessToken) {
         console.error("No token found!");
@@ -949,7 +935,7 @@ document.querySelector('.btn-start-mission').addEventListener('click', async () 
         return;
     }
 
-        const mission = {
+    const mission = {
         id: missionId,
         participants: crew.map(member => ({
             missionId: parseInt(missionId),
@@ -995,11 +981,11 @@ document.querySelector('.btn-start-mission').addEventListener('click', async () 
         const crewSize = parseInt(document.querySelector('.btn-add-participants')?.getAttribute('data-crew-size')) || crew.length;
 
         if (missionReport.totalSalary && updatedBudget.currentBudget < 6000) {
-            showAlert("Unfortunately, your budget is too low for any mission! ","danger");
+            showAlert("Unfortunately, your budget is too low for any mission! ", "danger");
             button.disabled = false;
             button.textContent = "START MISSION";
             return;
-        }else if (missionReport.totalSalary && updatedBudget.currentBudget < missionReport.totalSalary) {
+        } else if (missionReport.totalSalary && updatedBudget.currentBudget < missionReport.totalSalary) {
             showAlert("⚠️ Budget too low to pay this crew.\nTry reducing the crew size or attempting an easier mission.", "warning");
             button.disabled = false;
             button.textContent = "START MISSION";
@@ -1042,7 +1028,6 @@ document.querySelector('.btn-start-mission').addEventListener('click', async () 
 });
 
 
-
 document.addEventListener("DOMContentLoaded", () => {
     const budgetElement = document.getElementById("currentBudget");
     const progressBar = document.getElementById("budgetProgress");
@@ -1052,7 +1037,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let previousBudget = parseInt(budgetElement.textContent.replace(/,/g, '')) || 0;
     updateBudgetColor(previousBudget);
-
 
 
     function updateBudgetColor(budget) {

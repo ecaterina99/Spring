@@ -4,10 +4,10 @@
 <body>
 <div th:insert="~{common_fragments :: mainHeader}"></div>
 
-<div class="budget-container mt-4" >
+<div class="budget-container mt-4">
     <div class="budget d-flex justify-content-end align-items-center">
         <h5 class="me-2" style="color: #d6d4d4">CURRENT BUDGET:</h5>
-        <p style="color: #ffd500" th:if="${userBudget != null}" >
+        <p style="color: #ffd500" th:if="${userBudget != null}">
             <span id="currentBudget" style="color: #ffd500"
                   th:text="${userBudget.currentBudget}">0</span> $
         </p>
@@ -147,7 +147,14 @@
                     <div class="risk-info-header d-flex gap-5 justify-content-start align-items-end">
                         <img th:src="@{${mission.imgUrl}}" class="card-image" style="max-height: 170px" alt="image">
 
-                        <div class="risk-issues d-flex justify-content-center">
+                        <div class="risk-issues d-flex justify-content-center flex-column">
+                            <strong th:text="${mission.getName()}"></strong>
+                            <p style="font-size:16px">
+                                Mission Duration:
+                                <span th:text="${mission.getDurationDays()}"> </span> days<br>
+                                Mission Revenue:
+                                <span th:text="${mission.getPaymentAmount()}"></span>$
+                            </p>
                             <p style="font-size: 22px">
                                 <strong>Potential Issues:</strong>
                             </p>
@@ -187,27 +194,30 @@
 
 
     <!-- Popup risks-->
-    <div id="popup-risks" class="astronaut-popup" style="display:none;">
-        <div class="popup-risks-content">
-            <h3 style="color: #29fff8; margin: 0; padding: 0; font-family: 'Orbitron', monospace; font-weight: normal;">
-                <strong>MISSION RISK ANALYSIS</strong>
-            </h3>
-            <div class="popup-header" style="position: sticky; top: 0; background: inherit; z-index: 10;
-             display: flex; justify-content: end; align-items:end;
-             margin-bottom: 10px; padding-bottom: 10px;">
+   <div id="popup-risks" class="astronaut-popup" style="display:none;">
+       <div class="popup-risks-content">
 
-                <button id="popup-risks-close" style="background: transparent; border: none;
-                color: #29fff8; font-size: 30px; cursor: pointer; line-height: 1;">
-                    ×
-                </button>
-            </div>
+           <div class="header-popup-risks  d-flex flex-row justify-content-sm-between">
 
-            <div id="risk-analysis-content">
-            </div>
-        </div>
-    </div>
+               <h3 style="color: #29fff8; margin: 0; padding: 0; font-size: 18px; font-family: 'Orbitron', monospace;  font-weight: bold;">
+                   <strong>MISSION RISK ANALYSIS</strong>
+               </h3>
+               <div class="popup-header" style="position: sticky; top: 0; background: inherit; z-index: 10;
+              display: flex; justify-content: end; align-items:end;">
+                   <button id="popup-risks-close" style="background: transparent; border: none;
+                 color: #29fff8; font-size: 25px; cursor: pointer; line-height: 1;">
+                       ×
+                   </button>
+               </div>
+           </div>
 
-    <!-- Popup start mission-->
+           <div id="risk-analysis-content">
+           </div>
+       </div>
+     </div>
+
+
+     <!-- Popup start mission-->
     <div id="popup-start-mission" class="start-mission-popup">
         <div class="popup-start-mission-content" style=" width:650px; height: 650px">
             <div class="d-flex justify-content-end">

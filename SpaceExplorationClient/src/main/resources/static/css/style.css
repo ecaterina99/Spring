@@ -2380,3 +2380,205 @@ issue-icon {
         opacity: 0;
     }
 }
+
+
+.cosmic-loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a0b2e 50%, #16003b 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.cosmic-loader-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Stars Background */
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* Loader Content */
+.loader-content-space {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+}
+
+/* Orbiting System */
+.orbit-system {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: 0 auto 30px;
+}
+
+.sun {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #ffd700, #ff8c00);
+    border-radius: 50%;
+    box-shadow: 0 0 40px #ffa500, 0 0 60px #ff8c00;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.orbit-1 {
+    width: 140px;
+    height: 140px;
+    animation: rotate 4s linear infinite;
+}
+
+.orbit-2 {
+    width: 200px;
+    height: 200px;
+    animation: rotate 6s linear infinite reverse;
+}
+
+.orbit-3 {
+    width: 250px;
+    height: 250px;
+    animation: rotate 8s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.planet {
+    position: absolute;
+    border-radius: 50%;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.planet-1 {
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+    box-shadow: 0 0 15px #4fc3f7;
+}
+
+.planet-2 {
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(135deg, #ab47bc, #8e24aa);
+    box-shadow: 0 0 15px #ab47bc;
+}
+
+.planet-3 {
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(135deg, #66bb6a, #43a047);
+    box-shadow: 0 0 15px #66bb6a;
+}
+
+/* Loading Text */
+.loading-text {
+    font-family: 'Arial', sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    animation: fadeText 2s infinite;
+}
+
+@keyframes fadeText {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* Progress Bar */
+.progress-container-loader {
+    width: 300px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px auto;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.progress-bar-loader {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    border-radius: 10px;
+    width: 0;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+}
+
+/* Loading Percentage */
+.loading-percentage {
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    color: #b8b8ff;
+    margin-top: 15px;
+    letter-spacing: 2px;
+}
+
+/* Shooting Star */
+.shooting-star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 10px white;
+    animation: shoot 3s linear infinite;
+}
+
+@keyframes shoot {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-300px, 300px);
+        opacity: 0;
+    }
+}
