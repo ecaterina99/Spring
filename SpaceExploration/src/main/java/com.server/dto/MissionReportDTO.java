@@ -1,6 +1,7 @@
 package com.server.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.server.models.Mission;
 import com.server.models.MissionReport;
 import com.server.models.MissionSpecialization;
@@ -24,6 +25,7 @@ import java.util.List;
 @Schema(description = "Mission report")
 public class MissionReportDTO {
     private int id;
+    @JsonProperty("isSuccessful")
     private boolean isSuccessful;
     @NotNull
     private int missionId;
@@ -36,8 +38,9 @@ public class MissionReportDTO {
     private List<MissionParticipantsDTO> participants;
     @NotNull
     private Integer paymentAmount;
-
+    private String astronautName;
     private Integer crewSize;
+    private String specialization;
 
     private List<MissionSpecializationDTO> specializations = new ArrayList<>();
 

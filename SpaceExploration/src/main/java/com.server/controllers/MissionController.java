@@ -5,10 +5,7 @@ import com.server.models.Mission;
 import com.server.models.MissionSpecialization;
 import com.server.models.User;
 import com.server.repositories.UserRepository;
-import com.server.services.BudgetService;
-import com.server.services.MissionParticipantsService;
-import com.server.services.MissionReportService;
-import com.server.services.MissionService;
+import com.server.services.*;
 import com.server.util.MissionResult;
 import com.server.util.MissionStartResponse;
 import com.server.util.UserDetails;
@@ -23,7 +20,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,13 +42,16 @@ public class MissionController {
     private final MissionReportService missionReportService;
     private final BudgetService budgetService;
     private final UserRepository userRepository;
+    private final PdfGeneratorService pdfGeneratorService;
 
-    public MissionController(MissionService missionService, MissionParticipantsService missionParticipantsService, MissionReportService missionReportService, BudgetService budgetService, UserRepository userRepository) {
+
+    public MissionController(MissionService missionService, MissionParticipantsService missionParticipantsService, MissionReportService missionReportService, BudgetService budgetService, UserRepository userRepository, PdfGeneratorService pdfGeneratorService) {
         this.missionService = missionService;
         this.missionParticipantsService = missionParticipantsService;
         this.missionReportService = missionReportService;
         this.budgetService = budgetService;
         this.userRepository = userRepository;
+        this.pdfGeneratorService = pdfGeneratorService;
     }
 
     @GetMapping("/{id}")
@@ -226,6 +228,24 @@ public class MissionController {
         missionService.removeSpecialization(missionId, MissionSpecialization.Specialization.valueOf(request.getSpecialization()));
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/export/pdf")
+    public ResponseEntity<byte[]> exportMissionReport(@RequestBody MissionReportDTO report) {
+        try {
+            byte[] pdfBytes = pdfGeneratorService.generateMissionReportPdf(report);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("filename",
+                    "mission-report-" + System.currentTimeMillis() + ".pdf");
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
 }
 
