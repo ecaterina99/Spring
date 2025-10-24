@@ -1,4 +1,5 @@
 package com.client.configuration;
+
 import com.client.helpers.ApiAuthProvider;
 import com.client.service.TokenStorage;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +13,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+/**
+ * Global security configuration for the client application.
+ * This class defines authentication and authorization rules using Spring Security.
+ * It configures accessible endpoints, login and logout behavior, and integrates
+ * a custom authentication provider (ApiAuthProvider) with token storage management.
+ */
+
 @Configuration
 @EnableWebSecurity
 public class ClientSecurityConfig {
@@ -19,7 +27,7 @@ public class ClientSecurityConfig {
     private final ApiAuthProvider authProvider;
     private final TokenStorage tokenStorage;
 
-    public ClientSecurityConfig(ApiAuthProvider authProvider,  @Lazy TokenStorage tokenStorage) {
+    public ClientSecurityConfig(ApiAuthProvider authProvider, @Lazy TokenStorage tokenStorage) {
         this.authProvider = authProvider;
         this.tokenStorage = tokenStorage;
     }

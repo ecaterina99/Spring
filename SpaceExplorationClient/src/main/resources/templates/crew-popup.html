@@ -4,30 +4,31 @@
             <span id="crew-popup-close">&times;</span>
             <h3 id="crew-popup-name" class="crew-popup-name">ASTRONAUTS LIST</h3>
 
-                <div class="row g-4 justify-content-center">
-                         th:each="astronaut : ${astronauts}">
-                        <div class="card h-50 text-center border-0">
-                            <img th:src="@{${astronaut.imageUrl}}" class="card-img-top rounded" alt="image">
+            <div class="row g-4 justify-content-center">
+                th:each="astronaut : ${astronauts}">
+                <div class="card h-50 text-center border-0">
+                    <img th:src="@{${astronaut.imageUrl}}" class="card-img-top rounded" alt="image">
 
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold" style="color: #013a9f;"
-                                    th:text="${astronaut.firstName.toUpperCase() + astronaut.lastName.toUpperCase()}"></h5>
-                                <p class="d-flex justify-content-between card-text">
-                                    <strong>SPECIALIZATION:</strong>
-                                    <span th:text="${astronaut.specialization.getDisplayName()}" class="text-muted"></span>
-                                </p>
-                                <button class="btn hero-btn px-4 py-2" id="btn-view">
-                                    <strong>VIEW DETAILS</strong>
-                                </button>
-                            </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold" style="color: #013a9f;"
+                            th:text="${astronaut.firstName.toUpperCase() + astronaut.lastName.toUpperCase()}"></h5>
+                        <p class="d-flex justify-content-between card-text">
+                            <strong>SPECIALIZATION:</strong>
+                            <span th:text="${astronaut.specialization.getDisplayName()}" class="text-muted"></span>
+                        </p>
+                        <button class="btn hero-btn px-4 py-2" id="btn-view">
+                            <strong>VIEW DETAILS</strong>
+                        </button>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 </div>
+
 <script th:fragment="crew-popup-script">
-    document.addEventListener('DOMContentLoaded', function() {
-        window.showCrewPopup = function(button) {
+    document.addEventListener('DOMContentLoaded', function () {
+        window.showCrewPopup = function (button) {
             const crewPopup = document.getElementById("crew-popup");
 
             if (!crewPopup) {
@@ -35,7 +36,7 @@
                 return;
             }
 
-           crewPopup.style.display = "flex";
+            crewPopup.style.display = "flex";
 
             const closeBtn = document.getElementById("crew-popup-close");
             if (closeBtn) {

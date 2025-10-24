@@ -20,7 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-
+/**
+ * Controller class responsible for handling web requests related to destinations.
+ * Provides an endpoint to display an interactive mup of all destinations by retrieving data
+ * from the DestinationService and rendering it in the corresponding view.
+ */
 @Controller
 @RequestMapping("/destinations")
 @Slf4j

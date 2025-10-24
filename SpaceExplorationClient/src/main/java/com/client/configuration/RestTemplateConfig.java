@@ -5,6 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Configuration class for creating and customizing a RestTemplate bean.
+ * HTTP communication between the client application and external APIs.
+ */
+
 @Configuration
 public class RestTemplateConfig {
 

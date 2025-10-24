@@ -28,40 +28,41 @@ body {
 }
 
 .stars {
-    background-image:
-            radial-gradient(2px 2px at 20px 30px, #eee, transparent),
-            radial-gradient(2px 2px at 60px 70px, #fff, transparent),
-            radial-gradient(1px 1px at 50px 50px, #ddd, transparent),
-            radial-gradient(1px 1px at 130px 80px, #fff, transparent),
-            radial-gradient(2px 2px at 90px 10px, #fff, transparent);
+    background-image: radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+    radial-gradient(2px 2px at 60px 70px, #fff, transparent),
+    radial-gradient(1px 1px at 50px 50px, #ddd, transparent),
+    radial-gradient(1px 1px at 130px 80px, #fff, transparent),
+    radial-gradient(2px 2px at 90px 10px, #fff, transparent);
     background-repeat: repeat;
     background-size: 200px 200px;
     animation: twinkle 3s ease-in-out infinite;
 }
 
 .stars2 {
-    background-image:
-            radial-gradient(1px 1px at 100px 120px, #fff, transparent),
-            radial-gradient(1px 1px at 150px 80px, #ddd, transparent),
-            radial-gradient(2px 2px at 70px 200px, #fff, transparent);
+    background-image: radial-gradient(1px 1px at 100px 120px, #fff, transparent),
+    radial-gradient(1px 1px at 150px 80px, #ddd, transparent),
+    radial-gradient(2px 2px at 70px 200px, #fff, transparent);
     background-repeat: repeat;
     background-size: 300px 300px;
     animation: twinkle 5s ease-in-out infinite;
 }
 
 .stars3 {
-    background-image:
-            radial-gradient(1px 1px at 220px 90px, #fff, transparent),
-            radial-gradient(2px 2px at 180px 30px, #ddd, transparent),
-            radial-gradient(1px 1px at 60px 140px, #fff, transparent);
+    background-image: radial-gradient(1px 1px at 220px 90px, #fff, transparent),
+    radial-gradient(2px 2px at 180px 30px, #ddd, transparent),
+    radial-gradient(1px 1px at 60px 140px, #fff, transparent);
     background-repeat: repeat;
     background-size: 400px 400px;
     animation: twinkle 7s ease-in-out infinite;
 }
 
 @keyframes twinkle {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
 }
 
 .shooting-star {
@@ -117,9 +118,8 @@ body {
     font-size: 1.8rem;
     color: #00D4FF;
     font-weight: 600;
-    text-shadow:
-            0 0 10px #00D4FF,
-            0 0 20px #00D4FF;
+    text-shadow: 0 0 10px #00D4FF,
+    0 0 20px #00D4FF;
     animation: pulse-text 3s ease-in-out infinite;
 }
 
@@ -133,8 +133,12 @@ body {
 }
 
 @keyframes pulse-text {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
 }
 
 /* Two Column Grid for About & Budget */
@@ -153,9 +157,8 @@ body {
     border: 2px solid #00D4FF;
     border-radius: 20px;
     padding: 40px;
-    box-shadow:
-            0 0 30px rgba(0, 212, 255, 0.4),
-            inset 0 0 30px rgba(0, 212, 255, 0.05);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.4),
+    inset 0 0 30px rgba(0, 212, 255, 0.05);
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
@@ -175,19 +178,22 @@ body {
 }
 
 @keyframes rotate-gradient {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .neon-section:hover, .neon-section-transparent:hover {
-    box-shadow:
-            0 0 50px rgba(0, 212, 255, 0.8),
-            inset 0 0 40px rgba(0, 212, 255, 0.15);
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.8),
+    inset 0 0 40px rgba(0, 212, 255, 0.15);
     transform: translateY(-8px);
     border-color: #00FFFF;
 }
 
-.neon-section-transparent{
+.neon-section-transparent {
     background-image: url('/images/7.jpg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -195,9 +201,8 @@ body {
     border: 2px solid #00D4FF;
     border-radius: 20px;
     padding: 40px;
-    box-shadow:
-            0 0 30px rgba(0, 212, 255, 0.58),
-            inset 0 0 30px rgba(0, 212, 255, 0.05);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.58),
+    inset 0 0 30px rgba(0, 212, 255, 0.05);
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
@@ -207,10 +212,9 @@ body {
 
 
 .neon-section.purple {
-  background: transparent;
-    box-shadow:
-            0 0 30px rgba(176, 38, 255, 0.4),
-            inset 0 0 30px rgba(176, 38, 255, 0.05);
+    background: transparent;
+    box-shadow: 0 0 30px rgba(176, 38, 255, 0.4),
+    inset 0 0 30px rgba(176, 38, 255, 0.05);
 }
 
 .neon-section.purple::before {
@@ -218,9 +222,8 @@ body {
 }
 
 .neon-section.purple:hover {
-    box-shadow:
-            0 0 50px rgba(176, 38, 255, 0.8),
-            inset 0 0 40px rgba(176, 38, 255, 0.15);
+    box-shadow: 0 0 50px rgba(176, 38, 255, 0.8),
+    inset 0 0 40px rgba(176, 38, 255, 0.15);
     border-color: #D946FF;
 }
 
@@ -231,9 +234,8 @@ body {
     margin-bottom: 25px;
     text-transform: uppercase;
     letter-spacing: 3px;
-    text-shadow:
-            0 0 10px #FFD700,
-            0 0 20px #FFD700;
+    text-shadow: 0 0 10px #FFD700,
+    0 0 20px #FFD700;
     font-weight: bold;
     position: relative;
     z-index: 1;
@@ -254,9 +256,8 @@ body {
     border-radius: 20px;
     padding: 35px;
     text-align: center;
-    box-shadow:
-            0 0 40px rgba(255, 215, 0, 0.6),
-            inset 0 0 40px rgba(255, 215, 0, 0.1);
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.6),
+    inset 0 0 40px rgba(255, 215, 0, 0.1);
     animation: pulse-budget 3s ease-in-out infinite;
     margin: 20px 0;
     position: relative;
@@ -264,8 +265,14 @@ body {
 }
 
 @keyframes pulse-budget {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(255, 215, 0, 0.6), inset 0 0 40px rgba(255, 215, 0, 0.1); }
-    50% { transform: scale(1.03); box-shadow: 0 0 60px rgba(255, 215, 0, 0.9), inset 0 0 50px rgba(255, 215, 0, 0.2); }
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.6), inset 0 0 40px rgba(255, 215, 0, 0.1);
+    }
+    50% {
+        transform: scale(1.03);
+        box-shadow: 0 0 60px rgba(255, 215, 0, 0.9), inset 0 0 50px rgba(255, 215, 0, 0.2);
+    }
 }
 
 .budget-icon {
@@ -275,17 +282,20 @@ body {
 }
 
 @keyframes float-icon {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .budget-value {
     font-size: 3rem;
     color: #FFD700;
     font-weight: bold;
-    text-shadow:
-            0 0 20px #FFD700,
-            0 0 40px #FFD700;
+    text-shadow: 0 0 20px #FFD700,
+    0 0 40px #FFD700;
     font-family: 'Orbitron', monospace;
 }
 
@@ -352,7 +362,7 @@ body {
 
 /* Advice Grid Enhanced */
 
-.advice-section{
+.advice-section {
     margin: 45px 30px
 }
 
@@ -407,9 +417,15 @@ body {
 }
 
 @keyframes rotate-icon {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-10deg); }
-    75% { transform: rotate(10deg); }
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-10deg);
+    }
+    75% {
+        transform: rotate(10deg);
+    }
 }
 
 .advice-title {
@@ -423,7 +439,7 @@ body {
 
 /* Navigation Cards Enhanced */
 .navigation-section {
-display: flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -487,9 +503,8 @@ display: flex;
 
 .nav-card.purple:hover {
 
-    box-shadow:
-            0 0 50px rgba(176, 38, 255, 0.9),
-            inset 0 0 30px rgba(176, 38, 255, 0.2);
+    box-shadow: 0 0 50px rgba(176, 38, 255, 0.9),
+    inset 0 0 30px rgba(176, 38, 255, 0.2);
     transform: translateY(-15px) scale(1.05);
 
     background-image: url('/images/2.png');
@@ -505,8 +520,12 @@ display: flex;
 }
 
 @keyframes bounce-icon {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
 }
 
 .nav-title {
@@ -567,8 +586,12 @@ display: flex;
 }
 
 @keyframes rocket-fly {
-    0%, 100% { transform: translateY(0) rotate(-45deg); }
-    50% { transform: translateY(-25px) rotate(-45deg); }
+    0%, 100% {
+        transform: translateY(0) rotate(-45deg);
+    }
+    50% {
+        transform: translateY(-25px) rotate(-45deg);
+    }
 }
 
 .particle {
@@ -579,22 +602,56 @@ display: flex;
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) translateX(100px);
+        opacity: 0;
+    }
 }
 
 @media (max-width: 1200px) {
-    .navigation-grid { grid-template-columns: 1fr; }
-    .advice-grid { grid-template-columns: repeat(2, 1fr); }
-    .rules-grid { grid-template-columns: 1fr; }
+    .navigation-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .advice-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .rules-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 768px) {
-    .two-column-grid { grid-template-columns: 1fr; }
-    .title-astronauts { font-size: 2.5rem; letter-spacing: 3px; }
-    .subtitle { font-size: 1.3rem; }
-    .section-title { font-size: 1.6rem; }
-    .neon-section { padding: 25px; }
-    .advice-grid { grid-template-columns: 1fr; }
+    .two-column-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .title-astronauts {
+        font-size: 2.5rem;
+        letter-spacing: 3px;
+    }
+
+    .subtitle {
+        font-size: 1.3rem;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+    }
+
+    .neon-section {
+        padding: 25px;
+    }
+
+    .advice-grid {
+        grid-template-columns: 1fr;
+    }
 }

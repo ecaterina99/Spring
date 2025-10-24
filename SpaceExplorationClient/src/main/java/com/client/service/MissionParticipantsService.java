@@ -11,7 +11,11 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 
 import java.util.List;
-
+/**
+ * Service class responsible for retrieving mission participants data from the external API.
+ * Uses RestClientUtil to perform REST requests and fetch a list of all mission participants.
+ * The API endpoint base URL is injected from application properties.
+ */
 @Service
 @Slf4j
 public class MissionParticipantsService {

@@ -18,6 +18,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Controller class responsible for handling web requests related to astronauts.
+ * Provides an endpoint to display a list of all astronauts by retrieving data
+ * from the AstronautService and rendering it in the corresponding view.
+ */
 
 @Controller
 @RequestMapping("/astronauts")

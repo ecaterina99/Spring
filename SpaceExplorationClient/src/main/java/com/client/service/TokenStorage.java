@@ -1,5 +1,9 @@
 package com.client.service;
-
+/**
+ * Session-scoped service for storing and managing the authentication token.
+ * Keeps the user's token available throughout the session and provides a method
+ * to clear it upon logout or session expiration.
+ */
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Scope;

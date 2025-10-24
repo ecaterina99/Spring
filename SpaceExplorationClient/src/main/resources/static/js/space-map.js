@@ -334,7 +334,6 @@ function selectSpaceEntity(entity) {
     }
 }
 
-
 function showPlanetPopup(destination) {
     document.getElementById("popup-title").textContent = `${destination.destinationName}`;
     document.getElementById("popup-entity-description").textContent = destination.description || "No description";
@@ -371,8 +370,6 @@ function showPlanetPopup(destination) {
 
 async function loadAndShowMissions(destinationId, destinationName) {
     try {
-
-
         const response = await fetch(`/destinations/missions/${destinationId}`);
         if (!response.ok) throw new Error('Failed to fetch missions');
 
@@ -397,22 +394,22 @@ async function loadAndShowMissions(destinationId, destinationName) {
                     })
                     .join(', ');
             }
-                const missionData = {
-                    id: mission.id || '',
-                    name: (mission.name).toUpperCase(),
-                    code: mission.code || '',
-                    description: mission.description,
-                    destination: mission.destinationName || destinationName,
-                    difficulty: mission.difficultyLevel.toLowerCase(),
-                    score: mission.scoreValue || '',
-                    crew: mission.crewSize || '',
-                    issues: mission.potentialIssues || '',
-                    duration: mission.durationDays || '',
-                    payment: mission.paymentAmount || '',
-                    specializations: specializationsStr,
-                    image: mission.imgUrl || ''
-                };
-                missionsHTML += `
+            const missionData = {
+                id: mission.id || '',
+                name: (mission.name).toUpperCase(),
+                code: mission.code || '',
+                description: mission.description,
+                destination: mission.destinationName || destinationName,
+                difficulty: mission.difficultyLevel.toLowerCase(),
+                score: mission.scoreValue || '',
+                crew: mission.crewSize || '',
+                issues: mission.potentialIssues || '',
+                duration: mission.durationDays || '',
+                payment: mission.paymentAmount || '',
+                specializations: specializationsStr,
+                image: mission.imgUrl || ''
+            };
+            missionsHTML += `
     <div class="btn-view-mission mission-destinations p-3 border border-info rounded" style="background: rgba(0,0,0,0.3);"
                              data-id="${missionData.id}"
                              data-name="${missionData.name}"
@@ -429,7 +426,7 @@ async function loadAndShowMissions(destinationId, destinationName) {
                              data-image="${mission.imgUrl}">
                     </div>
                 `;
-            });
+        });
 
         const missionsContainer = document.createElement('div');
         missionsContainer.innerHTML = missionsHTML;
@@ -471,7 +468,6 @@ function updateInfoPanel(destination) {
     }
 }
 
-
 function animate() {
     requestAnimationFrame(animate);
     // Update camera controls
@@ -500,7 +496,6 @@ function updateStats() {
     if (destCount) destCount.textContent = destinationsData.length;
     if (selectedName) selectedName.textContent = selectedSpaceEntity ? selectedSpaceEntity.name : 'None';
 }
-
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {

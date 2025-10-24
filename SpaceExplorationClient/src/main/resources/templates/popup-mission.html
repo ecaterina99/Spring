@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="popup-code">
-            <p style="padding: 0;"><strong>Code:</strong> <span id="popup-code"></span></p>
+                <p style="padding: 0;"><strong>Code:</strong> <span id="popup-code"></span></p>
             </div>
             <div class="mission-top d-flex">
                 <div class="mission-image">
@@ -44,9 +44,8 @@
     </div>
 </div>
 
-
-
 <script th:fragment="mission-popup-script">
+
     document.addEventListener("DOMContentLoaded", () => {
 
         let missionButtons = [];
@@ -86,7 +85,6 @@
                 if (currentMissionIndex < missionButtons.length - 1) showPopup(missionButtons[currentMissionIndex + 1]);
             };
 
-            // Close mission
             document.getElementById("mission-popup-close").onclick = () => {
                 popup.style.display = "none";
             };
@@ -103,9 +101,10 @@
         }
 
         window.showPopup = showPopup;
+
         document.getElementById("startMissionBtn").addEventListener("click", () => {
-            const url = `mission-participants?missionId=${currentMissionId}`;
-            window.location.href = url;
+            window.location.href = `mission-participants?missionId=${currentMissionId}`;
         });
     });
+
 </script>

@@ -1,6 +1,5 @@
 package com.client.service;
 
-import com.client.DTO.AstronautDTO;
 import com.client.DTO.MissionDTO;
 import com.client.exceptions.ApiProxyException;
 import com.client.helpers.RestClientUtil;
@@ -11,7 +10,11 @@ import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Service class responsible for retrieving mission data from the external API.
+ * Uses RestClientUtil to perform REST requests, fetch a list of all missions by filters and starts a mission.
+ * The API endpoint base URL is injected from application properties.
+ */
 @Service
 public class MissionService {
     private final String apiUrl;
@@ -22,13 +25,13 @@ public class MissionService {
         this.restUtil = restUtil;
     }
 
-    public MissionDTO startMission(Integer missionId) {
+    public void startMission(Integer missionId) {
         if (missionId == null || missionId <= 0) {
             throw new IllegalArgumentException("Mission ID must be provided and greater than 0");
         }
-        String url = apiUrl + "/" + missionId + "/start" ;
+        String url = apiUrl + "/" + missionId + "/start";
         try {
-            return restUtil.postForObject(url, null, MissionDTO.class);
+            restUtil.postForObject(url, null, MissionDTO.class);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             throw new ApiProxyException(
                     e.getStatusCode().value(),

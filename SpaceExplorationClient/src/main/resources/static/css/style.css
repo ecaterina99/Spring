@@ -7,7 +7,6 @@ body {
 }
 
 /* ====NAVBAR==== */
-
 .navbar-nav {
     position: static;
     transform: none;
@@ -33,6 +32,7 @@ nav.navbar,
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
 }
+
 .navbar-nav .nav-link {
     font-family: 'Orbitron', monospace !important;
     white-space: nowrap;
@@ -82,7 +82,7 @@ nav.navbar,
 }
 
 
-.title-cosmo-trail{
+.title-cosmo-trail {
     font-family: 'Orbitron', monospace;
 }
 
@@ -92,7 +92,7 @@ nav.navbar,
     line-height: 1.6em;
 }
 
-.card-participants-title{
+.card-participants-title {
     font-family: 'Orbitron', monospace;
 }
 
@@ -154,7 +154,7 @@ nav.navbar,
     height: 600px;
 }
 
-.lead{
+.lead {
     font-size: 18px;
 }
 
@@ -276,7 +276,8 @@ nav.navbar,
     position: relative;
     z-index: 1;
 }
-.added-crew-card{
+
+.added-crew-card {
     max-height: 400px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -398,14 +399,17 @@ nav.navbar,
     flex: 1 1 auto;
     overflow-y: visible;
 }
-.popup-start-mission-content{
+
+.popup-start-mission-content {
     background: linear-gradient(135deg, #42005c 0%, #2873bf 100%);
     border-radius: 15px;
     padding: 30px;
     width: 600px;
     height: 700px;
     color: white;
-    box-shadow: 0 30px 50px rgb(15, 176, 176); overflow-y: auto;"
+    box-shadow: 0 30px 50px rgb(15, 176, 176);
+    overflow-y: auto;
+"
 }
 
 #popup-title, .card-title {
@@ -477,6 +481,7 @@ nav.navbar,
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
 }
+
 .start-mission-popup {
     display: none;
     position: fixed;
@@ -491,11 +496,13 @@ nav.navbar,
     justify-content: center !important;
     align-items: center !important;
 }
+
 .start-mission-popup.popup {
     transform: none !important;
     top: 0 !important;
     left: 0 !important;
 }
+
 .popup-start-mission-content {
     background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1729 100%);
     border-radius: 20px;
@@ -725,16 +732,14 @@ nav.navbar,
 
 .success-badge {
     background: linear-gradient(135deg, #00ff88, #00d4ff);
-    box-shadow:
-            0 0 40px rgba(0, 255, 136, 0.6),
-            0 0 80px rgba(0, 255, 136, 0.3);
+    box-shadow: 0 0 40px rgba(0, 255, 136, 0.6),
+    0 0 80px rgba(0, 255, 136, 0.3);
 }
 
 .failure-badge {
     background: linear-gradient(135deg, #ff4444, #ff8800);
-    box-shadow:
-            0 0 40px rgba(255, 68, 68, 0.6),
-            0 0 80px rgba(255, 68, 68, 0.3);
+    box-shadow: 0 0 40px rgba(255, 68, 68, 0.6),
+    0 0 80px rgba(255, 68, 68, 0.3);
 }
 
 .badge-icon {
@@ -753,16 +758,14 @@ nav.navbar,
 
 .success-title {
     color: #00ff88;
-    text-shadow:
-            0 0 20px rgba(0, 255, 136, 0.8),
-            0 0 40px rgba(0, 255, 136, 0.4);
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.8),
+    0 0 40px rgba(0, 255, 136, 0.4);
 }
 
 .failure-title {
     color: #ff4444;
-    text-shadow:
-            0 0 20px rgba(255, 68, 68, 0.8),
-            0 0 40px rgba(255, 68, 68, 0.4);
+    text-shadow: 0 0 20px rgba(255, 68, 68, 0.8),
+    0 0 40px rgba(255, 68, 68, 0.4);
 }
 
 .success-celebration {
@@ -984,6 +987,7 @@ nav.navbar,
     border-radius: 8px;
     animation: slideInLeft 0.5s ease-out both;
 }
+
 issue-icon {
     font-size: 20px;
 }
@@ -1079,14 +1083,13 @@ issue-icon {
     height: 2px;
     background: #00ff88;
     border-radius: 50%;
-    box-shadow:
-            0 0 10px #00ff88,
-            20px 30px 0 #00d4ff,
-            40px 60px 0 #8a2be2,
-            -30px 50px 0 #00ff88,
-            60px 20px 0 #00d4ff,
-            -50px 80px 0 #00ff88,
-            80px 90px 0 #8a2be2;
+    box-shadow: 0 0 10px #00ff88,
+    20px 30px 0 #00d4ff,
+    40px 60px 0 #8a2be2,
+    -30px 50px 0 #00ff88,
+    60px 20px 0 #00d4ff,
+    -50px 80px 0 #00ff88,
+    80px 90px 0 #8a2be2;
     animation: particlesFloat 15s linear infinite;
 }
 
@@ -1111,13 +1114,12 @@ issue-icon {
     height: 2px;
     background: #ff4444;
     border-radius: 50%;
-    box-shadow:
-            0 0 10px #ff4444,
-            30px 40px 0 #ff8800,
-            50px 70px 0 #ff4444,
-            -40px 60px 0 #ff8800,
-            70px 30px 0 #ff4444,
-            -60px 90px 0 #ff8800;
+    box-shadow: 0 0 10px #ff4444,
+    30px 40px 0 #ff8800,
+    50px 70px 0 #ff4444,
+    -40px 60px 0 #ff8800,
+    70px 30px 0 #ff4444,
+    -60px 90px 0 #ff8800;
     animation: particlesFloat 20s linear infinite;
 }
 
@@ -1160,7 +1162,7 @@ issue-icon {
     z-index: 10;
 }
 
-#popup-close:hover, #popup-close:focus, #mission-popup-close:hover{
+#popup-close:hover, #popup-close:focus, #mission-popup-close:hover {
     color: #00ff88;
 }
 
@@ -1275,7 +1277,7 @@ issue-icon {
     display: block;
 }
 
-.info-panel ,  .planet-info{
+.info-panel, .planet-info {
     position: absolute;
     left: 20px;
     bottom: 20px;
@@ -1294,7 +1296,7 @@ issue-icon {
 }
 
 .panel-content {
-    background-color: rgba(0,0,0,0.75);
+    background-color: rgba(0, 0, 0, 0.75);
     border: 1px solid #00bcd4;
     border-radius: 8px;
     padding: 10px;
@@ -1303,10 +1305,14 @@ issue-icon {
     min-width: unset;
 }
 
-.info-text { color: #ccc; font-size: 14px; }
+.info-text {
+    color: #ccc;
+    font-size: 14px;
+}
+
 .info-panel:hover, .stats-panel:hover {
     border-color: #00ff88;
-    box-shadow: 0 8px 24px rgba(0,255,136,0.25);
+    box-shadow: 0 8px 24px rgba(0, 255, 136, 0.25);
 }
 
 .title-astronauts, .lead {
@@ -1502,11 +1508,12 @@ issue-icon {
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
 }
+
 /* ===== ===== */
 
 /* ===== SCROLLBAR ===== */
 
-.astronaut-popup-content::-webkit-scrollbar  ,.mission-popup-content::-webkit-scrollbar, .current-crew-popup::-webkit-scrollbar, .popup-risks-content::-webkit-scrollbar, .crew-list::-webkit-scrollbar {
+.astronaut-popup-content::-webkit-scrollbar, .mission-popup-content::-webkit-scrollbar, .current-crew-popup::-webkit-scrollbar, .popup-risks-content::-webkit-scrollbar, .crew-list::-webkit-scrollbar {
     width: 8px;
 }
 
@@ -1543,6 +1550,7 @@ issue-icon {
 .popup-start-mission-content::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(180deg, #00ffff, #9d4edd);
 }
+
 .added-crew-card::-webkit-scrollbar {
     width: 8px;
 }
@@ -1583,29 +1591,26 @@ issue-icon {
 }
 
 .stars {
-    background-image:
-            radial-gradient(2px 2px at 20px 30px, #eee, transparent),
-            radial-gradient(2px 2px at 60px 70px, #fff, transparent),
-            radial-gradient(1px 1px at 50px 50px, #ddd, transparent),
-            radial-gradient(1px 1px at 130px 80px, #fff, transparent),
-            radial-gradient(2px 2px at 90px 10px, #eee, transparent);
+    background-image: radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+    radial-gradient(2px 2px at 60px 70px, #fff, transparent),
+    radial-gradient(1px 1px at 50px 50px, #ddd, transparent),
+    radial-gradient(1px 1px at 130px 80px, #fff, transparent),
+    radial-gradient(2px 2px at 90px 10px, #eee, transparent);
     background-size: 200px 200px;
     animation: starsMove 60s linear infinite;
 }
 
 .stars2 {
-    background-image:
-            radial-gradient(1px 1px at 40px 60px, #fff, transparent),
-            radial-gradient(1px 1px at 110px 90px, #ddd, transparent),
-            radial-gradient(1px 1px at 70px 20px, #eee, transparent);
+    background-image: radial-gradient(1px 1px at 40px 60px, #fff, transparent),
+    radial-gradient(1px 1px at 110px 90px, #ddd, transparent),
+    radial-gradient(1px 1px at 70px 20px, #eee, transparent);
     background-size: 250px 250px;
     animation: starsMove 90s linear infinite;
 }
 
 .stars3 {
-    background-image:
-            radial-gradient(1px 1px at 80px 100px, #fff, transparent),
-            radial-gradient(2px 2px at 160px 50px, #ddd, transparent);
+    background-image: radial-gradient(1px 1px at 80px 100px, #fff, transparent),
+    radial-gradient(2px 2px at 160px 50px, #ddd, transparent);
     background-size: 300px 300px;
     animation: starsMove 120s linear infinite;
 }
@@ -1654,9 +1659,19 @@ issue-icon {
 
 
 /* ===== BUTTONS ===== */
-#btn-view:hover {
-    color: #0e2eae
+#btn-view:hover , .btn-view-astronauts:hover{
+    color: #0e2eae;
+    transform: scale(1.2);
 }
+
+.btn-view-astronauts{
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    color: #0e2eae;
+}
+
 #downloadBtn {
     margin-top: 15px;
 }
@@ -1714,17 +1729,18 @@ issue-icon {
     transition: width 0.6s, height 0.6s;
     z-index: 0;
 }
+
 .btn-start-mission span {
     position: relative;
     z-index: 2;
 }
-.btn-start-mission:hover{
+
+.btn-start-mission:hover {
     background: linear-gradient(135deg, #fff698 0%, #ff8032 100%);
     border-color: #FFA500;
-    box-shadow:
-            0 0 30px rgba(255, 215, 0, 0.5),
-            0 0 50px rgba(0, 100, 255, 0.4),
-            0 6px 20px rgba(0, 100, 255, 0.5);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5),
+    0 0 50px rgba(0, 100, 255, 0.4),
+    0 6px 20px rgba(0, 100, 255, 0.5);
     transform: translateY(-2px);
 }
 
@@ -1732,9 +1748,11 @@ issue-icon {
     width: 1000px;
     height: 200px;
 }
+
 .btn-start-mission:active {
     transform: translateY(0);
 }
+
 #btn-view-participants, #btn-add-participants {
     transition: all 0.3s ease-in-out;
     color: #000000;
@@ -1747,19 +1765,20 @@ issue-icon {
     color: #ffd500;
     transform: scale(1.1);
 }
-.start-mission{
+
+.start-mission {
     display: flex;
     margin: 30px;
 }
 
-.btn-clear:hover, .btn-check-risks:hover{
+.btn-clear:hover, .btn-check-risks:hover {
     transform: scale(1.05);
     box-shadow: 0 0 30px rgba(255, 213, 0, 0.8),
     0 0 40px rgba(255, 68, 68, 0.6);
     background: linear-gradient(135deg, #ff5555 0%, #dd0000 100%);
 }
 
-.btn-start-mission:hover{
+.btn-start-mission:hover {
     transform: scale(1.05);
     box-shadow: 0 0 30px rgba(255, 213, 0, 0.8),
     0 0 40px rgba(255, 68, 68, 0.6);
@@ -1792,12 +1811,14 @@ issue-icon {
     transition: all 0.3s ease;
     cursor: pointer;
 }
+
 .btn-outline-info:hover {
     background: #00d4ff;
     color: #000;
     box-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
     transform: translateY(-2px);
 }
+
 .mission-btn {
     font-family: 'Orbitron', monospace;
     font-weight: bold;
@@ -1831,8 +1852,8 @@ issue-icon {
 @media (max-width: 768px) {
 
     .participants-and-risks {
-            grid-template-columns: 1fr !important;
-            gap: 40px!important;
+        grid-template-columns: 1fr !important;
+        gap: 40px !important;
     }
 
     #space-container {
@@ -1873,61 +1894,78 @@ issue-icon {
         grid-template-columns: 1fr;
     }
 
-    .info-panel {display: none }
-    .stats-panel { max-width: 110px !important; bottom: 8px !important; right: 8px !important; }
-    .stats-panel .panel-content { padding: 0.45rem 0.6rem !important; }
+    .info-panel {
+        display: none
+    }
+
+    .stats-panel {
+        max-width: 110px !important;
+        bottom: 8px !important;
+        right: 8px !important;
+    }
+
+    .stats-panel .panel-content {
+        padding: 0.45rem 0.6rem !important;
+    }
 
 
-/*=====ASTRONAUT & POPUP SECTION=====*/
-        .card {
-            width: 100%;
-        }
-        .card-title {
-            font-size: 0.9rem;
-        }
-        .card-text {
-            font-size: 0.8rem;
-        }
+    /*=====ASTRONAUT & POPUP SECTION=====*/
+    .card {
+        width: 100%;
+    }
 
-        .popup-subtitle{
-            font-size: 0.2rem;
-            margin-top: 2px;
-            margin-bottom: 2px;
-        }
+    .card-title {
+        font-size: 0.9rem;
+    }
 
-        .mission-img{
-            width: 150px;
-            height: 150px;
-        }
-.mission-top{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.popup-name{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    text-wrap: nowrap;
-}
-.change-popup{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: 0;
-}
-.popup-code{
-   display: none;
-}
+    .card-text {
+        font-size: 0.8rem;
+    }
+
+    .popup-subtitle {
+        font-size: 0.2rem;
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+
+    .mission-img {
+        width: 150px;
+        height: 150px;
+    }
+
+    .mission-top {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-name {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        text-wrap: nowrap;
+    }
+
+    .change-popup {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0;
+    }
+
+    .popup-code {
+        display: none;
+    }
+
     .astronaut-info {
         align-items: center;
         display: flex !important;
         flex-direction: row !important;
-        margin: 0!important;
-        gap: 0!important;
+        margin: 0 !important;
+        gap: 0 !important;
     }
 
     .score-info-astronaut {
@@ -1943,6 +1981,7 @@ issue-icon {
         text-align: center;
         margin-top: 2px;
     }
+
     .astronaut-popup-content {
         display: flex;
         flex-direction: column;
@@ -1955,13 +1994,14 @@ issue-icon {
         overflow-y: auto;
         overflow-x: hidden;
     }
+
     .astronaut-top {
         flex-direction: column;
         align-items: center;
     }
 
     .astronaut-image img {
-      height: auto;
+        height: auto;
         max-width: 150px;
         padding: 0;
         margin: 0;
@@ -2017,12 +2057,12 @@ issue-icon {
         transform: scale(1.1);
     }
 
-    .mission-popup{
+    .mission-popup {
         width: 300px;
-       height: 300px;
+        height: 300px;
     }
-    .mission-popup-content
-    {
+
+    .mission-popup-content {
         width: 300px;
         height: 300px;
         overflow-y: auto;
@@ -2035,13 +2075,16 @@ issue-icon {
         min-height: 100%;
         padding: 1rem;
     }
+
     .mission-card-text {
         font-size: 0.9rem;
     }
-    .card-main-info{
+
+    .card-main-info {
         display: none;
     }
 }
+
 @media (max-width: 992px) {
     #navbarNav {
         background-color: rgba(255, 230, 90, 0.97);
@@ -2064,7 +2107,7 @@ issue-icon {
         background-color: rgba(255, 230, 90, 0.97) !important;
     }
 
-    .logout{
+    .logout {
         margin-top: 10px;
 
         display: flex;
@@ -2073,6 +2116,7 @@ issue-icon {
         align-items: center;
     }
 }
+
 @media (min-width: 992px) {
     .navbar-nav {
         position: absolute;
@@ -2215,6 +2259,7 @@ issue-icon {
         transform: scale(1);
     }
 }
+
 @keyframes twinkle {
     0%, 100% {
         opacity: 0.2;
@@ -2223,6 +2268,7 @@ issue-icon {
         opacity: 1;
     }
 }
+
 @keyframes slideInLeft {
     from {
         opacity: 0;
@@ -2418,8 +2464,12 @@ issue-icon {
 }
 
 @keyframes twinkle {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; }
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
+    }
 }
 
 /* Loader Content */
@@ -2451,8 +2501,12 @@ issue-icon {
 }
 
 @keyframes pulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-    50% { transform: translate(-50%, -50%) scale(1.1); }
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
 }
 
 .orbit {
@@ -2483,8 +2537,12 @@ issue-icon {
 }
 
 @keyframes rotate {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
 }
 
 .planet {
@@ -2528,8 +2586,12 @@ issue-icon {
 }
 
 @keyframes fadeText {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
 }
 
 /* Progress Bar */

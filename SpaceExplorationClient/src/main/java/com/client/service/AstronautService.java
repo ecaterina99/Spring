@@ -7,7 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+/**
+ * Service class responsible for retrieving astronaut data from the external API.
+ * Uses RestClientUtil to perform REST requests and fetch a list of all astronauts.
+ * The API endpoint base URL is injected from application properties.
+ */
 @Service
 @Slf4j
 public class AstronautService {
@@ -15,7 +19,7 @@ public class AstronautService {
     private final String apiUrl;
     private final RestClientUtil restUtil;
 
-    public AstronautService( @Value("${api.url}") String apiUrl, RestClientUtil restUtil) {
+    public AstronautService(@Value("${api.url}") String apiUrl, RestClientUtil restUtil) {
         this.apiUrl = apiUrl + "/astronauts";
         this.restUtil = restUtil;
     }
@@ -23,5 +27,4 @@ public class AstronautService {
     public List<AstronautDTO> getAllAstronauts() {
         return restUtil.getList(apiUrl, AstronautDTO[].class);
     }
-
 }

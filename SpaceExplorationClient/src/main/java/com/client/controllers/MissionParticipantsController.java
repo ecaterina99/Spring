@@ -8,14 +8,17 @@ import com.client.service.MissionParticipantsService;
 import com.client.service.MissionService;
 import com.client.service.TokenStorage;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+/**
+ * Controller class responsible for managing mission participants.
+ * Handles requests to display all participants of a specific mission,
+ * retrieving related data from MissionService, AstronautService, and
+ * MissionParticipantsService to prepare the mission preparation view.
+ */
 @Controller
 @RequestMapping("/mission-participants")
 @Slf4j
@@ -34,7 +37,7 @@ public class MissionParticipantsController {
     @GetMapping
     public String getAllParticipants(
             @RequestParam(required = false) Integer missionId,
-            Model model, @AuthenticationPrincipal UserDetails userDetails) {
+            Model model) {
 
         if (missionId == null) {
             return "redirect:/missions";

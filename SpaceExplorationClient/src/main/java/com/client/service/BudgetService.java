@@ -1,12 +1,15 @@
 package com.client.service;
 
 import com.client.DTO.BudgetDTO;
-import com.client.DTO.MissionDTO;
 import com.client.helpers.RestClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
+/**
+ * Service class responsible for retrieving budget data from the external API.
+ * Uses RestClientUtil to perform REST requests and fetch user's budget data.
+ * The API endpoint base URL is injected from application properties.
+ */
 @Service
 @Slf4j
 public class BudgetService {

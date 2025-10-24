@@ -1,9 +1,7 @@
 package com.client.controllers;
-import com.client.DTO.AstronautDTO;
-import com.client.DTO.BudgetDTO;
+
 import com.client.DTO.FilterCriteriaDTO;
 import com.client.DTO.MissionDTO;
-import com.client.service.BudgetService;
 import com.client.service.MissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -14,12 +12,18 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+/**
+ * Controller class responsible for handling web requests related to missions.
+ * Provides endpoints for displaying all missions, filtering them by difficulty
+ * and destination, dynamically updating mission fragments, and starting a mission.
+ * Integrates with MissionService to process business logic and populate view models.
+ */
 @Controller
 @RequestMapping("/missions")
 @Slf4j
 public class MissionController {
     private final MissionService missionService;
+
     public MissionController(MissionService missionService) {
         this.missionService = missionService;
     }
@@ -62,9 +66,10 @@ public class MissionController {
         return "mission-cards :: missionCards";
     }
 
-@PostMapping("/{missionId}/start")
+    @PostMapping("/{missionId}/start")
     public String startMission(@PathVariable Integer missionId, Model model) {
         missionService.startMission(missionId);
         model.addAttribute("missionId", missionId);
-    return "redirect:/mission-preparation?missionId=" + missionId;}
-  }
+        return "redirect:/mission-preparation?missionId=" + missionId;
+    }
+}

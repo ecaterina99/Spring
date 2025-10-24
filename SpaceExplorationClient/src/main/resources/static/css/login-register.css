@@ -1,8 +1,7 @@
 body {
     background: #000011;
-    background-image:
-            radial-gradient(circle at 20% 30%, rgba(0, 40, 120, 0.3) 0%, transparent 50%),
-            radial-gradient(circle at 80% 70%, rgba(20, 20, 80, 0.4) 0%, transparent 50%);
+    background-image: radial-gradient(circle at 20% 30%, rgba(0, 40, 120, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(20, 20, 80, 0.4) 0%, transparent 50%);
     overflow-x: hidden;
     overflow-y: auto;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -19,12 +18,11 @@ body::before {
     left: 0;
     width: 200%;
     height: 200%;
-    background-image:
-            radial-gradient(circle, white 1px, transparent 1px),
-            radial-gradient(circle, white 1px, transparent 1px),
-            radial-gradient(circle, white 2px, transparent 2px),
-            radial-gradient(circle, rgba(200, 200, 255, 0.9) 1px, transparent 1px),
-            radial-gradient(circle, white 1px, transparent 1px);
+    background-image: radial-gradient(circle, white 1px, transparent 1px),
+    radial-gradient(circle, white 1px, transparent 1px),
+    radial-gradient(circle, white 2px, transparent 2px),
+    radial-gradient(circle, rgba(200, 200, 255, 0.9) 1px, transparent 1px),
+    radial-gradient(circle, white 1px, transparent 1px);
     background-size: 200px 200px, 300px 250px, 400px 350px, 250px 280px, 350px 320px;
     background-position: 0 0, 40px 60px, 130px 270px, 70px 100px, 180px 50px;
     animation: stars 120s linear infinite;
@@ -40,10 +38,9 @@ body::after {
     left: 0;
     width: 200%;
     height: 200%;
-    background-image:
-            radial-gradient(circle, white 1px, transparent 1px),
-            radial-gradient(circle, rgba(180, 180, 255, 0.8) 1px, transparent 1px),
-            radial-gradient(circle, white 1px, transparent 1px);
+    background-image: radial-gradient(circle, white 1px, transparent 1px),
+    radial-gradient(circle, rgba(180, 180, 255, 0.8) 1px, transparent 1px),
+    radial-gradient(circle, white 1px, transparent 1px);
     background-size: 150px 150px, 220px 200px, 180px 170px;
     background-position: 20px 30px, 80px 120px, 150px 80px;
     animation: starsAlt 90s linear infinite;
@@ -59,10 +56,9 @@ body::after {
     left: 0;
     width: 200%;
     height: 200%;
-    background-image:
-            radial-gradient(circle, white 1px, transparent 1px),
-            radial-gradient(circle, white 1px, transparent 1px),
-            radial-gradient(circle, rgba(255, 255, 255, 0.7) 1px, transparent 1px);
+    background-image: radial-gradient(circle, white 1px, transparent 1px),
+    radial-gradient(circle, white 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.7) 1px, transparent 1px);
     background-size: 100px 100px, 140px 130px, 120px 110px;
     background-position: 10px 15px, 60px 80px, 100px 40px;
     animation: starsLayer3 150s linear infinite;
@@ -72,18 +68,30 @@ body::after {
 }
 
 @keyframes stars {
-    from { transform: translate(0, 0); }
-    to { transform: translate(-50%, -50%); }
+    from {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(-50%, -50%);
+    }
 }
 
 @keyframes starsAlt {
-    from { transform: translate(0, 0); }
-    to { transform: translate(-30%, -40%); }
+    from {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(-30%, -40%);
+    }
 }
 
 @keyframes starsLayer3 {
-    from { transform: translate(0, 0); }
-    to { transform: translate(-60%, -30%); }
+    from {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(-60%, -30%);
+    }
 }
 
 .container {
@@ -117,7 +125,8 @@ body::after {
     letter-spacing: 3px;
     animation: titlePulse 2s ease-in-out infinite;
 }
-.title-explore{
+
+.title-explore {
     font-family: 'Orbitron', monospace;
     font-size: 1.6rem;
     font-weight: 800;
@@ -129,23 +138,27 @@ body::after {
     letter-spacing: 3px;
     animation: titlePulse 2s ease-in-out infinite;
 }
+
 .text-glow {
     text-shadow: 0 0 30px #0077ff;
 }
+
 @keyframes titlePulse {
-    0%, 100% { filter: brightness(1); }
-    50% { filter: brightness(1.3); }
+    0%, 100% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.3);
+    }
 }
 
 /* Fieldset */
 fieldset {
     border: 2px solid rgba(160, 100, 255, 0.5) !important;
     background: linear-gradient(135deg, rgba(30, 10, 60, 0.4) 0%, rgba(10, 20, 60, 0.3) 100%);
-    box-shadow:
-            inset 0 0 25px rgba(130, 70, 220, 0.25),
-            0 0 20px rgba(160, 100, 255, 0.15);
+    box-shadow: inset 0 0 25px rgba(130, 70, 220, 0.25),
+    0 0 20px rgba(160, 100, 255, 0.15);
 }
-
 
 
 legend {
@@ -180,9 +193,8 @@ input[type="password"]:focus {
     outline: none;
     border-color: #FFD700;
     background: rgba(0, 30, 70, 0.7);
-    box-shadow:
-            0 0 15px rgba(255, 215, 0, 0.4),
-            inset 0 0 15px rgba(0, 60, 180, 0.4);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4),
+    inset 0 0 15px rgba(0, 60, 180, 0.4);
 }
 
 input::placeholder {
@@ -203,9 +215,8 @@ button[type="submit"] {
     letter-spacing: 2px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow:
-            0 0 20px rgba(255, 215, 0, 0.3),
-            0 4px 15px rgba(0, 100, 255, 0.4);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3),
+    0 4px 15px rgba(0, 100, 255, 0.4);
     position: relative;
     overflow: hidden;
 }
@@ -226,10 +237,9 @@ button[type="submit"]::before {
 button[type="submit"]:hover {
     background: linear-gradient(135deg, #33979f 0%, #8446d3 100%);
     border-color: #FFA500;
-    box-shadow:
-            0 0 30px rgba(255, 215, 0, 0.5),
-            0 0 50px rgba(0, 100, 255, 0.4),
-            0 6px 20px rgba(0, 100, 255, 0.5);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5),
+    0 0 50px rgba(0, 100, 255, 0.4),
+    0 6px 20px rgba(0, 100, 255, 0.5);
     transform: translateY(-2px);
 }
 

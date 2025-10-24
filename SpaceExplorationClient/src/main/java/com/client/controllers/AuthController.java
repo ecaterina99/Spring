@@ -11,7 +11,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
+/**
+ * Controller class responsible for handling user authentication and registration.
+ * Provides endpoints for displaying login and registration pages, validating user input,
+ * and interacting with ApiClient to register new users. Handles errors and redirects
+ * appropriately based on the registration result.
+ */
 @Controller
 public class AuthController {
 
@@ -32,14 +37,12 @@ public class AuthController {
         return "register";
     }
 
-
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("user") UserDTO user,
                            BindingResult result) {
         if (result.hasErrors()) {
             return "register";
         }
-
         try {
             apiClient.register(user);
             return "redirect:/login?registered";

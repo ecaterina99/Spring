@@ -3,24 +3,26 @@
 <head th:insert="~{common_fragments :: head}"></head>
 <body>
 <div th:insert="~{common_fragments :: mainHeader}"></div>
-<div class="budget-container mt-4 mb-0" >
-    <div class="budget d-flex justify-content-end align-items-center">
-        <h5 class="me-2" style="color: #d6d4d4">CURRENT BUDGET:</h5>
-        <p style="color: #ffd500" th:if="${userBudget != null}" >
+
+    <div class="budget-container mt-4 mb-0">
+        <div class="budget d-flex justify-content-end align-items-center">
+            <h5 class="me-2" style="color: #d6d4d4">CURRENT BUDGET:</h5>
+            <p style="color: #ffd500" th:if="${userBudget != null}">
             <span id="currentBudget" style="color: #ffd500"
                   th:text="${userBudget.currentBudget}">0</span> $
-        </p>
-        <p th:if="${userBudget == null}">
-            <span>Not available</span>
-        </p>
+            </p>
+            <p th:if="${userBudget == null}">
+                <span>Not available</span>
+            </p>
+        </div>
+
+        <div id="budgetChangeNotification" class="budget-notification"></div>
+
+        <div class="budget-bar">
+            <div id="budgetProgress" class="budget-progress"></div>
+        </div>
     </div>
 
-    <div id="budgetChangeNotification" class="budget-notification"></div>
-
-    <div class="budget-bar">
-        <div id="budgetProgress" class="budget-progress"></div>
-    </div>
-</div>
 <main class="container mt-0 pt-0">
     <section class="intro container py-5 pb-0 pt-0 text-md-start">
         <h1 class="title-astronauts display-5 fw-bold text-glow">ACROSS THE UNIVERSE: MISSIONS AWAIT</h1>

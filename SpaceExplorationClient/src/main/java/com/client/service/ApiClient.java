@@ -5,7 +5,12 @@ import com.client.helpers.RestClientUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
-
+/**
+ * Service responsible for interacting with the external API for authentication and user data.
+ * Provides methods for user login, registration, and fetching the currently authenticated user.
+ * Uses RestClientUtil for making REST calls and TokenStorage for managing the authentication token.
+ * The API base URL is configurable via application properties.
+ */
 @Service
 public class ApiClient {
     private final RestClientUtil rest;
@@ -37,14 +42,6 @@ public class ApiClient {
 
     public void register(UserDTO user) {
         rest.postForObject(apiUrl + "/auth/register", user, Void.class);
-    }
-
-    public <T> T get(String endpoint, Class<T> type) {
-        return rest.getObject(apiUrl + endpoint, type);
-    }
-
-    public <T, R> R post(String endpoint, T body, Class<R> type) {
-        return rest.postObject(apiUrl + endpoint, body, type);
     }
 }
 

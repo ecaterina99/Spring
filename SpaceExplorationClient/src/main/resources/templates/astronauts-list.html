@@ -42,7 +42,7 @@
                             <span th:text="${astronaut.yearsOfExperience}" class="text-muted"></span>
                         </p>
 
-                        <button class="btn hero-btn px-4 py-2" id="btn-view"
+                        <button class="btn-view-astronauts hero-btn px-4 py-2" id="btn-view"
                                 th:attr="data-id=${astronaut.id},
                      data-firstname=${astronaut.firstName},
                      data-lastname=${astronaut.lastName},
@@ -67,106 +67,12 @@
         </div>
     </section>
 
-    <!-- Popup -->
-    <div id="astronaut-popup" class="astronaut-popup" style="display:none;">
-        <div class="astronaut-popup-content">
-            <span id="popup-close">&times;</span>
-            <div class="change-popup">
-                <div class="popup-navigation">
-                    <button id="prevMissionBtn" class="btn-change">⬅ Prev</button>
-                    <button id="nextMissionBtn" class="btn-change">Next ➡</button>
-                </div>
-            </div>
-            <br>
-            <h3 id="popup-title" class="popup-header"><strong>ASTRONAUT BIOGRAPHY</strong></h3>
+    <div th:insert="~{common_fragments :: astronaut_popup}"></div>
 
-            <div class="astronaut-top d-flex">
-                <div class="astronaut-image">
-                    <img id="astronaut-img" class="astronaut-img rounded" alt="astronaut">
-                </div>
-                <div class="astronaut-main-info">
-                    <h3 id="popup-name" class="popup-name"></h3>
-                    <p><strong><span id="popup-specialization"></span></strong></p>
-                </div>
-            </div>
-
-            <div class="astronaut-info row mt-2">
-                <div class="col-md-6 score-info-astronaut">
-                    <h5 class="popup-subtitle"><strong>MAIN INFO</strong></h5>
-                    <p><strong>Date of birth:</strong><span id="popup-birthDate"></span></p>
-                    <p><strong>Years of experience:</strong> <span id="popup-experience"></span></p>
-                    <p><strong>Status:</strong> <span id="popup-status"></span></p>
-                    <p><strong>Daily rate:</strong> <span id="popup-rate"></span></p>
-                </div>
-
-                <div class="col-md-6 score-info-astronaut">
-                    <h5 class="popup-subtitle"><strong>ASTRONAUT SCORE</strong></h5>
-                    <p><strong>Fitness score:</strong> <span id="popup-fitness"></span></p>
-                    <p><strong>Education score:</strong> <span id="popup-education"></span></p>
-                    <p><strong>Psychological score:</strong> <span id="popup-psychological"></span></p>
-                    <p><strong>Overall score:</strong> <span id="popup-overall"></span></p>
-                </div>
-            </div>
-        </div>
-    </div>
 </main>
 <br>
 
-<script>
-    function showPopup(button) {
-
-        let astronautButtons = [];
-        let currentAstronautIndex = -1;
-
-        astronautButtons = Array.from(document.querySelectorAll("#btn-view"));
-        currentAstronautIndex = astronautButtons.indexOf(button);
-
-        document.getElementById("prevMissionBtn").onclick = () => {
-            if (currentAstronautIndex > 0) showPopup(astronautButtons[currentAstronautIndex - 1]);
-        };
-        document.getElementById("nextMissionBtn").onclick = () => {
-            if (currentAstronautIndex < astronautButtons.length - 1) showPopup(astronautButtons[currentAstronautIndex + 1]);
-        };
-
-        const firstname = button.getAttribute("data-firstname");
-        const lastname = button.getAttribute("data-lastname");
-        const specialization = button.getAttribute("data-specialization");
-        const image = button.getAttribute("data-image");
-        const experience = button.getAttribute("data-experience");
-        const birthDate = button.getAttribute("data-birthdate");
-        const health = button.getAttribute("data-health");
-        const fitness = button.getAttribute("data-fitness");
-        const education = button.getAttribute("data-education");
-        const psychological = button.getAttribute("data-psychological");
-        const overall = button.getAttribute("data-overall");
-        const rate = button.getAttribute("data-rate");
-
-        const img = document.getElementById("astronaut-img");
-        img.src = image || "";
-
-        document.getElementById("popup-name").textContent = `${firstname || ""} ${lastname || ""}`.trim();
-        document.getElementById("popup-specialization").textContent = specialization || "—";
-        document.getElementById("popup-birthDate").textContent = birthDate || "—";
-        document.getElementById("popup-experience").textContent = experience || "0";
-        document.getElementById("popup-status").textContent = health || "—";
-        document.getElementById("popup-fitness").textContent = fitness || "—";
-        document.getElementById("popup-education").textContent = education || "—";
-        document.getElementById("popup-psychological").textContent = psychological || "—";
-        document.getElementById("popup-overall").textContent = overall || "—";
-        document.getElementById("popup-rate").textContent = rate || "—";
-
-        const popup = document.getElementById("astronaut-popup");
-        popup.style.display = "flex";
-
-        document.getElementById("popup-close").onclick = () => popup.style.display = "none";
-        popup.onclick = (e) => {
-            if (e.target.id === "astronaut-popup") popup.style.display = "none";
-        };
-        document.onkeydown = (e) => {
-            if (e.key === "Escape") popup.style.display = "none";
-        };
-    }
-</script>
+<script src="/js/astronaut-popup.js"></script>
 
 <div th:insert="~{common_fragments :: mainFooter}"></div>
 

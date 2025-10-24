@@ -1,6 +1,5 @@
 package com.client.exceptions;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
+/**
+ * Global exception handler for client-side controllers.
+ * This class centralizes the handling of various application and API exceptions,
+ * mapping them to appropriate HTTP responses or error views. It provides clear
+ * user-facing error messages, logs details for debugging, and ensures consistent
+ * error handling across the entire application.
+ */
 @ControllerAdvice
 @Slf4j
 public class GlobalClientExceptionHandler {

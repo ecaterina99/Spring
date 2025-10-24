@@ -1,4 +1,5 @@
 package com.client.enums;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,13 +12,11 @@ public class AstronautEnums {
         FLIGHT_READY("Flight Ready"),
         MEDICAL_REVIEW("Medical Review"),
         RETIRED("Retired");
-
         private final String displayName;
 
         HealthStatus(String displayName) {
             this.displayName = displayName;
         }
-
     }
 
     @Getter
@@ -27,7 +26,6 @@ public class AstronautEnums {
         SCIENTIST("Scientist"),
         DOCTOR("Doctor"),
         GEOLOGIST("Geologist");
-
         private final String displayName;
 
         Specialization(String displayName) {

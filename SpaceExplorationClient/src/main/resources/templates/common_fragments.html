@@ -52,7 +52,7 @@
            <span th:text="${currentUser.firstName}"></span>  <span th:text="${currentUser.lastName}"></span> |
         <a id="logout" th:href="@{/login}" onclick="logout()">Logout</a>
         </span>
-       <span th:if="${currentUser == null}">
+                        <span th:if="${currentUser == null}">
             <a th:href="@{/login}">Login</a>
         </span>
                     </div>
@@ -60,6 +60,52 @@
             </div>
         </nav>
     </header>
+</div>
+
+
+<!-- astronaut popup -->
+<div th:fragment="astronaut_popup">
+<div id="astronaut-popup" class="astronaut-popup" style="display:none;">
+    <div class="astronaut-popup-content">
+        <span id="popup-close">&times;</span>
+        <div class="change-popup">
+            <div class="popup-navigation">
+                <button id="prevMissionBtn" class="btn-change">⬅ Prev</button>
+                <button id="nextMissionBtn" class="btn-change">Next ➡</button>
+            </div>
+        </div>
+        <br>
+        <h3 id="popup-title" class="popup-header"><strong>ASTRONAUT BIOGRAPHY</strong></h3>
+
+        <div class="astronaut-top d-flex">
+            <div class="astronaut-image">
+                <img id="astronaut-img" class="astronaut-img rounded" alt="astronaut">
+            </div>
+            <div class="astronaut-main-info">
+                <h3 id="popup-name" class="popup-name"></h3>
+                <p><strong><span id="popup-specialization"></span></strong></p>
+            </div>
+        </div>
+
+        <div class="astronaut-info row mt-2">
+            <div class="col-md-6 score-info-astronaut">
+                <h5 class="popup-subtitle"><strong>MAIN INFO</strong></h5>
+                <p><strong>Date of birth:</strong><span id="popup-birthDate"></span></p>
+                <p><strong>Years of experience:</strong> <span id="popup-experience"></span></p>
+                <p><strong>Status:</strong> <span id="popup-status"></span></p>
+                <p><strong>Daily rate:</strong> <span id="popup-rate"></span></p>
+            </div>
+
+            <div class="col-md-6 score-info-astronaut">
+                <h5 class="popup-subtitle"><strong>ASTRONAUT SCORE</strong></h5>
+                <p><strong>Fitness score:</strong> <span id="popup-fitness"></span></p>
+                <p><strong>Education score:</strong> <span id="popup-education"></span></p>
+                <p><strong>Psychological score:</strong> <span id="popup-psychological"></span></p>
+                <p><strong>Overall score:</strong> <span id="popup-overall"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
 
@@ -79,7 +125,8 @@
                                     style="width: 60px;  height: 2px"
                             />
                             <p>
-                                Cosmo Trail is a revolutionary space exploration platform where you manage your own space agency.
+                                Cosmo Trail is a revolutionary space exploration platform where you manage your own
+                                space agency.
                                 Recruit a team of experienced astronauts, plan missions to distant planets and stars,
                                 and earn resources to expand your cosmic empire.
                             </p>

@@ -1,5 +1,8 @@
 package com.client.exceptions;
 
+import lombok.Getter;
+
+@Getter
 public class ApiProxyException extends RuntimeException {
     private final int statusCode;
     private final String responseBody;
@@ -10,11 +13,4 @@ public class ApiProxyException extends RuntimeException {
         this.responseBody = responseBody;
     }
 
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public String getResponseBody() {
-        return responseBody;
-    }
 }

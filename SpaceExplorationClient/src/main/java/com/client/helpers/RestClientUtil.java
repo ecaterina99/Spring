@@ -17,7 +17,13 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.function.Supplier;
-
+/**
+ * Utility component for managing REST API communication with built-in error handling.
+ * Provides generic and convenience methods for executing authenticated and unauthenticated
+ * REST operations (GET, POST, etc.) using RestTemplate. Integrates with TokenStorage for
+ * adding authorization headers and includes detailed logging and exception translation for
+ * client, server, and network errors.
+ */
 @Component
 @Slf4j
 public class RestClientUtil {
@@ -29,6 +35,7 @@ public class RestClientUtil {
         this.restTemplate = restTemplate;
         this.tokenStorage = tokenStorage;
     }
+
     public <T> T getObjectWithHeaders(String url, HttpHeaders headers, Class<T> type) {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
         ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.GET, entity, type);
@@ -118,26 +125,6 @@ public class RestClientUtil {
                     url, HttpMethod.POST, entity, responseType
             );
             return response.getBody();
-        });
-    }
-
-    public void putObject(String url, Object request) {
-        executeRequest("PUT Object", () -> {
-            HttpHeaders headers = createAuthHeaders();
-            HttpEntity<Object> entity = new HttpEntity<>(request, headers);
-
-            restTemplate.exchange(url, HttpMethod.PUT, entity, Void.class);
-            return null;
-        });
-    }
-
-    public void deleteObject(String url) {
-        executeRequest("DELETE Object", () -> {
-            HttpHeaders headers = createAuthHeaders();
-            HttpEntity<?> entity = new HttpEntity<>(headers);
-
-            restTemplate.exchange(url, HttpMethod.DELETE, entity, Void.class);
-            return null;
         });
     }
 }

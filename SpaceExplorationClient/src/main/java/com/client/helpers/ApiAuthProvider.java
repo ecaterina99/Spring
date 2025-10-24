@@ -10,7 +10,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+/**
+ * Custom authentication provider that integrates Spring Security with the external API.
+ * Authenticates users by delegating login requests to the ApiClient and storing the
+ * received token in TokenStorage. Returns an authenticated user with the ROLE_USER
+ * authority upon successful authentication.
+ */
 @Component
 public class ApiAuthProvider implements AuthenticationProvider {
 

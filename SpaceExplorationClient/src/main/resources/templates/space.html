@@ -4,6 +4,7 @@
 <body>
 <div th:insert="~{common_fragments :: mainHeader}"></div>
 
+<!-- Solar system loading -->
 <div class="cosmic-loader-overlay" id="cosmicLoader">
     <div class="stars" id="starsContainer"></div>
     <div class="loader-content-space">
@@ -48,7 +49,6 @@
     <div th:insert="~{popup-mission :: mission-popup}"></div>
     <div th:insert="~{popup-mission :: mission-popup-script}"></div>
 
-
     <div id="map-container" style="position: relative; display: inline-block;">
         <canvas id="space-map"></canvas>
 
@@ -83,6 +83,7 @@
 </div>
 
 <div th:insert="~{common_fragments :: mainFooter}"></div>
+
 <script>
     function createStars() {
         const starsContainer = document.getElementById('starsContainer');
@@ -116,7 +117,6 @@
         starsContainer.appendChild(fragment);
     }
 
-    // Simulate loading progress
     function simulateLoading() {
         const progressBar = document.getElementById('progressBar');
         const loadingPercentage = document.getElementById('loadingPercentage');
@@ -132,8 +132,6 @@
             if (progress >= 100) {
                 progress = 100;
                 clearInterval(progressInterval);
-
-                // Fade out loader after completion
                 setTimeout(() => {
                     loader.classList.add('fade-out');
                     setTimeout(() => {
@@ -147,11 +145,9 @@
         }, interval);
     }
 
-    // Initialize
     createStars();
     simulateLoading();
 </script>
-
 
 <!-- 1. INLINE DATA (comes straight from Thymeleaf) -->
 <script th:inline="javascript">

@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const accessToken = window.MISSION_CONFIG?.accessToken || '';
     const userId = window.MISSION_CONFIG?.userId || '';
-
     const storedUserId = sessionStorage.getItem('currentUserId');
 
     if (storedUserId && storedUserId !== userId.toString()) {
@@ -30,6 +29,29 @@ document.addEventListener('DOMContentLoaded', () => {
     displayCurrentCrew();
     displayCrewMembers();
 });
+
+document.getElementById('scrollLeft').addEventListener('click', function () {
+    const container = document.getElementById('astronautsScroll');
+    container.scrollBy({left: -250, behavior: 'smooth'});
+});
+
+document.getElementById('scrollRight').addEventListener('click', function () {
+    const container = document.getElementById('astronautsScroll');
+    container.scrollBy({left: 250, behavior: 'smooth'});
+});
+
+
+function showAlert(message, type = 'danger') {
+    const container = document.getElementById('alert-container');
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type} alert-dismissible fade show shadow`;
+    alert.role = 'alert';
+    alert.innerHTML = `
+        <strong>${type === 'success' ? 'Success!' : ''}</strong> ${message}
+    `;
+    container.appendChild(alert);
+    setTimeout(() => alert.remove(), 2000);
+}
 
 function checkAndClearStartedMission(missionId) {
     const startedMissionsKey = 'startedMissions';
@@ -465,76 +487,12 @@ function displayRisksPopup(risks, crew, requiredCrewSize) {
     };
 }
 
-document.getElementById('scrollLeft').addEventListener('click', function () {
-    const container = document.getElementById('astronautsScroll');
-    container.scrollBy({left: -250, behavior: 'smooth'});
-});
-
-document.getElementById('scrollRight').addEventListener('click', function () {
-    const container = document.getElementById('astronautsScroll');
-    container.scrollBy({left: 250, behavior: 'smooth'});
-});
-
-function showPopup(button) {
-    const firstname = button.getAttribute("data-firstname");
-    const lastname = button.getAttribute("data-lastname");
-    const specialization = button.getAttribute("data-specialization");
-    const image = button.getAttribute("data-image");
-    const experience = button.getAttribute("data-experience");
-    const birthDate = button.getAttribute("data-birthdate");
-    const health = button.getAttribute("data-health");
-    const fitness = button.getAttribute("data-fitness");
-    const education = button.getAttribute("data-education");
-    const psychological = button.getAttribute("data-psychological");
-    const overall = button.getAttribute("data-overall");
-    const rate = button.getAttribute("data-rate");
-
-    const img = document.getElementById("astronaut-img");
-    img.src = image || "";
-
-    document.getElementById("popup-name").textContent = `${firstname || ""} ${lastname || ""}`.trim();
-    document.getElementById("popup-specialization").textContent = specialization || "—";
-    document.getElementById("popup-birthDate").textContent = birthDate || "—";
-    document.getElementById("popup-experience").textContent = experience || "0";
-    document.getElementById("popup-status").textContent = health || "—";
-    document.getElementById("popup-fitness").textContent = fitness || "—";
-    document.getElementById("popup-education").textContent = education || "—";
-    document.getElementById("popup-psychological").textContent = psychological || "—";
-    document.getElementById("popup-overall").textContent = overall || "—";
-    document.getElementById("popup-rate").textContent = rate || "—";
-
-    const popup = document.getElementById("astronaut-popup");
-    popup.style.display = "flex";
-
-    document.getElementById("popup-close").onclick = () => popup.style.display = "none";
-    popup.onclick = (e) => {
-        if (e.target.id === "astronaut-popup") popup.style.display = "none";
-    };
-    document.onkeydown = (e) => {
-        if (e.key === "Escape") popup.style.display = "none";
-    };
-}
-
-function showAlert(message, type = 'danger') {
-    const container = document.getElementById('alert-container');
-    const alert = document.createElement('div');
-    alert.className = `alert alert-${type} alert-dismissible fade show shadow`;
-    alert.role = 'alert';
-    alert.innerHTML = `
-        <strong>${type === 'success' ? 'Success!' : ''}</strong> ${message}
-    `;
-    container.appendChild(alert);
-    setTimeout(() => alert.remove(), 2000);
-}
-
 function showMissionPopup(button) {
     const missionId = button.getAttribute('data-mission-id');
     const crewSize = button.getAttribute('data-crew-size');
     if (!missionId) return;
-
     const crew = getMissionCrew(missionId);
     const requiredSpecializations = getRequiredSpecializations();
-
     displayResultsPopup(crew, crewSize, requiredSpecializations);
 }
 
@@ -873,7 +831,6 @@ async function downloadMissionReportPdf(isSuccess, missionReport, crew, crewSize
         crewSize: crewSize
     };
 
-
     const accessToken = window.MISSION_CONFIG?.accessToken || sessionStorage.getItem('accessToken');
 
     if (!accessToken) {
@@ -993,7 +950,6 @@ document.querySelector('.btn-start-mission').addEventListener('click', async () 
         displayResultsPopup(missionReport, crew, crewSize);
 
         updateBudgetUI(updatedBudget.currentBudget, missionReport.totalSalary);
-
 
         const startedMissionsKey = 'startedMissions';
         let startedMissions = JSON.parse(sessionStorage.getItem(startedMissionsKey) || '[]');
