@@ -5,8 +5,12 @@ import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * defines metadata about API (title, version, description).
+ */
+
 @Configuration
-public class OpenApiConfig{
+public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {

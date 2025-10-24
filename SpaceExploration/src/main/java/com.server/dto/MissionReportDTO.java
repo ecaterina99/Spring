@@ -63,5 +63,4 @@ public class MissionReportDTO {
                 .paymentAmount(missionReport.getMission().getPaymentAmount())
                 .build();
     }
-
 }

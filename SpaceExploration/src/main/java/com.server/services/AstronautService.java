@@ -12,6 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service class that manages business logic for Astronaut entities.
+ * It handles CRUD operations (create, read, update, delete),
+ * maps between Astronaut and AstronautDTO objects,
+ * and interacts with the AstronautRepository for database access.
+ */
 
 @Service
 public class AstronautService {
@@ -27,7 +33,7 @@ public class AstronautService {
     @Transactional(readOnly = true)
     public AstronautDTO getAstronautById(int id) {
         Astronaut astronaut = astronautRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Astronaut with id: " + id + " is not found"));
         return modelMapper.map(astronaut, AstronautDTO.class);
     }
 
@@ -49,7 +55,7 @@ public class AstronautService {
     @Transactional
     public AstronautDTO updateAstronaut(int id, AstronautDTO.@Valid AstronautUpdateDTO astronautDTO) {
         Astronaut existingAstronaut = astronautRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Astronaut with id: " + id + " is not found"));
 
         updateEntityFromDTO(existingAstronaut, astronautDTO);
 
@@ -72,12 +78,10 @@ public class AstronautService {
         Optional.ofNullable(dto.getHealthStatus()).ifPresent(entity::setHealthStatus);
     }
 
-
-
     @Transactional
     public void deleteAstronaut(int id) {
         if (!astronautRepository.existsById(id)) {
-            throw new EntityNotFoundException("Astronaut not found with id: " + id);
+            throw new EntityNotFoundException("Astronaut with id: " + id + " is not found");
         }
         astronautRepository.deleteById(id);
     }

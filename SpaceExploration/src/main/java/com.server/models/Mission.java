@@ -29,7 +29,7 @@ public class Mission {
     private String code;
 
     @NotBlank(message = "Mission description is required")
-    @Column(name = "description", nullable = false,columnDefinition = "TEXT")
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Min(value = 1)
@@ -58,8 +58,6 @@ public class Mission {
 
     @Column(name = "img_url")
     private String imgUrl;
-
-
 
     public enum DifficultyLevel {
         LOW("low"),
@@ -135,14 +133,12 @@ public class Mission {
             removeRequiredSpecialization(specialization);
             return;
         }
-
         findSpecialization(specialization)
                 .ifPresentOrElse(
                         spec -> spec.setQuantity(newQuantity),
                         () -> addRequiredSpecialization(specialization, newQuantity)
                 );
     }
-
 
     private Optional<MissionSpecialization> findSpecialization(MissionSpecialization.Specialization specialization) {
         return missionSpecializations.stream()
@@ -156,24 +152,5 @@ public class Mission {
                 .sum();
     }
 
+
 }
-
-
-
-/*
-  public boolean hasSpecialization(MissionSpecialization.Specialization specialization) {
-        return findSpecialization(specialization).isPresent();
-    }
-
-    public int getRequiredQuantityForSpecialization(MissionSpecialization.Specialization specialization) {
-        return findSpecialization(specialization)
-                .map(MissionSpecialization::getQuantity)
-                .orElse(0);
-    }
-
-    public boolean isCrewRequirementMet() {
-        return getTotalRequiredCrew() <= this.crewSizeRequired;
-    }
- */
-
-

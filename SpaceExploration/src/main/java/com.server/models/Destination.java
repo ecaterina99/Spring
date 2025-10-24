@@ -35,7 +35,6 @@ public class Destination {
     @Column(name = "description", nullable = false)
     private String description;
 
-
     @Column(name = "gravity")
     private Integer gravity;
 
@@ -68,6 +67,7 @@ public class Destination {
             }
         }
     }
+
     @NotNull(message = "Entity type is required")
     @Column(name = "entity_type", nullable = false)
     @Enumerated(EnumType.STRING)

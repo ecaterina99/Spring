@@ -17,6 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service class that manages business logic for Budget entities.
+ * It handles CRUD operations (create, read, update),
+ * maps between Budget and BudgetDTO objects,
+ * and interacts with the BudgetRepository for database access.
+ * Calculates total mission expenses
+ */
 @Transactional
 @Service
 public class BudgetService {
@@ -33,13 +40,14 @@ public class BudgetService {
         this.modelMapper = new ModelMapper();
     }
 
-    public BudgetDTO createInitialBudget(Integer userId) {
+    public void createInitialBudget(Integer userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User with id: " + userId+ " is not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User with id: " + userId + " is not found"));
 
         Optional<Budget> existingBudget = budgetRepository.findByUserId(userId);
         if (existingBudget.isPresent()) {
-            return modelMapper.map(existingBudget.get(), BudgetDTO.class);
+            modelMapper.map(existingBudget.get(), BudgetDTO.class);
+            return;
         }
 
         Budget budget = new Budget();
@@ -47,7 +55,7 @@ public class BudgetService {
         budget.setCurrentBudget(1000000);
 
         budgetRepository.save(budget);
-        return modelMapper.map(budget, BudgetDTO.class);
+        modelMapper.map(budget, BudgetDTO.class);
     }
 
     @Transactional(readOnly = true)
@@ -71,12 +79,12 @@ public class BudgetService {
                 .map(budget -> modelMapper.map(budget, BudgetDTO.class))
                 .toList();
     }
-
-    public BudgetDTO updateBudget(Integer userId, Integer missionId, MissionResult missionResult , List<MissionParticipantsDTO> participants) {
+    @Transactional
+    public BudgetDTO updateBudget(Integer userId, Integer missionId, MissionResult missionResult, List<MissionParticipantsDTO> participants) {
         Budget budget = budgetRepository.findByUserId(userId)
                 .orElseGet(() -> {
                     User user = userRepository.findById(userId)
-                            .orElseThrow(() -> new EntityNotFoundException("User with id: " + userId+ " is not found"));
+                            .orElseThrow(() -> new EntityNotFoundException("User with id: " + userId + " is not found"));
                     Budget newBudget = new Budget();
                     newBudget.setUser(user);
                     newBudget.setCurrentBudget(1000000);
@@ -86,28 +94,28 @@ public class BudgetService {
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " is not found"));
 
-        int salary = calculateTotalSalary(missionId, participants);
+        int missionExpanses = calculateMissionExpenses(missionId, participants);
         int paymentForMission = mission.getPaymentAmount();
 
         int previousBalance = budget.getCurrentBudget();
         int newBalance;
 
-        if (previousBalance < salary) {
+        if (previousBalance < missionExpanses) {
             System.out.println("Unfortunately, you don't have enough money to pay for this mission. Current budget: "
-                    + previousBalance + "; Payment for mission: " + salary);
+                    + previousBalance + "; Payment for mission: " + missionExpanses);
             newBalance = previousBalance;
         } else {
             if (missionResult.isSuccess()) {
-                newBalance = previousBalance + paymentForMission - salary;
+                newBalance = previousBalance + paymentForMission - missionExpanses;
                 System.out.println("Mission SUCCESS! User " + userId +
                         " - Previous balance: " + previousBalance +
-                        ", Earned: +" + salary +
+                        ", Earned: +" + missionExpanses +
                         ", New balance: " + newBalance);
             } else {
-                newBalance = previousBalance - salary;
+                newBalance = previousBalance - missionExpanses;
                 System.out.println("Mission FAILED! User " + userId +
                         " - Previous balance: " + previousBalance +
-                        ", Lost: -" + salary +
+                        ", Lost: -" + missionExpanses +
                         ", New balance: " + newBalance);
 
             }
@@ -117,18 +125,17 @@ public class BudgetService {
         return modelMapper.map(budget, BudgetDTO.class);
     }
 
-
-    protected int calculateTotalSalary(Integer missionId, List<MissionParticipantsDTO> participants) {
+    protected int calculateMissionExpenses(Integer missionId, List<MissionParticipantsDTO> participants) {
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " is not found"));
 
-        int totalSalary = 0;
+        int totalExpenses = 0;
         for (MissionParticipantsDTO participant : participants) {
-            System.out.println("Daily rate:"+participant.getDailyRate());
-            System.out.println("Duration:"+mission.getDurationDays());
-            totalSalary = participant.getDailyRate() * mission.getDurationDays();
-            totalSalary++;
+            System.out.println("Participant daily rate:" + participant.getDailyRate());
+            System.out.println("Mission duration:" + mission.getDurationDays());
+            totalExpenses = participant.getDailyRate() * mission.getDurationDays();
+            totalExpenses++;
         }
-        return totalSalary;
+        return totalExpenses;
     }
 }

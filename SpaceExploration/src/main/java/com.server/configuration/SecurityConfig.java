@@ -23,11 +23,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Spring Security configuration class for a JWT-based stateless authentication setup
+ */
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
+    // Injects a custom UserDetailsService that loads users
     private final UserDetailsService userDetailsService;
 
     @Autowired
@@ -35,7 +38,7 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
-
+    // MAIN SECURITY CONFIGURATION
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -44,7 +47,7 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**" ).permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
@@ -53,6 +56,8 @@ public class SecurityConfig {
                 ));
         return http.build();
     }
+
+    //  CONVERT JWT CLAIMS INTO SPRING SECURITY AUTHORITIES (ROLES)
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter gac = new JwtGrantedAuthoritiesConverter();
@@ -63,18 +68,18 @@ public class SecurityConfig {
         return conv;
     }
 
+    // CONFIGURE CORS (Cross-Origin Resource Sharing)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:8081"));
-        config.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE"));
-        config.setAllowedHeaders(List.of("Authorization","Content-Type"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

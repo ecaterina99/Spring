@@ -15,6 +15,14 @@ import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
+/**
+ * JWT (JSON Web Token)
+ * Generates an RSA key pair (private + public) used to sign and verify JWTs.
+ * NimbusJwtEncoder expects a JWK set (a collection of keys). ImmutableJWKSet wraps it.
+ * Creates a JwtDecoder using only the public key.
+ * The decoder verifies JWT signatures (it does NOT need the private key).
+ */
+
 @Configuration
 public class JwtKeyConfig {
 

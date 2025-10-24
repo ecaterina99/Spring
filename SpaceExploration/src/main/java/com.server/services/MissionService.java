@@ -1,14 +1,10 @@
 package com.server.services;
 
-
 import com.server.dto.*;
 import com.server.models.Destination;
 import com.server.models.Mission;
-import com.server.models.MissionParticipants;
 import com.server.models.MissionSpecialization;
 import com.server.repositories.DestinationRepository;
-import com.server.repositories.MissionParticipantsRepository;
-import com.server.repositories.MissionReportRepository;
 import com.server.repositories.MissionRepository;
 import com.server.util.MissionResult;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +18,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+
+/**
+ * Service class responsible for managing missions and their related logic.
+ * Provides functionality to:
+ * - Retrieve, filter, create, update, and delete missions.
+ * - Manage mission specializations and validate crew constraints.
+ * - Simulate mission execution by calculating success chances based on crew readiness,
+ *   missing specializations, and other conditions.
+ * Includes transactional control for database operations and data consistency.
+ */
 
 @Service
 public class MissionService {
@@ -58,7 +64,6 @@ public class MissionService {
             Integer destinationId) {
 
         List<Mission> missions;
-
         if (difficultyLevel != null && destinationId != null) {
             missions = missionRepository.findByDifficultyLevelAndDestinationId(difficultyLevel, destinationId);
         } else if (difficultyLevel != null) {
@@ -72,7 +77,6 @@ public class MissionService {
                 .map(MissionDTO::missionWithDetails)
                 .toList();
     }
-
 
     @Transactional
     public MissionDTO addMission(MissionDTO missionDTO) {
@@ -89,13 +93,14 @@ public class MissionService {
     }
 
     @Transactional
-    public MissionDTO removeSpecialization(Integer missionId,
-                                           MissionSpecialization.Specialization specialization) {
+    public void removeSpecialization(Integer missionId,
+                                     MissionSpecialization.Specialization specialization) {
         Mission mission = findMissionById(missionId);
         mission.removeRequiredSpecialization(specialization);
         Mission savedMission = missionRepository.save(mission);
-        return modelMapper.map(savedMission, MissionDTO.class);
+        modelMapper.map(savedMission, MissionDTO.class);
     }
+
     @Transactional
     public MissionDTO addOrUpdateSpecializations(Integer missionId,
                                                  List<MissionSpecializationDTO.AddSpecializationRequest> requests) {
@@ -133,7 +138,7 @@ public class MissionService {
     @Transactional
     public MissionDTO updateMission(MissionDTO.@Valid MissionUpdateDTO missionDTO, int id) {
         Mission existingMission = missionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Mission not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + id + " is not found"));
         updateEntityFromDTO(existingMission, missionDTO);
         Mission updatedMission = missionRepository.save(existingMission);
         return modelMapper.map(updatedMission, MissionDTO.class);
@@ -166,7 +171,7 @@ public class MissionService {
                 .filter(destId -> entity.getDestination() == null || !destId.equals(entity.getDestination().getId()))
                 .ifPresent(destId -> {
                     Destination destination = destinationRepository.findById(destId)
-                            .orElseThrow(() -> new EntityNotFoundException("Destination not found with id: " + destId));
+                            .orElseThrow(() -> new EntityNotFoundException("Destination with id: " + destId + " is not found"));
                     entity.setDestination(destination);
                 });
     }
@@ -174,13 +179,14 @@ public class MissionService {
     @Transactional
     public void deleteMission(int id) {
         Mission mission = missionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Mission not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + id + " is not found"));
         missionRepository.delete(mission);
     }
+
     @Transactional(readOnly = true)
     public List<MissionDTO> getMissionsByDestinationId(int destinationId) {
         if (!destinationRepository.existsById(destinationId)) {
-            throw new EntityNotFoundException("Destination not found with id: " + destinationId);
+            throw new EntityNotFoundException("Destination with id: " + destinationId + " is not found");
         }
         List<Mission> missions = missionRepository.findByDestinationId(destinationId);
 
@@ -194,52 +200,50 @@ public class MissionService {
 
     private Mission findMissionById(Integer missionId) {
         return missionRepository.findById(missionId)
-                .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " is not found"));
     }
-
 
     public MissionResult startMission(Integer missionId, List<MissionParticipantsDTO> participants) {
         int successChance = 100;
         List<String> issues = new ArrayList<>();
         int crewSizeDeficit = 0;
-        List<String> missingSpecs = new ArrayList<>();
+        List<String> missingSpecializations = new ArrayList<>();
         List<String> notReadyAstronauts = new ArrayList<>();
-
 
         Mission mission = findMissionById(missionId);
 
-        int missing = Math.max(0, mission.getCrewSize() - participants.size());
-        if (missing > 0) {
-            int penalty = missing * 10;
+        int missingNumber = Math.max(0, mission.getCrewSize() - participants.size());
+        if (missingNumber > 0) {
+            int penalty = missingNumber * 10;
             successChance -= penalty;
-            crewSizeDeficit = missing;
-            issues.add("Crew size deficit: missing " + missing + " member(s) (-" + penalty + "% from success)");
-            System.out.println("Missing "+ missing + " persons, -" + penalty + "% to success chance");
+            crewSizeDeficit = missingNumber;
+            issues.add("Crew size deficit: missing " + missingNumber + " member(s) (-" + penalty + "% from success)");
+            System.out.println("Missing " + missingNumber + " persons, -" + penalty + "% to success chance");
         } else {
             issues.add("Mission crew size is accepted!");
             System.out.println("Mission crew size is accepted!");
         }
 
-        Set<MissionSpecialization> requiredSpecs = mission.getMissionSpecializations();
-        if (requiredSpecs != null && !requiredSpecs.isEmpty()) {
-            List<String> crewSpecs = participants.stream()
+        Set<MissionSpecialization> requiredSpecializations = mission.getMissionSpecializations();
+        if (requiredSpecializations != null && !requiredSpecializations.isEmpty()) {
+            List<String> crewSpecializations = participants.stream()
                     .map(p -> p.getSpecialization().name())
                     .distinct()
                     .toList();
 
-            List<String> requiredSpecNames = requiredSpecs.stream()
+            List<String> requiredSpecNames = requiredSpecializations.stream()
                     .map(req -> req.getSpecialization().name())
                     .toList();
 
-             missingSpecs = requiredSpecNames.stream()
-                    .filter(req -> !crewSpecs.contains(req))
+            missingSpecializations = requiredSpecNames.stream()
+                    .filter(req -> !crewSpecializations.contains(req))
                     .toList();
 
-            if (!missingSpecs.isEmpty()) {
-                int specPenalty = missingSpecs.size() * 10;
+            if (!missingSpecializations.isEmpty()) {
+                int specPenalty = missingSpecializations.size() * 10;
                 successChance -= specPenalty;
-                System.out.println("Missing specializations: " + missingSpecs + ", -" + specPenalty + "% to success chance");
-                issues.add("Missing specializations: " + missingSpecs.toString().toLowerCase() + ", -" + specPenalty + "% to success chance");
+                System.out.println("Missing specializations: " + missingSpecializations + ", -" + specPenalty + "% to success chance");
+                issues.add("Missing specializations: " + missingSpecializations.toString().toLowerCase() + ", -" + specPenalty + "% to success chance");
 
             } else {
                 issues.add("All required specializations are present in the crew.");
@@ -249,10 +253,10 @@ public class MissionService {
             System.out.println("No required specializations defined for this mission.");
         }
 
-        for(MissionParticipantsDTO p : participants ){
-            if(p.getHealthStatus().toString().equalsIgnoreCase("RETIRED")||p.getHealthStatus().toString().equalsIgnoreCase("MEDICAL_REVIEW")){
+        for (MissionParticipantsDTO p : participants) {
+            if (p.getHealthStatus().toString().equalsIgnoreCase("RETIRED") || p.getHealthStatus().toString().equalsIgnoreCase("MEDICAL_REVIEW")) {
                 successChance -= 10;
-                System.out.println("Astronaut "+p.getAstronautName()+ " is not ready to flight!");
+                System.out.println("Astronaut " + p.getAstronautName() + " is not ready to flight!");
                 String astronautName = p.getAstronautName();
                 issues.add("Astronaut " + astronautName + " is not flight ready (Status: " + p.getHealthStatus() + ") (-10%)");
                 notReadyAstronauts.add(astronautName + " (" + p.getHealthStatus() + ")");
@@ -273,7 +277,7 @@ public class MissionService {
                     .issues(issues)
                     .alienAttack(true)
                     .crewSizeDeficit(crewSizeDeficit)
-                    .missingSpecializations(missingSpecs)
+                    .missingSpecializations(missingSpecializations)
                     .notReadyAstronauts(notReadyAstronauts)
                     .build();
         }
@@ -288,17 +292,8 @@ public class MissionService {
                 .issues(issues)
                 .alienAttack(false)
                 .crewSizeDeficit(crewSizeDeficit)
-                .missingSpecializations(missingSpecs)
+                .missingSpecializations(missingSpecializations)
                 .notReadyAstronauts(notReadyAstronauts)
                 .build();
     }
 }
-
-
-
-
-
-
-
-
-

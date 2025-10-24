@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-
 @Setter
 @Getter
 @Entity(name = "astronauts")
@@ -76,8 +75,6 @@ public class Astronaut {
 
     @Column(name = "image_url")
     private String imageUrl;
-
-
 
 
     public enum HealthStatus {

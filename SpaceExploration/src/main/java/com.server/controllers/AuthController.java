@@ -31,13 +31,13 @@ public class AuthController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@Valid @RequestBody UserDTO dto) {
-        User u = new User();
-        u.setFirstName(dto.getFirstName());
-        u.setLastName(dto.getLastName());
-        u.setEmail(dto.getEmail());
-        u.setPassword(dto.getPassword());
+        User user = new User();
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
 
-        User savedUser = registrationService.register(u);
+        User savedUser = registrationService.register(user);
         budgetService.createInitialBudget(savedUser.getId());
     }
 

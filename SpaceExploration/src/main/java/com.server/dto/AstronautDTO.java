@@ -15,8 +15,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Schema(description = "Astronauts information")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Schema(description = "Information about astronauts")
 
 public class AstronautDTO {
 
@@ -58,7 +58,6 @@ public class AstronautDTO {
     private Astronaut.Specialization specialization;
     @NotNull(message = "Health status is required")
     private Astronaut.HealthStatus healthStatus;
-
 
     @Data
     @NoArgsConstructor

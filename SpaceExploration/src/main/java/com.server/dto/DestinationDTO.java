@@ -18,7 +18,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@Schema(description = "Space destination information")
+@Schema(description = "Information about space destination")
 public class DestinationDTO {
     private int id;
     @NotBlank(message = "Destination name is required")

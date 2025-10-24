@@ -1,12 +1,7 @@
 package com.server.controllers;
 
-import com.server.dto.MissionDTO;
 import com.server.dto.MissionParticipantsDTO;
-import com.server.dto.UserDTO;
-import com.server.models.User;
 import com.server.services.MissionParticipantsService;
-import com.server.services.UserDetailsService;
-import com.server.util.UserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,12 +22,11 @@ import java.util.List;
 @Tag(name = "Mission participants", description = "Missions participants details")
 public class MissionParticipantsController {
 
-        private final MissionParticipantsService missionParticipantsService;
-        private final UserDetailsService userDetailsService;
-        public MissionParticipantsController(MissionParticipantsService missionParticipantsService, UserDetailsService userDetailsService) {
-            this.missionParticipantsService = missionParticipantsService;
-            this.userDetailsService = userDetailsService;
-        }
+    private final MissionParticipantsService missionParticipantsService;
+
+    public MissionParticipantsController(MissionParticipantsService missionParticipantsService) {
+        this.missionParticipantsService = missionParticipantsService;
+    }
 
     @GetMapping("/{missionId}")
     @Operation(summary = "Get all participants for a mission")
@@ -52,7 +45,7 @@ public class MissionParticipantsController {
 
     @PostMapping("/add/{missionId}/{astronautId}")
     @Operation(summary = "Add participant to mission")
-    @ApiResponses(value={
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Astronaut added to the mission successfully",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = MissionParticipantsDTO.class))),
@@ -62,7 +55,7 @@ public class MissionParticipantsController {
             @ApiResponse(responseCode = "500", description = "Internal server error"),
     })
     public ResponseEntity<MissionParticipantsDTO> addAstronautToMission(@PathVariable int missionId, @PathVariable int astronautId) {
-      MissionParticipantsDTO addedParticipant = missionParticipantsService.addParticipantsToMission(missionId,astronautId);
+        MissionParticipantsDTO addedParticipant = missionParticipantsService.addParticipantsToMission(missionId, astronautId);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedParticipant);
     }
 }

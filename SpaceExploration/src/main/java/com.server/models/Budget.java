@@ -17,8 +17,8 @@ public class Budget {
 
     @NotNull(message = "Initial budget is required")
     @Min(value = 0, message = "Initial budget cannot be negative")
-    @Column(name="current_budget", nullable = false)
-    private int currentBudget=1000000;
+    @Column(name = "current_budget", nullable = false)
+    private int currentBudget = 1000000;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)

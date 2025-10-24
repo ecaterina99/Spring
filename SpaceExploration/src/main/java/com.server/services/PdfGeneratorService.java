@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
+/**
+ * Service responsible for generating detailed mission report PDFs using Apache PDFBox.
+ * It creates a formatted document summarizing mission results, crew details, and failure analysis.
+ */
 @Service
 public class PdfGeneratorService {
 
@@ -61,7 +64,6 @@ public class PdfGeneratorService {
 
                 yPosition -= 20;
 
-
                 if (report.getParticipants() != null && !report.getParticipants().isEmpty()) {
                     contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
                     contentStream.beginText();
@@ -85,7 +87,6 @@ public class PdfGeneratorService {
                 } else {
                     System.out.println("No participants found in mission report");
                 }
-
 
                 // Failure Analysis
 

@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Mission information")
+@Schema(description = "Information about mission")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Builder
 public class MissionDTO {
@@ -128,6 +128,5 @@ public class MissionDTO {
         @Schema(description = "Payment amount", example = "50000")
         private Integer paymentAmount;
     }
-
 }
 

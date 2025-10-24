@@ -61,16 +61,5 @@ public class BudgetController {
         BudgetDTO budget = budgetService.getUserBudget(currentUser.getId());
         return ResponseEntity.ok(budget);
     }
-
-    @GetMapping("/my")
-    @Operation(summary = "Get current user's budget")
-    public ResponseEntity<BudgetDTO> getMyBudget(@AuthenticationPrincipal Jwt jwt) {
-        String email = jwt.getSubject();
-        User currentUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-
-        BudgetDTO budget = budgetService.getUserBudget(currentUser.getId());
-        return ResponseEntity.ok(budget);
-    }
 }
 

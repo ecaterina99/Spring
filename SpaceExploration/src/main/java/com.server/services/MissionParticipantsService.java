@@ -20,6 +20,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Service class responsible for managing mission participants.
+ * It provides functionality to:
+ * Retrieve all astronauts assigned to a mission.
+ * Add new astronauts to a mission while validating crew limits.
+ * Remove all participants from a mission.
+ */
+
 @Service
 public class MissionParticipantsService {
 
@@ -40,7 +48,7 @@ public class MissionParticipantsService {
     @Transactional(readOnly = true)
     public List<MissionParticipantsDTO> showMissionCrew(int missionId) {
         if (!missionRepository.existsById(missionId)) {
-            throw new EntityNotFoundException("Mission with id: " + missionId + " not found");
+            throw new EntityNotFoundException("Mission with id: " + missionId + " is not found");
         }
         List<MissionParticipants> participants = missionParticipantsRepository.findByMissionId(missionId);
         return participants.stream()
@@ -64,10 +72,10 @@ public class MissionParticipantsService {
     public MissionParticipantsDTO addParticipantsToMission(int missionId, int astronautId) {
 
         Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(() -> new EntityNotFoundException("Mission not found with id: " + missionId));
+                .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " is not found"));
 
         Astronaut astronaut = astronautRepository.findById(astronautId)
-                .orElseThrow(() -> new EntityNotFoundException("Astronaut not found with id: " + astronautId));
+                .orElseThrow(() -> new EntityNotFoundException("Astronaut with id: " + astronautId + " is not found"));
 
         if (missionParticipantsRepository.existsByMissionIdAndAstronautId(missionId, astronautId)) {
             throw new IllegalStateException(astronaut.getFirstName() + " " + astronaut.getLastName() + " is already assigned to this mission!");
@@ -77,7 +85,6 @@ public class MissionParticipantsService {
         int maxCrewSize = mission.getCrewSize();
 
         if (currentCrewSize >= maxCrewSize) {
-            System.out.println("Throwing CrewOverflowException!");
             throw new CrewOverflowException(currentCrewSize, maxCrewSize);
         }
 
@@ -89,70 +96,3 @@ public class MissionParticipantsService {
         return modelMapper.map(missionParticipants, MissionParticipantsDTO.class);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     /*
-             Set<MissionSpecialization> requiredSpecs = mission.getMissionSpecializations();
-        Map<Astronaut.Specialization, Integer> currentSpecCount =
-                missionParticipantsRepository.findByMissionId(missionId)
-                        .stream()
-                        .collect(Collectors.toMap(
-                                missionParticipants -> missionParticipants.getAstronaut().getSpecialization(),
-                                missionParticipants -> 1,
-                                Integer::sum
-                        ));
-
-        Astronaut.Specialization astronautSpec = astronaut.getSpecialization();
-
-        MissionSpecialization required = requiredSpecs.stream()
-                .filter(r -> r.getSpecialization().name().equals(astronautSpec.name()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("This mission does not require " + astronautSpec.name().toLowerCase() + " specialization"));
-
-        int alreadyHave = currentSpecCount.getOrDefault(astronautSpec, 0);
-        int requiredQty = required.getQuantity();
-
-        if (alreadyHave >= requiredQty) {
-            throw new IllegalStateException(
-                    "Mission already has enough " + astronautSpec + " specialists (" + requiredQty + ").");
-        }
-
-        boolean allFilled = true;
-        for (MissionSpecialization req : requiredSpecs) {
-            int currentCount = currentSpecCount.getOrDefault(req.getSpecialization(), 0);
-            int updatedCount = currentCount;
-            if (req.getSpecialization().name().equals(astronautSpec.name())) {
-                updatedCount++;
-            }
-            if (updatedCount < req.getQuantity()) {
-                allFilled = false;
-                break;
-            }
-        }
-        if (!allFilled) {
-            throw new IllegalStateException("Not all required specializations are yet filled for this mission.");
-        }
-         */
-
-

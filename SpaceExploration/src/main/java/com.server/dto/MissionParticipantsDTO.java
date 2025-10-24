@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Schema(description = "Mission participants information")
+@Schema(description = "Information about mission participants")
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor

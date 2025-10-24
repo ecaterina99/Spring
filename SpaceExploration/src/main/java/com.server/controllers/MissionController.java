@@ -42,16 +42,13 @@ public class MissionController {
     private final MissionReportService missionReportService;
     private final BudgetService budgetService;
     private final UserRepository userRepository;
-    private final PdfGeneratorService pdfGeneratorService;
 
-
-    public MissionController(MissionService missionService, MissionParticipantsService missionParticipantsService, MissionReportService missionReportService, BudgetService budgetService, UserRepository userRepository, PdfGeneratorService pdfGeneratorService) {
+    public MissionController(MissionService missionService, MissionParticipantsService missionParticipantsService, MissionReportService missionReportService, BudgetService budgetService, UserRepository userRepository) {
         this.missionService = missionService;
         this.missionParticipantsService = missionParticipantsService;
         this.missionReportService = missionReportService;
         this.budgetService = budgetService;
         this.userRepository = userRepository;
-        this.pdfGeneratorService = pdfGeneratorService;
     }
 
     @GetMapping("/{id}")
@@ -71,6 +68,7 @@ public class MissionController {
         MissionDTO mission = missionService.getMissionById(id);
         return ResponseEntity.ok(mission);
     }
+
     @GetMapping()
     @Operation(summary = "Retrieve all missions with optional filtering")
     @ApiResponses(value = {
@@ -86,6 +84,7 @@ public class MissionController {
                 missionService.getMissionsByFilters(difficultyLevel, destinationId)
         );
     }
+
     @GetMapping("/by-destination/{id}")
     @Operation(summary = "Retrieve all missions by destination id")
     @ApiResponses(value = {
@@ -157,16 +156,24 @@ public class MissionController {
         return ResponseEntity.noContent().build();
     }
 
-
     @PostMapping("/{missionId}/start")
+    @Operation(summary = "Start mission")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Invalid input data or validation failed",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Mission not found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
+    })
     public ResponseEntity<?> startMission(
-          @Valid  @PathVariable Integer missionId,
-    @RequestBody MissionDTO missionDTO,
-          @AuthenticationPrincipal Jwt jwt){
+            @Valid @PathVariable Integer missionId,
+            @RequestBody MissionDTO missionDTO,
+            @AuthenticationPrincipal Jwt jwt) {
         String email = jwt.getSubject();
         User currentUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
-
 
         missionParticipantsService.clearMissionCrew(missionId);
 
@@ -174,7 +181,7 @@ public class MissionController {
             missionParticipantsService.addParticipantsToMission(missionId, participant.getAstronautId());
         });
 
-        List <MissionParticipantsDTO> missionParticipantsDTO = missionParticipantsService.showMissionCrew(missionId);
+        List<MissionParticipantsDTO> missionParticipantsDTO = missionParticipantsService.showMissionCrew(missionId);
 
         MissionResult missionResult = missionService.startMission(missionId, missionDTO.getParticipants());
 
@@ -189,7 +196,6 @@ public class MissionController {
         MissionStartResponse response = new MissionStartResponse(missionReport, updatedBudget);
         return ResponseEntity.ok(response);
     }
-
 
     @PatchMapping("/{missionId}/specializations")
     @Operation(summary = "Add or update  mission specializations",
@@ -213,8 +219,6 @@ public class MissionController {
         return ResponseEntity.ok(updatedMission);
     }
 
-
-
     @DeleteMapping("/{missionId}/delete-specialization")
     @Operation(summary = "Delete specialization")
     @ApiResponses(value = {
@@ -228,24 +232,6 @@ public class MissionController {
         missionService.removeSpecialization(missionId, MissionSpecialization.Specialization.valueOf(request.getSpecialization()));
         return ResponseEntity.noContent().build();
     }
-
-    @PostMapping("/export/pdf")
-    public ResponseEntity<byte[]> exportMissionReport(@RequestBody MissionReportDTO report) {
-        try {
-            byte[] pdfBytes = pdfGeneratorService.generateMissionReportPdf(report);
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDispositionFormData("filename",
-                    "mission-report-" + System.currentTimeMillis() + ".pdf");
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-
-            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
 
 }
 

@@ -1,5 +1,4 @@
-package com.server.util;
-
+package com.server.configuration;
 
 import org.hibernate.collection.spi.PersistentCollection;
 import org.modelmapper.AbstractConverter;
@@ -11,6 +10,11 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+/**
+ * Configuration class for setting up the ModelMapper bean.
+ * It defines custom mapping behavior.
+ */
 
 @Configuration
 

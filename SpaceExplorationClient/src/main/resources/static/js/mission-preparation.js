@@ -482,7 +482,6 @@ function showPopup(button) {
     const image = button.getAttribute("data-image");
     const experience = button.getAttribute("data-experience");
     const birthDate = button.getAttribute("data-birthdate");
-    const phone = button.getAttribute("data-phone");
     const health = button.getAttribute("data-health");
     const fitness = button.getAttribute("data-fitness");
     const education = button.getAttribute("data-education");
@@ -497,7 +496,6 @@ function showPopup(button) {
     document.getElementById("popup-specialization").textContent = specialization || "—";
     document.getElementById("popup-birthDate").textContent = birthDate || "—";
     document.getElementById("popup-experience").textContent = experience || "0";
-    document.getElementById("popup-phone").textContent = phone || "—";
     document.getElementById("popup-status").textContent = health || "—";
     document.getElementById("popup-fitness").textContent = fitness || "—";
     document.getElementById("popup-education").textContent = education || "—";
@@ -885,7 +883,7 @@ async function downloadMissionReportPdf(isSuccess, missionReport, crew, crewSize
     }
 
     try {
-        const response = await fetch('http://localhost:8080/api/missions/export/pdf', {
+        const response = await fetch('http://localhost:8080/api/mission-reports/export/pdf', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -4,14 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "User information")
+@Schema(description = "Information about user")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Builder
 public class UserDTO {
@@ -29,5 +28,4 @@ public class UserDTO {
     @Size(min = 6, max = 64, message = "Password must be between 6 and 64 characters")
     private String password;
     private String role;
-
 }

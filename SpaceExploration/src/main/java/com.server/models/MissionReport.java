@@ -3,8 +3,6 @@ package com.server.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +18,7 @@ public class MissionReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="is_successful", nullable = false)
+    @Column(name = "is_successful", nullable = false)
     private boolean isSuccessful;
 
     @OneToOne(fetch = FetchType.LAZY)

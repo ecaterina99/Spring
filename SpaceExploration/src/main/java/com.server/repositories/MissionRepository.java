@@ -15,7 +15,6 @@ public interface MissionRepository extends JpaRepository <Mission, Integer> {
                 Mission.DifficultyLevel difficultyLevel,
                 Integer destinationId
         );
-
 }
 
 

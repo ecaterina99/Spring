@@ -1,6 +1,5 @@
 package com.server.services;
 
-
 import com.server.models.User;
 import com.server.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +13,14 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-
     @Autowired
     public RegistrationService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
+
     @Transactional
-    public User  register(User user) {
+    public User register(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new IllegalArgumentException("User with this email already exists");
         }

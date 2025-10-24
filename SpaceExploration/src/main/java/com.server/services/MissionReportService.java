@@ -1,11 +1,9 @@
 package com.server.services;
 
-import com.server.dto.MissionDTO;
 import com.server.dto.MissionParticipantsDTO;
 import com.server.dto.MissionReportDTO;
 import com.server.models.Mission;
 import com.server.models.MissionReport;
-import com.server.repositories.MissionParticipantsRepository;
 import com.server.repositories.MissionReportRepository;
 import com.server.repositories.MissionRepository;
 import com.server.util.MissionResult;
@@ -15,30 +13,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MissionReportService {
     private final MissionReportRepository missionReportRepository;
     private final ModelMapper modelMapper;
-    private final MissionService missionService;
     private final BudgetService budgetService;
     private final MissionRepository missionRepository;
 
-    public MissionReportService(MissionReportRepository missionReportRepository, MissionService missionService, BudgetService budgetService, MissionRepository missionRepository) {
+    public MissionReportService(MissionReportRepository missionReportRepository, BudgetService budgetService, MissionRepository missionRepository) {
         this.missionReportRepository = missionReportRepository;
-        this.missionService = missionService;
         this.budgetService = budgetService;
         this.missionRepository = missionRepository;
         this.modelMapper = new ModelMapper();
     }
+
     @Transactional(readOnly = true)
     public MissionReportDTO getMissionReportById(int id) {
-     MissionReport missionReport = missionReportRepository.findById(id)
-             .orElseThrow(()-> new EntityNotFoundException("Mission Report with id: " + id + " not found"));
+        MissionReport missionReport = missionReportRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Mission Report with id: " + id + " not found"));
         return MissionReportDTO.fromMissionReport(missionReport);
 
     }
+
     @Transactional(readOnly = true)
     public List<MissionReportDTO> getAllMissionReports() {
         List<MissionReport> missionReports = missionReportRepository.findAll();
@@ -47,7 +44,7 @@ public class MissionReportService {
                 .toList();
     }
 
-
+    @Transactional
     public MissionReportDTO createReport(Integer missionId, MissionResult missionResult, List<MissionParticipantsDTO> participants) {
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " not found"));
@@ -64,7 +61,7 @@ public class MissionReportService {
         System.out.println("Issues: " + missionResult.getIssues());
         System.out.println("Alien Attack: " + missionResult.isAlienAttack());
         System.out.println("===============================");
-        int totalSalary = budgetService.calculateTotalSalary(missionId,participants );
+        int totalSalary = budgetService.calculateMissionExpenses(missionId, participants);
 
         MissionReportDTO dto = MissionReportDTO.builder()
                 .id(report.getId())
@@ -92,6 +89,5 @@ public class MissionReportService {
 
         return dto;
     }
-
 }
 

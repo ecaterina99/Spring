@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
 @Component
 public class UserValidator implements Validator {
     private final UserDetailsService userDetailsService;
@@ -22,9 +23,9 @@ public class UserValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         User person = (User) target;
-        try{
+        try {
             userDetailsService.loadUserByUsername(person.getEmail());
-        }catch (UsernameNotFoundException ignored){
+        } catch (UsernameNotFoundException ignored) {
             return;
         }
         errors.rejectValue("email", "", "This email already exists");

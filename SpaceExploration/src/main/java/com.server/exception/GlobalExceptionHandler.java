@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-//Global scope: Catches exceptions from ALL your controllers, not just one
+//Global scope: Catches exceptions from all controllers, not just one
 /*
 Handle exceptions in one place
 Uniform error responses
