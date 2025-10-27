@@ -5,13 +5,13 @@
 <div th:insert="~{common_fragments :: mainHeader}"></div>
 
     <div class="budget-container mt-4 mb-0">
-        <div class="budget d-flex justify-content-end align-items-center">
-            <h5 class="me-2" style="color: #d6d4d4">CURRENT BUDGET:</h5>
+        <div class="budget d-flex justify-content-end align-items-center gap-2">
+                <p style="color: #ffbd00" >CURRENT BUDGET: </p>
             <p style="color: #ffd500" th:if="${userBudget != null}">
             <span id="currentBudget" style="color: #ffd500"
                   th:text="${userBudget.currentBudget}">0</span> $
             </p>
-            <p th:if="${userBudget == null}">
+            <p th:if="${userBudget == null}">`
                 <span>Not available</span>
             </p>
         </div>

@@ -24,7 +24,8 @@
             <div class="col-10 col-sm-6 col-md-4 col-lg-3 mx-auto"
                  th:each="astronaut : ${astronauts}">
                 <div class="card  h-80 text-center border-0" style="background-color: #cccbcb">
-                    <img th:src="@{${astronaut.imageUrl}}" class="card-img-top rounded" alt="image">
+                    <img th:src="${astronaut.fullImageUrl}" class="card-img-top rounded"
+                         alt="image">
 
                     <div class="card-body">
                         <h5 class="card-title fw-bold" style="color: #013a9f;"
@@ -44,10 +45,11 @@
 
                         <button class="btn-view-astronauts hero-btn px-4 py-2" id="btn-view"
                                 th:attr="data-id=${astronaut.id},
+
                      data-firstname=${astronaut.firstName},
                      data-lastname=${astronaut.lastName},
                      data-specialization=${astronaut.specialization.getDisplayName().toUpperCase()},
-                     data-image=@{${astronaut.imageUrl}},
+                     data-image=${astronaut.fullImageUrl},
                      data-experience=${astronaut.yearsOfExperience},
                      data-birthdate=${astronaut.dateOfBirth},
                      data-phone=${astronaut.phone},

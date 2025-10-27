@@ -726,7 +726,6 @@ function displayFinalResults(contentContainer, isSuccess, missionReport, crew, c
 
     } else {
         console.log("❌ Displaying FAILURE popup");
-        const payment = missionReport.paymentAmount?.toLocaleString() || "0";
         const salary = missionReport.totalSalary?.toLocaleString() || "0";
         content = `
         <div class="mission-results-failure">
@@ -743,7 +742,7 @@ function displayFinalResults(contentContainer, isSuccess, missionReport, crew, c
                 </div>
                 <h3 class="result-title failure-title">MISSION FAILED !</h3>
              <p class="result-subtitle">Critical system failure detected</p>
-              <span class="stat-label">Total crew salary you've paid:</span>
+              <span class="stat-label">Total mission expenses:</span>
                             <span class="stat-value salary-value">${salary} $</span>
             </div>
                            

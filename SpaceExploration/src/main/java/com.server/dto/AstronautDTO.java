@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.server.models.Astronaut;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -61,7 +58,9 @@ public class AstronautDTO {
     @Min(value = 0, message = "Overall score must be between 0 and 100")
     @Max(value = 100, message = "Overall score must be between 0 and 100")
     private Integer overallScore;
-    @Schema(description = "Image path", example = "/images/1.jpg")
+    @Setter
+    @Getter
+    @Schema(description = "Image path", example = "1.jpg")
     private String imageUrl;
     @Schema(description = "Specialization", example = "PILOT")
     @NotNull(message = "Specialization is required")
@@ -107,7 +106,7 @@ public class AstronautDTO {
         @Min(value = 0, message = "Overall score must be between 0 and 100")
         @Max(value = 100, message = "Overall score must be between 0 and 100")
         private Integer overallScore;
-        @Schema(description = "Image path", example = "/images/1.jpg")
+        @Schema(description = "Image path", example = "1.jpg")
         private String imageUrl;
         private Astronaut.Specialization specialization;
         private Astronaut.HealthStatus healthStatus;

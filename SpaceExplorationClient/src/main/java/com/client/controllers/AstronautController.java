@@ -28,7 +28,6 @@ import java.util.List;
 @RequestMapping("/astronauts")
 @Slf4j
 public class AstronautController {
-
     private final AstronautService astronautService;
 
     public AstronautController(AstronautService astronautService) {

@@ -2,10 +2,7 @@ package com.client.DTO;
 
 import com.client.enums.AstronautEnums;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 @Data
@@ -24,7 +21,17 @@ public class AstronautDTO {
     private Integer educationScore;
     private Integer psychologicalScore;
     private Integer overallScore;
-    private String imageUrl;
     private AstronautEnums.HealthStatus healthStatus;
     private AstronautEnums.Specialization specialization;
+    @Setter
+    @Getter
+    private String imageUrl;
+
+    public String getFullImageUrl() {
+        if (imageUrl == null || imageUrl.isEmpty()) {
+            return "https://ui-avatars.com/api/?name=Astronaut&background=random";
+        }
+        return String.format("https://cosmo-trail.s3.eu-central-1.amazonaws.com/%s", imageUrl);
+    }
+
 }
