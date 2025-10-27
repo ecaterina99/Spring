@@ -16,16 +16,22 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Schema(description = "Mission specializations required for the crew")
 public class MissionSpecializationDTO {
+    @Schema(description = "ID", example = "1")
     private Integer id;
     @NotNull
+    @Schema(description = "Mission ID", example = "1")
     private Integer missionId;
-    @NotBlank(message = "Specialization is required")
+    @NotBlank
     @Schema(description = "Required specialization type",
             allowableValues = {"PILOT", "ENGINEER", "SCIENTIST", "DOCTOR", "GEOLOGIST"})
     private MissionSpecialization.Specialization specialization;
     @NotNull
     @Min(value = 1, message = "Quantity must be at least 1")
     @Max(value = 10, message = "Quantity cannot exceed 10")
+    @Schema(description = "Number of specialists required",
+            example = "2",
+            minimum = "1",
+            maximum = "10")
     private Integer quantity;
 
     public static MissionSpecializationDTO create(

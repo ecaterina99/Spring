@@ -4,11 +4,13 @@ import com.server.dto.DestinationDTO;
 import com.server.dto.MissionReportDTO;
 import com.server.services.MissionReportService;
 import com.server.services.PdfGeneratorService;
+import com.server.util.GlobalApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,7 +24,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/mission-reports")
 @Tag(name = "Mission report", description = "Data about mission results")
-public class MissionReportsController {
+@SecurityRequirement(name = "Bearer Authentication")
+
+public class MissionReportsController implements GlobalApiResponses {
 
     private final MissionReportService missionReportService;
     private final PdfGeneratorService pdfGeneratorService;
@@ -37,36 +41,27 @@ public class MissionReportsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Mission report found",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = DestinationDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Mission report not found",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "500", description = "Internal server error"),
-
+                            schema = @Schema(implementation = DestinationDTO.class)))
     })
     public ResponseEntity<MissionReportDTO> getMissionReport(@PathVariable int id) {
         MissionReportDTO missionReport = missionReportService.getMissionReportById(id);
         return ResponseEntity.ok(missionReport);
     }
 
-    @GetMapping()
-    @Operation(summary = "Retrieve all mission reports")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved all mission reports",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = DestinationDTO.class))),
-            @ApiResponse(responseCode = "500", description = "Internal server error"),
-    })
-    public ResponseEntity<List<MissionReportDTO>> getAllMissionReports() {
-        return ResponseEntity.ok(missionReportService.getAllMissionReports());
-    }
-
     @PostMapping("/export/pdf")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "400", description = "Invalid input data or validation failed",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "500", description = "Internal server error"),
+    @Operation(
+            summary = "Export mission report as PDF",
+            description = "Generates and downloads a PDF document containing the mission report details"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "PDF generated successfully",
+                    content = @Content(
+                            mediaType = "application/pdf",
+                            schema = @Schema(type = "string", format = "binary")
+                    )
+            )
     })
     public ResponseEntity<byte[]> exportMissionReport(@RequestBody MissionReportDTO report) {
         try {

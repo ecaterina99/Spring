@@ -4,6 +4,13 @@ import com.server.dto.UserDTO;
 import com.server.models.User;
 import com.server.services.BudgetService;
 import com.server.services.RegistrationService;
+import com.server.util.GlobalApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,8 +27,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Authentication", description = "User registration and authentication endpoints")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements GlobalApiResponses {
 
     private final RegistrationService registrationService;
     private final AuthenticationManager authenticationManager;
@@ -30,17 +38,34 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(
+            summary = "Register a new user", description = "Creates a new user account and initializes their budget")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201", description = "User successfully registered"
+            )})
     public void register(@Valid @RequestBody UserDTO dto) {
         User user = new User();
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
-
         User savedUser = registrationService.register(user);
         budgetService.createInitialBudget(savedUser.getId());
     }
-
+    @Operation(
+            summary = "Authenticate user",
+            description = "Authenticates user credentials and returns a JWT access token"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successfully authenticated",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = TokenResponse.class)
+                    )
+            )})
     @PostMapping("/login")
     public TokenResponse login(@Valid @RequestBody LoginRequest req) {
         Authentication auth = authenticationManager.authenticate(
@@ -56,6 +81,10 @@ public class AuthController {
         return new TokenResponse(token);
     }
 }
-
-record LoginRequest(String email, String password) {}
-record TokenResponse(String accessToken) {}
+@Schema(description = "Login request with user credentials")
+record LoginRequest(@Schema(description = "User email address", example = "user@example.com")
+                            String email,
+                            @Schema(description = "User password", example = "SecurePass123")
+                            String password) {}
+@Schema(description = "JWT token response")
+record TokenResponse( @Schema(description = "JWT access token", example = "eyJhbGciOiJSUzI1NiJ9...")String accessToken) {}

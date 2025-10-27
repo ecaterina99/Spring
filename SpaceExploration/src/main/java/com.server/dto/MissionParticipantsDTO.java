@@ -18,11 +18,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MissionParticipantsDTO {
-    private String missionName;
-    private String astronautName;
     private Integer id;
     @NotNull
+    @Schema(description = "Mission ID", example = "1")
     private Integer missionId;
+    @Schema(description = "Astronaut ID", example = "1")
     @NotNull
     private Integer astronautId;
     private Astronaut.Specialization specialization;
@@ -30,6 +30,8 @@ public class MissionParticipantsDTO {
     private Integer crewSize;
     private Astronaut.HealthStatus healthStatus;
     private Integer dailyRate;
+    private String missionName;
+    private String astronautName;
 
     public static MissionParticipantsDTO missionParticipantsDetails(MissionParticipants missionParticipants) {
         return MissionParticipantsDTO.builder()

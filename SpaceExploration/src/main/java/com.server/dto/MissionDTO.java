@@ -22,34 +22,58 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Builder
 public class MissionDTO {
+    @Schema(description = "Mission ID", example = "1")
     private Integer id;
-    @NotBlank(message = "Mission name is required")
+
+    @NotBlank
     @Size(min = 2, max = 100, message = "Mission name must be between 2 and 100 characters")
+    @Schema(description = "Mission name", example = "Operation Homeland")
     private String name;
-    @NotBlank(message = "Missin code is required")
+
+    @NotBlank
     @Size(min = 4, max = 6, message = "Mission name must be between 2 and 6 characters")
+    @Schema(description = "Mission code", example = "ER-1")
     private String code;
-    @NotBlank(message = "Mission description is required")
+
+    @NotBlank
+    @Schema(description = "Mission description", example = "Operation Homeland is a global initiative focused on...")
     private String description;
+
     @Min(value = 1)
     @NotNull
+    @Schema(description = "Duration days", example = "100")
     private Integer durationDays;
+
     @Min(value = 1)
     @NotNull
+    @Schema(description = "Crew size", example = "4")
     private Integer crewSize;
+
     @Min(value = 1)
     @NotNull
+    @Schema(description = "Score Value", example = "1000")
     private Integer scoreValue;
-    @NotBlank(message = "Potential issues description is required")
+
+    @NotBlank
+    @Schema(description = "Potential issues", example = "Dust storms may disrupt communications for up to 3 weeks...")
     private String potentialIssues;
+
+    @Schema(description = "Image path", example = "/images/m1.jpg")
     private String imgUrl;
-    @NotNull(message = "Difficulty level is required")
+
+    @Schema(description = "Difficulty level", example = "HIGH")
+    @NotNull
     private Mission.DifficultyLevel difficultyLevel;
+
+    @Schema(description = "Destination ID", example = "1")
     private Integer destinationId;
-    private String destinationName;
+
     @Min(value = 1)
     @NotNull
+    @Schema(description = "Payment Amount:", example = "250000")
     private Integer paymentAmount;
+
+    private String destinationName;
     private List<MissionSpecializationDTO> specializations = new ArrayList<>();
     private List<MissionParticipantsDTO> participants = new ArrayList<>();
 
@@ -96,7 +120,7 @@ public class MissionDTO {
         @Schema(description = "Unique mission code", example = "MRS001")
         private String code;
 
-        @Schema(description = "Mission description")
+        @Schema(description = "Mission description", example = "Operation Homeland is a global initiative focused on...")
         private String description;
 
         @Min(value = 1, message = "Duration must be at least 1 day")
@@ -111,13 +135,13 @@ public class MissionDTO {
         @Schema(description = "Mission score value", example = "1000")
         private Integer scoreValue;
 
-        @Schema(description = "Potential issues description")
+        @Schema(description = "Potential issues", example = "Dust storms may disrupt communications for up to 3 weeks...")
         private String potentialIssues;
 
-        @Schema(description = "Mission image URL")
+        @Schema(description = "Image path", example = "/images/m1.jpg")
         private String imageUrl;
 
-        @Schema(description = "Mission difficulty level")
+        @Schema(description = "Difficulty level", example = "HIGH")
         private Mission.DifficultyLevel difficultyLevel;
 
         @Min(value = 1, message = "Destination ID must be positive")

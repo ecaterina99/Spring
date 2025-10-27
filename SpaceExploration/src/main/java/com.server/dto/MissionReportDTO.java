@@ -24,19 +24,22 @@ import java.util.List;
 @Builder
 @Schema(description = "Mission report")
 public class MissionReportDTO {
+    @Schema(description = "Report ID", example = "1")
     private int id;
+
+    @Schema(description = "Mission success", example = "1")
     @JsonProperty("isSuccessful")
+    @NotNull
     private boolean isSuccessful;
+
+    @Schema(description = "Mission ID", example = "1")
     @NotNull
     private int missionId;
-    @NotBlank
+
     private String missionName;
-    @NotBlank
     private String destinationName;
-    @NotBlank
     private Mission.DifficultyLevel difficultyLevel;
     private List<MissionParticipantsDTO> participants;
-    @NotNull
     private Integer paymentAmount;
     private String astronautName;
     private Integer crewSize;

@@ -5,12 +5,14 @@ import com.server.dto.DestinationDTO;
 import com.server.models.User;
 import com.server.repositories.UserRepository;
 import com.server.services.BudgetService;
+import com.server.util.GlobalApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -29,8 +31,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/budgets")
 @Tag(name = "Budget", description = "Operations related to budget")
+@SecurityRequirement(name = "Bearer Authentication")
 
-public class BudgetController {
+public class BudgetController implements GlobalApiResponses {
     private final BudgetService budgetService;
     private final UserRepository userRepository;
 
@@ -44,16 +47,11 @@ public class BudgetController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Budget found",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = BudgetDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Budget not found",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "500", description = "Internal server error"),
+                            schema = @Schema(implementation = BudgetDTO.class)))
     })
     public ResponseEntity<BudgetDTO> getBudgetByUserId(
             @PathVariable Integer userId,
             @AuthenticationPrincipal Jwt jwt) {
-
         String email = jwt.getSubject();
         User currentUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));

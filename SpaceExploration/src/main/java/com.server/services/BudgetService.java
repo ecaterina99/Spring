@@ -8,7 +8,7 @@ import com.server.models.User;
 import com.server.repositories.BudgetRepository;
 import com.server.repositories.MissionRepository;
 import com.server.repositories.UserRepository;
-import com.server.util.MissionResult;
+import com.server.dto.MissionResultDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -80,7 +80,7 @@ public class BudgetService {
                 .toList();
     }
     @Transactional
-    public BudgetDTO updateBudget(Integer userId, Integer missionId, MissionResult missionResult, List<MissionParticipantsDTO> participants) {
+    public BudgetDTO updateBudget(Integer userId, Integer missionId, MissionResultDTO missionResultDTO, List<MissionParticipantsDTO> participants) {
         Budget budget = budgetRepository.findByUserId(userId)
                 .orElseGet(() -> {
                     User user = userRepository.findById(userId)
@@ -105,7 +105,7 @@ public class BudgetService {
                     + previousBalance + "; Payment for mission: " + missionExpanses);
             newBalance = previousBalance;
         } else {
-            if (missionResult.isSuccess()) {
+            if (missionResultDTO.isSuccess()) {
                 newBalance = previousBalance + paymentForMission - missionExpanses;
                 System.out.println("Mission SUCCESS! User " + userId +
                         " - Previous balance: " + previousBalance +
@@ -125,7 +125,7 @@ public class BudgetService {
         return modelMapper.map(budget, BudgetDTO.class);
     }
 
-    protected int calculateMissionExpenses(Integer missionId, List<MissionParticipantsDTO> participants) {
+    public int calculateMissionExpenses(Integer missionId, List<MissionParticipantsDTO> participants) {
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " is not found"));
 

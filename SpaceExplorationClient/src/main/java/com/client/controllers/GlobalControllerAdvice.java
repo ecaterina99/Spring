@@ -1,4 +1,5 @@
 package com.client.controllers;
+
 import com.client.DTO.BudgetDTO;
 import com.client.DTO.UserDTO;
 import com.client.service.BudgetService;
@@ -6,7 +7,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import com.client.service.ApiClient;
 import com.client.service.TokenStorage;
-
+/**
+ * Global controller advice that injects common model attributes into all controllers.
+ * This class provides user-related data (current user, user ID, budget, and access token)
+ * to the model for use across multiple views. It integrates with ApiClient, TokenStorage,
+ * and BudgetService to fetch and manage user session information.
+ */
 @ControllerAdvice
 public class GlobalControllerAdvice {
 
@@ -19,7 +25,6 @@ public class GlobalControllerAdvice {
         this.tokenStorage = tokenStorage;
         this.budgetService = budgetService;
     }
-
 
     @ModelAttribute("userBudget")
     public BudgetDTO getUserBudget() {
@@ -53,11 +58,12 @@ public class GlobalControllerAdvice {
         return null;
     }
 
- @ModelAttribute("accessToken")
+    @ModelAttribute("accessToken")
     public String addTokenToModel() {
         String token = tokenStorage.getToken();
         return token != null ? token : "";
     }
+
     @ModelAttribute("userId")
     public Integer addUserIdToModel() {
         String token = tokenStorage.getToken();

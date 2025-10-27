@@ -1,7 +1,5 @@
-package com.server.util;
+package com.server.dto;
 
-import com.server.dto.BudgetDTO;
-import com.server.dto.MissionReportDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MissionStartResponse {
+public class MissionStartResponseDTO {
     private MissionReportDTO missionReport;
     private BudgetDTO updatedBudget;
 }

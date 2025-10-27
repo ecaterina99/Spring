@@ -11,9 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BudgetDTO {
+    @Schema(description = "Budget ID", example = "10")
     private int id;
+    @Schema(description = "Initial budget", example = "1000000")
     @NotNull(message = "Initial budget is required")
     private Integer currentBudget  = 1000000;
+    @Schema(description = "User ID", example = "1")
     @NotNull(message = "User id is required")
     private Integer userId;
 }

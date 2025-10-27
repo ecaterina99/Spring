@@ -25,49 +25,27 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleEntityNotFound(EntityNotFoundException e) {
-        return ApiError.builder()
-                .error("Resource not found")
-                .message(e.getMessage())
-                .status(HttpStatus.NOT_FOUND.value())
-                .timestamp(LocalDateTime.now())
-                .build();
-
+        return ApiError.of(HttpStatus.NOT_FOUND, "RESOURCE_NOT_FOUND", e.getMessage());
     }
+
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ApiError> handleIllegalState(IllegalStateException e) {
-        ApiError error = ApiError.builder()
-                .error("VALIDATION_ERROR")
-                .message(e.getMessage())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .timestamp(LocalDateTime.now())
-                .build();
+        ApiError error = ApiError.of(HttpStatus.BAD_REQUEST, "VALIDATION_ERROR", e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
-
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> fieldErrors = new HashMap<>();
         ex.getBindingResult().getFieldErrors()
-                .forEach(error -> fieldErrors.put(error.getField(), error.getDefaultMessage()));
+                .forEach(err -> fieldErrors.put(err.getField(), err.getDefaultMessage()));
 
         return ApiError.builder()
-                .error("Validation failed")
+                .error("VALIDATION_FAILED")
                 .message("Invalid input data")
                 .status(HttpStatus.BAD_REQUEST.value())
                 .fieldErrors(fieldErrors)
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiError handleGenericException(Exception e) {
-        return ApiError.builder()
-                .error("Internal server error")
-                .message("Something went wrong")
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .timestamp(LocalDateTime.now())
                 .build();
     }
@@ -85,6 +63,13 @@ public class GlobalExceptionHandler {
                 .details(details)
                 .timestamp(LocalDateTime.now())
                 .build();
+
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiError handleGenericException(Exception e) {
+        return ApiError.of(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", "Unexpected error occurred");
     }
 }

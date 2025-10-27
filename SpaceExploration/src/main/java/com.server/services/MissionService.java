@@ -6,7 +6,7 @@ import com.server.models.Mission;
 import com.server.models.MissionSpecialization;
 import com.server.repositories.DestinationRepository;
 import com.server.repositories.MissionRepository;
-import com.server.util.MissionResult;
+import com.server.dto.MissionResultDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -203,7 +203,7 @@ public class MissionService {
                 .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " is not found"));
     }
 
-    public MissionResult startMission(Integer missionId, List<MissionParticipantsDTO> participants) {
+    public MissionResultDTO startMission(Integer missionId, List<MissionParticipantsDTO> participants) {
         int successChance = 100;
         List<String> issues = new ArrayList<>();
         int crewSizeDeficit = 0;
@@ -217,10 +217,9 @@ public class MissionService {
             int penalty = missingNumber * 10;
             successChance -= penalty;
             crewSizeDeficit = missingNumber;
-            issues.add("Crew size deficit: missing " + missingNumber + " member(s) (-" + penalty + "% from success)");
-            System.out.println("Missing " + missingNumber + " persons, -" + penalty + "% to success chance");
+            issues.add("Crew size deficit. Mission success rate: -" + penalty + "% (" + missingNumber + " persons missing)");
+            System.out.println("Missing " + missingNumber + " persons, - " + penalty + "% success");
         } else {
-            issues.add("Mission crew size is accepted!");
             System.out.println("Mission crew size is accepted!");
         }
 
@@ -242,11 +241,10 @@ public class MissionService {
             if (!missingSpecializations.isEmpty()) {
                 int specPenalty = missingSpecializations.size() * 10;
                 successChance -= specPenalty;
-                System.out.println("Missing specializations: " + missingSpecializations + ", -" + specPenalty + "% to success chance");
-                issues.add("Missing specializations: " + missingSpecializations.toString().toLowerCase() + ", -" + specPenalty + "% to success chance");
+                System.out.println("Missing specializations: " + missingSpecializations + ", -" + specPenalty + "% success");
+                issues.add("Missing specializations: " + missingSpecializations.toString().toLowerCase() + ".Mission success rate: -" + specPenalty + "%");
 
             } else {
-                issues.add("All required specializations are present in the crew.");
                 System.out.println("All required specializations are present in the crew.");
             }
         } else {
@@ -258,7 +256,7 @@ public class MissionService {
                 successChance -= 10;
                 System.out.println("Astronaut " + p.getAstronautName() + " is not ready to flight!");
                 String astronautName = p.getAstronautName();
-                issues.add("Astronaut " + astronautName + " is not flight ready (Status: " + p.getHealthStatus() + ") (-10%)");
+                issues.add("Astronaut " + astronautName + " is not ready to flight. (Status: " + p.getHealthStatus() + ") Mission success rate: -10%");
                 notReadyAstronauts.add(astronautName + " (" + p.getHealthStatus() + ")");
             }
         }
@@ -271,26 +269,17 @@ public class MissionService {
 
         if (alienAttack) {
             issues.add("CRITICAL: Alien attack encountered during mission!");
-            return MissionResult.builder()
-                    .success(false)
-                    .successChance(successChance)
-                    .issues(issues)
-                    .alienAttack(true)
-                    .crewSizeDeficit(crewSizeDeficit)
-                    .missingSpecializations(missingSpecializations)
-                    .notReadyAstronauts(notReadyAstronauts)
-                    .build();
         }
 
         int roll = ThreadLocalRandom.current().nextInt(0, 100);
 
-        boolean success = roll < successChance;
+        boolean success = roll < successChance && !alienAttack;
 
-        return MissionResult.builder()
+        return MissionResultDTO.builder()
                 .success(success)
                 .successChance(successChance)
                 .issues(issues)
-                .alienAttack(false)
+                .alienAttack(alienAttack)
                 .crewSizeDeficit(crewSizeDeficit)
                 .missingSpecializations(missingSpecializations)
                 .notReadyAstronauts(notReadyAstronauts)

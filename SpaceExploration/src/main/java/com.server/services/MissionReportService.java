@@ -6,7 +6,7 @@ import com.server.models.Mission;
 import com.server.models.MissionReport;
 import com.server.repositories.MissionReportRepository;
 import com.server.repositories.MissionRepository;
-import com.server.util.MissionResult;
+import com.server.dto.MissionResultDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -45,39 +45,39 @@ public class MissionReportService {
     }
 
     @Transactional
-    public MissionReportDTO createReport(Integer missionId, MissionResult missionResult, List<MissionParticipantsDTO> participants) {
+    public MissionReportDTO createReport(Integer missionId, MissionResultDTO missionResultDTO, List<MissionParticipantsDTO> participants) {
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(() -> new EntityNotFoundException("Mission with id: " + missionId + " not found"));
 
         MissionReport report = new MissionReport();
         report.setMission(mission);
-        report.setSuccessful(missionResult.isSuccess());
+        report.setSuccessful(missionResultDTO.isSuccess());
         missionReportRepository.save(report);
 
         System.out.println("=== Creating Mission Report ===");
         System.out.println("Mission ID: " + missionId);
-        System.out.println("Is Successful: " + missionResult.isSuccess());
-        System.out.println("Success Chance: " + missionResult.getSuccessChance());
-        System.out.println("Issues: " + missionResult.getIssues());
-        System.out.println("Alien Attack: " + missionResult.isAlienAttack());
+        System.out.println("Is Successful: " + missionResultDTO.isSuccess());
+        System.out.println("Success Chance: " + missionResultDTO.getSuccessChance());
+        System.out.println("Issues: " + missionResultDTO.getIssues());
+        System.out.println("Alien Attack: " + missionResultDTO.isAlienAttack());
         System.out.println("===============================");
         int totalSalary = budgetService.calculateMissionExpenses(missionId, participants);
 
         MissionReportDTO dto = MissionReportDTO.builder()
                 .id(report.getId())
-                .isSuccessful(missionResult.isSuccess())
+                .isSuccessful(missionResultDTO.isSuccess())
                 .missionId(mission.getId())
                 .missionName(mission.getName())
                 .destinationName(mission.getDestination().getDestinationName())
                 .difficultyLevel(mission.getDifficultyLevel())
                 .paymentAmount(mission.getPaymentAmount())
                 .crewSize(mission.getCrewSize())
-                .successChance(missionResult.getSuccessChance())
-                .issues(missionResult.getIssues())
-                .alienAttack(missionResult.isAlienAttack())
-                .crewSizeDeficit(missionResult.getCrewSizeDeficit())
-                .missingSpecializations(missionResult.getMissingSpecializations())
-                .notReadyAstronauts(missionResult.getNotReadyAstronauts())
+                .successChance(missionResultDTO.getSuccessChance())
+                .issues(missionResultDTO.getIssues())
+                .alienAttack(missionResultDTO.isAlienAttack())
+                .crewSizeDeficit(missionResultDTO.getCrewSizeDeficit())
+                .missingSpecializations(missionResultDTO.getMissingSpecializations())
+                .notReadyAstronauts(missionResultDTO.getNotReadyAstronauts())
                 .totalSalary(totalSalary)
                 .build();
 

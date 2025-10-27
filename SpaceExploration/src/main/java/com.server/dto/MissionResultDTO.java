@@ -1,4 +1,4 @@
-package com.server.util;
+package com.server.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MissionResult {
+public class MissionResultDTO {
     private boolean success;
     private int successChance;
     private List<String> issues = new ArrayList<>();
