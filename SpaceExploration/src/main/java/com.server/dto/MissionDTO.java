@@ -7,10 +7,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +55,8 @@ public class MissionDTO {
     @Schema(description = "Potential issues", example = "Dust storms may disrupt communications for up to 3 weeks...")
     private String potentialIssues;
 
-    @Schema(description = "Image path", example = "/images/m1.jpg")
-    private String imgUrl;
+    @Schema(description = "Image path", example = "m1.jpg")
+    private String imageUrl;
 
     @Schema(description = "Difficulty level", example = "HIGH")
     @NotNull
@@ -91,7 +88,7 @@ public class MissionDTO {
                 .destinationId(mission.getDestination().getId())
                 .destinationName(mission.getDestination().getDestinationName())
                 .scoreValue(mission.getScoreValue())
-                .imgUrl(mission.getImgUrl())
+                .imageUrl(mission.getImageUrl())
                 .specializations(
                         mission.getMissionSpecializations().stream()
                                 .map(mrs -> MissionSpecializationDTO.builder()
@@ -138,7 +135,7 @@ public class MissionDTO {
         @Schema(description = "Potential issues", example = "Dust storms may disrupt communications for up to 3 weeks...")
         private String potentialIssues;
 
-        @Schema(description = "Image path", example = "/images/m1.jpg")
+        @Schema(description = "Image path", example = "m1.jpg")
         private String imageUrl;
 
         @Schema(description = "Difficulty level", example = "HIGH")

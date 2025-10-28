@@ -1,10 +1,7 @@
 package com.client.DTO;
 
 import com.client.enums.MissionEnums;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,12 +20,21 @@ public class MissionDTO {
     private Integer crewSize;
     private Integer scoreValue;
     private String potentialIssues;
-    private String imgUrl;
     private String destinationName;
     private Integer destinationId;
     private Integer paymentAmount;
     private MissionEnums.DifficultyLevel difficultyLevel;
     private List<MissionSpecializationsDTO> specializations = new ArrayList<>();
+    @Setter
+    @Getter
+    private String imageUrl;
+
+    public String getFullImageUrl() {
+        if (imageUrl == null || imageUrl.isEmpty()) {
+            return "https://ui-avatars.com/api/?name=Mission&background=random";
+        }
+        return String.format("https://cosmo-trail.s3.eu-central-1.amazonaws.com/%s", imageUrl);
+    }
 
     public String getShortDescription() {
         if (description == null) return "";

@@ -162,7 +162,7 @@ public class MissionService {
         Optional.ofNullable(dto.getDurationDays()).ifPresent(entity::setDurationDays);
         Optional.ofNullable(dto.getCrewSize()).ifPresent(entity::setCrewSize);
         Optional.ofNullable(dto.getScoreValue()).ifPresent(entity::setScoreValue);
-        Optional.ofNullable(dto.getImageUrl()).ifPresent(entity::setImgUrl);
+        Optional.ofNullable(dto.getImageUrl()).ifPresent(entity::setImageUrl);
         Optional.ofNullable(dto.getPotentialIssues()).ifPresent(entity::setPotentialIssues);
         Optional.ofNullable(dto.getDifficultyLevel()).ifPresent(entity::setDifficultyLevel);
         Optional.ofNullable(dto.getPaymentAmount()).ifPresent(entity::setPaymentAmount);

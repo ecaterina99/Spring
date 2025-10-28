@@ -67,7 +67,7 @@
                          th:each="astronaut : ${astronauts}">
 
                         <div class="card-participants-img text-center border-0 pb-2">
-                            <img th:src="@{${astronaut.imageUrl}}" class="mission-participants-card-img-top rounded"
+                            <img th:src="${astronaut.fullImageUrl}" class="mission-participants-card-img-top rounded"
                                  alt="image">
                         </div>
 
@@ -82,7 +82,7 @@
                      data-firstname=${astronaut.firstName},
                      data-lastname=${astronaut.lastName},
                      data-specialization=${astronaut.specialization.getDisplayName().toUpperCase()},
-                     data-image=@{${astronaut.imageUrl}},
+                     data-image=${astronaut.fullImageUrl},
                      data-experience=${astronaut.yearsOfExperience},
                      data-birthdate=${astronaut.dateOfBirth},
                      data-phone=${astronaut.phone},
@@ -141,7 +141,7 @@
 
                 <div class="risk-info">
                     <div class="risk-info-header d-flex gap-5 justify-content-start align-items-end">
-                        <img th:src="@{${mission.imgUrl}}" class="card-image" style="max-height: 170px" alt="image">
+                        <img th:src="${mission.fullImageUrl}" class="card-image" style="max-height: 170px" alt="image">
 
                         <div class="risk-issues d-flex justify-content-center flex-column">
                             <strong th:text="${mission.getName()}"></strong>

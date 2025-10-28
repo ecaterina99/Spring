@@ -106,6 +106,7 @@ public class AstronautDTO {
         @Min(value = 0, message = "Overall score must be between 0 and 100")
         @Max(value = 100, message = "Overall score must be between 0 and 100")
         private Integer overallScore;
+
         @Schema(description = "Image path", example = "1.jpg")
         private String imageUrl;
         private Astronaut.Specialization specialization;

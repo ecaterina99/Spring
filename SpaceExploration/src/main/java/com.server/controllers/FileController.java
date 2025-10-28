@@ -35,7 +35,6 @@ public class FileController {
             } else if (fileName.endsWith(".gif")) {
                 contentType = "image/gif";
             }
-
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(contentType))
                     .header(HttpHeaders.CACHE_CONTROL, "max-age=3600")
@@ -54,7 +53,6 @@ public class FileController {
             Map<String, String> response = new HashMap<>();
             response.put("fileName", fileName);
             response.put("url", "/files/" + fileName);
-
             return ResponseEntity.ok(response);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

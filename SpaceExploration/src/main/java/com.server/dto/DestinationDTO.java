@@ -41,9 +41,6 @@ public class DestinationDTO {
     @Schema(description = "Gravity", example = "10")
     private Integer gravity;
 
-    @Schema(description = "Image path", example = "/images/1.jpg")
-    private String image;
-
     @Schema(description = "Entity type", example = "PLANET")
     @NotNull(message = "Entity type is required")
     private Destination.EntityType entityType;
@@ -65,8 +62,6 @@ public class DestinationDTO {
         private String description;
         @Schema(description = "Gravity", example = "10")
         private Integer gravity;
-        @Schema(description = "Image path", example = "/images/1.jpg")
-        private String image;
         @Schema(description = "Entity type", example = "PLANET")
         private Destination.EntityType entityType;
         @Schema(description = "List of missions for this destination")
@@ -80,7 +75,6 @@ public class DestinationDTO {
                     .distanceFromEarth(destination.getDistanceFromEarth())
                     .description(destination.getDescription())
                     .gravity(destination.getGravity())
-                    .image(destination.getImage())
                     .entityType(destination.getEntityType())
                     .missions(destination.getMissions().stream()
                             .map(mission -> MissionDTO.builder()
@@ -88,7 +82,7 @@ public class DestinationDTO {
                                     .name(mission.getName())
                                     .crewSize(mission.getCrewSize())
                                     .description(mission.getDescription())
-                                    .imgUrl(mission.getImgUrl())
+                                    .imageUrl(mission.getImageUrl())
                                     .potentialIssues(mission.getPotentialIssues())
                                     .code(mission.getCode())
                                     .difficultyLevel(mission.getDifficultyLevel())

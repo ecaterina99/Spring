@@ -407,7 +407,7 @@ async function loadAndShowMissions(destinationId, destinationName) {
                 duration: mission.durationDays || '',
                 payment: mission.paymentAmount || '',
                 specializations: specializationsStr,
-                image: mission.imgUrl || ''
+                image: mission.fullImageUrl || ''
             };
             missionsHTML += `
     <div class="btn-view-mission mission-destinations p-3 border border-info rounded" style="background: rgba(0,0,0,0.3);"
@@ -423,7 +423,7 @@ async function loadAndShowMissions(destinationId, destinationName) {
                              data-duration="${missionData.duration}"
                              data-payment="${missionData.payment}"
                              data-specializations="${missionData.specializations}"
-                             data-image="${mission.imgUrl}">
+                             data-image="${missionData.image}">
                     </div>
                 `;
         });

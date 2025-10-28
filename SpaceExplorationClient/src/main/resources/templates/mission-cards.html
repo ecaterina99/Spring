@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="card-header">
-                    <img th:src="${mission.imgUrl}" class="card-image" alt="image">
+                    <img th:src="${mission.fullImageUrl}" class="card-image" alt="image">
                     <div class="card-main-info">
                         <p class="mission-card-text"><strong>Code:</strong> <span
                                 th:text="${mission.code}"></span></p>
@@ -36,7 +36,7 @@
                 <div class="card-footer">
                     <button class="btn-view-mission" id="btn-view-mission"
                             th:attr="data-id=${mission.id},
-                                                 data-image=${mission.imgUrl},
+                                                 data-image=${mission.fullImageUrl},
                                                  data-name=${mission.name.toUpperCase()},
                                                  data-code=${mission.code},
                                                  data-description=${mission.description},

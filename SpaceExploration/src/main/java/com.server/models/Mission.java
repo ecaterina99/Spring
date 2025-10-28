@@ -57,7 +57,7 @@ public class Mission {
     private String potentialIssues;
 
     @Column(name = "img_url")
-    private String imgUrl;
+    private String imageUrl;
 
     public enum DifficultyLevel {
         LOW("low"),

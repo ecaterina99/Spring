@@ -19,7 +19,6 @@ public class DestinationDTO {
     private String distanceFromEarth;
     private String description;
     private Integer gravity;
-    private String image;
     private List<MissionDTO> missions = new ArrayList<>();
 
     private DestinationEnums.EntityType entityType;
