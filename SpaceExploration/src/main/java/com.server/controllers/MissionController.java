@@ -29,7 +29,7 @@ import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/missions")
 @Tag(name = "Missions", description = "Missions with different level of difficulty")

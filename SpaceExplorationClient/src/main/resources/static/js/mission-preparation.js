@@ -839,7 +839,8 @@ async function downloadMissionReportPdf(isSuccess, missionReport, crew, crewSize
     }
 
     try {
-        const response = await fetch('http://localhost:8080/api/mission-reports/export/pdf', {
+        const API_BASE_URL = "http://63.179.145.213:8080";
+        const response = await fetch(`${API_BASE_URL}/api/mission-reports/export/pdf`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -914,7 +915,9 @@ document.querySelector('.btn-start-mission').addEventListener('click', async () 
     button.textContent = "🚀 LAUNCHING...";
 
     try {
-        const response = await fetch(`http://localhost:8080/api/missions/${missionId}/start`, {
+        const API_BASE_URL = "http://63.179.145.213:8080";
+        const response = await fetch(`${API_BASE_URL}/api/missions/${missionId}/start`,
+  {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
