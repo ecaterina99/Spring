@@ -9,8 +9,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
 </head>
 <body>
+
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -44,13 +48,198 @@
     <div class="main-image">
         <img th:src="@{/innerFolder/0.jpg}" alt="explore" class="bg-image" id="backgroundImage">
         <button class="explore-btn" id="exploreBtn">Click to explore</button>
+        <button class="arrow-btn" id="arrowBtn" aria-label="Scroll down"></button>
     </div>
 </section>
+
+    <div class="header">
+        <h1 class="main-title">My Expertise</h1>
+        <p class="tagline">Crafting robust solutions with Java & modern web technologies</p>
+    </div>
+
+    <div class="container">
+        <div class="expertise-grid">
+            <!-- Backend Card -->
+            <div class="card fade-in">
+                <h2 class="card-title"><span class="highlight">Backend</span> Development</h2>
+                <p class="card-subtitle">Java Ecosystem</p>
+                <p class="card-description">
+                    Experienced in building scalable backend systems with Spring Boot, REST APIs, and cloud deployment. Strong foundation in OOP principles, design patterns, and clean architecture.
+                </p>
+                <div class="skills-container">
+                    <span class="skill-tag">Java</span>
+                    <span class="skill-tag">Spring Boot</span>
+                    <span class="skill-tag">Spring Security</span>
+                    <span class="skill-tag">REST API</span>
+                    <span class="skill-tag">MySQL</span>
+                    <span class="skill-tag">AWS EC2/S3</span>
+                    <span class="skill-tag">Maven</span>
+                    <span class="skill-tag">Hibernate</span>
+                </div>
+            </div>
+
+            <!-- Frontend Card -->
+            <div class="card fade-in">
+                <h2 class="card-title"><span class="highlight">Frontend</span> Development</h2>
+                <p class="card-subtitle">Modern Web Technologies</p>
+                <p class="card-description">
+                    Creating dynamic, responsive user interfaces with modern web technologies. Proficient in integrating frontend with backend systems using Thymeleaf and REST APIs.
+                </p>
+                <div class="skills-container">
+                    <span class="skill-tag">HTML</span>
+                    <span class="skill-tag">CSS3</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">Thymeleaf</span>
+                    <span class="skill-tag">Bootstrap</span>
+                    <span class="skill-tag">Responsive Design</span>
+                    <span class="skill-tag">Java FX</span>
+                </div>
+            </div>
+
+            <!-- Architecture & Best Practices Card -->
+            <div class="card fade-in">
+                <h2 class="card-title"><span class="highlight">Architecture</span> & Practices</h2>
+                <p class="card-subtitle">Clean Code Advocate</p>
+                <p class="card-description">
+                    Strong understanding of software design principles and patterns. Focused on writing maintainable, testable code with proper separation of concerns and dependency management.
+                </p>
+                <div class="skills-container">
+                    <span class="skill-tag">DTO Pattern</span>
+                    <span class="skill-tag">OOP & SOLID</span>
+                    <span class="skill-tag">Dependency Injection</span>
+                    <span class="skill-tag">SOLID Principles</span>
+                    <span class="skill-tag">Design Patterns</span>
+                    <span class="skill-tag">Exception Handling</span>
+                    <span class="skill-tag">Data Structures</span>
+                    <span class="skill-tag">Algorithms</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+<!-- <p class="tagline">Here you will find some of my latest projects</p>  -->
+
+
+<section class="projects-section">
+<div class="projects">
+    <h1 class="main-title">My Projects</h1>
+</div>
+
+<p class="quote">"Only in the darkness can you see the stars." — Martin Luther King Jr.</p>
+    <br>
+
+<div class="project-container">
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+
+    <div class="project-content">
+            <h3 class="project-title">COSMO TRAIL</h3>
+            <p class="project-tagline">Cosmo Trail — Explore, Build, and Conquer the Universe 💫</p>
+
+            <div class="project-link-wrapper">
+                <a href="http://63.179.145.213:8081/home" class="project-link" target="_blank">
+                    <div class="project-link-card">
+                        <div class="project-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=400&h=400&fit=crop" alt="Cosmo Trail">
+                        </div>
+                        <div class="link-content">
+                            <div class="link-label">View Live Project</div>
+                            <div class="link-text">Cosmo Trail Platform</div>
+                        </div>
+
+                        <div class="link-arrow">→</div>
+                    </div>
+                </a>
+            </div>
+<br>
+            <div class="intro-text">
+                🚀Cosmo Trail is a full-stack space exploration simulation platform that combines strategic crew management
+                with dynamic mission outcomes, built using modern Java enterprise technologies and a clean microservices architecture.
+            </div>
+
+            <p class="project-description">
+                The system is divided into two main components: a <strong style="color: #ffbd00;">REST API</strong> and a
+                <strong style="color: #ffbd00;">Client Web Application</strong> — both seamlessly integrated to deliver a dynamic and engaging experience.
+            </p>
+
+            <h3 class="section-heading">⚙️ Backend (Spring Boot REST API)</h3>
+            <ul class="feature-list">
+                <li class="feature-item"><strong>Spring Security</strong> implementation with role-based authentication and authorization</li>
+                <li class="feature-item"><strong>Swagger</strong> documentation for comprehensive API exploration</li>
+                <li class="feature-item"><strong>EC2</strong> deployment showcasing cloud infrastructure management skills</li>
+                <li class="feature-item"><strong>AWS S3 </strong>integration for scalable image storage and retrieval</li>
+                <li class="feature-item"><strong>MySQL database </strong>integration using Spring Data JPA repositories for efficient data persistence</li>
+                <li class="feature-item"><strong>DTO</strong> pattern with <strong>ModelMapper</strong> for clean separation between database entities and API responses</li>
+                <li class="feature-item"><strong>Global Exception Handler</strong> providing centralized, consistent error management across all endpoints</li>
+                <li class="feature-item"><strong>Apache PDF generator</strong> for dynamic mission report exports</li>
+            </ul>
+
+            <div class="highlight-box">
+                <p>The backend manages complex relational data including Users, Destinations, Astronauts, Missions, Specializations, Mission Participants, Budgets, and Mission Reports - demonstrating strong database design and JPA relationship mapping capabilities.</p>
+            </div>
+
+            <h3 class="section-heading">🎨 Frontend (Spring MVC Client)</h3>
+            <ul class="feature-list">
+                <li class="feature-item"><strong>Thymeleaf </strong>templating engine for server-side rendering</li>
+                <li class="feature-item"><strong>Bootstrap </strong>framework for responsive, modern UI design</li>
+                <li class="feature-item">Custom <strong>JavaScript</strong> for enhanced interactivity</li>
+                <li class="feature-item"><strong>Spring Security </strong>integration maintaining authentication across the application</li>
+                <li class="feature-item"><strong>Service layer architecture </strong>mirroring backend patterns for maintainable code</li>
+                <li class="feature-item"><strong>Global Exception Handler </strong>ensuring graceful error presentation to users</li>
+            </ul>
+        <div class="github-links ">
+            <h3 class="section-heading">📂 Source Code</h3>
+            <div class="github-cards d-flex justify-content-space-around gap-5">
+                <a href="https://github.com/ecaterina99/Spring/tree/86831373e47605a735378ed3db6fabc3336e676f/SpaceExploration" class="github-card" target="_blank">
+                    <div class="github-icon">
+                        <svg width="25" height="25" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                    </div>
+                    <div class="github-content">
+                        <div class="github-label">Backend Repository</div>
+                        <div class="github-title">Space Exploration Server</div>
+                    </div>
+                </a>
+
+                <a href="https://github.com/ecaterina99/Spring/tree/86831373e47605a735378ed3db6fabc3336e676f/SpaceExplorationClient" class="github-card" target="_blank">
+                    <div class="github-icon">
+                        <svg width="25" height="25" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                    </div>
+                    <div class="github-content">
+                        <div class="github-label">Frontend Repository</div>
+                        <div class="github-title">Space Exploration Client</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+
+<!-- Fun Fact Section -->
+<div class="fun-fact fade-in">
+    <h3 class="text-glow">Random facts about me</h3>
+    <p>I'm a good person, a great tea drinker, and I debug code better with a warm cup in my hands! ☕</p>
+</div>
+
+</body>
 
 <script>
     const image2 = '/innerFolder/1.jpg';
     const imageElement = document.getElementById('backgroundImage');
     const exploreBtn = document.getElementById('exploreBtn');
+    const arrowBtn = document.getElementById('arrowBtn');
 
     exploreBtn.addEventListener('click', function(e) {
         e.preventDefault();
@@ -59,8 +248,19 @@
             imageElement.src =  image2;
             exploreBtn.style.display = 'none';
             exploreBtn.disabled = true;
+            arrowBtn.classList.add('show');
+            window.scrollBy({
+                top: 100,
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    arrowBtn.addEventListener('click', function() {
+        window.scrollBy({
+            top: 400,
+            behavior: 'smooth'
         });
     });
 </script>
-</body>
 </html>
