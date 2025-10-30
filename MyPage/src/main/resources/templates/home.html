@@ -297,6 +297,91 @@
     </div>
 </section>
 
+<br>
+<br>
+
+
+<section class="projects-section">
+
+    <div class="project-container">
+
+        <div class="project-content">
+            <h3 class="project-title-internet">Package Manager</h3>
+            <p class="project-tagline">Internet Package Manager - JavaFX Desktop Application</p>
+            <div class="project-images">
+                <div class="img-wrapper" data-index="0">
+                    <img src="/innerFolder/2.jpg" alt="Internet Package Manager - Screenshot 1">
+                </div>
+                <div class="img-wrapper" data-index="1">
+                    <img src="/innerFolder/5.jpg" alt="Internet Package Manager - Screenshot 2">
+                </div>
+                <div class="img-wrapper" data-index="2">
+                    <img src="/innerFolder/4.jpg" alt="Internet Package Manager - Screenshot 3">
+                </div>
+                <div class="img-wrapper" data-index="3">
+                    <img src="/innerFolder/3.jpg" alt="Internet Package Manager - Screenshot 4">
+                </div>
+            </div>
+            <div class="modal" id="imageModal">
+                <span class="close-modal" id="closeModal">&times;</span>
+                <button class="modal-nav prev" id="prevBtn">‹</button>
+                <button class="modal-nav next" id="nextBtn">›</button>
+                <div class="modal-content">
+                    <img id="modalImage" src="" alt="Zoomed image">
+                </div>
+                <div class="image-counter" id="imageCounter"></div>
+            </div>
+            <br>
+            <div class="intro-text" style="border-left: 4px solid #89fbee">
+                Internet Package Manager is a modern desktop application built with JavaFX and Spring Boot,
+                demonstrating seamless integration between enterprise Java frameworks and rich client interfaces for managing internet subscription packages.
+            </div>
+
+            <p class="project-description">
+                This project showcases advanced desktop application development by combining JavaFX's UI capabilities with Spring Boot's enterprise features:
+            </p>
+
+            <h3 class="section-heading-internet">⚙️Backend Integration & JavaFX Frontend</h3>
+            <ul class="feature-list">
+                <li class="feature-item-blue"><strong>Spring Boot </strong>  with JavaFX integration using custom StageReadyEvent for lifecycle management</li>
+                <li class="feature-item-blue"><strong>FXML-based UI </strong>with custom CSS styling for modern, professional appearance</li>
+                <li class="feature-item-blue"><strong>JPA repositories</strong> for database operations</li>
+                <li class="feature-item-blue"><strong>MySQL</strong> database integration with entity-relationship mapping</li>
+                <li class="feature-item-blue"><strong>Jakarta Validation </strong>with custom validators for comprehensive input validation</li>
+                <li class="feature-item-blue"><strong>Custom exception handling</strong> with PackageServiceException for robust error management</li>
+                <li class="feature-item-blue"><strong>Transactional</strong> service layer ensuring data consistency and integrity</li>
+                <li class="feature-item-blue"><strong>SLF4J logging </strong>throughout the service layer for debugging and monitoring</li>
+                <li class="feature-item-blue"><strong>Mapper pattern</strong> separating domain entities from UI models for clean architecture</li>
+            </ul>
+
+            <div class="highlight-box-blue">
+                <p>Internet Package Manager streamlines the administration of internet subscription packages through an intuitive desktop interface.
+                    Users can create, view, edit, and delete customer packages containing personal information alongside subscription details including
+                    internet speed (2-100 Mbps), bandwidth limits (1-100 GB or unlimited), and contract duration (1-2 years).
+                    The powerful filtering system allows instant searches by customer name, speed tier, or contract length, while real-time statistics provide operational insights.
+                    Form validation ensures data integrity before database commits, and the double-click editing workflow accelerates package updates for efficient customer service operations.</p>
+            </div>
+
+            <div class="github-links ">
+                <h3 class="section-heading-internet">📂 Source Code</h3>
+                <div class="github-cards d-flex justify-content-space-around gap-5">
+                    <a href="https://github.com/ecaterina99/Spring/tree/86831373e47605a735378ed3db6fabc3336e676f/SpaceExploration" class="github-card" target="_blank">
+                        <div class="github-icon">
+                            <svg width="25" height="25" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                            </svg>
+                        </div>
+                        <div class="github-content">
+                            <div class="github-label">Backend Repository</div>
+                            <div class="github-title">Space Exploration Server</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+<br>
+    <br>
 
 <!-- Fun Fact Section -->
 <div class="fun-fact fade-in">
@@ -332,6 +417,76 @@
             top: 400,
             behavior: 'smooth'
         });
+    });
+
+
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    const closeBtn = document.getElementById('closeModal');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const counter = document.getElementById('imageCounter');
+    const imageWrappers = document.querySelectorAll('.img-wrapper');
+
+    let currentIndex = 0;
+    const images = Array.from(imageWrappers).map(wrapper => {
+        return {
+            src: wrapper.querySelector('img').src,
+            alt: wrapper.querySelector('img').alt
+        };
+    });
+
+    function openModal(index) {
+        currentIndex = index;
+        updateModalImage();
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function updateModalImage() {
+        modalImg.src = images[currentIndex].src;
+        modalImg.alt = images[currentIndex].alt;
+        counter.textContent = `${currentIndex + 1} / ${images.length}`;
+    }
+
+    function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        updateModalImage();
+    }
+
+    function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        updateModalImage();
+    }
+
+    // Event listeners
+    imageWrappers.forEach((wrapper, index) => {
+        wrapper.addEventListener('click', () => openModal(index));
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    prevBtn.addEventListener('click', showPrev);
+    nextBtn.addEventListener('click', showNext);
+
+    // Close modal when clicking outside the image
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (!modal.classList.contains('active')) return;
+
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'ArrowRight') showNext();
+        if (e.key === 'ArrowLeft') showPrev();
     });
 </script>
 </html>
