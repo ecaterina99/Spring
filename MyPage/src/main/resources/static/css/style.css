@@ -364,30 +364,6 @@ body {
     }
 }
 
-/*
-
-.projects-section{
-    display: flex;
-    flex-direction: column;
-    justify-content: right;
-    align-items: flex-end;
-    min-height: 700px;
-    background-image:  url('/innerFolder/2.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-.cosmo-trail{
-    padding-right: 80px;
-    font-size: 100px;
-    font-weight: bold;
-    flex-direction: column;
-    align-items: center;
-    justify-content: end;
-
-}
-
- */
 
 .projects{
     padding: 0 80px;
@@ -426,8 +402,19 @@ body {
     padding: 0;
     margin: 0;
     z-index: 0;
-
 }
+
+.projects-section-peony-bloom{
+    background-image:  url('/innerFolder/1.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right top;
+    padding-top: 0;
+    margin: 0;
+    z-index: 0;
+}
+
+
 body, html {
     margin: 0;
     padding: 0;
@@ -454,15 +441,7 @@ body, html {
 
 }
 
-.project-content {
-    position: relative;
-    z-index: 2;
-    margin-left: auto;
-    max-width: 800px;
-    padding-right: 40px;
-    background: transparent;
 
-}
 
 .project-title {
     font-family: 'Orbitron', monospace !important;
@@ -512,7 +491,15 @@ body, html {
     padding: 0 100px 0 0;
     background: transparent;
 }
+.project-content-peony-bloom {
+    position: relative;
+    z-index: 2;
+    margin-right: auto;
+    max-width: 900px;
+    padding: 100px 0  0 100px ;
+    background: transparent;
 
+}
 .project-tagline {
     font-size: 1.4rem;
     color: #fffefd;
@@ -563,6 +550,29 @@ body, html {
     background: linear-gradient(90deg, #ffbd00 0%, transparent 100%);
     box-shadow: 0 0 10px rgba(255, 189, 0, 0.6);
 }
+.section-heading-pink {
+    font-size: 1.5rem;
+    color: #d581c9;
+    font-weight: 700;
+    margin-top: 35px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 15px rgba(168, 8, 160, 0.66);
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.section-heading-pink::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #ed7bcd 0%, transparent 100%);
+    box-shadow: 0 0 10px rgba(84, 31, 90, 0.3);
+}
 
 .feature-list {
     list-style: none;
@@ -592,18 +602,51 @@ body, html {
     font-size: 1.2rem;
     transition: all 0.3s ease;
 }
-
+.feature-item-pink::before {
+    content: '→';
+    position: absolute;
+    left: 18px;
+    color: #eb89fb;
+    font-weight: bold;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
 .feature-item:hover {
     background: rgba(26, 26, 46, 0.7);
     border-left-color: #ffbd00;
     transform: translateX(8px);
-    box-shadow: 0 0 20px rgba(255, 189, 0, 0.2);
+    box-shadow: 0 0 20px rgba(255, 189, 0, 0.44);
 }
 
-.feature-item:hover::before {
+.feature-item-pink:hover{
+    background: rgba(26, 26, 46, 0.7);
+    border-left-color: #eb89fb;
+    transform: translateX(10px);
+    box-shadow: 0 0 20px rgba(168, 8, 160, 0.66);
+}
+
+
+.feature-item:hover::before .feature-item-pink:hover::before {
     color: #c740fd;
     text-shadow: 0 0 10px rgba(199, 64, 253, 0.6);
 }
+
+
+.feature-item-pink{
+    padding: 12px 20px 12px 45px;
+    margin-bottom: 12px;
+    background: rgba(26, 26, 46, 0.4);
+    border-left: 3px solid #eb89fb;
+    border-radius: 8px;
+    color: #ccc;
+    line-height: 1.7;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+
+
 
 .highlight-box {
     background: linear-gradient(135deg, rgba(199, 64, 253, 0.1) 0%, rgba(255, 189, 0, 0.1) 100%);
@@ -675,6 +718,24 @@ body, html {
     min-width: 450px;
 }
 
+.project-link-card-peony-bloom{
+    background: linear-gradient(145deg, #1a1a2e 0%, #0f0f1e 100%);
+    border: 2px solid #eb89fb;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow:
+            0 0 40px rgba(164, 49, 177, 0.3),
+            inset 0 0 30px rgba(84, 31, 90, 0.3);
+    position: relative;
+    overflow: hidden;
+    min-width: 450px;
+}
+
 .project-thumbnail {
     width: 120px;
     height: 120px;
@@ -686,14 +747,25 @@ body, html {
     box-shadow: 0 0 20px rgba(255, 189, 0, 0.3);
 }
 
-.project-thumbnail img {
+.project-thumbnail-peony-bloom {
+    width: 120px;
+    height: 120px;
+    border-radius: 15px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid rgba(164, 49, 177, 0.3);
+    transition: all 0.4s ease;
+    box-shadow: 0 0 20px rgba(164, 49, 177, 0.3);
+}
+.project-thumbnail img , .project-thumbnail-peony-bloom img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.4s ease;
 }
 
-.project-link:hover .project-thumbnail {
+.project-link:hover .project-thumbnail ,
+.project-link:hover .project-thumbnail-peony-bloom{
     border-color: #c740fd;
     box-shadow: 0 0 30px rgba(199, 64, 253, 0.5);
 }
@@ -702,7 +774,7 @@ body, html {
     transform: scale(1.1);
 }
 
-.project-link-card::before {
+.project-link-card::before , .project-link-card-peony-bloom:before {
     content: '';
     position: absolute;
     top: 0;
@@ -713,11 +785,11 @@ body, html {
     transition: left 0.6s ease;
 }
 
-.project-link:hover .project-link-card::before {
+.project-link:hover .project-link-card::before, .project-link:hover .project-link-card-peony-bloom:before {
     left: 100%;
 }
 
-.project-link:hover .project-link-card {
+.project-link:hover .project-link-card, .project-link:hover .project-link-card-peony-bloom {
     transform: translateY(-8px) scale(1.03);
     border-color: #c740fd;
     box-shadow:
@@ -747,6 +819,14 @@ body, html {
     transition: all 0.3s ease;
 }
 
+.link-text-peony-bloom{
+    font-size: 1.6rem;
+    color: #c664b9;
+    font-weight: 700;
+    text-shadow: 0 0 20px rgba(164, 49, 177, 0.3);
+    transition: all 0.3s ease;
+}
+
 .project-link:hover .link-text {
     color: #c740fd;
     text-shadow: 0 0 25px rgba(199, 64, 253, 0.7);
@@ -766,7 +846,22 @@ body, html {
     box-shadow: 0 0 25px rgba(255, 189, 0, 0.5);
 }
 
-.project-link:hover .link-arrow {
+
+.link-arrow-peony-bloom {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #d581c9 0%, #b146a4 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: #000;
+    transition: all 0.4s ease;
+    box-shadow: 0 0 25px rgba(164, 49, 177, 0.3);
+}
+
+.project-link:hover .link-arrow , .project-link:hover .link-arrow-peony-bloom{
     background: linear-gradient(135deg, #c740fd 0%, #9333ea 100%);
     transform: rotate(45deg) scale(1.1);
     box-shadow: 0 0 35px rgba(199, 64, 253, 0.7);
@@ -851,6 +946,7 @@ body, html {
         justify-content: center;
     }
 
+
     .project-content {
         margin: 0 auto;
         padding: 0 20px;
@@ -899,4 +995,19 @@ body, html {
         width: 40px;
         height: 40px;
     }
+}
+
+
+@font-face {
+    font-family: 'Agraham';
+    src: url('/innerFolder/agraham.personal-use.otf') format('opentype');
+}
+
+.project-title-peony-bloom {
+    font-family: 'Agraham';
+    font-size: 60px;
+    padding-bottom: 20px;
+    color: #eb89fb;
+    white-space: nowrap;
+
 }
