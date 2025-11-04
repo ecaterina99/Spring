@@ -8,39 +8,40 @@ Enterprise-grade Spring Boot REST API for space mission management, demonstratin
 
 RESTful API backend managing space missions, astronauts, destinations, and user budgets. Built to showcase enterprise Java development skills with Spring ecosystem, security best practices, and cloud integration.
 
-Live API: [Deployed on AWS EC2]
-
-API Documentation: [Swagger UI available]
 
 ## 🛠️ Technology Stack
 
-**Core Framework**
+***Core Framework***
 
-Spring Boot 3.x - Main application framework
+**Spring Boot 3.x** - Main application framework
 
-Spring Data JPA - Database operations with Hibernate ORM
+**Spring Data JPA** - Database operations with Hibernate ORM
 
-Spring Security - JWT-based authentication and role-based authorization
+**Spring Security** - JWT-based authentication and role-based authorization
 
-MySQL 8.0 - Relational database
+**MySQL 8.0** - Relational database
 
-**Cloud & External Services**
 
-AWS S3 - Scalable image storage for astronaut/destination photos
+***Cloud & External Services***
 
-AWS EC2 - Production deployment
+**AWS S3** - Scalable image storage for astronaut/destination photos
 
-Apache PDFBox - Mission report generation
+**AWS EC2** - Production deployment
 
-**Development Tools**
+**Apache PDFBox** - Mission report generation
 
-Maven - Dependency management and build automation
 
-Lombok - Code generation for entities/DTOs
+***Development Tools***
 
-ModelMapper - DTO-Entity mapping
+**Maven** - Dependency management and build automation
 
-Swagger/Springdoc - Interactive API documentation
+**Lombok** - Code generation for entities/DTOs
+
+**ModelMapper** - DTO-Entity mapping
+
+**Swagger/Springdoc** - Interactive API documentation
+
+**SLF4J logging** - debugging and monitoring
 
 
 ## 🏗️ Architecture & Design Patterns
@@ -60,7 +61,7 @@ Swagger/Springdoc - Interactive API documentation
    MySQL Database                     │  ← Persistence
 
 
-**Key Design Patterns Implemented**
+## Key Design Patterns Implemented
 
 **-DTO Pattern**
 
@@ -84,6 +85,7 @@ Method name derivation for common operations
 
 Constructor-based injection throughout
 
+
 **-Global Exception Handling**
 
 @ControllerAdvice for centralized error handling
@@ -98,6 +100,7 @@ Custom exceptions for business logic errors
 Entity Relationship Diagram
 
 ![Image](https://github.com/user-attachments/assets/62d958ca-8ada-49cb-8240-e026856c2824)
+
 
 ## Core Entities
 
@@ -116,6 +119,7 @@ Complex business logic for success probability calculation
 
 Budget impact management
 
+
 **-Astronaut - Crew members with specializations**
 
 Many-to-Many with Specializations
@@ -123,6 +127,7 @@ Many-to-Many with Specializations
 Many-to-Many with Missions through MissionParticipant
 
 Image storage via AWS S3
+
 
 **-Destination - Space locations**
 
@@ -132,27 +137,30 @@ Distance metrics
 
 Associated missions
 
+
 **-MissionParticipant - Junction entity for Mission-Astronaut relationship**
 
 Tracks specific role in mission
 
 Additional metadata for participation
 
+
 ## 🔐 Security Implementation
 
 JWT Authentication Flow
 
-User logs in with credentials
+1.User logs in with credentials
 
-Server validates and generates JWT token with user details
+2.Server validates and generates JWT token with user details
 
-Token returned to client with expiration time
+3.Token returned to client with expiration time
 
-Client includes token in Authorization header: Bearer <token>
+4.Client includes token in Authorization header: Bearer <token>
 
-Server validates token on each request via JWT filter
+5.Server validates token on each request via JWT filter
 
-User identity extracted from token for authorization
+6.User identity extracted from token for authorization
+
 
 ## Security Features
 
@@ -166,28 +174,13 @@ CORS configuration for frontend integration
 
 SQL injection prevention via JPA
 
+
 ## ☁️ AWS Integration
 
 S3 Image Storage
 
-Implementation Highlights
+EC2 deployment
 
-
-AmazonS3Client configuration with credentials
-
-Unique filename generation for uploads
-
-Public read access for images
-
-Content-Type detection and setting
-
-Error handling for failed uploads
-
--Use Cases
-
-Astronaut profile pictures
-
-Mission-related media
 
 ## 📊 Business Logic Examples
 
@@ -195,15 +188,16 @@ Mission Success Probability Calculation
 
 Algorithm considers:
 
-Crew size vs required crew size
+-Crew size vs required crew size
 
-Specialization matching (each required skill fulfilled)
+-Specialization matching (each required skill fulfilled)
 
-Astronaut status 
+-Astronaut status 
 
-Mission difficulty
+-Mission difficulty
 
-Budget Management
+
+**Budget Management**
 
 Successful missions increase budget
 
@@ -212,6 +206,7 @@ Failed missions decrease budget
 Budget tracking per user
 
 Transaction history maintained
+
 
 ## 📝 PDF Report Generation
 
@@ -229,15 +224,15 @@ Success/failure status
 
 Budget impact
 
-Technical Implementation
+
 
 ## 📚 API Documentation
 Interactive documentation available via Swagger UI when deployed:
 
-Swagger UI: /swagger-ui.html
-OpenAPI Spec: /v3/api-docs
+Swagger UI: [/swagger-ui.html](http://localhost:8080/api/swagger-ui/index.html)
 
 ## 💡 Key Technical Achievements
+
 Complex JPA Relationships
 
 Many-to-Many with junction entity (Mission ↔ Astronaut)
@@ -257,6 +252,7 @@ Transaction management with @Transactional
 DTO conversion handled at service level
 
 Business logic encapsulation
+
 
 ## 🎓 Skills Demonstrated
 
@@ -280,10 +276,12 @@ Business logic encapsulation
 
 -Build Tools: Maven multi-module configuration
 
+
 ## 🔗 Related Projects
 
 Frontend Client - Space Exploration web application
 
 API Deployed on AWS EC2 - Production environment
+
 
 Built with ❤️ using Spring Boot & AWS
