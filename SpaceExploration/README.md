@@ -148,7 +148,5 @@ Budget impact
 
 Frontend Client - Space Exploration web application
 
-API Deployed on AWS EC2 - Production environment
-
 
 Built with ❤️ using Spring Boot & AWS
