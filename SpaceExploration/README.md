@@ -106,26 +106,6 @@ MissionParticipant - Junction entity for Mission-Astronaut relationship
 Tracks specific role in mission
 Additional metadata for participation
 
-API Response Format
-Success Response
-json{
-  "success": true,
-  "data": {
-    "id": 1,
-    "name": "Mars Exploration",
-    "status": "COMPLETED"
-  },
-  "message": "Mission completed successfully"
-}
-Error Response
-json{
-  "success": false,
-  "error": {
-    "code": "RESOURCE_NOT_FOUND",
-    "message": "Mission not found with id: 123",
-    "timestamp": "2025-11-04T10:30:00Z"
-  }
-}
 
 🔐 Security Implementation
 JWT Authentication Flow
