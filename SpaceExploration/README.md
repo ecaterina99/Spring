@@ -32,25 +32,21 @@ Swagger/Springdoc - Interactive API documentation
 
 
 🏗️ Architecture & Design Patterns
+
 Layered Architecture
+
 ┌──────────────────────────────────┐
 │   REST Controllers (@RestController) │  ← API Endpoints
-
 ├──────────────────────────────────┤
 │   DTOs (Data Transfer Objects)      │  ← Request/Response models
-
 ├──────────────────────────────────┤
 │   Service Layer (@Service)           │  ← Business Logic
-
 ├──────────────────────────────────┤
 │   Repository Layer (@Repository)     │  ← Data Access (JPA)
-
 ├──────────────────────────────────┤
 │   JPA Entities                       │  ← Domain Models
-
 ├──────────────────────────────────┤
 │   MySQL Database                     │  ← Persistence
-
 └──────────────────────────────────┘
 
 Key Design Patterns Implemented
