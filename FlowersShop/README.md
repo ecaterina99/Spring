@@ -4,7 +4,7 @@
 
 Peony Bloom is a full-featured e-commerce platform for a flower shop, built with Spring Boot as a monolithic full-stack application where backend logic and frontend experience blend seamlessly.
 
-##💡 Overview
+## 💡 Overview
 
 🔐 Spring Security with role-based access (customers & admins)
 
@@ -48,6 +48,10 @@ Responsive design with Bootstrap and custom CSS/JS
 
 The platform enforces authentication requirements—while browsing is public, only registered users can complete purchases, ensuring secure transaction processing and customer data management. A dedicated admin dashboard provides complete inventory control and business intelligence, enabling administrators to monitor sales analytics, manage customer data, and perform full CRUD operations on the product catalog.
 
+Dashboard
 <img width="1894" height="1002" alt="Image" src="https://github.com/user-attachments/assets/3e162f15-c99c-4db3-9fe4-bd36a106c938" />
 
+Bouquets page
+<img width="1879" height="1080" alt="Image" src="https://github.com/user-attachments/assets/14f36d65-0627-43b2-8de0-b866734c6e8d" />
 
+Peony Bloom showcases how to build a production-ready e-commerce application with secure authentication, interactive shopping features, and complete administrative control.
