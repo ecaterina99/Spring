@@ -2,12 +2,17 @@
 
 ![Image](https://github.com/user-attachments/assets/635b0eb5-52f2-484c-8c2b-34a330f01ad3)
 
-Spring Boot REST API for space mission management, demonstrating modern Java development practices and cloud integration.
-
 ## 🎯 Project Overview
 
 RESTful API backend managing space missions, astronauts, destinations, and user budgets. Built to showcase enterprise Java development skills with Spring ecosystem, security best practices, and cloud integration.
+Cosmo Trails transforms space exploration into an engaging strategic experience where users must carefully balance crew composition with mission requirements. Players create accounts to access a universe of space destinations and missions, each with unique challenges and rewards.
+The core gameplay mechanic revolves around intelligent crew assembly: users must analyze mission requirements—including crew size and specialized skills—then recruit astronauts whose expertise matches those needs. This risk-reward system creates tension: perfectly matched crews increase success probability and budget rewards, while incomplete or mismatched teams risk mission failure and financial losses.
+The dynamic budget system adds consequence to every decision, rewarding successful missions with increased funding while penalizing failures. Upon mission completion, the PDF mission report generator provides players with professional documentation of their achievements, complete with mission statistics, crew performance, and final outcomes.
 
+## 📚 API Documentation
+Interactive documentation available via Swagger UI when deployed:
+
+Swagger UI: [/swagger-ui.html](http://localhost:8080/api/swagger-ui/index.html)
 
 ## 🛠️ Technology Stack
 
@@ -22,7 +27,6 @@ RESTful API backend managing space missions, astronauts, destinations, and user 
 **MySQL 8.0** - Relational database
 
 
-
 ***Cloud & External Services***
 
 **AWS S3** - Scalable image storage for astronaut/destination photos
@@ -30,7 +34,6 @@ RESTful API backend managing space missions, astronauts, destinations, and user 
 **AWS EC2** - Production deployment
 
 **Apache PDFBox** - Mission report generation
-
 
 
 ***Development Tools***
@@ -61,6 +64,14 @@ RESTful API backend managing space missions, astronauts, destinations, and user 
    JPA Entities                       │  ← Domain Models
 
    MySQL Database                     │  ← Persistence
+
+
+
+## 🗄️ Database Design
+
+Entity Relationship Diagram
+
+![Image](https://github.com/user-attachments/assets/62d958ca-8ada-49cb-8240-e026856c2824)
 
 
 ## Key Design Patterns Implemented
@@ -101,55 +112,6 @@ Custom exceptions for business logic errors
 
 
 
-## 🗄️ Database Design
-
-Entity Relationship Diagram
-
-![Image](https://github.com/user-attachments/assets/62d958ca-8ada-49cb-8240-e026856c2824)
-
-
-## Core Entities
-
-**-User - System users with authentication**
-
-Relationships: One-to-One with Budget, One-to-Many with Mission
-
-Security: Password encryption with BCrypt
-
-Roles: USER, ADMIN
-
-
-**-Mission - Space exploration missions**
-
-Complex business logic for success probability calculation
-
-Budget impact management
-
-
-**-Astronaut - Crew members with specializations**
-
-Many-to-Many with Specializations
-
-Many-to-Many with Missions through MissionParticipant
-
-Image storage via AWS S3
-
-
-**-Destination - Space locations**
-
-Crew size requirements
-
-Distance metrics
-
-Associated missions
-
-
-**-MissionParticipant - Junction entity for Mission-Astronaut relationship**
-
-Tracks specific role in mission
-
-Additional metadata for participation
-
 
 ## 🔐 Security Implementation
 
@@ -188,33 +150,6 @@ S3 Image Storage
 EC2 deployment
 
 
-## 📊 Business Logic Examples
-
-Mission Success Probability Calculation
-
-Algorithm considers:
-
--Crew size vs required crew size
-
--Specialization matching (each required skill fulfilled)
-
--Astronaut status 
-
--Mission difficulty
-
-
-
-**Budget Management**
-
-Successful missions increase budget
-
-Failed missions decrease budget
-
-Budget tracking per user
-
-Transaction history maintained
-
-
 ## 📝 PDF Report Generation
 
 Apache PDFBox integration for professional mission reports:
@@ -230,36 +165,6 @@ Crew roster with specializations
 Success/failure status
 
 Budget impact
-
-
-
-## 📚 API Documentation
-Interactive documentation available via Swagger UI when deployed:
-
-Swagger UI: [/swagger-ui.html](http://localhost:8080/api/swagger-ui/index.html)
-
-
-## 🎓 Skills Demonstrated
-
--Spring Boot Mastery: Configuration, auto-configuration, profiles
-
--Spring Data JPA: Repository pattern, custom queries, relationships
-
--Spring Security: JWT implementation, method security, RBAC
-
--RESTful Design: HTTP methods, status codes, resource naming
-
--Cloud Integration: AWS S3, EC2 deployment
-
--Database Design: Normalization, indexing, complex relationships
-
--Clean Architecture: Layered design, separation of concerns
-
--Error Handling: Global exception handling, custom exceptions
-
--Documentation: Swagger/OpenAPI integration
-
--Build Tools: Maven multi-module configuration
 
 
 ## 🔗 Related Projects
