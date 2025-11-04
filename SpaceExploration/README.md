@@ -192,14 +192,23 @@ Business logic encapsulation
 🎓 Skills Demonstrated
 
 -Spring Boot Mastery: Configuration, auto-configuration, profiles
+
 -Spring Data JPA: Repository pattern, custom queries, relationships
+
 -Spring Security: JWT implementation, method security, RBAC
+
 -RESTful Design: HTTP methods, status codes, resource naming
+
 -Cloud Integration: AWS S3, EC2 deployment
+
 -Database Design: Normalization, indexing, complex relationships
+
 -Clean Architecture: Layered design, separation of concerns
+
 -Error Handling: Global exception handling, custom exceptions
+
 -Documentation: Swagger/OpenAPI integration
+
 -Build Tools: Maven multi-module configuration
 
 🔗 Related Projects
