@@ -147,6 +147,7 @@ Budget impact
 ## 🔗 Related Projects
 
 Frontend Client - Space Exploration web application
+https://github.com/ecaterina99/Spring/tree/master/SpaceExplorationClient
 
 
 Built with ❤️ using Spring Boot & AWS
