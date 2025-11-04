@@ -1,7 +1,6 @@
 🛰️ Cosmo Trails - Backend REST API
 
-   ![Screenshot](file:///C:/Users/Admin/Desktop/Learning/Spring/SpaceExplorationClient/src/main/resources/static/images/1.jpg)
-
+![Image](https://github.com/user-attachments/assets/4b2329de-f9ed-4196-ba71-97f2363ca44e)
 
 Enterprise-grade Spring Boot REST API for space mission management, demonstrating modern Java development practices and cloud integration.
 
