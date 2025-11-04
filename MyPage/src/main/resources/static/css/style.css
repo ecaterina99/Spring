@@ -36,10 +36,53 @@ html {
     text-shadow: 0 0 10px #9a7dec, 0 0 15px #6534c6, 0 0 35px #5c00ca;
 }
 
-.bg-image {
-    display: block;
-    width: 100vw;
-    height: auto;
+.spark {
+    position: absolute;
+    width: 3px;
+    height: 8px;
+    background: linear-gradient(180deg, #fff 0%, #ffaa00 50%, #ff4500 100%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10;
+    animation: sparkFly 1.2s ease-out forwards;
+    box-shadow: 0 0 8px #ff6b00, 0 0 15px #ff4500;
+    filter: blur(0.5px);
+}
+
+.spark:nth-child(3n) {
+    width: 3px;
+    height: 8px;
+    animation-duration: 3.5s;
+}
+
+.spark:nth-child(3n+1) {
+    width: 5px;
+    height: 12px;
+    animation-duration: 2.5s;
+    box-shadow: 0 0 15px #ff6b00, 0 0 25px #ff4500, 0 0 35px rgba(255, 69, 0, 0.6);
+}
+
+.spark:nth-child(3n+2) {
+    width: 3.5px;
+    height: 9px;
+    animation-duration: 4s;
+}
+
+@keyframes sparkFly {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(
+                var(--tx, 0px),
+                var(--ty, -200px)
+        ) scale(0) rotate(720deg);
+        opacity: 0;
+    }
 }
 
 .main-image {
@@ -51,11 +94,18 @@ html {
     align-items: center;
     overflow: hidden;
 }
+
+.bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .explore-btn {
     position: absolute;
     top: 82%;
     left: 51%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, calc(-50% + 180px));
     background-color: white;
     font-family: 'Cosmic Vibrant';
     white-space: nowrap;
@@ -97,8 +147,8 @@ html {
 
 @media (max-width: 768px) {
     .explore-btn {
-        font-size: 12px;
-        padding: 10px 20px;
+        font-size: 8px;
+        padding:5px 10px;
     }
 }
 
@@ -108,7 +158,7 @@ html {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: transparent;
     z-index: 10;
 }
 
@@ -354,58 +404,16 @@ html {
     z-index: 1;
 }
 
-.cv {
-    background: transparent;
-    padding: 40px 60px;
-    text-align: center;
-    margin: 40px auto;
-    max-width: 500px;
-    position: relative;
-
-}
-
-.cv h3 {
-    font-size: 1.8rem;
-    margin-bottom: 30px;
-    color: #deb7f6;
-}
-
-.cv-link {
-    display: inline-block;
-    font-size: 32px;
-    font-weight: bold;
-    color: #00ff9d;
-    text-decoration: none;
-    padding: 12px 40px;
-    border-radius: 10px;
-    border: 2px solid rgba(0, 255, 157, 0.3);
-    box-shadow: 0 0 30px rgba(0, 255, 157, 0.59),
-    0 0 40px rgba(0, 212, 255, 0.32),
-    0 0 60px rgba(147, 51, 234, 0.1),
-    inset 0 0 20px rgba(0, 255, 157, 0.1);
-    transition: all 0.3s ease;
-}
-
-.cv-link:hover {
-    background: rgba(0, 255, 157, 0.1);
-    box-shadow: 0 0 20px rgba(0, 255, 157, 0.4);
-    transform: translateY(-3px);
-}
-
 @media (max-width: 768px) {
     .expertise-grid {
         grid-template-columns: 1fr;
     }
 
-    .fun-fact, .cv {
+    .fun-fact {
         padding-left: 20px;
         padding-right: 20px;
     }
 
-    .cv-link {
-        font-size: 40px;
-        padding: 15px 40px;
-    }
 }
 
 .fade-in {
@@ -512,7 +520,8 @@ html {
 }
 
 .quote {
-    padding: 0;
+    padding-left: 20px;
+    padding-right: 20px;
     display: flex;
     justify-content: center;
     font-weight: bold;
@@ -1177,11 +1186,12 @@ html {
 }
 
 .contact-container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
+    padding-bottom: 60px;
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 30px;
     flex-wrap: wrap;
     position: relative;
     z-index: 1;
@@ -1192,11 +1202,11 @@ html {
     border: 2px solid #222;
     border-radius: 25px;
     padding: 40px 35px;
-    width: 220px;
+    width: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
     text-decoration: none;
@@ -1233,7 +1243,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
+    font-size: 2.4rem;
     transition: all 0.4s ease;
     position: relative;
     z-index: 1;
@@ -1261,24 +1271,37 @@ html {
     transform: rotate(360deg) scale(1.1);
 }
 
+
 .contact-card:nth-child(3) .contact-icon {
+    background: linear-gradient(135deg, #188e6f 0%, #06ffea 100%);
+    color: #fff;
+    box-shadow: 0 0 50px rgba(78, 246, 207, 0.66);
+}
+
+.contact-card:nth-child(3):hover .contact-icon {
+    box-shadow: 0 0 50px rgba(4, 104, 81, 0.7);
+    transform: rotate(360deg) scale(1.1);
+}
+
+
+.contact-card:nth-child(4) .contact-icon {
     background: linear-gradient(135deg, #188e26 0%, #02773d 100%);
     color: #fff;
     box-shadow: 0 0 50px rgba(94, 246, 78, 0.66);
 }
 
-.contact-card:nth-child(3):hover .contact-icon {
+.contact-card:nth-child(4):hover .contact-icon {
     box-shadow: 0 0 50px rgba(10, 73, 32, 0.7);
     transform: rotate(360deg) scale(1.1);
 }
 
-.contact-card:nth-child(4) .contact-icon {
+.contact-card:nth-child(5) .contact-icon {
     background: linear-gradient(135deg, rgba(218, 35, 209, 0.3) 0%, #b146a4 100%);
     color: #fff;
     box-shadow: 0 0 30px rgb(237, 123, 221);
 }
 
-.contact-card:nth-child(4):hover .contact-icon {
+.contact-card:nth-child(5):hover .contact-icon {
     box-shadow: 0 0 50px rgb(155, 10, 239);
     transform: rotate(360deg) scale(1.1);
 }
@@ -1355,7 +1378,7 @@ html {
 }
 
 @media (max-width: 968px) {
-    .project-container {
+    .project-container, .project-content-peony-bloom {
         padding: 40px 20px;
         flex-direction: column;
     }
@@ -1370,17 +1393,17 @@ html {
         justify-content: center;
     }
 
-    .project-content {
+    .project-content , .project-content-peony-bloom{
         margin: 0 auto;
         padding: 0 20px;
         max-width: 100%;
     }
 
-    .project-title {
+    .project-title, .project-title-peony-bloom {
         font-size: 2.5rem;
     }
 
-    .project-link-card {
+    .project-link-card, .project-link-card-peony-bloom {
         width: 100%;
         max-width: 350px;
     }
