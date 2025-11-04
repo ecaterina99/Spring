@@ -93,13 +93,13 @@ Consistent error response format
 Custom exceptions for business logic errors
 
 
-##🗄️ Database Design
+## 🗄️ Database Design
 
 Entity Relationship Diagram
 
 ![Image](https://github.com/user-attachments/assets/62d958ca-8ada-49cb-8240-e026856c2824)
 
-##Core Entities
+## Core Entities
 
 **-User - System users with authentication**
 
@@ -116,7 +116,7 @@ Complex business logic for success probability calculation
 
 Budget impact management
 
--Astronaut - Crew members with specializations
+**-Astronaut - Crew members with specializations**
 
 Many-to-Many with Specializations
 
@@ -124,7 +124,7 @@ Many-to-Many with Missions through MissionParticipant
 
 Image storage via AWS S3
 
--Destination - Space locations
+**-Destination - Space locations**
 
 Crew size requirements
 
@@ -132,13 +132,13 @@ Distance metrics
 
 Associated missions
 
--MissionParticipant - Junction entity for Mission-Astronaut relationship
+**-MissionParticipant - Junction entity for Mission-Astronaut relationship**
 
 Tracks specific role in mission
 
 Additional metadata for participation
 
-🔐 Security Implementation
+## 🔐 Security Implementation
 
 JWT Authentication Flow
 
@@ -154,7 +154,7 @@ Server validates token on each request via JWT filter
 
 User identity extracted from token for authorization
 
--Security Features
+## Security Features
 
 Password encryption with BCrypt (cost factor 12)
 
@@ -166,7 +166,7 @@ CORS configuration for frontend integration
 
 SQL injection prevention via JPA
 
-☁️ AWS Integration
+## ☁️ AWS Integration
 
 S3 Image Storage
 
@@ -189,7 +189,7 @@ Astronaut profile pictures
 
 Mission-related media
 
-📊 Business Logic Examples
+## 📊 Business Logic Examples
 
 Mission Success Probability Calculation
 
@@ -213,7 +213,7 @@ Budget tracking per user
 
 Transaction history maintained
 
-📝 PDF Report Generation
+## 📝 PDF Report Generation
 
 Apache PDFBox integration for professional mission reports:
 
@@ -231,28 +231,34 @@ Budget impact
 
 Technical Implementation
 
-📚 API Documentation
+## 📚 API Documentation
 Interactive documentation available via Swagger UI when deployed:
 
 Swagger UI: /swagger-ui.html
 OpenAPI Spec: /v3/api-docs
 
-💡 Key Technical Achievements
+## 💡 Key Technical Achievements
 Complex JPA Relationships
 
 Many-to-Many with junction entity (Mission ↔ Astronaut)
+
 Bidirectional One-to-Many relationships
+
 Cascade operations properly configured
+
 Lazy/Eager loading optimization
 
 Service Layer Design
 
 Clear separation of concerns
+
 Transaction management with @Transactional
+
 DTO conversion handled at service level
+
 Business logic encapsulation
 
-🎓 Skills Demonstrated
+## 🎓 Skills Demonstrated
 
 -Spring Boot Mastery: Configuration, auto-configuration, profiles
 
@@ -274,9 +280,10 @@ Business logic encapsulation
 
 -Build Tools: Maven multi-module configuration
 
-🔗 Related Projects
+## 🔗 Related Projects
 
 Frontend Client - Space Exploration web application
+
 API Deployed on AWS EC2 - Production environment
 
 Built with ❤️ using Spring Boot & AWS
