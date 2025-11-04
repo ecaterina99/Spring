@@ -22,6 +22,7 @@ RESTful API backend managing space missions, astronauts, destinations, and user 
 **MySQL 8.0** - Relational database
 
 
+
 ***Cloud & External Services***
 
 **AWS S3** - Scalable image storage for astronaut/destination photos
@@ -29,6 +30,7 @@ RESTful API backend managing space missions, astronauts, destinations, and user 
 **AWS EC2** - Production deployment
 
 **Apache PDFBox** - Mission report generation
+
 
 
 ***Development Tools***
@@ -72,6 +74,7 @@ ModelMapper for automatic object conversion
 Prevents over-fetching and data exposure
 
 
+
 **-Repository Pattern**
 
 Spring Data JPA repositories with custom queries
@@ -81,9 +84,11 @@ Method name derivation for common operations
 @Query annotations for complex queries
 
 
+
 **-Dependency Injection**
 
 Constructor-based injection throughout
+
 
 
 **-Global Exception Handling**
@@ -93,6 +98,7 @@ Constructor-based injection throughout
 Consistent error response format
 
 Custom exceptions for business logic errors
+
 
 
 ## 🗄️ Database Design
@@ -197,6 +203,7 @@ Algorithm considers:
 -Mission difficulty
 
 
+
 **Budget Management**
 
 Successful missions increase budget
@@ -230,28 +237,6 @@ Budget impact
 Interactive documentation available via Swagger UI when deployed:
 
 Swagger UI: [/swagger-ui.html](http://localhost:8080/api/swagger-ui/index.html)
-
-## 💡 Key Technical Achievements
-
-Complex JPA Relationships
-
-Many-to-Many with junction entity (Mission ↔ Astronaut)
-
-Bidirectional One-to-Many relationships
-
-Cascade operations properly configured
-
-Lazy/Eager loading optimization
-
-Service Layer Design
-
-Clear separation of concerns
-
-Transaction management with @Transactional
-
-DTO conversion handled at service level
-
-Business logic encapsulation
 
 
 ## 🎓 Skills Demonstrated
