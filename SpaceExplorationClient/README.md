@@ -42,7 +42,7 @@ Bootstrap - Responsive UI framework
 
 JavaScript - Enhanced interactivity
 
-HTML5/CSS3 - Modern web standards
+HTML - Modern web standards
 
 Custom CSS - Space-themed styling
 
@@ -75,5 +75,5 @@ Create Mission Flow:
 
 ## 🔗 Related Projects
 
-Backend REST API - Spring Boot microservice
+Backend REST API - https://github.com/ecaterina99/Spring/tree/master/SpaceExploration
 
