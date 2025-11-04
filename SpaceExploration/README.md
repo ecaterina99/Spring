@@ -1,4 +1,4 @@
-#🛰️ Cosmo Trails - Backend REST API
+# 🛰️ Cosmo Trails - Backend REST API
 
 ![Image](https://github.com/user-attachments/assets/635b0eb5-52f2-484c-8c2b-34a330f01ad3)
 
@@ -27,20 +27,25 @@ MySQL 8.0 - Relational database
 **Cloud & External Services**
 
 AWS S3 - Scalable image storage for astronaut/destination photos
+
 AWS EC2 - Production deployment
+
 Apache PDFBox - Mission report generation
 
-Development Tools
+**Development Tools**
 
 Maven - Dependency management and build automation
+
 Lombok - Code generation for entities/DTOs
+
 ModelMapper - DTO-Entity mapping
+
 Swagger/Springdoc - Interactive API documentation
 
 
-🏗️ Architecture & Design Patterns
+## 🏗️ Architecture & Design Patterns
 
-Layered Architecture
+**Layered Architecture**
 
    REST Controllers (@RestController) │  ← API Endpoints
 
@@ -55,9 +60,9 @@ Layered Architecture
    MySQL Database                     │  ← Persistence
 
 
-Key Design Patterns Implemented
+**Key Design Patterns Implemented**
 
--DTO Pattern
+**-DTO Pattern**
 
 Clear separation between database entities and API contracts
 
@@ -66,7 +71,7 @@ ModelMapper for automatic object conversion
 Prevents over-fetching and data exposure
 
 
--Repository Pattern
+**-Repository Pattern**
 
 Spring Data JPA repositories with custom queries
 
@@ -75,12 +80,11 @@ Method name derivation for common operations
 @Query annotations for complex queries
 
 
--Dependency Injection
+**-Dependency Injection**
 
 Constructor-based injection throughout
 
-
--Global Exception Handling
+**-Global Exception Handling**
 
 @ControllerAdvice for centralized error handling
 
@@ -89,16 +93,15 @@ Consistent error response format
 Custom exceptions for business logic errors
 
 
-
-🗄️ Database Design
+##🗄️ Database Design
 
 Entity Relationship Diagram
 
 ![Image](https://github.com/user-attachments/assets/62d958ca-8ada-49cb-8240-e026856c2824)
 
-Core Entities
+##Core Entities
 
--User - System users with authentication
+**-User - System users with authentication**
 
 Relationships: One-to-One with Budget, One-to-Many with Mission
 
@@ -107,7 +110,7 @@ Security: Password encryption with BCrypt
 Roles: USER, ADMIN
 
 
--Mission - Space exploration missions
+**-Mission - Space exploration missions**
 
 Complex business logic for success probability calculation
 
