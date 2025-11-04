@@ -1,10 +1,10 @@
-🛰️ Cosmo Trails - Backend REST API
+#🛰️ Cosmo Trails - Backend REST API
 
 ![Image](https://github.com/user-attachments/assets/635b0eb5-52f2-484c-8c2b-34a330f01ad3)
 
 Enterprise-grade Spring Boot REST API for space mission management, demonstrating modern Java development practices and cloud integration.
 
-##🎯 Project Overview##
+## 🎯 Project Overview
 
 RESTful API backend managing space missions, astronauts, destinations, and user budgets. Built to showcase enterprise Java development skills with Spring ecosystem, security best practices, and cloud integration.
 
@@ -12,7 +12,7 @@ Live API: [Deployed on AWS EC2]
 
 API Documentation: [Swagger UI available]
 
-##🛠️ Technology Stack##
+## 🛠️ Technology Stack
 
 **Core Framework**
 
