@@ -4,7 +4,7 @@
 
 Enterprise-grade Spring Boot REST API for space mission management, demonstrating modern Java development practices and cloud integration.
 
-##**🎯 Project Overview**##
+##🎯 Project Overview##
 
 RESTful API backend managing space missions, astronauts, destinations, and user budgets. Built to showcase enterprise Java development skills with Spring ecosystem, security best practices, and cloud integration.
 
@@ -12,7 +12,7 @@ Live API: [Deployed on AWS EC2]
 
 API Documentation: [Swagger UI available]
 
-##**🛠️ Technology Stack**##
+##🛠️ Technology Stack##
 
 **Core Framework**
 
