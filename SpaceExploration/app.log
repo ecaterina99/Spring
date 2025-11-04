@@ -1205,3 +1205,6 @@ Caused by: java.sql.SQLException: Data truncated for column 'description' at row
 2025-10-03T23:22:42.566+03:00  INFO 16568 --- [SpaceExploration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-10-03T23:22:42.571+03:00  INFO 16568 --- [SpaceExploration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-10-03T23:22:42.580+03:00  INFO 16568 --- [SpaceExploration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+# Logs
+*.log
+*.gz
