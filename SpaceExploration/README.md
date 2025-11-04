@@ -2,7 +2,7 @@
 
 ![Image](https://github.com/user-attachments/assets/635b0eb5-52f2-484c-8c2b-34a330f01ad3)
 
-Enterprise-grade Spring Boot REST API for space mission management, demonstrating modern Java development practices and cloud integration.
+Spring Boot REST API for space mission management, demonstrating modern Java development practices and cloud integration.
 
 ## 🎯 Project Overview
 
