@@ -1,6 +1,6 @@
 🛰️ Cosmo Trails - Backend REST API
 
-![Image](https://github.com/user-attachments/assets/4b2329de-f9ed-4196-ba71-97f2363ca44e)
+![Image](https://github.com/user-attachments/assets/635b0eb5-52f2-484c-8c2b-34a330f01ad3)
 
 Enterprise-grade Spring Boot REST API for space mission management, demonstrating modern Java development practices and cloud integration.
 
@@ -46,26 +46,26 @@ Layered Architecture
 ├──────────────────────────────────┤
 │   MySQL Database                     │  ← Persistence
 └──────────────────────────────────┘
+
 Key Design Patterns Implemented
-DTO Pattern
+
+-DTO Pattern
 
 Clear separation between database entities and API contracts
 ModelMapper for automatic object conversion
 Prevents over-fetching and data exposure
 
-Repository Pattern
+-Repository Pattern
 
 Spring Data JPA repositories with custom queries
 Method name derivation for common operations
 @Query annotations for complex queries
 
-Dependency Injection
+-Dependency Injection
 
 Constructor-based injection throughout
-Loose coupling between layers
-Easy testing with mock dependencies
 
-Global Exception Handling
+-Global Exception Handling
 
 @ControllerAdvice for centralized error handling
 Consistent error response format
@@ -74,6 +74,7 @@ Custom exceptions for business logic errors
 
 🗄️ Database Design
 Entity Relationship Diagram
+![Image](https://github.com/user-attachments/assets/62d958ca-8ada-49cb-8240-e026856c2824)
 
 Core Entities
 User - System users with authentication
@@ -85,7 +86,6 @@ Roles: USER, ADMIN
 Mission - Space exploration missions
 
 Complex business logic for success probability calculation
-Status tracking (PLANNED, IN_PROGRESS, COMPLETED, FAILED)
 Budget impact management
 
 Astronaut - Crew members with specializations
@@ -105,43 +105,6 @@ MissionParticipant - Junction entity for Mission-Astronaut relationship
 Tracks specific role in mission
 Additional metadata for participation
 
-
-🔌 API Endpoints
-Authentication
-httpPOST   /api/auth/register        # User registration
-POST   /api/auth/login           # JWT token generation
-Missions
-httpGET    /api/missions                    # List all missions
-POST   /api/missions                    # Create new mission
-GET    /api/missions/{id}               # Mission details
-PUT    /api/missions/{id}               # Update mission
-DELETE /api/missions/{id}               # Delete mission
-POST   /api/missions/{id}/start         # Start mission
-PUT    /api/missions/{id}/complete      # Complete mission
-GET    /api/missions/{id}/probability   # Calculate success rate
-GET    /api/missions/{id}/report        # Generate PDF report
-POST   /api/missions/{id}/participants  # Add crew member
-DELETE /api/missions/{id}/participants/{astronautId}  # Remove crew
-Astronauts
-httpGET    /api/astronauts                  # List all astronauts
-POST   /api/astronauts                  # Create astronaut (Admin)
-GET    /api/astronauts/{id}             # Astronaut details
-PUT    /api/astronauts/{id}             # Update astronaut (Admin)
-DELETE /api/astronauts/{id}             # Delete astronaut (Admin)
-GET    /api/astronauts/available        # Available astronauts
-POST   /api/astronauts/{id}/image       # Upload profile image to S3
-Destinations
-httpGET    /api/destinations                # List all destinations
-POST   /api/destinations                # Create destination (Admin)
-GET    /api/destinations/{id}           # Destination details
-PUT    /api/destinations/{id}           # Update destination (Admin)
-DELETE /api/destinations/{id}           # Delete destination (Admin)
-POST   /api/destinations/{id}/image     # Upload image to S3
-Users & Budgets
-httpGET    /api/users                       # List all users (Admin)
-GET    /api/users/{id}                  # User details
-GET    /api/users/{id}/budget           # User budget info
-GET    /api/users/{id}/missions         # User's missions
 API Response Format
 Success Response
 json{
@@ -166,7 +129,7 @@ json{
 🔐 Security Implementation
 JWT Authentication Flow
 
-User logs in with credentials → /api/auth/login
+User logs in with credentials
 Server validates and generates JWT token with user details
 Token returned to client with expiration time
 Client includes token in Authorization header: Bearer <token>
@@ -180,7 +143,6 @@ JWT tokens with configurable expiration
 Method-level security with @PreAuthorize
 CORS configuration for frontend integration
 SQL injection prevention via JPA
-
 
 ☁️ AWS Integration
 S3 Image Storage
@@ -197,15 +159,14 @@ Use Cases
 Astronaut profile pictures
 Mission-related media
 
-
 📊 Business Logic Examples
 Mission Success Probability Calculation
-Algorithm considers:
 
+Algorithm considers:
 Crew size vs required crew size
 Specialization matching (each required skill fulfilled)
-Astronaut experience levels
-Mission difficulty based on destination distance
+Astronaut status 
+Mission difficulty
 
 Budget Management
 
@@ -214,40 +175,23 @@ Failed missions decrease budget
 Budget tracking per user
 Transaction history maintained
 
-
 📝 PDF Report Generation
 Apache PDFBox integration for professional mission reports:
 Report Contents
 
-Mission header with logo
+Mission header
 Destination details and distance
 Crew roster with specializations
-Mission timeline (start/end dates)
 Success/failure status
 Budget impact
-Performance metrics
 
 Technical Implementation
-
-Template-based generation
-Dynamic content insertion
-Professional formatting
-Base64 encoding for API response
-
 
 📚 API Documentation
 Interactive documentation available via Swagger UI when deployed:
 
 Swagger UI: /swagger-ui.html
 OpenAPI Spec: /v3/api-docs
-
-Features:
-
-Try-it-out functionality
-Request/response examples
-Authentication testing
-Schema definitions
-
 
 💡 Key Technical Achievements
 Complex JPA Relationships
@@ -270,18 +214,16 @@ Spring Boot Mastery: Configuration, auto-configuration, profiles
 Spring Data JPA: Repository pattern, custom queries, relationships
 Spring Security: JWT implementation, method security, RBAC
 RESTful Design: HTTP methods, status codes, resource naming
-Cloud Integration: AWS S3 SDK, EC2 deployment
+Cloud Integration: AWS S3, EC2 deployment
 Database Design: Normalization, indexing, complex relationships
 Clean Architecture: Layered design, separation of concerns
 Error Handling: Global exception handling, custom exceptions
 Documentation: Swagger/OpenAPI integration
 Build Tools: Maven multi-module configuration
 
-
 🔗 Related Projects
 
-Frontend Client - Spring MVC web application
+Frontend Client - Space Exploration web application
 API Deployed on AWS EC2 - Production environment
-
 
 Built with ❤️ using Spring Boot & AWS
