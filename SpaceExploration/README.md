@@ -16,7 +16,7 @@ Swagger UI: [/swagger-ui.html](http://localhost:8080/api/swagger-ui/index.html)
 
 ## 🛠️ Technology Stack
 
-***Core Framework***
+### Core Framework
 
 **Spring Boot 3.x** - Main application framework
 
@@ -26,8 +26,7 @@ Swagger UI: [/swagger-ui.html](http://localhost:8080/api/swagger-ui/index.html)
 
 **MySQL 8.0** - Relational database
 
-
-***Cloud & External Services***
+### Cloud & External Services
 
 **AWS S3** - Scalable image storage for astronaut/destination photos
 
@@ -36,7 +35,7 @@ Swagger UI: [/swagger-ui.html](http://localhost:8080/api/swagger-ui/index.html)
 **Apache PDFBox** - Mission report generation
 
 
-***Development Tools***
+### Development Tools***
 
 **Maven** - Dependency management and build automation
 
@@ -121,20 +120,6 @@ JWT Authentication Flow
 
 6.User identity extracted from token for authorization
 
-
-### Security Features
-
-Password encryption with BCrypt (cost factor 12)
-
-JWT tokens with configurable expiration
-
-Method-level security with @PreAuthorize
-
-CORS configuration for frontend integration
-
-SQL injection prevention via JPA
-
-
 ## ☁️ AWS Integration
 
 S3 Image Storage
@@ -148,9 +133,9 @@ Apache PDFBox integration for professional mission reports:
 
 Report Contents
 
-Mission header
+Mission details
 
-Destination details and distance
+Destination details 
 
 Crew roster with specializations
 
