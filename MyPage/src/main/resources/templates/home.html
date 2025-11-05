@@ -137,7 +137,7 @@
             <p class="project-tagline">Cosmo Trail — Explore, Build, and Conquer the Universe 💫</p>
 
             <div class="project-link-wrapper">
-                <a href="http://63.179.145.213:8081/home" class="project-link" target="_blank">
+                <a th:href="@{/redirect(to=${'https://cosmotrail.ecaterina.dev/login'})}" class="project-link" target="_blank">
                     <div class="project-link-card">
                         <div class="project-thumbnail">
                             <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=400&h=400&fit=crop" alt="Cosmo Trail">
@@ -187,7 +187,8 @@
             <div class="github-links ">
                 <h3 class="section-heading">📂 Source Code</h3>
                 <div class="github-cards d-flex justify-content-space-around gap-3">
-                    <a href="https://github.com/ecaterina99/Spring/tree/86831373e47605a735378ed3db6fabc3336e676f/SpaceExploration" class="github-card" target="_blank">
+                    <a th:href="@{/redirect(to=${'https://github.com/ecaterina99/Spring/tree/master/SpaceExploration'})}"
+                       class="github-card" target="_blank">
                         <div class="github-icon">
                             <svg width="25" height="25" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
@@ -199,7 +200,8 @@
                         </div>
                     </a>
 
-                    <a href="https://github.com/ecaterina99/Spring/tree/86831373e47605a735378ed3db6fabc3336e676f/SpaceExplorationClient" class="github-card" target="_blank">
+                    <a th:href="@{/redirect(to=${'https://github.com/ecaterina99/Spring/tree/master/SpaceExplorationClient'})}"
+                       class="github-card" target="_blank">
                         <div class="github-icon">
                             <svg width="25" height="25" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
@@ -227,7 +229,7 @@
             <p class="project-tagline">Peony Bloom - E-Commerce Flower Shop</p>
 
             <div class="project-link-wrapper">
-                <a href="http://63.179.145.213:8081/home" class="project-link" target="_blank">
+                <a th:href="@{/redirect(to=${'https://shop.ecaterina.dev/auth/login?logout'})}" class="project-link" target="_blank">
                     <div class="project-link-card-peony-bloom">
                         <div class="project-thumbnail-peony-bloom">
                             <img src="https://w0.peakpx.com/wallpaper/764/685/HD-wallpaper-peonies-ultra-vintage-pink-flowers-closeup-peony-earlymorning-peonies.jpg" alt="Cosmo Trail">
@@ -261,8 +263,7 @@
             <div class="github-links ">
                 <h3 class="section-heading-pink">📂 Source Code</h3>
                 <div class="github-cards d-flex justify-content-space-around gap-5">
-                    <a href="https://github.com/ecaterina99/Spring/tree/808107f8da92e7194b52e683af56529d7e2e7d2e/FlowersShop" class="github-card" target="_blank">
-
+                    <a th:href="@{/redirect(to=${'https://github.com/ecaterina99/Spring/tree/master/FlowersShop'})}" class="github-card" target="_blank">
                         <div class="github-icon">
                             <svg width="25" height="25" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
@@ -278,10 +279,8 @@
         </div>
     </div>
 </section>
-
 <br>
 <br>
-
 
 <section class="projects-section-internet-package">
 
@@ -335,7 +334,7 @@
             <div class="github-links ">
                 <h3 class="section-heading-internet">📂 Source Code</h3>
                 <div class="github-cards d-flex justify-content-space-around gap-5">
-                    <a href="https://github.com/ecaterina99/JavaFX/tree/55e70cf9aaa988df33b93de47453bd9c61f83c52/InternetService" class="github-card" target="_blank">
+                    <a th:href="@{/redirect(to=${'https://github.com/ecaterina99/JavaFX/tree/master/InternetService'})}" class="github-card" target="_blank">
                         <div class="github-icon">
                             <svg width="25" height="25" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
@@ -385,7 +384,8 @@
             <div class="contact-handle">Connect with me</div>
         </a>
 
-        <a href="https://drive.google.com/file/d/10d6dOZMMyUi91Mr6UCLlHKKoBl1fArqv/view?usp=sharing" class="contact-card" target="_blank">
+        <a th:href="@{/redirect(to=${'https://drive.google.com/file/d/1ozMRfozPu3fh6r3_Vm_Ty2pUgqvpECPZ/view?usp=sharing'})}"
+           class="contact-card" target="_blank">
             <div class="contact-icon">
                 <i class="bi bi-person-circle"></i>
             </div>
@@ -414,7 +414,7 @@
 </body>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         if (window.scrollY === 0 && !window.location.hash) {
             document.body.classList.add('no-scroll');
         }
@@ -446,7 +446,7 @@
                 spark.style.setProperty('--ty', ty + 'px');
 
                 spark.style.animationDelay = Math.random() * 0.3 + 's';
-                spark.style.animationDuration = (Math.random() *  2 + 3) + 's';
+                spark.style.animationDuration = (Math.random() * 2 + 3) + 's';
 
                 container.appendChild(spark);
 
@@ -456,7 +456,7 @@
             }
         }
 
-        exploreBtn.addEventListener('click', function(e) {
+        exploreBtn.addEventListener('click', function (e) {
             e.preventDefault();
 
             document.body.classList.remove('no-scroll');
@@ -471,7 +471,7 @@
             }, 500);
         });
 
-        arrowBtn.addEventListener('click', function() {
+        arrowBtn.addEventListener('click', function () {
             window.scrollBy({
                 top: 600,
                 behavior: 'smooth'
@@ -479,7 +479,7 @@
         });
 
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 e.preventDefault();
 
                 document.body.classList.remove('no-scroll');
@@ -574,5 +574,42 @@
             if (e.key === 'ArrowLeft') showPrev();
         });
     });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const target = this.getAttribute('href');
+                fetch('/track-click', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        section: target,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+            });
+        });
+
+        document.querySelectorAll('a[target="_blank"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+        const url = this.getAttribute('href');
+
+        fetch('/track-external-link', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+    },
+        body: JSON.stringify({
+        url: url,
+        timestamp: new Date().toISOString()
+    })
+    });
+    });
+    });
+    });
+
 </script>
 </html>
