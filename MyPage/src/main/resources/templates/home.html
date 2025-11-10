@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" th:href="@{/innerFolder/favicon.jpg}">
 
 </head>
 <body>
@@ -100,7 +101,7 @@
             <h2 class="card-title"><span class="highlight">Architecture</span> & Practices</h2>
             <p class="card-subtitle">Clean Code Advocate</p>
             <p class="card-description">
-                Strong understanding of software design principles and patterns. Focused on writing maintainable, testable code with proper separation of concerns and dependency management.
+                Good understanding of software design principles and patterns. Focused on writing clear and maintainable code with proper structure.
             </p>
             <div class="skills-container">
                 <span class="skill-tag">Data Structures</span>
@@ -123,6 +124,15 @@
 
     <p class="quote">"Only in the darkness can you see the stars." — Martin Luther King Jr.</p>
     <br>
+    <div class="project-video-container">
+    <video class="project-video" autoplay loop muted playsinline
+           onloadedmetadata="this.playbackRate = 1.3;"
+           preload="metadata"
+           style="max-height: 400px;">
+        <source src="/innerFolder/1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    </div>
 
     <div class="project-container">
         <div class="star"></div>
@@ -133,6 +143,8 @@
         <div class="star"></div>
 
         <div class="project-content">
+
+
             <h3 class="project-title">COSMO TRAIL</h3>
             <p class="project-tagline">Cosmo Trail — Explore, Build, and Conquer the Universe 💫</p>
 
@@ -179,7 +191,7 @@
                 <li class="feature-item"><strong>Thymeleaf </strong>templating engine for server-side rendering</li>
                 <li class="feature-item"><strong>Bootstrap </strong>framework for responsive, modern UI design</li>
                 <li class="feature-item">Custom <strong>JavaScript</strong> for enhanced interactivity</li>
-                <li class="feature-item"><strong>Three.js</strong>for creating an interactive 3D space map with space destinations</li>
+                <li class="feature-item"><strong>Three.js</strong> for creating an interactive 3D space map with space destinations</li>
                 <li class="feature-item"><strong>Spring Security </strong>integration maintaining authentication across the application</li>
                 <li class="feature-item"><strong>Service layer architecture </strong>mirroring backend patterns for maintainable code</li>
                 <li class="feature-item"><strong>Global Exception Handler </strong>ensuring graceful error presentation to users</li>
@@ -199,7 +211,6 @@
                             <div class="github-title">Space Exploration Server</div>
                         </div>
                     </a>
-
                     <a th:href="@{/redirect(to=${'https://github.com/ecaterina99/Spring/tree/master/SpaceExplorationClient'})}"
                        class="github-card" target="_blank">
                         <div class="github-icon">
@@ -212,15 +223,34 @@
                             <div class="github-title">Space Exploration Client</div>
                         </div>
                     </a>
+
+                    <a th:href="@{/redirect(to=${'https://www.cosmotrail.ecaterina.dev/api/swagger-ui/index.html'})}"
+                       class="github-card" target="_blank">
+                        <div class="github-icon">
+                            <img  width="25" height="25" src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Swagger-logo.png?20170812110931" alt="swagger-logo" />
+                        </div>
+                        <div class="github-content">
+                            <div class="github-title">Swagger documentation</div>
+                        </div>
+                    </a>
+
                 </div>
             </div>
         </div>
     </div>
-
-    <br>
-
 </section>
+
 <section class="projects-section-peony-bloom">
+
+    <div class="project-video-container-shop">
+        <video class="project-video" autoplay loop muted playsinline
+               onloadedmetadata="this.playbackRate = 1.3;"
+               preload="metadata"
+               style="max-height: 400px;">
+            <source src="/innerFolder/2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
 
     <div class="project-container">
 
@@ -229,7 +259,7 @@
             <p class="project-tagline">Peony Bloom - E-Commerce Flower Shop</p>
 
             <div class="project-link-wrapper">
-                <a th:href="@{/redirect(to=${'https://shop.ecaterina.dev/auth/login?logout'})}" class="project-link" target="_blank">
+                <a th:href="@{/redirect(to=${'https://shop.ecaterina.dev/auth/login'})}" class="project-link" target="_blank">
                     <div class="project-link-card-peony-bloom">
                         <div class="project-thumbnail-peony-bloom">
                             <img src="https://w0.peakpx.com/wallpaper/764/685/HD-wallpaper-peonies-ultra-vintage-pink-flowers-closeup-peony-earlymorning-peonies.jpg" alt="Cosmo Trail">
@@ -384,7 +414,7 @@
             <div class="contact-handle">Connect with me</div>
         </a>
 
-        <a th:href="@{/redirect(to=${'https://drive.google.com/file/d/1ozMRfozPu3fh6r3_Vm_Ty2pUgqvpECPZ/view?usp=sharing'})}"
+        <a th:href="@{/redirect(to=${'https://drive.google.com/file/d/1M4GSO_ZfHFZxJKRLdEEo_cIhb1eHZDTo/view?usp=sharing'})}"
            class="contact-card" target="_blank">
             <div class="contact-icon">
                 <i class="bi bi-person-circle"></i>
