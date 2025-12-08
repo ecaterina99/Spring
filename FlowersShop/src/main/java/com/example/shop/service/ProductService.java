@@ -2,6 +2,8 @@ package com.example.shop.service;
 
 import com.example.shop.dto.ProductDTO;
 import com.example.shop.helpers.DTOManager;
+import com.example.shop.kafka.KafkaConsumerService;
+import com.example.shop.kafka.KafkaProducerService;
 import com.example.shop.model.Product;
 import com.example.shop.repository.ProductRepositoryCrud;
 import com.example.shop.repository.ProductRepositoryJpa;
@@ -21,11 +23,15 @@ public class ProductService {
     private final ProductRepositoryCrud productRepositoryCrud;
     private final DTOManager dtoManager;
     private final ProductRepositoryJpa productRepositoryJpa;
+    private final KafkaConsumerService kafkaConsumerService;
+    private final KafkaProducerService kafkaProducerService;
 
-    public ProductService(ProductRepositoryCrud productRepositoryCrud, DTOManager dtoManager, ProductRepositoryJpa productRepositoryJpa) {
+    public ProductService(ProductRepositoryCrud productRepositoryCrud, DTOManager dtoManager, ProductRepositoryJpa productRepositoryJpa, KafkaConsumerService kafkaConsumerService, KafkaProducerService kafkaProducerService) {
         this.productRepositoryCrud = productRepositoryCrud;
         this.dtoManager = dtoManager;
         this.productRepositoryJpa = productRepositoryJpa;
+        this.kafkaConsumerService = kafkaConsumerService;
+        this.kafkaProducerService = kafkaProducerService;
     }
 
     //Converts Product entity to ProductDTO
@@ -73,6 +79,7 @@ public class ProductService {
         try {
             Product product = productDtoToProduct(productDTO);
             Product savedProduct = productRepositoryCrud.save(product);
+            kafkaProducerService.sendProductEvent("Product added: " + savedProduct.getName());
             return productToDto(savedProduct);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Error saving product: " + e.getMessage(), e);

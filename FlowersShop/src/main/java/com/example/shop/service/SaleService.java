@@ -3,6 +3,7 @@ package com.example.shop.service;
 
 import com.example.shop.dto.ProductDTO;
 import com.example.shop.dto.UserDTO;
+import com.example.shop.kafka.KafkaProducerService;
 import com.example.shop.model.Cart;
 import com.example.shop.model.User;
 import com.example.shop.model.Product;
@@ -23,13 +24,15 @@ public class SaleService {
     private final SaleRepository saleRepository;
     private final UsersRepositoryCrud usersRepository;
     private final ProductRepositoryCrud productRepository;
+    private final KafkaProducerService kafkaProducer;
 
-    public SaleService(UserService userService, ProductService productService, SaleRepository saleRepository, UsersRepositoryCrud usersRepository, ProductRepositoryCrud productRepository) {
+    public SaleService(UserService userService, ProductService productService, SaleRepository saleRepository, UsersRepositoryCrud usersRepository, ProductRepositoryCrud productRepository, KafkaProducerService kafkaProducer) {
         this.userService = userService;
         this.productService = productService;
         this.saleRepository = saleRepository;
         this.usersRepository = usersRepository;
         this.productRepository = productRepository;
+        this.kafkaProducer = kafkaProducer;
     }
 
     public List<Sale> findAll() {
@@ -97,6 +100,7 @@ public class SaleService {
 
         product.setQuantity(product.getQuantity() - quantity);
         productRepository.save(product);
+        kafkaProducer.sendOrderEvent("New sale created: " + savedSale.getId());
 
         return savedSale;
     }
