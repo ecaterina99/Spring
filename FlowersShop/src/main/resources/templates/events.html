@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/common_fragments :: head"></head>
+<body>
+
+<main>
+    <div th:insert="~{fragments/common_fragments :: mainHeader}"></div>
+
+    <div class="container py-4 admin-container">
+        <h2 class="fw-bold text-center mb-4">Order book</h2>
+
+        <div class="card shadow-sm p-4">
+            <h5 class="mb-3">Realtime Events:</h5>
+
+            <ul id="eventList" style="max-height: 400px; overflow-y: auto;">
+                <li th:each="ev : ${events}">
+                    <span th:text="${ev}"></span>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+</main>
+
+<div th:insert="~{fragments/common_fragments :: mainFooter}"></div>
+
+<script>
+    setInterval(() => {
+        fetch('/admin/events/data')
+            .then(response => response.json())
+            .then(events => {
+                const list = document.getElementById('eventList');
+                list.innerHTML = '';
+                events.forEach(e => {
+                    let li = document.createElement('li');
+                    li.textContent = e;
+                    list.appendChild(li);
+                });
+            });
+    }, 3000);
+</script>
+
+</body>
+</html>
