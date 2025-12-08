@@ -25,7 +25,7 @@ The database schema manages Products (bouquets, gifts, plants), Users, Orders, a
 
 ## 🌷 Features
 
-Explore floral products (bouquets, plants, gifts) with smart filtering by price and relevance
+Explore  products (bouquets, plants, gifts) with smart filtering by price and relevance
 
 Dynamic shopping cart with real-time updates
 
