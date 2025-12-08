@@ -18,7 +18,7 @@ Peony Bloom is a full-featured e-commerce platform for a flower shop, built with
 
 ## 🗄️ Database Design
 
-The database schema manages Products (bouquets, gifts, plants), Users, Orders, and Sales data, demonstrating proficient relational database design and entity relationship mapping.
+The database schema manages Products (bouquets, gifts, plants), Users, Orders, and Sales, demonstrating proficient relational database design and entity relationship mapping.
 
 ![Image](https://github.com/user-attachments/assets/97c68a16-b73c-4aa0-89bf-3947473d8c76)
 
