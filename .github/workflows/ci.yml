@@ -1,4 +1,4 @@
-name: Java CI – FlowersShop
+name: Java CI - FlowersShop
 
 on:
   push:
@@ -23,4 +23,5 @@ jobs:
           cache: maven
 
       - name: Build & test with Maven
+        working-directory: FlowersShop
         run: mvn --batch-mode clean test
