@@ -12,7 +12,7 @@ Peony Bloom is a full-featured e-commerce platform for a flower shop, built with
 
 🧩 DTO & Service layers ensuring clean architecture and separation of concerns
 
-🎨 Thymeleaf + Bootstrap for responsive, elegant UI
+🎨 Thymeleaf + Bootstrap for responsive elegant UI
 
 ⚙️ Custom JavaScript for a dynamic and interactive shopping experience
 
